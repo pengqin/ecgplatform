@@ -41,19 +41,27 @@
         <div class="navbar-inner">
                 <ul class="nav pull-right">
                     
-                    <li><a href="#" class="hidden-phone visible-tablet visible-desktop" role="button">设置</a></li>
+                    <li id="stats-menu" class="dropdown">
+                        <a href="javascript:void(0)" role="button" class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="icon-eye-open"></i> 正常工作
+                            <i class="icon-caret-down"></i>
+                        </a>
+
+                        <ul class="dropdown-menu">
+                            <li><a tabindex="-1" href="javascript:void(0)"><i class="icon-ok"></i>正常工作</a></li>
+                            <li><a tabindex="-1" href="javascript:void(0)"><i class="icon-white"></i>暂离</a></li>
+                            <li><a tabindex="-1" href="javascript:void(0)"><i class="icon-white"></i>准备下班</a></li>
+                            <li><a tabindex="-1" href="javascript:void(0)"><i class="icon-white"></i>下班</a></li>
+                        </ul>
+                    </li>
                     <li id="fat-menu" class="dropdown">
-                        <a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">
+                        <a href="javascript:void(0)" role="button" class="dropdown-toggle" data-toggle="dropdown">
                             <i class="icon-user"></i> 管理员
                             <i class="icon-caret-down"></i>
                         </a>
 
                         <ul class="dropdown-menu">
-                            <li><a tabindex="-1" href="#">个人资料</a></li>
-                            <li class="divider"></li>
-                            <li><a tabindex="-1" class="visible-phone" href="#">设置</a></li>
-                            <li class="divider visible-phone"></li>
-                            <li><a tabindex="-1" href="sign-in.html">注销</a></li>
+                            <li><a tabindex="-1" href="javascript:void(0)">注销</a></li>
                         </ul>
                     </li>
                     
@@ -64,31 +72,32 @@
     
 
 
-    
     <div class="sidebar-nav">
         <a href="#dashboard-menu" class="nav-header" data-toggle="collapse"><i class="icon-dashboard"></i>日常操作</a>
         <ul id="dashboard-menu" class="nav nav-list collapse in">
-            <li ><a href="users.html">待办工作</a></li>
-            <li ><a href="user.html">已办工作</a></li>
+            <li ><a href="#/undone">待办工作</a></li>
+            <li ><a href="#/done">已办工作</a></li>
         </ul>
 
         <a href="#dashboard-menu" class="nav-header" data-toggle="collapse"><i class="icon-dashboard"></i>平台监控</a>
         <ul id="dashboard-menu" class="nav nav-list collapse in">
-            <li ><a href="users.html">基本概况</a></li>
-            <li ><a href="user.html">工作监察</a></li>
-            <li ><a href="user.html">终端监控</a></li>
+            <li ><a href="javascript:void(0)">基本概况</a></li>
+            <li ><a href="javascript:void(0)">工作监察</a></li>
+            <li ><a href="javascript:void(0)">终端监控</a></li>
         </ul>
 
         <a href="#accounts-menu" class="nav-header" data-toggle="collapse"><i class="icon-briefcase"></i>基础数据</a>
-        <ul id="accounts-menu" class="nav nav-list collapse">
-            <li ><a href="sign-in.html">终端管理</a></li>
-            <li ><a href="sign-in.html">客户管理</a></li>
-            <li ><a href="sign-in.html">流程设置</a></li>
-            <li ><a href="sign-up.html">人员管理</a></li>
+        <ul id="accounts-menu" class="nav nav-list collapse in">
+            <li ><a href="javascript:void(0)">终端管理</a></li>
+            <li ><a href="javascript:void(0)">客户管理</a></li>
+            <li ><a href="#/replysetting">回复设置</a></li>
+            <li ><a href="javascript:void(0)">流程设置</a></li>
+            <li ><a href="javascript:void(0)">人员管理</a></li>
         </ul>
 
-        <a href="help.html" class="nav-header" ><i class="icon-question-sign"></i>使用帮助</a>
-        <a href="faq.html" class="nav-header" ><i class="icon-comment"></i>常见问题</a>
+        <a href="javascript:void(0)" class="nav-header" ><i class="icon-user"></i>个人设置</a>
+        <a href="javascript:void(0)" class="nav-header" ><i class="icon-question-sign"></i>使用帮助</a>
+        <a href="javascript:void(0)" class="nav-header" ><i class="icon-comment"></i>常见问题</a>
     </div>
     
 
@@ -102,7 +111,7 @@
                 <p class="stat"><span class="number">15</span>等待专线员处理</p>
             </div>
 
-            <h1 class="page-title">代办工作</h1>
+            <h1 class="page-title">待办工作</h1>
         </div>
 
         <div class="container-fluid">
@@ -120,46 +129,31 @@
 
 <div class="row-fluid">
     <div class="block span6">
-        <a class="block-heading">代办工作<span class="label label-warning">50条</span></a>
+        <a class="block-heading">代办工作<span class="label label-warning">3条异常</span><span class="label label-warning">2条人工异常</span></a>
         <div class="block-body collapse in">
             <table class="table">
               <thead>
                 <tr>
-                  <th>First Name</th>
-                  <th>Last Name</th>
-                  <th>Username</th>
+                  <th>客户</th>
+                  <th>健康状态</th>
+                  <th>处理方式</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td>Mark</td>
-                  <td>Tompson</td>
-                  <td>the_mark7</td>
+                  <td>张三</td>
+                  <td>正常</td>
+                  <td>未处理</td>
                 </tr>
                 <tr>
-                  <td>Ashley</td>
-                  <td>Jacobs</td>
-                  <td>ash11927</td>
+                  <td>李四</td>
+                  <td>异常</td>
+                  <td>正在处理</td>
                 </tr>
                 <tr>
-                  <td>Audrey</td>
-                  <td>Ann</td>
-                  <td>audann84</td>
-                </tr>
-                <tr>
-                  <td>John</td>
-                  <td>Robinson</td>
-                  <td>jr5527</td>
-                </tr>
-                <tr>
-                  <td>Aaron</td>
-                  <td>Butler</td>
-                  <td>aaron_butler</td>
-                </tr>
-                <tr>
-                  <td>Chris</td>
-                  <td>Albert</td>
-                  <td>cab79</td>
+                  <td>王五</td>
+                  <td>人工异常</td>
+                  <td>正在处理</td>
                 </tr>
               </tbody>
             </table>
