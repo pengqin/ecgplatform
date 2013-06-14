@@ -1,12 +1,14 @@
 'use strict';
 define(function(require, exports) {
 
-    var template = require("../templates/undonetask.html");
+    var template = require("../templates/undonetasklist.html");
 
-    angular.module('ecgUndoneTask', [])
-    .controller('UndoneViewController', ['$scope', 'TaskService',
+    angular.module('ecgUndoneTaskList', [])
+    .controller('UndoneTaskListController', ['$scope', 'TaskService',
         function($scope, TaskService) {
             $scope.undone.data = TaskService.getAllUndones();
+
+            $scope.undone.selectedItems = [];
 
             // init the grid
             var cols = [ {
@@ -19,7 +21,6 @@ define(function(require, exports) {
                 field : 'processState',
                 displayName : '处理状态'
             } ];
-            $scope.undone.selectedItems = [];
             $scope.$watch('undone.pagingOptions',
                 function(newVal, oldVal) {
                     if (newVal !== oldVal
@@ -45,12 +46,12 @@ define(function(require, exports) {
                 i18n : 'zh-cn'
             };
     }])
-    .directive("ecgUndoneView", [ '$location', function($location) {
+    .directive("ecgUndoneTaskList", [ '$location', function($location) {
         return {
             restrict : 'E',
             replace : false,
             template : template,
-            controller : "UndoneViewController",
+            controller : "UndoneTaskListController",
             link : function($scope, $element, $attrs) {
             }
         };

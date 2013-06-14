@@ -2,9 +2,14 @@
 define(function(require, exports) {
 
 require("./services/TaskService");
-require("./directives/UndoneTask");
+require("./services/PlotService");
+require("./directives/UndoneTaskList");
+require("./directives/UndoneTaskView");
+require("./directives/UserCard");
+require("./directives/TaskCard");
+require("./directives/Plot");
 
-angular.module('ecgTask', ['ecgTaskService', 'ecgUndoneTask'])
+angular.module('ecgTask', ['ecgTaskService', 'ecgUndoneTaskList', 'ecgUndoneTaskView'])
 .controller('UndoneTaskController', ['$scope', function ($scope) {
     // register the inner namespace
     $scope.undone = {};

@@ -1,9 +1,3 @@
-#line-chart {
-    height:300px;
-    width:800px;
-    margin: 0px auto;
-    margin-top: 1em;
-}
 .brand { font-family: georgia, serif; }
 .brand .first {
     color: #ccc;
@@ -16,4 +10,19 @@
 
 .block-body-grid { 
     margin: 0px;
+}
+
+.ecgHd {
+	padding-bottom: 5px;
+	border-bottom: 1px dotted #666;
+}
+.ecgprops {
+	width: 100%;
+}
+.ecgprops label {
+	font-weight: bold;
+}
+.ecgprops .prop {
+	display:inline-block;
+	padding-bottom: 5px;
 }

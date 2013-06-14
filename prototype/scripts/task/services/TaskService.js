@@ -6,7 +6,7 @@ angular.module('ecgTaskService', [])
         var undones = [], dones = [];
         return {
             getAllUndones: function() {
-                for (var i=0; i<100; i++) {
+                for (var i=0; i<10; i++) {
                     undones.push({
                         id: i,
                         guest: "张三"+i,
