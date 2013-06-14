@@ -13,8 +13,11 @@
     <link rel="stylesheet" type="text/css" href="stylesheets/theme.css">
     <link rel="stylesheet" href="lib/font-awesome/css/font-awesome.css">
     <link rel="stylesheet" type="text/css" href="stylesheets/ecg.css">
+    <link rel="stylesheet" type="text/css" href="lib/ng-grid.css" media="screen">
 
     <script src="lib/jquery-1.8.1.min.js" type="text/javascript"></script>
+    <script src="lib/angular.js" type="text/javascript"></script>
+    <script src="lib/ng-grid-2.0.5.min.js"></script>
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -37,150 +40,11 @@
   <body class=""> 
   <!--<![endif]-->
     
-    <div class="navbar">
-        <div class="navbar-inner">
-                <ul class="nav pull-right">
-                    
-                    <li id="stats-menu" class="dropdown">
-                        <a href="javascript:void(0)" role="button" class="dropdown-toggle" data-toggle="dropdown">
-                            <i class="icon-eye-open"></i> 正常工作
-                            <i class="icon-caret-down"></i>
-                        </a>
+    <ecg-header></ecg-header>
+    <ecg-nav></ecg-nav>
 
-                        <ul class="dropdown-menu">
-                            <li><a tabindex="-1" href="javascript:void(0)"><i class="icon-ok"></i>正常工作</a></li>
-                            <li><a tabindex="-1" href="javascript:void(0)"><i class="icon-white"></i>暂离</a></li>
-                            <li><a tabindex="-1" href="javascript:void(0)"><i class="icon-white"></i>准备下班</a></li>
-                            <li><a tabindex="-1" href="javascript:void(0)"><i class="icon-white"></i>下班</a></li>
-                        </ul>
-                    </li>
-                    <li id="fat-menu" class="dropdown">
-                        <a href="javascript:void(0)" role="button" class="dropdown-toggle" data-toggle="dropdown">
-                            <i class="icon-user"></i> 管理员
-                            <i class="icon-caret-down"></i>
-                        </a>
-
-                        <ul class="dropdown-menu">
-                            <li><a tabindex="-1" href="javascript:void(0)">注销</a></li>
-                        </ul>
-                    </li>
-                    
-                </ul>
-                <a class="brand" href="index.html"><span class="first"></span> <span class="second">健康中心管理后台</span></a>
-        </div>
+    <div class="content" ng-view>
     </div>
-    
-
-
-    <div class="sidebar-nav">
-        <a href="#dashboard-menu" class="nav-header" data-toggle="collapse"><i class="icon-dashboard"></i>日常操作</a>
-        <ul id="dashboard-menu" class="nav nav-list collapse in">
-            <li ><a href="#/undone">待办工作</a></li>
-            <li ><a href="#/done">已办工作</a></li>
-        </ul>
-
-        <a href="#dashboard-menu" class="nav-header" data-toggle="collapse"><i class="icon-dashboard"></i>平台监控</a>
-        <ul id="dashboard-menu" class="nav nav-list collapse in">
-            <li ><a href="javascript:void(0)">基本概况</a></li>
-            <li ><a href="javascript:void(0)">工作监察</a></li>
-            <li ><a href="javascript:void(0)">终端监控</a></li>
-        </ul>
-
-        <a href="#accounts-menu" class="nav-header" data-toggle="collapse"><i class="icon-briefcase"></i>基础数据</a>
-        <ul id="accounts-menu" class="nav nav-list collapse in">
-            <li ><a href="javascript:void(0)">终端管理</a></li>
-            <li ><a href="javascript:void(0)">客户管理</a></li>
-            <li ><a href="#/replysetting">回复设置</a></li>
-            <li ><a href="javascript:void(0)">流程设置</a></li>
-            <li ><a href="javascript:void(0)">人员管理</a></li>
-        </ul>
-
-        <a href="javascript:void(0)" class="nav-header" ><i class="icon-user"></i>个人设置</a>
-        <a href="javascript:void(0)" class="nav-header" ><i class="icon-question-sign"></i>使用帮助</a>
-        <a href="javascript:void(0)" class="nav-header" ><i class="icon-comment"></i>常见问题</a>
-    </div>
-    
-
-    
-    <div class="content">
-        
-        <div class="header">
-            <div class="stats">
-                <p class="stat"><span class="number">53</span>已回复</p>
-                <p class="stat"><span class="number">27</span>等待专家处理</p>
-                <p class="stat"><span class="number">15</span>等待专线员处理</p>
-            </div>
-
-            <h1 class="page-title">待办工作</h1>
-        </div>
-
-        <div class="container-fluid">
-            <div class="row-fluid">
-
-
-<div class="row-fluid">
-
-    <div class="alert alert-info">
-        <button type="button" class="close" data-dismiss="alert">×</button>
-        <strong>操作成功</strong> 相关数据已经发往hopesfish@163.com
-    </div>
-
-</div>
-
-<div class="row-fluid">
-    <div class="block span6">
-        <a class="block-heading">代办工作<span class="label label-warning">3条异常</span><span class="label label-warning">2条人工异常</span></a>
-        <div class="block-body collapse in">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th>客户</th>
-                  <th>健康状态</th>
-                  <th>处理方式</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>张三</td>
-                  <td>正常</td>
-                  <td>未处理</td>
-                </tr>
-                <tr>
-                  <td>李四</td>
-                  <td>异常</td>
-                  <td>正在处理</td>
-                </tr>
-                <tr>
-                  <td>王五</td>
-                  <td>人工异常</td>
-                  <td>正在处理</td>
-                </tr>
-              </tbody>
-            </table>
-        </div>
-    </div>
-    <div class="block span6">
-        <a href="#widget1container" class="block-heading" data-toggle="collapse">工单明细 </a>
-        <div id="widget1container" class="block-body collapse in">
-            <h2>Using Ruby?</h2>
-            <p>This template was developed with <a href="http://middlemanapp.com/" target="_blank">Middleman</a> and includes .erb layouts and views.</p>
-            <p>All of the views you see here (sign in, sign up, users, etc) are already split up so you don't have to waste your time doing it yourself!</p>
-            <p>The layout.erb file includes the header, footer, and side navigation and all of the views are broken out into their own files.</p>
-            <p>If you aren't using Ruby, there is also a set of plain HTML files for each page, just like you would expect.</p>
-        </div>
-    </div>
-</div>
-
-
-                    <footer>
-                        <hr>
-                        <p>&copy; 2013 <a href="javascript:void(0)" target="_blank">Martix</a></p>
-                    </footer>
-                    
-            </div>
-        </div>
-    </div>
-    
 
 
     <script src="lib/bootstrap/js/bootstrap.js"></script>
@@ -190,7 +54,9 @@
             $('.demo-cancel-click').click(function(){return false;});
         });
     </script>
-    
+    <script src="lib/seajs/sea.js"
+        data-config="./scripts/config.js"
+        data-main="./scripts/main.js"></script>
   </body>
 </html>
 
