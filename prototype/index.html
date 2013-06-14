@@ -43,7 +43,20 @@
     <ecg-header></ecg-header>
     <ecg-nav></ecg-nav>
 
-    <div class="content" ng-view>
+    <div class="content">
+        <ecg-sub-header></ecg-sub-header>
+
+        <div class="container-fluid">
+            <div class="row-fluid">
+
+            <ecg-message></ecg-message>
+
+            <ng-view></ng-view>
+
+            <ecg-footer></ecg-footer>
+
+            </div>
+        </div>
     </div>
 
 
