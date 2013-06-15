@@ -3,7 +3,7 @@ define(function(require, exports) {
 
     var template = require("../templates/undonetaskview.html");
 
-    angular.module('ecgUndoneTaskView', ['ecgUserCard', 'ecgTaskCard', 'ecgPlot'])
+    angular.module('ecgUndoneTaskView', ['ecgUserCard', 'ecgTaskCard', 'ecgPlot', 'ecgReply'])
     .controller('UndoneTaskViewController', ['$scope', 'TaskService',
     function($scope, TaskService) {
         $scope.showView = function() {

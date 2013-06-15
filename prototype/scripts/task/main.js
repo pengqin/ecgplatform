@@ -8,6 +8,7 @@ require("./directives/UndoneTaskView");
 require("./directives/UserCard");
 require("./directives/TaskCard");
 require("./directives/Plot");
+require("./directives/Reply");
 
 angular.module('ecgTask', ['ecgTaskService', 'ecgUndoneTaskList', 'ecgUndoneTaskView'])
 .controller('UndoneTaskController', ['$scope', function ($scope) {

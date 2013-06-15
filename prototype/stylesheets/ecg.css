@@ -12,7 +12,11 @@
     margin: 0px;
 }
 
+.buttons {
+	margin-top: 5px;
+}
 .ecgHd {
+	margin: 15px 0px;
 	padding-bottom: 5px;
 	border-bottom: 1px dotted #666;
 }
