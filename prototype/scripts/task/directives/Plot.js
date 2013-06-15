@@ -23,7 +23,7 @@ define(function(require, exports) {
                         enable: true,
                         levelRange: {
                             lower : 5,
-                            upper : 10
+                            upper : 8
                         }
                     }
                 }
