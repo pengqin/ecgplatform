@@ -6,6 +6,9 @@ angular.module('ecgTaskService', [])
         var undones = [], dones = [];
         return {
             getAllUndones: function() {
+                while (undones.length !== 0) {
+                    undones.pop()
+                }
                 for (var i=0; i<10; i++) {
                     undones.push({
                         id: i,
