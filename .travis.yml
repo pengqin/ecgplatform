@@ -11,9 +11,9 @@ script:
   - mkdir sae
   - cd sae
   - svn checkout https://svn.sinaapp.com/ecgdemo/1 target --username cloverren@163.com --password cloverren --no-auth-cache
-  - svn delete *
+  - svn delete prototype
   - svn commit -m "delete old file" --username cloverren@163.com --password cloverren --no-auth-cache
-  - cp -f ../prototype/* ./
-  - svn add *
+  - cp -f ../prototype ./prototype
+  - svn add prototype
   - svn commit -m "upload new file" --username cloverren@163.com --password cloverren --no-auth-cache
   
