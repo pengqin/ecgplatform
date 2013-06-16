@@ -9,9 +9,10 @@ before_script:
   - svn -h
 script: 
   - svn checkout https://svn.sinaapp.com/ecgdemo/1 sae --username cloverren@163.com --password cloverren --no-auth-cache
-  - svn delete sae/prototype
+  - cd sae
+  - svn delete prototype
   - svn commit -m "delete old file" --username cloverren@163.com --password cloverren --no-auth-cache
-  - cp -f prototype sae/prototype
-  - svn add sae/prototype
+  - cp -f ../prototype ./prototype
+  - svn add prototype
   - svn commit -m "upload new file" --username cloverren@163.com --password cloverren --no-auth-cache
   
