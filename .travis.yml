@@ -1,0 +1,19 @@
+language: node_js
+node_js:
+  - "0.11"
+env:
+  global:
+    - TIMEOUT=600000
+before_script:
+  - sudo apt-get install subversion
+  - svn -h
+script: 
+  - mkdir sae
+  - cd sace
+  - svn checkout https://svn.sinaapp.com/ecgdemo/1 target --username cloverren@163.com --password cloverren --no-auth-cache
+  - svn delete *
+  - svn commit -m "delete old file" --username cloverren@163.com --password cloverren --no-auth-cache
+  - cp -f ../prototype/* ./
+  - svn add *
+  - svn commit -m "upload new file" --username cloverren@163.com --password cloverren --no-auth-cache
+  
