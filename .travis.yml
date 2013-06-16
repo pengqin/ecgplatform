@@ -9,7 +9,7 @@ before_script:
   - svn -h
 script: 
   - mkdir sae
-  - cd sace
+  - cd sae
   - svn checkout https://svn.sinaapp.com/ecgdemo/1 target --username cloverren@163.com --password cloverren --no-auth-cache
   - svn delete *
   - svn commit -m "delete old file" --username cloverren@163.com --password cloverren --no-auth-cache
