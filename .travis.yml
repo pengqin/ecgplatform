@@ -8,12 +8,10 @@ before_script:
   - sudo apt-get install subversion
   - svn -h
 script: 
-  - mkdir sae
-  - cd sae
-  - svn checkout https://svn.sinaapp.com/ecgdemo/1 target --username cloverren@163.com --password cloverren --no-auth-cache
-  - svn delete prototype
+  - svn checkout https://svn.sinaapp.com/ecgdemo/1 sae --username cloverren@163.com --password cloverren --no-auth-cache
+  - svn delete sae/prototype
   - svn commit -m "delete old file" --username cloverren@163.com --password cloverren --no-auth-cache
-  - cp -f ../prototype ./prototype
-  - svn add prototype
+  - cp -f prototype sae/prototype
+  - svn add sae/prototype
   - svn commit -m "upload new file" --username cloverren@163.com --password cloverren --no-auth-cache
   
