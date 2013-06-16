@@ -10,7 +10,7 @@ before_script:
 script: 
   - svn checkout https://svn.sinaapp.com/ecgdemo/1 sae --username cloverren@163.com --password cloverren --no-auth-cache
   - cd sae
-  - mv ../prototype ./
+  - mv -f ../prototype ./
   - svn add prototype
   - svn commit -m "upload new prototype" --username cloverren@163.com --password cloverren --no-auth-cache
   
