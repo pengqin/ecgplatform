@@ -11,6 +11,9 @@
 .block-body-grid { 
     margin: 0px;
 }
+.block-without-border {
+	border: none;
+}
 
 .buttons {
 	margin-top: 5px;
@@ -28,5 +31,8 @@
 }
 .ecgprops .prop {
 	display:inline-block;
-	padding-bottom: 5px;
+	margin-bottom: 5px;
+}
+.ecgprops .progress {
+	margin-bottom: 2px;
 }

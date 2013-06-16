@@ -1,4 +1,4 @@
-'use strict';
+se strict';
 define(function(require, exports) {
 
     var template = require("../templates/plot.html");
