@@ -14,5 +14,5 @@ script:
   - svn commit -m "delete old file" --username cloverren@163.com --password cloverren --no-auth-cache
   - cp -f ../prototype ./
   - svn add prototype
-  - svn commit -m "upload new file" --username cloverren@163.com --password cloverren --no-auth-cache
+  - svn commit -m "upload new prototype" --username cloverren@163.com --password cloverren --no-auth-cache
   
