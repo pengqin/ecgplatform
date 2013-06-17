@@ -18,6 +18,12 @@
 .buttons {
 	margin-top: 5px;
 }
+.sidebar-nav {
+	width: 160px;
+}
+.content {
+	margin-left: 160px;
+}
 .ecgHd {
 	margin: 15px 0px;
 	padding-bottom: 5px;
