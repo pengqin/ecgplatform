@@ -18,7 +18,7 @@ angular.module('ecgMonitor',
 .controller('OverviewController', ['$scope', function ($scope) {
     // register the inner namespace
     $scope.overview = {};
-    $scope.subheader.title = "实时监控";
+    $scope.subheader.title = "工作巡查";
 }]);
 
 });
