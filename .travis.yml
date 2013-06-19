@@ -11,6 +11,6 @@ script:
   - cd target
   - svn delete ecgtest.war
   - svn commit -m "delete old war" --username cloverren@163.com --password cloverren --no-auth-cache
-  - mv -f web-0.0.1-SNAPSHOT.war ecgtest.war
+  - mv -f web.war ecgtest.war
   - svn add ecgtest.war
   - svn commit -m "upload new war" --username cloverren@163.com --password cloverren --no-auth-cache
