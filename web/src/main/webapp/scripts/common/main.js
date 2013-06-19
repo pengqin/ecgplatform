@@ -4,7 +4,8 @@ define(function(require, exports) {
   require("./Header");
   require("./Message");
   require("./Footer");
+  require("./Dialog");
 
-  angular.module('ecgCommon', ["ngGrid", "ecgNav", "ecgHeader", "ecgMessage", "ecgFooter"])
+  angular.module('ecgCommon', ["ngGrid", "ecgNav", "ecgHeader", "ecgMessage", "ecgFooter", "ecgDialog"])
 
 });

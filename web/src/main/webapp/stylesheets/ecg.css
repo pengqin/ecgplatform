@@ -18,6 +18,10 @@
 .buttons {
 	margin-top: 5px;
 }
+.ecgGridLik {
+	font-weight: bold;
+	cursor: pointer;
+}
 .sidebar-nav {
 	width: 160px;
 }

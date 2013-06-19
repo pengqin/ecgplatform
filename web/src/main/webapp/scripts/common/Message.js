@@ -4,6 +4,24 @@ define(function(require, exports) {
 
   angular.module('ecgMessage', [])
   .controller('MessageController', function ($scope) {
+    $scope.message = {};
+    $scope.message.items = [];
+    
+    $scope.message.success = function(msg) {
+      var message = {
+        type: 'success',
+        text: msg,
+        show: true
+      };
+      $scope.message.items.push(message);
+      setTimeout(function() {
+        message.show = false;
+      }, 4000);
+    };
+
+    $scope.message.hide = function(msg) {
+        msg.show = false;
+    };
   })
   .directive("ecgMessage", ['$location', function ($location) {
     return {

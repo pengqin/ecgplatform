@@ -1,8 +1,6 @@
 <div class="row-fluid">
-
-    <div class="alert alert-info" style="display:none">
-        <button type="button" class="close" data-dismiss="alert">×</button>
-        <strong>操作成功</strong> 相关数据已经发往hopesfish@163.com
+    <div ng-repeat="msg in message.items" class="alert alert-info" ng-show="msg.show">
+        <button type="button" class="close" data-dismiss="alert" ng-click="message.hide(msg)">×</button>
+		{{msg.text}}        
     </div>
-
 </div>

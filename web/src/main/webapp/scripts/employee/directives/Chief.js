@@ -11,9 +11,22 @@ define(function(require, exports) {
         $scope.chief.selectedItems = [];
 
         // init the grid
-        var cols = [ {
+        var cols = [{
+            field : 'id',
+            displayName : '编号'
+        }, {
             field : 'name',
-            displayName : '姓名'
+            displayName : '姓名',
+            cellTemplate: '<div class="ngCellText ecgGridLik" ng-click="chief.showPage(row.entity)">{{row.getProperty(col.field)}}</div>'
+        }, {
+            field : 'gender.label',
+            displayName : '性别'
+        }, {
+            field : 'phone',
+            displayName : '电话'
+        }, {
+            field : 'hospital',
+            displayName : '所在医院'
         }];
         $scope.$watch('chief.pagingOptions',
             function(newVal, oldVal) {
@@ -23,13 +36,7 @@ define(function(require, exports) {
             }, 
             true
         );
-        $scope.$watch('chief.selectedItems',
-            function(newVal, oldVal) {
-                if (!newVal || newVal.length === 0) { return; }
-                console.info(newVal);
-            },
-            true
-        );
+
         $scope.chief.pagingOptions = {
             pageSizes : [ 10, 20, 50 ],
             pageSize : 10,
@@ -39,12 +46,45 @@ define(function(require, exports) {
         $scope.chief.gridOptions = {
             data : 'chief.data',
             columnDefs : cols,
-            enablePaging : false,
-            showFooter : false,
+            enablePaging : true,
+            showFooter : true,
             multiSelect : false,
             selectedItems : $scope.chief.selectedItems,
             pagingOptions : $scope.chief.pagingOptions,
             i18n : 'zh-cn'
         };
+
+        // go to create page
+        $scope.chief.createPage = function() {
+            console.info('create');
+        };
+
+        // go to view page
+        $scope.chief.showPage = function(row) {
+            console.info(row);
+        };
+
+        $scope.chief.confirmDelete = function() {
+            var items = $scope.chief.selectedItems, chief;
+            if (items.length === 0) {
+                $scope.dialog.alert({
+                    text: '请选择一条记录!'
+                });
+                return;
+            }
+            chief = items[0];
+            $scope.dialog.confirm({
+                text: "请确认删除主任:" + chief.name + ", 该操作无法恢复!",
+                handler: function() {
+                    $scope.dialog.showStandby();
+                    EmployeeService.removeChief(chief.id);
+                    setTimeout(function() {
+                        $scope.dialog.hideStandby();
+                        $scope.message.success("删除成功!");
+                    }, 2000);
+                }
+            });
+        }
+
     }]);
 });
