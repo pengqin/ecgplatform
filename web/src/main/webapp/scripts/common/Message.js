@@ -3,7 +3,7 @@ define(function(require, exports) {
   var messageTemplate = require("./templates/message.html");
 
   angular.module('ecgMessage', [])
-  .controller('MessageController', function ($scope) {
+  .controller('MessageController', ['$scope', function ($scope) {
     $scope.message = {};
     $scope.message.items = [];
     
@@ -14,15 +14,17 @@ define(function(require, exports) {
         show: true
       };
       $scope.message.items.push(message);
+
       setTimeout(function() {
         message.show = false;
-      }, 4000);
+      }, 2000);
     };
 
     $scope.message.hide = function(msg) {
         msg.show = false;
     };
-  })
+
+  }])
   .directive("ecgMessage", ['$location', function ($location) {
     return {
       restrict: 'E',
