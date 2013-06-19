@@ -8,7 +8,7 @@ define(function(require, exports) {
     function($scope, TaskService) {
         $scope.showView = function() {
             return $scope.undone.selectedItems && $scope.undone.selectedItems.length > 0;
-        }
+        };
     }])
     .directive("ecgUndoneTaskView", [ '$location', function($location) {
         return {

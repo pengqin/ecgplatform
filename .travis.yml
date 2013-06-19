@@ -1,19 +1,16 @@
-language: node_js
-node_js:
-  - "0.11"
-env:
-  global:
-    - TIMEOUT=600000
+language: java
+jdk:
+  - oraclejdk7
 before_script:
   - sudo apt-get install subversion
   - svn -h
 script: 
-script: 
-   - svn checkout https://svn.sinaapp.com/ecgdemo/1 sae --username cloverren@163.com --password cloverren --no-auth-cache
-   - cd sae
-   - svn delete prototype
-   - svn commit -m "delete old file" --username cloverren@163.com --password cloverren --no-auth-cache
-   - mv ../prototype ./
-   - svn add prototype
-   - svn commit -m "upload new prototype" --username cloverren@163.com --password cloverren --no-auth-cache
-  
+  - mvn package
+  - cd web
+  - svn checkout https://svn.sinaapp.com/ecgtest/1 target --username cloverren@163.com --password cloverren --no-auth-cache
+  - cd target
+  - svn delete ecgtest.war
+  - svn commit -m "delete old war" --username cloverren@163.com --password cloverren --no-auth-cache
+  - mv -f web.war ecgtest.war
+  - svn add ecgtest.war
+  - svn commit -m "upload new war" --username cloverren@163.com --password cloverren --no-auth-cache
