@@ -6,10 +6,11 @@ before_script:
   - svn -h
 script: 
   - mvn package
-  - svn checkout https://svn.sinaapp.com/ecgtest/1 sae --username cloverren@163.com --password cloverren --no-auth-cache
-  - cd sae
+  - cd web
+  - svn checkout https://svn.sinaapp.com/ecgtest/1 target --username cloverren@163.com --password cloverren --no-auth-cache
+  - cd target
   - svn delete ecgtest.war
   - svn commit -m "delete old war" --username cloverren@163.com --password cloverren --no-auth-cache
-  - mv -f ../ecg-1.0.0-SNAPSHOT.war ecgtest.war
+  - mv -f web-0.0.1-SNAPSHOT.war ecgtest.war
   - svn add ecgtest.war
   - svn commit -m "upload new war" --username cloverren@163.com --password cloverren --no-auth-cache
