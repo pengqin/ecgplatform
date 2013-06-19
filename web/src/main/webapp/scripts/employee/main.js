@@ -7,11 +7,6 @@ require("./directives/Expert");
 require("./directives/Operator");
 
 angular.module('ecgEmployee', ['ecgEmployeeService', 'ecgChief', 'ecgExpert', 'ecgOperator'])
-.controller('ChiefController', ['$scope', function ($scope) {
-    // register the inner namespace
-    $scope.chief = {};
-    $scope.subheader.title = "健康中心管理主任";
-}])
 .controller('ExpertController', ['$scope', function ($scope) {
     // register the inner namespace
     $scope.expert = {};
