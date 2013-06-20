@@ -1,6 +1,6 @@
 'use strict';
 define(function(require, exports) {
-  var messageTemplate = require("./templates/footer.html");
+  var footerTemplate = require("./templates/footer.html");
 
   angular.module('ecgFooter', [])
   .controller('FooterController', function ($scope) {
@@ -9,7 +9,7 @@ define(function(require, exports) {
     return {
       restrict: 'E',
       replace: false,
-      template: messageTemplate,
+      template: footerTemplate,
       controller: "FooterController",
       link: function ($scope, $element, $attrs) {
       }

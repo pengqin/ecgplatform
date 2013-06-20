@@ -1,12 +1,14 @@
 'use strict';
 define(function(require, exports) {
-  var messageTemplate = require("./templates/dialog.html");
+  var dialogTempalte = require("./templates/dialog.html");
 
   angular.module('ecgDialog', [])
   .controller('DialogController', function ($scope) {
   	$scope.dialog = {};
   	$scope.dialog.OKLabel = '确定';
-	$scope.dialog.showHeader = function() {
+    $scope.dialog.shown = false;
+
+	  $scope.dialog.showHeader = function() {
   		return true;
   	};
   	$scope.dialog.showFooter = function() {
@@ -15,7 +17,13 @@ define(function(require, exports) {
   		}
   		return true;
   	};
-	$scope.dialog.showOKButton = function() {
+    $scope.dialog.showCancelButton = function() {
+      if ($scope.dialog.state === 'alert') {
+        return false;
+      }
+      return true;
+    };
+	  $scope.dialog.showOKButton = function() {
   		if ($scope.dialog.state === 'alert') {
   			return false;
   		}
@@ -27,13 +35,25 @@ define(function(require, exports) {
   			$scope.dialog.handler();
   		}
   	};
+
+    function show() {
+      $('#ecgDialog').modal('show');
+    }
+    $('#ecgDialog').on('hidden', function () {
+      $scope.dialog.shown = false;
+    });
+    $('#ecgDialog').on('shown', function () {
+      $scope.dialog.shown = true;
+    });
+
   	$scope.dialog.alert = function(opts) {
   		var opts = opts || {};
   		$scope.dialog.state = 'alert';
   		$scope.dialog.dialogTitle = opts.title || '提示';
   		$scope.dialog.dialogText = opts.text || '提示';
   		$scope.dialog.OKLabel = opts.OKLabel || '确定';
-  		$('#ecgDialog').modal('show');
+      $scope.dialog.handler = function() { $('#ecgDialog').modal('hide'); };
+  		show();
   	};
   	$scope.dialog.confirm = function(opts) {
   		var opts = opts || {};
@@ -42,14 +62,14 @@ define(function(require, exports) {
   		$scope.dialog.dialogText = opts.text || '请确认该操作';
   		$scope.dialog.OKLabel = opts.OKLabel || '确定';
   		$scope.dialog.handler = opts.handler || function() {};
-  		$('#ecgDialog').modal('show');
+      show();
   	};
   	$scope.dialog.showStandby = function(opts) {
   		var opts = opts || {};
   		$scope.dialog.state = 'standby';
   		$scope.dialog.dialogTitle = opts.title || '提示';
   		$scope.dialog.dialogText = opts.text || '操作进行中,请等待.';
-  		$('#ecgDialog').modal('show');
+      show();
   	};
   	$scope.dialog.hideStandby = function() {
   		$scope.dialog.state = 'standby';
@@ -62,7 +82,7 @@ define(function(require, exports) {
     return {
       restrict: 'E',
       replace: false,
-      template: messageTemplate,
+      template: dialogTempalte,
       controller: "DialogController",
       link: function ($scope, $element, $attrs) {
       }

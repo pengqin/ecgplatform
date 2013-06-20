@@ -2,10 +2,10 @@
 define(function(require, exports) {
   require("./Nav");
   require("./Header");
-  require("./Message");
+  require("./Popup");
   require("./Footer");
   require("./Dialog");
 
-  angular.module('ecgCommon', ["ngGrid", "ecgNav", "ecgHeader", "ecgMessage", "ecgFooter", "ecgDialog"])
+  angular.module('ecgCommon', ["ngGrid", "ecgNav", "ecgHeader", "ecgPopup", "ecgFooter", "ecgDialog"])
 
 });
