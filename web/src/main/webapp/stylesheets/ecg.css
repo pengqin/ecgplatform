@@ -1,11 +1,22 @@
-.brand { font-family: georgia, serif; }
-.brand .first {
-    color: #ccc;
-    font-style: italic;
-}
 .brand .second {
     color: #fff;
     font-weight: bold;
+}
+
+i { 
+	padding-right: 5px;
+}
+
+html, body {
+	height: 100%;
+}
+
+#loadingpage {
+	display: block;
+	padding-top: 100px;
+	font-size: 30px;
+	text-align: center;
+	height: 100%;
 }
 
 .block-body-grid { 
@@ -36,9 +47,13 @@
 .ecgprops {
 	width: 100%;
 }
+.ecgprops td {
+	padding-top: 10px;
+}
 .ecgprops .required {
 	color: red;
-	padding-right: 10px;
+	padding-left: 5px;
+	font-size: 14px;
 }
 .ecgprops label {
 	font-weight: bold;

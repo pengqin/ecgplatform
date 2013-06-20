@@ -48,7 +48,9 @@ define(function(require) {
         redirectTo: '/undone'
       });
   }])
-  .run(function() {});
+  .run(function() {
+    $("#loadingpage").hide();
+  });
 
   angular.bootstrap(document, ["ecgApp"]);
 
