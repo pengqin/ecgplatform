@@ -90,7 +90,7 @@ define(function(require, exports) {
         $scope.subheader.title = "新增主任";
 
         $('#chief-birthday').datetimepicker({
-            format: "yyyy-mm-dd",
+            format: "yyyy-MM-dd",
             language: "zh-CN",
             pickTime: false
         });
