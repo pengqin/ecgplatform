@@ -2,7 +2,11 @@
 	<div class="span12">
 		<br>
 		<a href="#/chief/new" class="btn"><i class="icon-plus"></i>新增主任</a>
-		<button class="btn btn-danger" type="button" ng-click="chief.confirmDelete()"><i class="icon-remove"></i>删除主任</button>
+		<button class="btn" type="button"
+				ng-class="{'btn-danger': chief.selectedItems.length > 0}"
+				ng-click="chief.confirmDelete()" ng-disabled="chief.selectedItems.length == 0">
+			<i class="icon-remove"></i>删除主任
+		</button>
     </div>
 </div>
 <div class="row-fluid">
