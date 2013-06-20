@@ -18,6 +18,10 @@
 .buttons {
 	margin-top: 5px;
 }
+.ecgGridLik {
+	font-weight: bold;
+	cursor: pointer;
+}
 .sidebar-nav {
 	width: 160px;
 }
@@ -32,12 +36,17 @@
 .ecgprops {
 	width: 100%;
 }
+.ecgprops .required {
+	color: red;
+	padding-right: 10px;
+}
 .ecgprops label {
 	font-weight: bold;
+	margin-bottom: 0px;
 }
 .ecgprops .prop {
 	display:inline-block;
-	margin-bottom: 5px;
+	margin-bottom: 0px;
 }
 .ecgprops .progress {
 	margin-bottom: 2px;
