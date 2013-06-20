@@ -8,7 +8,7 @@
     <p>{{dialog.dialogText}}</p>
   </div>
   <div class="modal-footer" ng-show="dialog.showFooter()">
-    <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+    <button class="btn" data-dismiss="modal" aria-hidden="true" ng-show="dialog.showCancelButton()">关闭</button>
     <button class="btn btn-primary" ng-click="dialog.execute()">{{dialog.OKLabel}}</button>
   </div>
 </div>

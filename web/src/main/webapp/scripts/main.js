@@ -3,7 +3,7 @@ define(function(require) {
   require("./common/main");
   require("./task/main");
   require("./monitor/main");
-  require("./employee/main")
+  require("./employee/main");
 
   var undoneTemp = require("./task/templates/undone.html");
   var doneTemp = require("./task/templates/done.html");
@@ -34,6 +34,10 @@ define(function(require) {
       .when('/operator', {
         template: operatorTemp,
         controller: 'OperatorController'
+      })
+      .when('/overview', {
+        template: overviewTemp,
+        controller: 'OverviewController'
       })
       .otherwise({
         redirectTo: '/undone'

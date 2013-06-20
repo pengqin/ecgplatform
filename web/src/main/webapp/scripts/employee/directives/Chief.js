@@ -80,7 +80,7 @@ define(function(require, exports) {
                     EmployeeService.removeChief(chief.id);
                     setTimeout(function() {
                         $scope.dialog.hideStandby();
-                        $scope.message.success("删除成功!");
+                        $scope.popup.success("删除成功!");
                     }, 2000);
                 }
             });
