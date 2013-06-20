@@ -14,12 +14,12 @@ angular.module('ecgEmployeeService', [])
                             label: "男",
                             id: 1
                         },
-                        brith: "1950-07-09",
-                        identity: "440803198811919999",
-                        position: "主任",
-                        phone: "010-89898989",
+                        brithday: "1950-07-09",
+                        idCard: "440803198811919999",
+                        title: "主任",
+                        tel: "010-89898989",
                         hospital: "安贞医院",
-                        state: {
+                        dismissed: {
                             label: "在职",
                             id: 1
                         }
@@ -35,18 +35,21 @@ angular.module('ecgEmployeeService', [])
             },
             getPlainChief: function() {
                 return {
-                    name: "主任",
+                    name: "",
                     gender: 1,
-                    brith: "",
-                    identity: "",
-                    position: "主任",
-                    phone: "010-89898989",
-                    hospital: "安贞医院",
-                    state: 1
+                    birthday: "",
+                    idCard: "",
+                    title: "",
+                    tel: "",
+                    hospital: "",
+                    dismissed: 1
                 };
             },
             createChief: function(chief) {
-                console.info(chief);
+                chief.id = (new Date()).getTime();
+                chief.gender = chief.gender ? {label: "男", value: 1} : {label: "女", value: 0};
+                chief.dismissed = chief.dismissed ? {label: "在职", value: 1} : {label: "离职", value: 0};
+                chiefs.push(chief);
             }
         };
     });

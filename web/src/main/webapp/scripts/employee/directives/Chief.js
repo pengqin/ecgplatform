@@ -22,7 +22,7 @@ define(function(require, exports) {
             field : 'gender.label',
             displayName : '性别'
         }, {
-            field : 'phone',
+            field : 'tel',
             displayName : '电话'
         }, {
             field : 'hospital',
@@ -81,10 +81,22 @@ define(function(require, exports) {
         }
 
     }])
-    .controller('ChiefNewController', ['$scope', '$timeout', '$location', 'EmployeeService', function ($scope, $timeout, $location, EmployeeService) {
+    .controller('ChiefNewController', ['$scope', '$timeout', '$location', 'EnumService', 'EmployeeService',
+        function ($scope, $timeout, $location, EnumService, EmployeeService) {
         $scope.chief = {};
         $scope.chief.newobj = EmployeeService.getPlainChief();
+        $scope.chief.genders = EnumService.getGenders();
+        $scope.chief.workstates = EnumService.getWorkStates();
         $scope.subheader.title = "新增主任";
+
+        $('#chief-birthday').datetimepicker({
+            format: "yyyy-mm-dd",
+            language: "zh-CN"
+        });
+
+        $scope.chief.showDatePicker = function() {
+            $('#chief-birthday').datetimepicker('show');
+        };
 
         $scope.chief.create = function() {
             $scope.dialog.showStandby();

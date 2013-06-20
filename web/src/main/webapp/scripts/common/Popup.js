@@ -15,18 +15,19 @@ define(function(require, exports) {
         };
     }
   )
-  .controller('PopupController', ['$scope', 'PopupService', function ($scope, PopupService) {
+  .controller('PopupController', ['$scope', '$filter', 'PopupService', function ($scope, $filter, PopupService) {
     $scope.popup = {};
     $scope.popup.total = 0;
     $scope.popup.msgs = PopupService.all();
 
     // show the message
     $scope.popup.show = function(popup) {
-      var alertClass = 'alert-' + popup.type || 'info';
+      var alertClass = 'alert-' + popup.type || 'info', date = new Date();
+      date.setTime(popup.id);
       $("#ecgPopup").append(
         '<div id="popup' + popup.id + '" class="alert ' + alertClass + '">' +
         '<button type="button" class="close" data-dismiss="alert">×</button>' +
-        popup.text || '操作完成.' + 
+        '[' + $filter('date')(date, 'HH:mm:ss') + '] ' + popup.text || '操作完成.' + 
         '</div>'
       );
       setTimeout(function() {
