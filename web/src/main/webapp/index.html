@@ -16,17 +16,6 @@
     <link rel="stylesheet" type="text/css" href="lib/ng-grid.css" media="screen">
     <link rel="stylesheet" type="text/css" href="lib/datepicker/bootstrap-datetimepicker.min.css" media="screen">
 
-    <script src="lib/jquery-1.8.1.min.js" type="text/javascript"></script>
-    <script src="lib/angular.js" type="text/javascript"></script>
-    <script src="lib/ng-grid-2.0.5.min.js"></script>
-    <script src="lib/datepicker/bootstrap-datetimepicker.js"></script>
-    <script src="lib/datepicker/bootstrap-datetimepicker.zh-CN.js"></script>
-    <script src="lib/flot/jquery.flot.js"></script>
-    <script src="lib/flot/jquery.flot.time.js"></script>
-    <script src="lib/flot/jquery.flot.navigate.js"></script> 
-    <script src="lib/flot/jquery-ecgplot.js"></script>
-    <script src="lib/flot/ecg_test_data.js"></script>
-
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -48,6 +37,7 @@
   <body class=""> 
   <!--<![endif]-->
     
+    <div id="loadingpage">正在努力加载...</div>
     <ecg-header></ecg-header>
     <ecg-nav></ecg-nav>
 
@@ -69,6 +59,16 @@
 
     <ecg-dialog></ecg-dialog>
 
+    <script src="lib/jquery-1.8.1.min.js" type="text/javascript"></script>
+    <script src="lib/angular.js" type="text/javascript"></script>
+    <script src="lib/ng-grid-2.0.5.min.js"></script>
+    <script src="lib/datepicker/bootstrap-datetimepicker.js"></script>
+    <script src="lib/datepicker/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script src="lib/flot/jquery.flot.js"></script>
+    <script src="lib/flot/jquery.flot.time.js"></script>
+    <script src="lib/flot/jquery.flot.navigate.js"></script> 
+    <script src="lib/flot/jquery-ecgplot.js"></script>
+    <script src="lib/flot/ecg_test_data.js"></script>
     <script src="lib/bootstrap/js/bootstrap.js"></script>
     <script type="text/javascript">
         $("[rel=tooltip]").tooltip();
