@@ -91,7 +91,8 @@ define(function(require, exports) {
 
         $('#chief-birthday').datetimepicker({
             format: "yyyy-mm-dd",
-            language: "zh-CN"
+            language: "zh-CN",
+            pickTime: false
         });
 
         $scope.chief.showDatePicker = function() {
