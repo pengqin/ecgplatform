@@ -2,12 +2,12 @@
 define(function(require, exports) {
 
     angular.module('ecgChief', [])
-    .controller('ChiefController', ['$scope', 'EmployeeService', function ($scope, EmployeeService) {
+    .controller('ChiefController', ['$scope', '$timeout', '$location', 'EmployeeService', function ($scope, $timeout, $location, EmployeeService) {
         // register the inner namespace
         $scope.chief = {};
         $scope.subheader.title = "健康中心管理主任";
 
-        $scope.chief.data = EmployeeService.getChief();
+        $scope.chief.data = EmployeeService.getChiefs();
         $scope.chief.selectedItems = [];
 
         // init the grid
@@ -54,16 +54,6 @@ define(function(require, exports) {
             i18n : 'zh-cn'
         };
 
-        // go to create page
-        $scope.chief.createPage = function() {
-            console.info('create');
-        };
-
-        // go to view page
-        $scope.chief.showPage = function(row) {
-            console.info(row);
-        };
-
         $scope.chief.confirmDelete = function() {
             var items = $scope.chief.selectedItems, chief;
             if (items.length === 0) {
@@ -78,13 +68,32 @@ define(function(require, exports) {
                 handler: function() {
                     $scope.dialog.showStandby();
                     EmployeeService.removeChief(chief.id);
-                    setTimeout(function() {
+                    $timeout(function() {
                         $scope.dialog.hideStandby();
                         $scope.popup.success("删除成功!");
                     }, 2000);
                 }
             });
+        };
+
+        $scope.chief.showPage = function(chief) {
+            console.info(chief);
         }
 
+    }])
+    .controller('ChiefNewController', ['$scope', '$timeout', '$location', 'EmployeeService', function ($scope, $timeout, $location, EmployeeService) {
+        $scope.chief = {};
+        $scope.chief.newobj = EmployeeService.getPlainChief();
+        $scope.subheader.title = "新增主任";
+
+        $scope.chief.create = function() {
+            $scope.dialog.showStandby();
+            EmployeeService.createChief($scope.chief.newobj);
+            $timeout(function() {
+                $scope.dialog.hideStandby();
+                $scope.popup.success("新增成功!");
+                $location.path("/chief");
+            }, 2000);
+        }
     }]);
 });

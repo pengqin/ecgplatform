@@ -5,7 +5,7 @@ angular.module('ecgEmployeeService', [])
     .factory("EmployeeService", function() {
         var chiefs = [], chiefsTotal = 10;
         return {
-            getChief: function() {
+            getChiefs: function() {
                 for (var i=0; i<10; i++) {
                     chiefs.push({
                         id: i, 
@@ -32,6 +32,21 @@ angular.module('ecgEmployeeService', [])
             },
             removeChief: function(id) {
                 
+            },
+            getPlainChief: function() {
+                return {
+                    name: "主任",
+                    gender: 1,
+                    brith: "",
+                    identity: "",
+                    position: "主任",
+                    phone: "010-89898989",
+                    hospital: "安贞医院",
+                    state: 1
+                };
+            },
+            createChief: function(chief) {
+                console.info(chief);
             }
         };
     });
