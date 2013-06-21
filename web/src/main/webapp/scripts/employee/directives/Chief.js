@@ -1,141 +1,97 @@
 'use strict';
 define(function(require, exports) {
 
-    angular.module('ecgChief', [])
-    .controller('ChiefController', ['$scope', '$timeout', '$location', 'ChiefService', function ($scope, $timeout, $location, ChiefService) {
-        // register the inner namespace
-        $scope.chief = {};
-        $scope.subheader.title = "健康中心管理主任";
+var chiefEditTemp = require("../templates/chief/edit.html");
+var chiefRulesTemp = require("../templates/chief/rules.html");
+var chiefOperatorsTemp = require("../templates/chief/operators.html");
 
-        $scope.chief.data = ChiefService.queryAll();
-        $scope.chief.selectedItems = [];
+angular.module('ecgChief', [])
+// 基本信息
+.controller('ChiefEditController', ['$scope', '$routeParams', '$timeout', '$location', 'EnumService', 'ChiefService',
+    function ($scope, $routeParams, $timeout, $location, EnumService, ChiefService) {
+    $scope.chief.updateobj = ChiefService.get($routeParams.id);
+    $scope.chief.genders = EnumService.getGenders();
+    $scope.chief.workstates = EnumService.getWorkStates();
 
-        // init the grid
-        var cols = [{
-            field : 'id',
-            displayName : '编号',
-            cellTemplate: '<div class="ngCellText ecgGridLik" ng-click="chief.showPage(row.entity)">{{row.getProperty(col.field)}}</div>'
-        }, {
-            field : 'name',
-            displayName : '姓名',
-        }, {
-            field : 'gender.label',
-            displayName : '性别'
-        }, {
-            field : 'tel',
-            displayName : '电话'
-        }, {
-            field : 'hospital',
-            displayName : '所在医院'
-        }];
-        $scope.$watch('chief.pagingOptions',
-            function(newVal, oldVal) {
-                if (newVal !== oldVal && 
-                    newVal.currentPage !== oldVal.currentPage) {
-                }
-            }, 
-            true
-        );
+    $('#chief-birthday').datetimepicker({
+        format: "yyyy-MM-dd",
+        language: "zh-CN",
+        pickTime: false,
+    });
 
-        $scope.chief.pagingOptions = {
-            pageSizes : [ 10, 20, 50 ],
-            pageSize : 10,
-            currentPage : 1,
-            totalServerItems : ChiefService.getTotal()
-        };
-        $scope.chief.gridOptions = {
-            data : 'chief.data',
-            columnDefs : cols,
-            enablePaging : true,
-            showFooter : true,
-            multiSelect : false,
-            selectedItems : $scope.chief.selectedItems,
-            pagingOptions : $scope.chief.pagingOptions,
-            i18n : 'zh-cn'
-        };
+    $scope.chief.showDatePicker = function() {
+        $('#chief-birthday').datetimepicker('show');
+    };
 
-        $scope.chief.confirmDelete = function() {
-            var items = $scope.chief.selectedItems, chief;
-            if (items.length === 0) {
-                $scope.dialog.alert({
-                    text: '请选择一条记录!'
-                });
-                return;
-            }
-            chief = items[0];
-            $scope.dialog.confirm({
-                text: "请确认删除主任:" + chief.name + ", 该操作无法恢复!",
-                handler: function() {
-                    $scope.dialog.showStandby();
-                    ChiefService.remove(chief.id);
-                    $timeout(function() {
-                        $scope.dialog.hideStandby();
-                        $scope.popup.success("删除成功!");
-                    }, 2000);
-                }
-            });
-        };
-
-        $scope.chief.showPage = function(chief) {
-            $location.path("chief/" + chief.id);
+    $scope.chief.update = function() {
+        $scope.dialog.showStandby();
+        ChiefService.update($scope.chief.updateobj);
+        $timeout(function() {
+            $scope.dialog.hideStandby();
+            $scope.popup.success("编辑主任基本信息成功!");
+        }, 2000);
+    };
+}])
+.directive("ecgChiefEdit", [ '$location', function($location) {
+    return {
+        restrict : 'E',
+        replace : false,
+        template : chiefEditTemp,
+        controller : "ChiefEditController",
+        link : function($scope, $element, $attrs) {
         }
+    };
+} ])
+// 自定义规则
+.controller('ChiefRulesController', ['$scope', '$routeParams', '$timeout', '$location', 'EnumService', 'ChiefService',
+    function ($scope, $routeParams, $timeout, $location, EnumService, ChiefService) {
+    $scope.chief.rules = ChiefService.getRules($routeParams.id);
 
-    }])
-    .controller('ChiefNewController', ['$scope', '$timeout', '$location', 'EnumService', 'ChiefService',
-        function ($scope, $timeout, $location, EnumService, ChiefService) {
-        $scope.subheader.title = "新增主任";
-
-        $scope.chief = {};
-        $scope.chief.newobj = ChiefService.getPlainObject();
-        $scope.chief.genders = EnumService.getGenders();
-        $scope.chief.workstates = EnumService.getWorkStates();
-
-        $('#chief-birthday').datetimepicker({
-            format: "yyyy-MM-dd",
-            language: "zh-CN",
-            pickTime: false
-        });
-
-        $scope.chief.showDatePicker = function() {
-            $('#chief-birthday').datetimepicker('show');
-        };
-
-        $scope.chief.create = function() {
-            $scope.dialog.showStandby();
-            ChiefService.create($scope.chief.newobj);
-            $timeout(function() {
-                $scope.dialog.hideStandby();
-                $scope.popup.success("新增成功!");
-                $location.path("/chief");
-            }, 2000);
+    $scope.chief.updateRules = function() {
+        $scope.dialog.showStandby();
+        /* TODO: */
+        // ChiefService.update($scope.chief.updateobj);
+        $timeout(function() {
+            $scope.dialog.hideStandby();
+            $scope.popup.success("修改自定义规则成功!");
+        }, 2000);
+    };
+}])
+.directive("ecgChiefRules", [ '$location', function($location) {
+    return {
+        restrict : 'E',
+        replace : false,
+        template : chiefRulesTemp,
+        controller : "ChiefRulesController",
+        link : function($scope, $element, $attrs) {
         }
-    }])
-    .controller('ChiefViewController', ['$scope', '$routeParams', '$timeout', '$location', 'EnumService', 'ChiefService',
-        function ($scope, $routeParams, $timeout, $location, EnumService, ChiefService) {
-        $scope.subheader.title = "编辑主任";
+    };
+} ])
+// 配置接线员
+.controller('ChiefOperatorsController', ['$scope', '$routeParams', '$timeout', '$location', 'EnumService', 'ChiefService',
+    function ($scope, $routeParams, $timeout, $location, EnumService, ChiefService) {
+    $scope.chief.operators = ChiefService.getOperators($routeParams.id);
 
-        $scope.chief = {};
-        $scope.chief.updateobj = ChiefService.get($routeParams.id);
-        $scope.chief.genders = EnumService.getGenders();
-        $scope.chief.workstates = EnumService.getWorkStates();
+    $scope.chief.updateOperators = function() {
+        $scope.dialog.showStandby();
+        /* TODO: */
+        // ChiefService.update($scope.chief.updateobj);
+        $timeout(function() {
+            $scope.dialog.hideStandby();
+            $scope.popup.success("配置接线员成功!");
+        }, 2000);
+    };
+}])
+.directive("ecgChiefOperators", [ '$location', function($location) {
+    return {
+        restrict : 'E',
+        replace : false,
+        template : chiefOperatorsTemp,
+        controller : "ChiefOperatorsController",
+        link : function($scope, $element, $attrs) {
+        }
+    };
+} ]);
 
-        $('#chief-birthday').datetimepicker({
-            format: "yyyy-MM-dd",
-            language: "zh-CN",
-            pickTime: false,
-        });
 
-        $scope.chief.showDatePicker = function() {
-            $('#chief-birthday').datetimepicker('show');
-        };
-
-        $scope.chief.update = function() {
-            $scope.dialog.showStandby();
-            ChiefService.update($scope.chief.updateobj);
-            $timeout(function() {
-                $scope.dialog.hideStandby();
-                $scope.popup.success("编辑成功!");
-            }, 2000);
-        }   
-    }]);
 });

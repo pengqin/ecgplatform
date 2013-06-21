@@ -3,22 +3,23 @@ define(function(require, exports) {
 
 angular.module('ecgChiefService', [])
     .factory("ChiefService", function() {
-        var chiefs = [], chiefsTotal = 10;
+        var chiefs = [], chiefsTotal = 100;
+        for (var i=0; i<chiefsTotal; i++) {
+            chiefs.push({
+                id: i, 
+                name: "主任"+i,
+                gender: i % 2,
+                birthday: "1950-07-09",
+                idCard: "44080319881191999" + i,
+                title: "主任" + i,
+                tel: "010-89898989",
+                hospital: "医院" + i,
+                dismissed: i % 2
+            });
+        }
+
         return {
             queryAll: function() {
-                for (var i=0; i<10; i++) {
-                    chiefs.push({
-                        id: i, 
-                        name: "主任"+i,
-                        gender: 1,
-                        birthday: "1950-07-09",
-                        idCard: "440803198811919999",
-                        title: "主任",
-                        tel: "010-89898989",
-                        hospital: "安贞医院",
-                        dismissed: 1
-                    });
-                }
                 return chiefs;
             },
             getTotal: function() {
@@ -44,20 +45,20 @@ angular.module('ecgChiefService', [])
                 chiefs.push(chief);
             },
             get: function(id) {
-                return {
-                    id: id, 
-                    name: "主任" + id,
-                    gender: 1,
-                    birthday: "1950-07-09",
-                    idCard: "440803198811919999",
-                    title: "主任",
-                    tel: "010-89898989",
-                    hospital: "安贞医院",
-                    dismissed: 1
-                };
+                for (var i=0; i<chiefsTotal; i++) {
+                    if (chiefs[i].id == id) {
+                        return chiefs[i];
+                    }
+                }
             },
             update: function() {
-                
+
+            },
+            getRules: function(id) {
+                return [];
+            },
+            getOperators: function(id) {
+                return [];
             }
         };
     });
