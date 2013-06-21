@@ -2,22 +2,22 @@
 define(function(require, exports) {
 
     angular.module('ecgChief', [])
-    .controller('ChiefController', ['$scope', '$timeout', '$location', 'EmployeeService', function ($scope, $timeout, $location, EmployeeService) {
+    .controller('ChiefController', ['$scope', '$timeout', '$location', 'ChiefService', function ($scope, $timeout, $location, ChiefService) {
         // register the inner namespace
         $scope.chief = {};
         $scope.subheader.title = "健康中心管理主任";
 
-        $scope.chief.data = EmployeeService.getChiefs();
+        $scope.chief.data = ChiefService.queryAll();
         $scope.chief.selectedItems = [];
 
         // init the grid
         var cols = [{
             field : 'id',
-            displayName : '编号'
+            displayName : '编号',
+            cellTemplate: '<div class="ngCellText ecgGridLik" ng-click="chief.showPage(row.entity)">{{row.getProperty(col.field)}}</div>'
         }, {
             field : 'name',
             displayName : '姓名',
-            cellTemplate: '<div class="ngCellText ecgGridLik" ng-click="chief.showPage(row.entity)">{{row.getProperty(col.field)}}</div>'
         }, {
             field : 'gender.label',
             displayName : '性别'
@@ -41,7 +41,7 @@ define(function(require, exports) {
             pageSizes : [ 10, 20, 50 ],
             pageSize : 10,
             currentPage : 1,
-            totalServerItems : EmployeeService.getChiefTotal()
+            totalServerItems : ChiefService.getTotal()
         };
         $scope.chief.gridOptions = {
             data : 'chief.data',
@@ -67,7 +67,7 @@ define(function(require, exports) {
                 text: "请确认删除主任:" + chief.name + ", 该操作无法恢复!",
                 handler: function() {
                     $scope.dialog.showStandby();
-                    EmployeeService.removeChief(chief.id);
+                    ChiefService.remove(chief.id);
                     $timeout(function() {
                         $scope.dialog.hideStandby();
                         $scope.popup.success("删除成功!");
@@ -81,10 +81,10 @@ define(function(require, exports) {
         }
 
     }])
-    .controller('ChiefNewController', ['$scope', '$timeout', '$location', 'EnumService', 'EmployeeService',
-        function ($scope, $timeout, $location, EnumService, EmployeeService) {
+    .controller('ChiefNewController', ['$scope', '$timeout', '$location', 'EnumService', 'ChiefService',
+        function ($scope, $timeout, $location, EnumService, ChiefService) {
         $scope.chief = {};
-        $scope.chief.newobj = EmployeeService.getPlainChief();
+        $scope.chief.newobj = ChiefService.getPlainObject();
         $scope.chief.genders = EnumService.getGenders();
         $scope.chief.workstates = EnumService.getWorkStates();
         $scope.subheader.title = "新增主任";
@@ -101,7 +101,7 @@ define(function(require, exports) {
 
         $scope.chief.create = function() {
             $scope.dialog.showStandby();
-            EmployeeService.createChief($scope.chief.newobj);
+            ChiefService.create($scope.chief.newobj);
             $timeout(function() {
                 $scope.dialog.hideStandby();
                 $scope.popup.success("新增成功!");

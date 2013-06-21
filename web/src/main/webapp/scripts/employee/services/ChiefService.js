@@ -1,11 +1,11 @@
 'use strict';
 define(function(require, exports) {
 
-angular.module('ecgEmployeeService', [])
-    .factory("EmployeeService", function() {
+angular.module('ecgChiefService', [])
+    .factory("ChiefService", function() {
         var chiefs = [], chiefsTotal = 10;
         return {
-            getChiefs: function() {
+            queryAll: function() {
                 for (var i=0; i<10; i++) {
                     chiefs.push({
                         id: i, 
@@ -27,13 +27,13 @@ angular.module('ecgEmployeeService', [])
                 }
                 return chiefs;
             },
-            getChiefTotal: function() {
+            getTotal: function() {
                 return chiefsTotal;
             },
-            removeChief: function(id) {
+            remove: function(id) {
                 
             },
-            getPlainChief: function() {
+            getPlainObject: function() {
                 return {
                     name: "",
                     gender: 1,
@@ -45,7 +45,7 @@ angular.module('ecgEmployeeService', [])
                     dismissed: 1
                 };
             },
-            createChief: function(chief) {
+            create: function(chief) {
                 chief.id = (new Date()).getTime();
                 chief.gender = chief.gender ? {label: "男", value: 1} : {label: "女", value: 0};
                 chief.dismissed = chief.dismissed ? {label: "在职", value: 1} : {label: "离职", value: 0};
