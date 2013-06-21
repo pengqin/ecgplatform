@@ -1,1 +1,12 @@
-view chief
+<br>
+<ul class="nav nav-tabs" id="chiefTab">
+  <li ng-class="{'active': chief.tab == 1}" ng-click="chief.tab = 1"><a href="javascript:void(0)" data-toggle="tab">基本信息</a></li>
+  <li ng-class="{'active': chief.tab == 2}" ng-click="chief.tab = 2"><a href="javascript:void(0)" data-toggle="tab">自定义规则</a></li>
+  <li ng-class="{'active': chief.tab == 3}" ng-click="chief.tab = 3"><a href="javascript:void(0)" data-toggle="tab">配置接线员</a></li>
+</ul>
+ 
+<div class="tab-content">
+  <div class="tab-pane" ng-class="{'active': chief.tab == 1}"><ecg-chief-edit></ecg-chief-edit></div>
+  <div class="tab-pane" ng-class="{'active': chief.tab == 2}"><ecg-chief-rules></ecg-chief-rules></div>
+  <div class="tab-pane" ng-class="{'active': chief.tab == 3}"><ecg-chief-operators></ecg-chief-operators></div>
+</div>

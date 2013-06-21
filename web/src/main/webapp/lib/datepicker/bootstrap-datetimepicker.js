@@ -261,7 +261,6 @@
 
     place: function(){
       var position = 'absolute';
-      console.info(this.component);
       var offset = this.component ? this.component.offset() : this.$element.offset();
       this.width = this.component ? this.component.outerWidth() : this.$element.outerWidth();
       offset.top = offset.top + this.height;
