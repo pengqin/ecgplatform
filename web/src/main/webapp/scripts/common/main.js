@@ -12,9 +12,15 @@ define(function(require, exports) {
   		getGenders: function() {
   			return [{label: '男', value: 1}, {label: '女', value: 0}];
   		},
+      getGenderLabel: function(gender) {
+        return gender ?  '男': '女';
+      },
   		getWorkStates: function() {
   			return [{label: '在职', value: 1}, {label: '离职', value: 0}];
-  		}
+  		},
+      getWorkStateLabel: function(dismissed) {
+        return !dismissed ? '在职' : '离职';
+      }
   	}
   });
 
