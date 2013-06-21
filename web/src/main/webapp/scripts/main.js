@@ -45,6 +45,7 @@ define(function(require) {
       });
   }])
   .run(function() {
+    $(document.body).removeClass("noscroll");
     $("#loadingpage").hide();
   });
 

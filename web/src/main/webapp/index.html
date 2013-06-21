@@ -34,10 +34,16 @@
   <!--[if IE 8 ]> <body class="ie ie8 "> <![endif]-->
   <!--[if IE 9 ]> <body class="ie ie9 "> <![endif]-->
   <!--[if (gt IE 9)|!(IE)]><!--> 
-  <body class=""> 
+  <body class="noscroll"> 
   <!--<![endif]-->
     
-    <div id="loadingpage">正在努力加载...</div>
+    <div id="loadingpage">
+    <div>正在努力加载...</div>
+    <br/>
+    <div class="progress progress-striped active">
+      <div class="bar" style="width: 100%;"></div>
+    </div>
+    </div>
     <ecg-header></ecg-header>
     <ecg-nav></ecg-nav>
 

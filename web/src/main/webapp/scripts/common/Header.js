@@ -7,7 +7,7 @@ define(function(require, exports) {
   .controller('HeaderController', function ($scope) {
     $scope.logout = function() {
       window.location.href = "login.html";
-    }
+    };
   })
   .controller('SubHeaderController', function ($scope) {
       $scope.subheader = {

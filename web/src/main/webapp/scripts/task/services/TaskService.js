@@ -7,7 +7,7 @@ angular.module('ecgTaskService', [])
         return {
             getAllUndones: function() {
                 while (undones.length !== 0) {
-                    undones.pop()
+                    undones.pop();
                 }
                 for (var i=0; i<10; i++) {
                     undones.push({
@@ -25,6 +25,6 @@ angular.module('ecgTaskService', [])
             getAllDones: function() {
                 return dones;
             }
-        }
+        };
     });
 });

@@ -158,6 +158,5 @@ angular.module('ecgEmployee', ['ecgChiefService', 'ecgChief', 'ecgExpert', 'ecgO
         template: chiefViewTemp,
         controller: 'ChiefViewController'
       });
-  }])
-
+  }]);
 });
