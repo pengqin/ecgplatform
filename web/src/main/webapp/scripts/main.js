@@ -12,7 +12,13 @@ define(function(require) {
   var operatorTemp = require("./employee/templates/operator.html");
 
   angular.module('ecgApp', ['ecgCommon', 'ecgTask', 'ecgMonitor', 'ecgEmployee'])
-  .config(['$routeProvider', function ($routeProvider) {
+  .config(['$httpProvider', '$routeProvider',
+    function ($httpProvider, $routeProvider) {
+      //console.info($cookieStore.get('AiniaOpAuthToken'));
+      var token = $.cookie('AiniaOpAuthToken');
+      // header头带认证参数
+      $httpProvider.defaults.headers.common['Authorization'] ='Basic ' + token;
+      // 配置路由
       $routeProvider
       .when('/undone', {
         template: undoneTemp,

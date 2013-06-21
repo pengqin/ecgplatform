@@ -5,6 +5,9 @@ define(function(require, exports) {
 
   angular.module('ecgHeader', [])
   .controller('HeaderController', function ($scope) {
+    $scope.logout = function() {
+      window.location.href = "login.html";
+    }
   })
   .controller('SubHeaderController', function ($scope) {
       $scope.subheader = {
