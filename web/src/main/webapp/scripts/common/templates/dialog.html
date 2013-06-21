@@ -1,0 +1,14 @@
+<!-- Modal Dialog -->
+<div id="ecgDialog" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="ecgModalLabel" aria-hidden="true">
+  <div class="modal-header" ng-show="dialog.showHeader()">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">{{dialog.dialogTitle}}</h3>
+  </div>
+  <div class="modal-body">
+    <p>{{dialog.dialogText}}</p>
+  </div>
+  <div class="modal-footer" ng-show="dialog.showFooter()">
+    <button class="btn btn-primary" ng-click="dialog.execute()">{{dialog.OKLabel}}</button>
+    <button class="btn" data-dismiss="modal" aria-hidden="true" ng-show="dialog.showCancelButton()">关闭</button>
+  </div>
+</div>

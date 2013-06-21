@@ -1,0 +1,75 @@
+<div class="row-fluid">
+	<div class="span12">
+		<br/>
+		<form name="createChiefForm">
+		<table class="ecgprops">
+
+		<tr>
+		<td width="80px"><label for="chief-name">姓名:</label></td>
+		<td>
+			<input ng-model="chief.newobj.name" class="input-xlarge" id="chief-name" focus required placeholder="请输入姓名">
+			<span class="required">*</span></td>
+		</tr>
+
+		<tr>
+		<td><label for="chief-gender">性别:</label></td>
+		<td><select ng-model="chief.newobj.gender" ng-options="g.value as g.label for g in chief.genders" required></select></td>
+		</tr>
+
+		<tr>
+		<td ><label for="chief-birthday">出生日期:</label></td>
+		<td>
+			
+			<div id="chief-birthday" class="input-append date">
+			    <input ng-model="chief.newobj.birthday" data-format="dd/MM/yyyy hh:mm:ss" type="text"></input>
+			    <span class="add-on">
+			      <i data-time-icon="icon-time" data-date-icon="icon-calendar">
+			      </i>
+			    </span>
+			    <span class="required">*</span>
+		    </div>
+		</td>
+		</tr>
+
+		<tr>
+		<td ><label for="chief-idCard">身份证:</label></td>
+		<td><input ng-model="chief.newobj.idCard" class="input-xlarge" id="chief-idCard" placeholder="请输入18位身份证号码"></td>
+		</tr>
+
+		<tr>
+		<td ><label for="chief-title">职务:</label></td>
+		<td><input ng-model="chief.newobj.title" class="input-xlarge" id="chief-title" placeholder="请输入职务信息"></td>
+		</tr>
+
+		<tr>
+		<td ><label for="chief-tel">电话:</label></td>
+		<td>
+		<input ng-model="chief.newobj.tel" class="input-xlarge" id="chief-tel" required placeholder="请输入联系电话,固话请带区号">
+		<span class="required">*</span></td>
+		</tr>
+
+		<tr>
+		<td ><label for="chief-hospital">所在医院:</label></td>
+		<td><input ng-model="chief.newobj.hospital" class="input-xlarge" id="chief-hospital" placeholder="请输入所在医院"></td>
+		</tr>
+
+		<tr>
+		<td ><label for="chief-dismissed">工作状态:</label></td>
+		<td><select ng-model="chief.newobj.dismissed" ng-options="g.value as g.label for g in chief.workstates" required></select></td>
+		</tr>
+
+		</table>
+		</form>
+    </div>
+</div>
+<div class="row-fluid">
+	<div class="span12">
+		<button class="btn" type="button"
+				ng-class="{'btn-primary': createChiefForm.$valid}" 
+				ng-click="chief.create()"
+				ng-disabled="!createChiefForm.$valid">
+			<i class="icon-save"></i>保存
+		</button>
+		<a href="#/chief" class="btn"><i class="icon-remove"></i>取消</a>
+    </div>
+</div>
