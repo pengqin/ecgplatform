@@ -77,17 +77,18 @@ define(function(require, exports) {
         };
 
         $scope.chief.showPage = function(chief) {
-            console.info(chief);
+            $location.path("chief/" + chief.id);
         }
 
     }])
     .controller('ChiefNewController', ['$scope', '$timeout', '$location', 'EnumService', 'ChiefService',
         function ($scope, $timeout, $location, EnumService, ChiefService) {
+        $scope.subheader.title = "新增主任";
+
         $scope.chief = {};
         $scope.chief.newobj = ChiefService.getPlainObject();
         $scope.chief.genders = EnumService.getGenders();
         $scope.chief.workstates = EnumService.getWorkStates();
-        $scope.subheader.title = "新增主任";
 
         $('#chief-birthday').datetimepicker({
             format: "yyyy-MM-dd",
@@ -108,5 +109,33 @@ define(function(require, exports) {
                 $location.path("/chief");
             }, 2000);
         }
+    }])
+    .controller('ChiefViewController', ['$scope', '$routeParams', '$timeout', '$location', 'EnumService', 'ChiefService',
+        function ($scope, $routeParams, $timeout, $location, EnumService, ChiefService) {
+        $scope.subheader.title = "编辑主任";
+
+        $scope.chief = {};
+        $scope.chief.updateobj = ChiefService.get($routeParams.id);
+        $scope.chief.genders = EnumService.getGenders();
+        $scope.chief.workstates = EnumService.getWorkStates();
+
+        $('#chief-birthday').datetimepicker({
+            format: "yyyy-MM-dd",
+            language: "zh-CN",
+            pickTime: false,
+        });
+
+        $scope.chief.showDatePicker = function() {
+            $('#chief-birthday').datetimepicker('show');
+        };
+
+        $scope.chief.update = function() {
+            $scope.dialog.showStandby();
+            ChiefService.update($scope.chief.updateobj);
+            $timeout(function() {
+                $scope.dialog.hideStandby();
+                $scope.popup.success("编辑成功!");
+            }, 2000);
+        }   
     }]);
 });

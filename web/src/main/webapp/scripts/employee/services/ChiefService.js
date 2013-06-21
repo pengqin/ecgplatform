@@ -10,19 +10,13 @@ angular.module('ecgChiefService', [])
                     chiefs.push({
                         id: i, 
                         name: "主任"+i,
-                        gender: {
-                            label: "男",
-                            id: 1
-                        },
-                        brithday: "1950-07-09",
+                        gender: 1,
+                        birthday: "1950-07-09",
                         idCard: "440803198811919999",
                         title: "主任",
                         tel: "010-89898989",
                         hospital: "安贞医院",
-                        dismissed: {
-                            label: "在职",
-                            id: 1
-                        }
+                        dismissed: 1
                     });
                 }
                 return chiefs;
@@ -47,9 +41,23 @@ angular.module('ecgChiefService', [])
             },
             create: function(chief) {
                 chief.id = (new Date()).getTime();
-                chief.gender = chief.gender ? {label: "男", value: 1} : {label: "女", value: 0};
-                chief.dismissed = chief.dismissed ? {label: "在职", value: 1} : {label: "离职", value: 0};
                 chiefs.push(chief);
+            },
+            get: function(id) {
+                return {
+                    id: id, 
+                    name: "主任" + id,
+                    gender: 1,
+                    birthday: "1950-07-09",
+                    idCard: "440803198811919999",
+                    title: "主任",
+                    tel: "010-89898989",
+                    hospital: "安贞医院",
+                    dismissed: 1
+                };
+            },
+            update: function() {
+                
             }
         };
     });
