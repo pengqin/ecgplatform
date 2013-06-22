@@ -20,19 +20,17 @@ angular.module('ecgEmployee', ['ecgChiefService', 'ecgChief', 'ecgExpert', 'ecgO
 
     // 表格展示
     $scope.chief.data = ChiefService.queryAll();
-    $scope.chief.filteredData = $scope.chief.data;
-    $scope.chief.queryChanged = function(query) {
-        return $scope.chief.filteredData = $filter("filter")($scope.chief.data, query);
-    };
-    $scope.chief.selectedItem = null;
 
     // 显示label
     $scope.chief.getGenderLabel = function(chief) {
-    	return EnumService.getGenderLabel(chief.gender);
+        return EnumService.getGenderLabel(chief.gender);
     };
     $scope.chief.getWorkStateLabel = function(chief) {
-    	return EnumService.getWorkStateLabel(chief.dismissed);
+        return EnumService.getWorkStateLabel(chief.dismissed);
     };
+
+    // 当前选中数据
+    $scope.chief.selectedItem = null;
 
     // 删除功能
     $scope.chief.confirmDelete = function() {
@@ -50,10 +48,17 @@ angular.module('ecgEmployee', ['ecgChiefService', 'ecgChief', 'ecgExpert', 'ecgO
                 ChiefService.remove(selectedItem.id);
                 $timeout(function() {
                     $scope.dialog.hideStandby();
+                    $scope.chief.selectedItem = null;
                     $scope.popup.success("删除成功!");
                 }, 2000);
             }
         });
+    };
+
+    // 过滤功能
+    $scope.chief.filteredData = $scope.chief.data;
+    $scope.chief.queryChanged = function(query) {
+        return $scope.chief.filteredData = $filter("filter")($scope.chief.data, query);
     };
 
     // 编辑功能

@@ -5,7 +5,7 @@ define(function(require) {
   require("./monitor/main");
   require("./employee/main");
 
-  var testTemp = require("./test.html");
+  var welcomeTemp = require("./common/templates/welcome.html");
   var undoneTemp = require("./task/templates/undone.html");
   var doneTemp = require("./task/templates/done.html");
   var overviewTemp = require("./monitor/templates/overview.html");
@@ -41,14 +41,14 @@ define(function(require) {
         template: overviewTemp,
         controller: 'OverviewController'
       })
-      .when('/test', {
-        template: testTemp,
+      .when('/welcome', {
+        template: welcomeTemp,
         controller: function($scope) {
-          $scope.nameList = [{id: "Laura", description: "Laura description"}, {id: "Laura1", description: "Laura description"}];
+          $scope.subheader.title = "系统首页";
         }
       })
       .otherwise({
-        redirectTo: '/chief'
+        redirectTo: '/welcome'
       });
   }])
   .run(function() {
