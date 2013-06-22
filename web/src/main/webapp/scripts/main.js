@@ -5,6 +5,7 @@ define(function(require) {
   require("./monitor/main");
   require("./employee/main");
 
+  var testTemp = require("./test.html");
   var undoneTemp = require("./task/templates/undone.html");
   var doneTemp = require("./task/templates/done.html");
   var overviewTemp = require("./monitor/templates/overview.html");
@@ -40,8 +41,13 @@ define(function(require) {
         template: overviewTemp,
         controller: 'OverviewController'
       })
+      .when('/test', {
+        template: testTemp,
+        controller: function() {
+        }
+      })
       .otherwise({
-        redirectTo: '/undone'
+        redirectTo: '/test'
       });
   }])
   .run(function() {

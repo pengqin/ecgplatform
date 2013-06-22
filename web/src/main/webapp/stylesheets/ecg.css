@@ -7,6 +7,11 @@ i {
 	padding-right: 5px;
 }
 
+.sidebar-nav i { 
+	padding-left: 5px;
+	padding-right: 0px;
+}
+
 html, body {
 	height: 100%;
 }
