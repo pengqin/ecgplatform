@@ -4,9 +4,11 @@ jdk:
 before_script:
   - sudo apt-get install subversion
   - svn -h
-script: 
+script:
+  - cd api
+  - mvn install
+  - cd ../web
   - mvn package
-  - cd web
   - svn checkout https://svn.sinaapp.com/ecgtest/1 target --username cloverren@163.com --password cloverren --no-auth-cache
   - cd target
   - svn delete ecgtest.war

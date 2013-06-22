@@ -8,7 +8,7 @@ define(function(require, exports) {
   .directive("ecgNav", ['$location', function ($location) {
     return {
       restrict: 'E',
-      replace: false,
+      replace: true,
       template: navTemplate,
       controller: "NavController",
       link: function ($scope, $element, $attrs) {

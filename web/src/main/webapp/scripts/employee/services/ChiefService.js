@@ -3,8 +3,8 @@ define(function(require, exports) {
 
 angular.module('ecgChiefService', [])
     .factory("ChiefService", function() {
-        var chiefs = [], chiefsTotal = 100;
-        for (var i=0; i<chiefsTotal; i++) {
+        var chiefs = [];
+        for (var i=0; i<100; i++) {
             chiefs.push({
                 id: i, 
                 name: "主任"+i,
@@ -23,7 +23,7 @@ angular.module('ecgChiefService', [])
                 return chiefs;
             },
             getTotal: function() {
-                return chiefsTotal;
+                return chiefs.length;
             },
             remove: function(id) {
                 
@@ -45,7 +45,7 @@ angular.module('ecgChiefService', [])
                 chiefs.push(chief);
             },
             get: function(id) {
-                for (var i=0; i<chiefsTotal; i++) {
+                for (var i=0; i<chiefs.length; i++) {
                     if (chiefs[i].id == id) {
                         return chiefs[i];
                     }

@@ -7,6 +7,6 @@ angular.module('ecgPlotService', [])
             getPlotData: function() {
                 return test_data;
             }
-        }
+        };
     });
 });
