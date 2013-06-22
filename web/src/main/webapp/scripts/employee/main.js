@@ -1,6 +1,7 @@
 'use strict';
 define(function(require, exports) {
 
+require("./services/EmployeeService");
 require("./services/ChiefService");
 require("./directives/Chief");
 require("./directives/Expert");

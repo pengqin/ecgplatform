@@ -51,10 +51,35 @@ define(function(require) {
         redirectTo: '/welcome'
       });
   }])
-  .run(function() {
+  .run(['$rootScope', '$http', function($rootScope, $http) {
+    // 显示工作界面
     $(document.body).removeClass("noscroll");
     $("#loadingpage").hide();
-  });
+
+    // cookie
+    var username = $.cookie("AiniaOpUsrename");
+    if (!username) {
+      window.location.href = "login.html";
+      return;
+    }
+
+    // 设置session
+    $rootScope.session = {};
+    $http({
+      method: 'GET',
+      url: "/api/employee?username=" + username
+    }).then(function(user) {
+      function User(user) {
+        this.user = user;
+        this.isAdmin = function() {
+          return user.role == 'ADMIN';
+        }
+      }
+      $rootScope.session.user = User(user);
+    }, function() {
+      //window.location.href = "login.html";
+    });
+  }]);
 
   angular.bootstrap(document, ["ecgApp"]);
 
