@@ -4,18 +4,8 @@ document.createElement('ng-pluralize');
 document.createElement('ng-view');
 document.createElement('ng-grid');
 
-// ng-grid
-document.createElement('ng-grid');
-document.createElement('ng-grid-menu');
-document.createElement('ng-header-cell');
-document.createElement('ng-viewport');
-document.createElement('ng-row');
-document.createElement('ng-cel');
-document.createElement('ng-cell-has-focus');
-document.createElement('ng-cell-text');
-document.createElement('ng-grid-footer');
-document.createElement('ng-if');
-document.createElement('ng-input');
+// angular table
+document.createElement('at-pagination');
 
 /* ecg custom element definition */
 // common module

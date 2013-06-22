@@ -30,6 +30,19 @@ html, body {
 	margin: auto;
 }
 
+.sidebar-nav {
+	width: 160px;
+}
+.content {
+	margin-left: 160px;
+}
+
+.ecgHd {
+	margin: 15px 0px;
+	padding-bottom: 5px;
+	border-bottom: 1px dotted #666;
+}
+
 .block-body-grid { 
     margin: 0px;
 }
@@ -38,23 +51,18 @@ html, body {
 }
 
 .buttons {
-	margin-top: 5px;
+	margin-top: 10px;
 }
-.ecgGridLik {
+.buttons input { margin: 0px; }
+
+table .ecgGridLik {
 	font-weight: bold;
 	cursor: pointer;
 }
-.sidebar-nav {
-	width: 160px;
+table tbody tr.active {
+	background-color:  #eee;
 }
-.content {
-	margin-left: 160px;
-}
-.ecgHd {
-	margin: 15px 0px;
-	padding-bottom: 5px;
-	border-bottom: 1px dotted #666;
-}
+
 .ecgprops {
 	width: 100%;
 }

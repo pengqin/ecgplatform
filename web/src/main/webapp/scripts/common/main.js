@@ -6,7 +6,7 @@ define(function(require, exports) {
   require("./Footer");
   require("./Dialog");
 
-  angular.module('ecgCommon', ["ngGrid", "ecgNav", "ecgHeader", "ecgPopup", "ecgFooter", "ecgDialog"])
+  angular.module('ecgCommon', ["angular-table", "ecgNav", "ecgHeader", "ecgPopup", "ecgFooter", "ecgDialog"])
   .factory("EnumService", function() {
       return {
           getGenders: function() {

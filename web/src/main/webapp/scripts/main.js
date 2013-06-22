@@ -43,11 +43,12 @@ define(function(require) {
       })
       .when('/test', {
         template: testTemp,
-        controller: function() {
+        controller: function($scope) {
+          $scope.nameList = [{id: "Laura", description: "Laura description"}, {id: "Laura1", description: "Laura description"}];
         }
       })
       .otherwise({
-        redirectTo: '/test'
+        redirectTo: '/chief'
       });
   }])
   .run(function() {
