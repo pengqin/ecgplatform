@@ -28,6 +28,7 @@ public class Query<T extends Domain> {
 	private Map<String , OrderType> orders = new HashMap<String , OrderType>(3);
 	
 	public Query<T> addCondition(Condition condition) {
+		System.out.println("--------------------" + condition.getField() + "  " + condition.getValue());
 		this.conds.add(condition);
 		return this;
 	}
