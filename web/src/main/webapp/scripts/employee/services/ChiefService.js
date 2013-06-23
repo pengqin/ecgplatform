@@ -2,57 +2,82 @@
 define(function(require, exports) {
 
 angular.module('ecgChiefService', [])
-    .factory("ChiefService", function() {
-        var chiefs = [];
-        for (var i=0; i<100; i++) {
-            chiefs.push({
-                id: i, 
-                name: "主任"+i,
-                gender: i % 2,
-                birthday: "1950-07-09",
-                idCard: "44080319881191999" + i,
-                title: "主任" + i,
-                tel: "010-89898989",
-                hospital: "医院" + i,
-                dismissed: i % 2
-            });
-        }
+    .factory("ChiefService", function($rootScope, $http) {
+        var uri = "/api/chief";
 
         return {
             queryAll: function() {
-                return chiefs;
+                return $http({
+                    method: 'GET',
+                    cache: false,
+                    url: uri
+                }).then(function(res) { // 构造session用户
+                    if (res.data.datas && res.data.datas.length > 0) {
+                        return res.data.datas;
+                    }
+                    return [];
+                }, function() {
+                    $rootScope.popup.error('服务器异常,无法获取数据');
+                    return [];
+                });
             },
             getTotal: function() {
-                return chiefs.length;
+                return 0;
             },
             remove: function(id) {
-                
+                return $http({
+                    method: 'DELETE',
+                    url: uri + '/' + id
+                });
             },
             getPlainObject: function() {
                 return {
                     name: "",
+                    username: "",
                     gender: 1,
                     birthday: "",
                     idCard: "",
                     title: "",
-                    tel: "",
+                    mobile: "",
                     hospital: "",
-                    dismissed: 1
+                    enabled: 1,
+                    dismissed: 0,
+                    expire: '2099-01-01'
                 };
             },
             create: function(chief) {
-                chief.id = (new Date()).getTime();
-                chiefs.push(chief);
+                return $http({
+                    method: 'POST',
+                    data: chief,
+                    url: uri
+                }).then(function(res) {
+                    if (res.status === 201) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }, function() {
+                    return false;
+                });
             },
             get: function(id) {
-                for (var i=0; i<chiefs.length; i++) {
-                    if (chiefs[i].id == id) {
-                        return chiefs[i];
-                    }
-                }
+                return $http({
+                    method: 'GET',
+                    cache: false,
+                    url: uri + '/' + id
+                }).then(function(res) {
+                    return {};
+                }, function() {
+                    $rootScope.popup.error('服务器异常,无法获取标识为' + id + '的数据.');
+                    return {};
+                });
             },
             update: function() {
-
+                return $http({
+                    method: 'PUT',
+                    data: chief,
+                    url: uri + '/' + id
+                });
             },
             getRules: function(id) {
                 return [];

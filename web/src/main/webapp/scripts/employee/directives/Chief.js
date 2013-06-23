@@ -11,7 +11,7 @@ angular.module('ecgChief', [])
     function ($scope, $routeParams, $timeout, $location, EnumService, ChiefService) {
     $scope.chief.updateobj = ChiefService.get($routeParams.id);
     $scope.chief.genders = EnumService.getGenders();
-    $scope.chief.workstates = EnumService.getWorkStates();
+    $scope.chief.dismissedStates = EnumService.getDismissedStates();
 
     $('#chief-birthday').datetimepicker({
         format: "yyyy-MM-dd",

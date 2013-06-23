@@ -36,9 +36,9 @@ public class Employee implements Domain {
 	private String password;
 	@NotBlank
 	private String status;
-	private boolean enable;
+	private boolean enabled;
 	private boolean dismissed;
-	private Boolean sex;
+	private int gender;
 	private Date    expire;
 	private Date    birthday;
 	@NotBlank
@@ -99,12 +99,12 @@ public class Employee implements Domain {
 		this.status = status;
 	}
 
-	public boolean isEnable() {
-		return enable;
+	public boolean isEnabled() {
+		return enabled;
 	}
 
-	public void setEnable(boolean enable) {
-		this.enable = enable;
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
 	}
 
 	public boolean isDismissed() {
@@ -115,12 +115,12 @@ public class Employee implements Domain {
 		this.dismissed = dismissed;
 	}
 
-	public Boolean getSex() {
-		return sex;
+	public int getGender() {
+		return gender;
 	}
 
-	public void setSex(Boolean sex) {
-		this.sex = sex;
+	public void setGender(int gender) {
+		this.gender = gender;
 	}
 
 	public Date getExpire() {

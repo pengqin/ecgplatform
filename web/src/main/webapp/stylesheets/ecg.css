@@ -1,25 +1,23 @@
+/*基本元素*/
+html, body {
+	height: 100%;
+}
+i { 
+	padding-right: 5px;
+}
+
+/*应用加载时没有滚动条*/
+.noscroll {
+	overflow: hidden;
+}
+
+/*平台名字*/
 .brand .second {
     color: #fff;
     font-weight: bold;
 }
 
-i { 
-	padding-right: 5px;
-}
-
-.sidebar-nav i { 
-	padding-left: 5px;
-	padding-right: 0px;
-}
-
-html, body {
-	height: 100%;
-}
-
-.noscroll {
-	overflow: hidden;
-}
-
+/*应用加载界面*/
 #loadingpage {
 	display: block;
 	padding-top: 100px;
@@ -30,19 +28,57 @@ html, body {
 	margin: auto;
 }
 
+/*菜单*/
 .sidebar-nav {
 	width: 160px;
 }
-.content {
-	margin-left: 160px;
+.sidebar-nav i { 
+	padding-left: 5px;
+	padding-right: 0px;
+}
+/*对主任不可见的菜单*/
+.sidebar-nav.chief .undone,
+.sidebar-nav.chief .done,
+.sidebar-nav.chief .chief {
+	display: none
+}
+/*对专家不可见的菜单*/
+.sidebar-nav.expert .duplicated,
+.sidebar-nav.expert .overview,
+.sidebar-nav.expert #employees-menu-link,
+.sidebar-nav.expert #employees-menu,
+.sidebar-nav.expert #users-menu-link,
+.sidebar-nav.expert #users-menu,
+.sidebar-nav.expert #rules-menu-link,
+.sidebar-nav.expert #rules-menu {
+	display: none
 }
 
+/*对接线员不可见的菜单*/
+.sidebar-nav.operator .overview,
+.sidebar-nav.operator #employees-menu-link,
+.sidebar-nav.operator #employees-menu,
+.sidebar-nav.operator #users-menu-link,
+.sidebar-nav.operator #users-menu,
+.sidebar-nav.operator #rules-menu-link,
+.sidebar-nav.operator #rules-menu {
+	display: none
+}
+
+/*内容区*/
+.content {
+	margin-left: 160px;
+	min-height: 95%;
+}
+
+/*Pane头*/
 .ecgHd {
 	margin: 15px 0px;
 	padding-bottom: 5px;
 	border-bottom: 1px dotted #666;
 }
 
+/*对于pane的特殊设置*/
 .block-body-grid { 
     margin: 0px;
 }
@@ -50,11 +86,13 @@ html, body {
 	border: none;
 }
 
+/*按钮区域*/
 .buttons {
 	margin-top: 10px;
 }
 .buttons input { margin: 0px; }
 
+/*Grid属性*/
 table .ecgGridLik {
 	font-weight: bold;
 	cursor: pointer;
@@ -63,6 +101,7 @@ table tbody tr.active {
 	background-color:  #eee;
 }
 
+/*属性表格*/
 .ecgprops {
 	width: 100%;
 }
@@ -77,6 +116,10 @@ table tbody tr.active {
 .ecgprops label {
 	font-weight: bold;
 	margin-bottom: 0px;
+}
+.ecgprops .desc {
+	display: block;
+	color: #ccc;
 }
 .ecgprops .prop {
 	display:inline-block;

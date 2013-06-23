@@ -1,86 +1,91 @@
 'use strict';
 define(function(require) {
-  require("./common/main");
-  require("./task/main");
-  require("./monitor/main");
-  require("./employee/main");
 
-  var welcomeTemp = require("./common/templates/welcome.html");
-  var undoneTemp = require("./task/templates/undone.html");
-  var doneTemp = require("./task/templates/done.html");
-  var overviewTemp = require("./monitor/templates/overview.html");
-  var expertTemp = require("./employee/templates/expert.html");
-  var operatorTemp = require("./employee/templates/operator.html");
+require("./common/main");
+require("./task/main");
+require("./monitor/main");
+require("./employee/main");
 
-  angular.module('ecgApp', ['ecgCommon', 'ecgTask', 'ecgMonitor', 'ecgEmployee'])
-  .config(['$httpProvider', '$routeProvider',
-    function ($httpProvider, $routeProvider) {
-      //console.info($cookieStore.get('AiniaOpAuthToken'));
-      var token = $.cookie('AiniaOpAuthToken');
-      // header头带认证参数
-      $httpProvider.defaults.headers.common['Authorization'] ='Basic ' + token;
-      // 配置路由
-      $routeProvider
-      .when('/undone', {
-        template: undoneTemp,
-        controller: 'UndoneTaskController'
-      })
-      .when('/done', {
-        template: doneTemp,
-        controller: 'DoneTaskController'
-      })
-      .when('/expert', {
-        template: expertTemp,
-        controller: 'ExpertController'
-      })
-      .when('/operator', {
-        template: operatorTemp,
-        controller: 'OperatorController'
-      })
-      .when('/overview', {
-        template: overviewTemp,
-        controller: 'OverviewController'
-      })
-      .when('/welcome', {
-        template: welcomeTemp,
-        controller: function($scope) {
-          $scope.subheader.title = "系统首页";
-        }
-      })
-      .otherwise({
-        redirectTo: '/welcome'
-      });
-  }])
-  .run(['$rootScope', '$http', function($rootScope, $http) {
-    // 显示工作界面
-    $(document.body).removeClass("noscroll");
-    $("#loadingpage").hide();
+var welcomeTemp = require("./common/templates/welcome.html");
 
-    // cookie
-    var username = $.cookie("AiniaOpUsrename");
-    if (!username) {
-      window.location.href = "login.html";
-      return;
+angular.module('ecgApp', ['ecgCommon', 'ecgTask', 'ecgMonitor', 'ecgEmployee'])
+.config(['$httpProvider', '$routeProvider', function ($httpProvider, $routeProvider) {
+        //console.info($cookieStore.get('AiniaOpAuthToken'));
+        var token = $.cookie('AiniaOpAuthToken');
+        // header头带认证参数
+        $httpProvider.defaults.headers.common['Authorization'] ='Basic ' + token;
+    
+        // 配置路由,和模块相关的配置均在相应模块下的main.js里蒂尼
+        $routeProvider
+        .when('/welcome', {
+            template: welcomeTemp,
+            controller: function($scope) {
+                $scope.subheader.title = "系统首页";
+            }
+        })
+        .otherwise({
+            redirectTo: '/welcome'
+        });
+}])
+.run(['$rootScope', '$http', function($rootScope, $http) {
+    // 公用函数:退出系统
+    function logout(msg) {
+        if (msg) { alert(msg); }
+        window.location.href = "login.html";
+    };
+
+    // 加载完成, 显示工作界面
+    function inited() {
+        $(document.body).removeClass("noscroll");
+        $("#loadingpage").hide();
     }
 
-    // 设置session
-    $rootScope.session = {};
-    $http({
-      method: 'GET',
-      url: "/api/employee?username=" + username
-    }).then(function(user) {
-      function User(user) {
-        this.user = user;
-        this.isAdmin = function() {
-          return user.role == 'ADMIN';
-        }
-      }
-      $rootScope.session.user = User(user);
-    }, function() {
-      //window.location.href = "login.html";
-    });
-  }]);
+    // 判断是否登录
+    var username = $.cookie("AiniaOpUsrename");
+    if (!username) {
+        logout('请先登录!');
+        return;
+    }
 
-  angular.bootstrap(document, ["ecgApp"]);
+    // 构造session用户函数
+    function initUser(props) {
+        var user = $.extend({}, props || {roles: ''});
+        user.isAdmin = function() {
+            return this.roles.indexOf('admin') >= 0;
+        };
+        user.isChief = function() {
+            return this.roles.indexOf('chief') >= 0;
+        };
+        user.isExpert = function() {
+            return this.roles.indexOf('expert') >= 0;
+        };
+        user.isOperator = function() {
+            return this.roles.indexOf('operator') >= 0;
+        };
+        return user;
+    };
+
+    // 设置session的用户
+    $rootScope.session = {user: {roles: ""}};
+    $http({
+        method: 'GET',
+        cache: false,
+        url: "/api/employee?username=" + username
+    }).then(function(res) { // 构造session用户
+        if (res.data.datas && res.data.datas.length === 1) {
+            $rootScope.session.user = initUser(res.data.datas[0]);
+        } else {
+            logout('无法获取您登录名为' + username +'用户信息出错。请与管理员联系!');
+        }
+    }, function() {
+        logout('获取您登录名为' + username +'用户信息时, 服务器异常。请与管理员联系!');
+        return;
+    }).then(function() { // 显示工作界面
+        inited();
+    });
+
+}]);
+
+angular.bootstrap(document, ["ecgApp"]);
 
 });
