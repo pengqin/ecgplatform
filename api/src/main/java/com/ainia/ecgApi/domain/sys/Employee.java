@@ -65,7 +65,7 @@ public class Employee implements Domain {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long getId() {
-		return null;
+		return id;
 	}
 	public String getName() {
 		return name;
