@@ -3,20 +3,6 @@ define(function(require, exports) {
 
 angular.module('ecgChiefService', [])
     .factory("ChiefService", function($rootScope, $http) {
-        var chiefs = [];
-        for (var i=0; i<100; i++) {
-            chiefs.push({
-                id: i, 
-                name: "主任"+i,
-                gender: i % 2,
-                birthday: "1950-07-09",
-                idCard: "44080319881191999" + i,
-                title: "主任" + i,
-                mobile: "010-89898989",
-                hospital: "医院" + i,
-                dismissed: i % 2
-            });
-        }
         var uri = "/api/chief";
 
         return {
@@ -31,15 +17,18 @@ angular.module('ecgChiefService', [])
                     }
                     return [];
                 }, function() {
-                    $rootScope.popup.error('服务器异常,无法获取专家列表');
+                    $rootScope.popup.error('服务器异常,无法获取数据');
                     return [];
                 });
             },
             getTotal: function() {
-                return chiefs.length;
+                return 0;
             },
             remove: function(id) {
-                
+                return $http({
+                    method: 'DELETE',
+                    url: uri + '/' + id
+                });
             },
             getPlainObject: function() {
                 return {
@@ -77,15 +66,18 @@ angular.module('ecgChiefService', [])
                     cache: false,
                     url: uri + '/' + id
                 }).then(function(res) {
-                    console.info(res);
                     return {};
                 }, function() {
-                    $rootScope.popup.error('服务器异常,无法获取ID为' + id + '的专家信息.');
+                    $rootScope.popup.error('服务器异常,无法获取标识为' + id + '的数据.');
                     return {};
                 });
             },
             update: function() {
-
+                return $http({
+                    method: 'PUT',
+                    data: chief,
+                    url: uri + '/' + id
+                });
             },
             getRules: function(id) {
                 return [];

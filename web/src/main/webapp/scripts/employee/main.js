@@ -49,12 +49,15 @@ angular.module('ecgEmployee', ['ecgChiefService', 'ecgChief', 'ecgExpert', 'ecgO
             text: "请确认删除主任:" + selectedItem.name + ", 该操作无法恢复!",
             handler: function() {
                 $scope.dialog.showStandby();
-                ChiefService.remove(selectedItem.id);
-                $timeout(function() {
+                ChiefService.remove(selectedItem.id)
+                .then(function() {
                     $scope.dialog.hideStandby();
                     $scope.chief.selectedItem = null;
                     $scope.popup.success("删除成功!");
-                }, 2000);
+                }, function() {
+                    $scope.dialog.hideStandby();
+                    $scope.popup.error("无法删除该数据,可能是您的权限不足,请联系管理员!");
+                });
             }
         });
     };
@@ -62,7 +65,8 @@ angular.module('ecgEmployee', ['ecgChiefService', 'ecgChief', 'ecgExpert', 'ecgO
     // 过滤功能
     $scope.chief.filteredData = $scope.chief.data;
     $scope.chief.queryChanged = function(query) {
-        return $scope.chief.filteredData = $filter("filter")($scope.chief.data, query);
+        // TODO:
+        //return $scope.chief.filteredData = $filter("filter")($scope.chief.data, query);
     };
 
     // 编辑功能
@@ -84,6 +88,8 @@ angular.module('ecgEmployee', ['ecgChiefService', 'ecgChief', 'ecgExpert', 'ecgO
         format: "yyyy-MM-dd",
         language: "zh-CN",
         pickTime: false
+    }).on('changeDate', function(e) {
+        $scope.chief.newobj.birthday = $('#chief-birthday input').val()
     });
 
     $scope.chief.showDatePicker = function() {
@@ -112,7 +118,7 @@ angular.module('ecgEmployee', ['ecgChiefService', 'ecgChief', 'ecgExpert', 'ecgO
     $scope.subheader.title = "编辑主任";
 
     $scope.chief = {};
-    $scope.chief.tab = 1; // 默认第一页
+    $scope.chief.tab = 1; // 默认为基本页面
 
 }])
 .config(['$routeProvider', function ($routeProvider) {

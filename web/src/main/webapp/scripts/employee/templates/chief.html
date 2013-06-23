@@ -2,11 +2,13 @@
 	<div class="span12 buttons">
 		<a href="#/chief/new" class="btn"><i class="icon-plus"></i>新增主任</a>
 		<button class="btn" type="button"
-				ng-class="{'btn-danger': chief.selectedItems.length > 0}"
+				ng-class="{'btn-danger': chief.selectedItem != null}"
 				ng-click="chief.confirmDelete()" ng-disabled="chief.selectedItem == null">
 			<i class="icon-remove"></i>删除主任
 		</button>
+		<!--
 		<input type="text" placeholder="请输入姓名关键字" title="请输入姓名关键字" ng-model="chief.query" ng-change="chief.queryChanged(chief.query)">
+		-->
     </div>
 </div>
 <div class="row-fluid">
