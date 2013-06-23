@@ -77,6 +77,7 @@ angular.module('ecgChiefService', [])
                     cache: false,
                     url: uri + '/' + id
                 }).then(function(res) {
+                    console.info(res);
                     return {};
                 }, function() {
                     $rootScope.popup.error('服务器异常,无法获取ID为' + id + '的专家信息.');

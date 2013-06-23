@@ -136,7 +136,7 @@ angular.module('ecgEmployee', ['ecgChiefService', 'ecgChief', 'ecgExpert', 'ecgO
     .when('/operator', {
         template: operatorTemp,
         controller: 'OperatorController'
-    })
+    });
 }]);
 
 });// end of define
