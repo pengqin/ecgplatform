@@ -29,8 +29,8 @@ angular.module('ecgEmployee', ['ecgChiefService', 'ecgChief', 'ecgExpert', 'ecgO
     $scope.chief.getGenderLabel = function(chief) {
         return EnumService.getGenderLabel(chief.gender);
     };
-    $scope.chief.getWorkStateLabel = function(chief) {
-        return EnumService.getWorkStateLabel(chief.dismissed);
+    $scope.chief.getDismissedLabel = function(chief) {
+        return EnumService.getDismissedLabel(chief.dismissed);
     };
 
     // 当前选中数据
@@ -78,7 +78,7 @@ angular.module('ecgEmployee', ['ecgChiefService', 'ecgChief', 'ecgExpert', 'ecgO
     $scope.chief = {};
     $scope.chief.newobj = ChiefService.getPlainObject();
     $scope.chief.genders = EnumService.getGenders();
-    $scope.chief.workstates = EnumService.getWorkStates();
+    $scope.chief.dismissedStates = EnumService.getDismissedStates();
 
     $('#chief-birthday').datetimepicker({
         format: "yyyy-MM-dd",
@@ -92,12 +92,19 @@ angular.module('ecgEmployee', ['ecgChiefService', 'ecgChief', 'ecgExpert', 'ecgO
 
     $scope.chief.create = function() {
         $scope.dialog.showStandby();
-        ChiefService.create($scope.chief.newobj);
-        $timeout(function() {
+        ChiefService.create($scope.chief.newobj)
+        .then(function(result) {
             $scope.dialog.hideStandby();
-            $scope.popup.success("新增成功!");
-            $location.path("/chief");
-        }, 2000);
+            if (result) {
+                $scope.popup.success("新增成功!");
+                $location.path("/chief");
+            } else {
+                $scope.popup.error("新增失败!");
+            }
+        }, function() {
+            $scope.dialog.hideStandby();
+            $scope.popup.error("服务器异常,新增失败!");
+        });;
     };
 }])
 .controller('ChiefViewController', ['$scope', '$routeParams', '$timeout', '$location', 'EnumService', 'ChiefService',

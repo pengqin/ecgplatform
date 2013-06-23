@@ -16,10 +16,10 @@ angular.module('ecgCommon', ["angular-table", "ecgNav", "ecgHeader", "ecgPopup",
         getGenderLabel: function(gender) {
           return gender ?  '男': '女';
         },
-        getWorkStates: function() {
-            return [{label: '在职', value: 1}, {label: '离职', value: 0}];
+        getDismissedStates: function() {
+            return [{label: '离职', value: 1}, {label: '在职', value: 0}];
         },
-        getWorkStateLabel: function(dismissed) {
+        getDismissedLabel: function(dismissed) {
           return !dismissed ? '在职' : '离职';
         }
     };

@@ -33,7 +33,7 @@ public class User implements Domain {
 	private String  name;
 	private String  username;
 	private String  password;
-	private boolean sex;
+	private int gender;
 	private String  type;
 	private Date birthday;
 	private String address;
@@ -98,12 +98,12 @@ public class User implements Domain {
 		this.password = password;
 	}
 
-	public boolean isSex() {
-		return sex;
+	public int isGender() {
+		return gender;
 	}
 
-	public void setSex(boolean sex) {
-		this.sex = sex;
+	public void setGender(int gender) {
+		this.gender = gender;
 	}
 
 	public String getType() {

@@ -66,7 +66,7 @@ angular.module('ecgApp', ['ecgCommon', 'ecgTask', 'ecgMonitor', 'ecgEmployee'])
     };
 
     // 设置session的用户
-    $rootScope.session = {};
+    $rootScope.session = {user: {roles: ""}};
     $http({
         method: 'GET',
         cache: false,

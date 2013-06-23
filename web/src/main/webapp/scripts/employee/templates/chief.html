@@ -15,18 +15,15 @@
 		  <thead></thead>
 		  <tbody>
 		    <tr ng-click="chief.selectedItem = item" ng-class="{'active': chief.selectedItem == item}">
-				<td at-implicit sortable title="编号" attribute="id" class="ecgGridLik" ng-click="chief.showPage(item)"></td>
+				<td at-implicit sortable title="登录名" attribute="username" class="ecgGridLik" ng-click="chief.showPage(item)"></td>
 				<td at-implicit sortable title="姓名" attribute="name"></td>
-				<td sortable title="性别" attribute="gender">
+				<td sortable title="性别">
 					{{chief.getGenderLabel(item)}}
 				</td>
-				<td sortable title="性别" attribute="gender">
-					{{chief.getGenderLabel(item)}}
+				<td sortable title="是否在职">
+					{{chief.getDismissedLabel(item)}}
 				</td>
-				<td sortable title="是否在职" attribute="gender">
-					{{chief.getWorkStateLabel(item)}}
-				</td>
-				<td at-implicit sortable title="电话" attribute="tel"></td>
+				<td at-implicit sortable title="电话" attribute="mobile"></td>
 				<td at-implicit sortable title="在职医院" attribute="hospital"></td>
 		    </tr>
 		  </tbody>
