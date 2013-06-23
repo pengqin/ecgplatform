@@ -78,7 +78,7 @@
             $('#loginBtn').hide();
             $('#loading').show();
             $.ajax({
-                url: '/api/login',
+                url: '/api/auth',
                 data: {
                     'username': username,
                     'password': password
