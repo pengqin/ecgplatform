@@ -11,6 +11,9 @@ var chiefTemp = require("./templates/chief.html");
 var chiefNewTemp = require("./templates/chief/new.html");
 var chiefViewTemp = require("./templates/chief/view.html");
 
+var expertTemp = require("./templates/expert.html");
+var operatorTemp = require("./templates/operator.html");
+
 angular.module('ecgEmployee', ['ecgChiefService', 'ecgChief', 'ecgExpert', 'ecgOperator'])
 .controller('ChiefController', ['$scope', '$filter', '$timeout', '$location', 'EnumService', 'ChiefService', function ($scope, $filter, $timeout, $location, EnumService, ChiefService) {
     // 表格头
@@ -106,18 +109,27 @@ angular.module('ecgEmployee', ['ecgChiefService', 'ecgChief', 'ecgExpert', 'ecgO
 
 }])
 .config(['$routeProvider', function ($routeProvider) {
-      $routeProvider
-      .when('/chief', {
+    $routeProvider
+    .when('/chief', {
         template: chiefTemp,
         controller: 'ChiefController'
-      })
-      .when('/chief/new', {
+    })
+    .when('/chief/new', {
         template: chiefNewTemp,
         controller: 'ChiefNewController'
-      })
-      .when('/chief/:id', {
+    })
+    .when('/chief/:id', {
         template: chiefViewTemp,
         controller: 'ChiefViewController'
-      });
-  }]);
-});
+    })
+    .when('/expert', {
+        template: expertTemp,
+        controller: 'ExpertController'
+    })
+    .when('/operator', {
+        template: operatorTemp,
+        controller: 'OperatorController'
+    })
+}]);
+
+});// end of define
