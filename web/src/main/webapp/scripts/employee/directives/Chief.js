@@ -9,7 +9,10 @@ angular.module('ecgChief', [])
 // 基本信息
 .controller('ChiefEditController', ['$scope', '$routeParams', '$timeout', '$location', 'EnumService', 'ChiefService',
     function ($scope, $routeParams, $timeout, $location, EnumService, ChiefService) {
-    $scope.chief.updateobj = ChiefService.get($routeParams.id);
+    $scope.chief.updateobj = null; //ChiefService.get($routeParams.id);
+    ChiefService.get($routeParams.id).then(function(chief) {
+        $scope.chief.updateobj = chief;
+    });
     $scope.chief.genders = EnumService.getGenders();
     $scope.chief.dismissedStates = EnumService.getDismissedStates();
 
@@ -17,14 +20,17 @@ angular.module('ecgChief', [])
         format: "yyyy-MM-dd",
         language: "zh-CN",
         pickTime: false,
+    }).on('changeDate', function(e) {
+        $scope.chief.updateobj.birthday = $('#chief-birthday input').val()
     });
 
     $scope.chief.showDatePicker = function() {
         $('#chief-birthday').datetimepicker('show');
-    };
+    }
 
     $scope.chief.update = function() {
         $scope.dialog.showStandby();
+        $scope.chief.updateobj.birthday = $('#chief-birthday input').val()
         ChiefService.update($scope.chief.updateobj);
         $timeout(function() {
             $scope.dialog.hideStandby();

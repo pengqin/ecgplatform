@@ -9,13 +9,13 @@ angular.module('ecgChiefService', [])
             queryAll: function() {
                 return $http({
                     method: 'GET',
-                    cache: false,
                     url: uri
                 }).then(function(res) { // 构造session用户
                     if (res.data.datas && res.data.datas.length > 0) {
                         return res.data.datas;
+                    } else {
+                        return [];    
                     }
-                    return [];
                 }, function() {
                     $rootScope.popup.error('服务器异常,无法获取数据');
                     return [];
@@ -34,6 +34,7 @@ angular.module('ecgChiefService', [])
                 return {
                     name: "",
                     username: "",
+                    status: "OFFLINE",
                     gender: 1,
                     birthday: "",
                     idCard: "",
@@ -41,8 +42,9 @@ angular.module('ecgChiefService', [])
                     mobile: "",
                     hospital: "",
                     enabled: 1,
-                    dismissed: 0,
-                    expire: '2099-01-01'
+                    dismissed: false,
+                    expire: '2099-01-01',
+                    roles: "chief"
                 };
             },
             create: function(chief) {
@@ -66,17 +68,17 @@ angular.module('ecgChiefService', [])
                     cache: false,
                     url: uri + '/' + id
                 }).then(function(res) {
-                    return {};
+                    return res.data;
                 }, function() {
                     $rootScope.popup.error('服务器异常,无法获取标识为' + id + '的数据.');
-                    return {};
+                    return null;
                 });
             },
-            update: function() {
+            update: function(chief) {
                 return $http({
                     method: 'PUT',
                     data: chief,
-                    url: uri + '/' + id
+                    url: uri + '/' + chief.id
                 });
             },
             getRules: function(id) {

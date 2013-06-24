@@ -9,9 +9,13 @@
 		</tr>
 
 		<tr>
+		<td width="80px"><label for="chief-username">登录名:</label></td>
+		<td>{{chief.updateobj.username}}</td>
+
+		<tr>
 		<td width="80px"><label for="chief-name">姓名:</label></td>
 		<td>
-			<input ng-model="chief.updateobj.name" class="input-xlarge" id="chief-name" focus required placeholder="请输入姓名">
+			<input ng-model="chief.updateobj.name" class="input-xlarge" id="chief-name" required placeholder="请输入姓名">
 			<span class="required">*</span></td>
 		</tr>
 
@@ -25,7 +29,7 @@
 		<td>
 			
 			<div id="chief-birthday" class="input-append date">
-			    <input ng-model="chief.updateobj.birthday" data-format="yyyy-MM-dd" type="text" required></input>
+			    <input ng-model="chief.updateobj.birthday" type="text"></input>
 			    <span class="add-on">
 			      <i data-time-icon="icon-time" data-date-icon="icon-calendar">
 			      </i>
@@ -46,9 +50,9 @@
 		</tr>
 
 		<tr>
-		<td ><label for="chief-tel">电话:</label></td>
+		<td ><label for="chief-mobile">电话:</label></td>
 		<td>
-		<input ng-model="chief.updateobj.tel" class="input-xlarge" id="chief-tel" required placeholder="请输入联系电话,固话请带区号">
+		<input ng-model="chief.updateobj.mobile" class="input-xlarge" id="chief-mobile" required placeholder="请输入联系电话,固话请带区号">
 		<span class="required">*</span></td>
 		</tr>
 
@@ -59,7 +63,7 @@
 
 		<tr>
 		<td ><label for="chief-dismissed">工作状态:</label></td>
-		<td><select ng-model="chief.updateobj.dismissed" ng-options="g.value as g.label for g in chief.dismissedStates" required></select></td>
+		<td><select ng-model="chief.updateobj.dismissed" ng-options="g.value as g.label for g in chief.dismissedStates"></select></td>
 		</tr>
 
 		</table>

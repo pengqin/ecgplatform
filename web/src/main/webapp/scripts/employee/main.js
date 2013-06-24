@@ -24,6 +24,7 @@ angular.module('ecgEmployee', ['ecgChiefService', 'ecgChief', 'ecgExpert', 'ecgO
 
     // 表格展示
     $scope.chief.data = ChiefService.queryAll();
+    $scope.chief.filteredData = $scope.chief.data;
 
     // 显示label
     $scope.chief.getGenderLabel = function(chief) {
@@ -35,6 +36,12 @@ angular.module('ecgEmployee', ['ecgChiefService', 'ecgChief', 'ecgExpert', 'ecgO
 
     // 当前选中数据
     $scope.chief.selectedItem = null;
+
+    // 刷新功能
+    function refreshGrid() {
+        $scope.chief.data = ChiefService.queryAll();
+        $scope.chief.filteredData = $scope.chief.data;
+    }
 
     // 删除功能
     $scope.chief.confirmDelete = function() {
@@ -54,6 +61,8 @@ angular.module('ecgEmployee', ['ecgChiefService', 'ecgChief', 'ecgExpert', 'ecgO
                     $scope.dialog.hideStandby();
                     $scope.chief.selectedItem = null;
                     $scope.popup.success("删除成功!");
+                    // 刷新
+                    refreshGrid();
                 }, function() {
                     $scope.dialog.hideStandby();
                     $scope.popup.error("无法删除该数据,可能是您的权限不足,请联系管理员!");
@@ -63,7 +72,6 @@ angular.module('ecgEmployee', ['ecgChiefService', 'ecgChief', 'ecgExpert', 'ecgO
     };
 
     // 过滤功能
-    $scope.chief.filteredData = $scope.chief.data;
     $scope.chief.queryChanged = function(query) {
         // TODO:
         //return $scope.chief.filteredData = $filter("filter")($scope.chief.data, query);
@@ -98,6 +106,8 @@ angular.module('ecgEmployee', ['ecgChiefService', 'ecgChief', 'ecgExpert', 'ecgO
 
     $scope.chief.create = function() {
         $scope.dialog.showStandby();
+        $scope.chief.newobj.birthday = $('#chief-birthday input').val();
+        $scope.chief.newobj.pasasword = $scope.chief.newobj.username;
         ChiefService.create($scope.chief.newobj)
         .then(function(result) {
             $scope.dialog.hideStandby();
