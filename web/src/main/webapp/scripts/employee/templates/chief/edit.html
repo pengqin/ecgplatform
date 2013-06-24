@@ -34,7 +34,6 @@
 			      <i data-time-icon="icon-time" data-date-icon="icon-calendar">
 			      </i>
 			    </span>
-			    <span class="required">*</span>
 		    </div>
 		</td>
 		</tr>
@@ -58,7 +57,7 @@
 
 		<tr>
 		<td ><label for="chief-hospital">所在医院:</label></td>
-		<td><input ng-model="chief.updateobj.hospital" class="input-xlarge" id="chief-hospital" placeholder="请输入所在医院"></td>
+		<td><input ng-model="chief.updateobj.hospital" class="input-xlarge" id="chief-hospital" placeholder="请输入所在医院" ></td>
 		</tr>
 
 		<tr>
@@ -77,6 +76,11 @@
 				ng-click="chief.update()"
 				ng-disabled="!updateChiefForm.$valid">
 			<i class="icon-save"></i>保存
+		</button>
+		<button class="btn btn-primary" type="button"
+				ng-click="chief.resetPassword()"
+				title="新密码将和登录名一致">
+			<i class="icon-lock"></i>重置密码
 		</button>
 		<a href="#/chief" class="btn"><i class="icon-list"></i>返回</a>
     </div>

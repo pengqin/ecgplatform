@@ -2,10 +2,123 @@
 define(function(require, exports) {
 
 var chiefEditTemp = require("../templates/chief/edit.html");
-var chiefRulesTemp = require("../templates/chief/rules.html");
-var chiefOperatorsTemp = require("../templates/chief/operators.html");
 
 angular.module('ecgChief', [])
+.controller('ChiefController', ['$scope', '$filter', '$timeout', '$location', 'EnumService', 'ChiefService', function ($scope, $filter, $timeout, $location, EnumService, ChiefService) {
+    // 表格头
+    $scope.subheader.title = "健康中心管理主任";
+
+    // 命名空间
+    $scope.chief = {};
+
+    // 表格展示
+    $scope.chief.data = ChiefService.queryAll();
+    $scope.chief.filteredData = $scope.chief.data;
+
+    // 显示label
+    $scope.chief.getGenderLabel = function(chief) {
+        return EnumService.getGenderLabel(chief.gender);
+    };
+    $scope.chief.getDismissedLabel = function(chief) {
+        return EnumService.getDismissedLabel(chief.dismissed);
+    };
+
+    // 当前选中数据
+    $scope.chief.selectedItem = null;
+
+    // 刷新功能
+    function refreshGrid() {
+        $scope.chief.data = ChiefService.queryAll();
+        $scope.chief.filteredData = $scope.chief.data;
+    }
+
+    // 删除功能
+    $scope.chief.confirmDelete = function() {
+        var selectedItem = $scope.chief.selectedItem;
+        if (selectedItem === null) {
+            $scope.dialog.alert({
+                text: '请选择一条记录!'
+            });
+            return;
+        }
+        $scope.dialog.confirm({
+            text: "请确认删除主任:" + selectedItem.name + ", 该操作无法恢复!",
+            handler: function() {
+                $scope.dialog.showStandby();
+                ChiefService.remove(selectedItem.id)
+                .then(function() {
+                    $scope.dialog.hideStandby();
+                    $scope.chief.selectedItem = null;
+                    $scope.popup.success("删除成功!");
+                    // 刷新
+                    refreshGrid();
+                }, function() {
+                    $scope.dialog.hideStandby();
+                    $scope.popup.error("无法删除该数据,可能是您的权限不足,请联系管理员!");
+                });
+            }
+        });
+    };
+
+    // 过滤功能
+    $scope.chief.queryChanged = function(query) {
+        return $scope.chief.filteredData = $filter("filter")($scope.chief.data, query);
+    };
+
+    // 编辑功能
+    $scope.chief.showPage = function(chief) {
+        $location.path("chief/" + chief.id);
+    };
+
+}])
+.controller('ChiefNewController', ['$scope', '$timeout', '$location', 'EnumService', 'ChiefService',
+    function ($scope, $timeout, $location, EnumService, ChiefService) {
+    $scope.subheader.title = "新增主任";
+
+    $scope.chief = {};
+    $scope.chief.newobj = ChiefService.getPlainObject();
+    $scope.chief.genders = EnumService.getGenders();
+    $scope.chief.dismissedStates = EnumService.getDismissedStates();
+
+    $('#chief-birthday').datetimepicker({
+        format: "yyyy-MM-dd",
+        language: "zh-CN",
+        pickTime: false
+    }).on('changeDate', function(e) {
+        $scope.chief.newobj.birthday = $('#chief-birthday input').val();
+    });
+
+    $scope.chief.showDatePicker = function() {
+        $('#chief-birthday').datetimepicker('show');
+    };
+
+    $scope.chief.create = function() {
+        $scope.dialog.showStandby();
+        $scope.chief.newobj.birthday = $('#chief-birthday input').val();
+        $scope.chief.newobj.pasasword = $scope.chief.newobj.username;
+        ChiefService.create($scope.chief.newobj)
+        .then(function(result) {
+            $scope.dialog.hideStandby();
+            if (result) {
+                $scope.popup.success("新增成功!");
+                $location.path("/chief");
+            } else {
+                $scope.popup.error("新增失败!");
+            }
+        }, function() {
+            $scope.dialog.hideStandby();
+            $scope.popup.error("服务器异常,新增失败!");
+        });;
+    };
+}])
+.controller('ChiefViewController', ['$scope', '$routeParams', '$timeout', '$location', 'EnumService', 'ChiefService',
+    function ($scope, $routeParams, $timeout, $location, EnumService, ChiefService) {
+    $scope.subheader.title = "编辑主任";
+
+    $scope.chief = {};
+    $scope.chief.tab = 1; // 默认为基本页面
+
+}])
 // 基本信息
 .controller('ChiefEditController', ['$scope', '$routeParams', '$timeout', '$location', 'EnumService', 'ChiefService',
     function ($scope, $routeParams, $timeout, $location, EnumService, ChiefService) {
@@ -21,21 +134,37 @@ angular.module('ecgChief', [])
         language: "zh-CN",
         pickTime: false,
     }).on('changeDate', function(e) {
-        $scope.chief.updateobj.birthday = $('#chief-birthday input').val()
+        $scope.chief.updateobj.birthday = $('#chief-birthday input').val();
     });
 
     $scope.chief.showDatePicker = function() {
         $('#chief-birthday').datetimepicker('show');
-    }
+    };
 
     $scope.chief.update = function() {
         $scope.dialog.showStandby();
-        $scope.chief.updateobj.birthday = $('#chief-birthday input').val()
-        ChiefService.update($scope.chief.updateobj);
-        $timeout(function() {
+        $scope.chief.updateobj.birthday = $('#chief-birthday input').val();
+        ChiefService.update($scope.chief.updateobj)
+        .then(function(result) {
             $scope.dialog.hideStandby();
-            $scope.popup.success("编辑主任基本信息成功!");
-        }, 2000);
+            $scope.popup.success("编辑成功!");
+        }, function() {
+            $scope.dialog.hideStandby();
+            $scope.popup.error("编辑失败!");
+        });;
+    };
+
+    $scope.chief.resetPassword = function() {
+        $scope.dialog.showStandby();
+        $scope.chief.updateobj.password = $scope.chief.updateobj.username;
+        ChiefService.update($scope.chief.updateobj)
+        .then(function(result) {
+            $scope.dialog.hideStandby();
+            $scope.popup.success("重置密码成功!");
+        }, function() {
+            $scope.dialog.hideStandby();
+            $scope.popup.error("重置密码失败!");
+        });;
     };
 }])
 .directive("ecgChiefEdit", [ '$location', function($location) {
@@ -47,57 +176,7 @@ angular.module('ecgChief', [])
         link : function($scope, $element, $attrs) {
         }
     };
-} ])
-// 自定义规则
-.controller('ChiefRulesController', ['$scope', '$routeParams', '$timeout', '$location', 'EnumService', 'ChiefService',
-    function ($scope, $routeParams, $timeout, $location, EnumService, ChiefService) {
-    $scope.chief.rules = ChiefService.getRules($routeParams.id);
-
-    $scope.chief.updateRules = function() {
-        $scope.dialog.showStandby();
-        /* TODO: */
-        // ChiefService.update($scope.chief.updateobj);
-        $timeout(function() {
-            $scope.dialog.hideStandby();
-            $scope.popup.success("修改自定义规则成功!");
-        }, 2000);
-    };
-}])
-.directive("ecgChiefRules", [ '$location', function($location) {
-    return {
-        restrict : 'E',
-        replace : false,
-        template : chiefRulesTemp,
-        controller : "ChiefRulesController",
-        link : function($scope, $element, $attrs) {
-        }
-    };
-} ])
-// 配置接线员
-.controller('ChiefOperatorsController', ['$scope', '$routeParams', '$timeout', '$location', 'EnumService', 'ChiefService',
-    function ($scope, $routeParams, $timeout, $location, EnumService, ChiefService) {
-    $scope.chief.operators = ChiefService.getOperators($routeParams.id);
-
-    $scope.chief.updateOperators = function() {
-        $scope.dialog.showStandby();
-        /* TODO: */
-        // ChiefService.update($scope.chief.updateobj);
-        $timeout(function() {
-            $scope.dialog.hideStandby();
-            $scope.popup.success("配置接线员成功!");
-        }, 2000);
-    };
-}])
-.directive("ecgChiefOperators", [ '$location', function($location) {
-    return {
-        restrict : 'E',
-        replace : false,
-        template : chiefOperatorsTemp,
-        controller : "ChiefOperatorsController",
-        link : function($scope, $element, $attrs) {
-        }
-    };
-} ]);
+}]);
 
 
 });
