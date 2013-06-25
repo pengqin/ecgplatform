@@ -1,0 +1,72 @@
+<div class="row-fluid">
+	<div class="span12">
+		<br/>
+		<form name="createOperatorForm">
+		<table class="ecgprops">
+
+		<tr>
+		<td width="80px" valign="top"><label for="operator-username">登录名:</label></td>
+		<td>
+			<input ng-model="operator.newobj.username" class="input-xlarge" id="operator-username" focus required placeholder="请输入登录名"></input>
+			<span class="required">*</span><span class="desc">初次登录密码与登录名一致</span></td>
+		</tr>
+
+		<tr>
+		<td><label for="operator-name">姓名:</label></td>
+		<td></input>
+			<input ng-model="operator.newobj.name" class="input-xlarge" id="operator-name" focus required placeholder="请输入姓名"></input>
+			<span class="required">*</span></td>
+		</tr>
+
+		<tr>
+		<td><label for="operator-gender">性别:</label></td>
+		<td><select ng-model="operator.newobj.gender" ng-options="g.value as g.label for g in operator.genders"></select></td>
+		</tr>
+
+		<tr>
+		<td ><label for="operator-birthday">出生日期:</label></td>
+		<td>
+			
+			<div id="operator-birthday" class="input-append date">
+			    <input ng-model="operator.newobj.birthday" type="text" readonly="readonly" placeholder="请选择出生日期" required></input>
+			    <span class="add-on">
+			      <i data-time-icon="icon-time" data-date-icon="icon-calendar">
+			      </i>
+			    </span>
+			    <span class="required">*</span>
+		    </div>
+		</td>
+		</tr>
+
+		<tr>
+		<td ><label for="operator-idCard">身份证:</label></td>
+		<td><input ng-model="operator.newobj.idCard" class="input-xlarge" id="operator-idCard" placeholder="请输入18位身份证号码"></input></td>
+		</tr>
+
+		<tr>
+		<td ><label for="operator-tel">电话:</label></td>
+		<td>
+		<input ng-model="operator.newobj.mobile" class="input-xlarge" id="operator-tel" placeholder="请输入联系电话,固话请带区号"></input>
+		</td>
+		</tr>
+
+		<tr>
+		<td ><label for="operator-dismissed">工作状态:</label></td>
+		<td><select ng-model="operator.newobj.dismissed" ng-options="g.value as g.label for g in operator.dismissedStates"></select></td>
+		</tr>
+
+		</table>
+		</form>
+    </div>
+</div>
+<div class="row-fluid">
+	<div class="span12">
+		<button class="btn" type="button"
+				ng-class="{'btn-primary': createOperatorForm.$valid}" 
+				ng-click="operator.create()"
+				ng-disabled="!createOperatorForm.$valid">
+			<i class="icon-save"></i>保存
+		</button>
+		<a href="#/operator" class="btn"><i class="icon-remove"></i>取消</a>
+    </div>
+</div>

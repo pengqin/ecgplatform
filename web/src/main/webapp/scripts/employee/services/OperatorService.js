@@ -1,9 +1,9 @@
 'use strict';
 define(function(require, exports) {
 
-angular.module('ecgChiefService', [])
-    .factory("ChiefService", function($rootScope, $http) {
-        var uri = "/api/chief";
+angular.module('ecgOperatorService', [])
+    .factory("OperatorService", function($rootScope, $http) {
+        var uri = "/api/operator";
 
         return {
             queryAll: function() {
@@ -38,19 +38,17 @@ angular.module('ecgChiefService', [])
                     gender: 1,
                     birthday: "",
                     idCard: "",
-                    title: "",
                     mobile: "",
-                    hospital: "AINIA健康中心",
                     enabled: true,
                     dismissed: false,
                     expire: '2099-01-01',
-                    roles: "chief"
+                    roles: "operator"
                 };
             },
-            create: function(chief) {
+            create: function(operator) {
                 return $http({
                     method: 'POST',
-                    data: chief,
+                    data: operator,
                     url: uri
                 }).then(function(res) {
                     if (res.status === 201) {
@@ -74,17 +72,17 @@ angular.module('ecgChiefService', [])
                     return null;
                 });
             },
-            update: function(chief) {
+            update: function(operator) {
                 return $http({
                     method: 'PUT',
-                    data: chief,
-                    url: uri + '/' + chief.id
+                    data: operator,
+                    url: uri + '/' + operator.id
                 });
             },
             getRules: function(id) {
                 return [];
             },
-            getOperators: function(id) {
+            getExperts: function(id) {
                 return [];
             }
         };

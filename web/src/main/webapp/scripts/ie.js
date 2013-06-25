@@ -17,8 +17,12 @@ document.createElement('ecg-footer');
 document.createElement('ecg-dialog');
 // employee module
 document.createElement('ecg-chief-edit');
-document.createElement('ecg-chief-rules');
-document.createElement('ecg-chief-operators');
+document.createElement('ecg-expert-edit');
+document.createElement('ecg-expert-rules');
+document.createElement('ecg-expert-operators');
+document.createElement('ecg-operator-edit');
+document.createElement('ecg-operator-rules');
+document.createElement('ecg-operator-experts');
 // monitor module
 document.createElement('ecg-employee-status-report');
 document.createElement('ecg-experts-task-report');

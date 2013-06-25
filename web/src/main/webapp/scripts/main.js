@@ -15,7 +15,7 @@ angular.module('ecgApp', ['ecgCommon', 'ecgTask', 'ecgMonitor', 'ecgEmployee'])
         // header头带认证参数
         $httpProvider.defaults.headers.common['Authorization'] ='Basic ' + token;
     
-        // 配置路由,和模块相关的配置均在相应模块下的main.js里蒂尼
+        // 配置路由,和模块相关的配置均在相应模块下的main.js
         $routeProvider
         .when('/welcome', {
             template: welcomeTemp,
@@ -75,7 +75,7 @@ angular.module('ecgApp', ['ecgCommon', 'ecgTask', 'ecgMonitor', 'ecgEmployee'])
         if (res.data.datas && res.data.datas.length === 1) {
             $rootScope.session.user = initUser(res.data.datas[0]);
         } else {
-            logout('无法获取您登录名为' + username +'用户信息出错。请与管理员联系!');
+            logout('无法获取您登录名为' + username +'用户信息。请与管理员联系!');
         }
     }, function() {
         logout('获取您登录名为' + username +'用户信息时, 服务器异常。请与管理员联系!');
