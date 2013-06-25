@@ -39,7 +39,7 @@ angular.module('ecgOperatorService', [])
                     birthday: "",
                     idCard: "",
                     mobile: "",
-                    enabled: 1,
+                    enabled: true,
                     dismissed: false,
                     expire: '2099-01-01',
                     roles: "operator"

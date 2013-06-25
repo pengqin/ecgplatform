@@ -41,7 +41,7 @@ angular.module('ecgChiefService', [])
                     title: "",
                     mobile: "",
                     hospital: "AINIA健康中心",
-                    enabled: 1,
+                    enabled: true,
                     dismissed: false,
                     expire: '2099-01-01',
                     roles: "chief"
