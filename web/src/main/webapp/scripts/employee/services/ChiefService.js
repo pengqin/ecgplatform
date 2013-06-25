@@ -50,7 +50,10 @@ angular.module('ecgChiefService', [])
             create: function(chief) {
                 return $http({
                     method: 'POST',
-                    data: chief,
+                    data: {birthday:'2013-06-18',dismissed:false,enabled:true,
+                    	expire:'2099-01-01',gender:1,hospital:'健康中心',
+                    	idCard:"",mobile:"",name:'asdas',password:'adasd',roles:"chief",
+                    	status:"OFFLINE",username:'asda'},
                     url: uri
                 }).then(function(res) {
                     if (res.status === 201) {
