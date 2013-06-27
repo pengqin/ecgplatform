@@ -50,7 +50,8 @@ angular.module('ecgExpertService', [])
             create: function(expert) {
                 return $http({
                     method: 'POST',
-                    data: expert,
+                    headers:{'Content-Type':'application/x-www-form-urlencoded'},
+                    data: $.param(expert),
                     url: uri
                 }).then(function(res) {
                     if (res.status === 201) {
@@ -77,7 +78,8 @@ angular.module('ecgExpertService', [])
             update: function(expert) {
                 return $http({
                     method: 'PUT',
-                    data: expert,
+                    headers:{'Content-Type':'application/x-www-form-urlencoded'},
+                    data: $.param(expert),
                     url: uri + '/' + expert.id
                 });
             },

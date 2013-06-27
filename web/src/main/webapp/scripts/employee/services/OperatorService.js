@@ -38,7 +38,9 @@ angular.module('ecgOperatorService', [])
                     gender: 1,
                     birthday: "",
                     idCard: "",
+                    title: "",
                     mobile: "",
+                    hospital: "AINIA健康中心",
                     enabled: true,
                     dismissed: false,
                     expire: '2099-01-01',
@@ -48,7 +50,8 @@ angular.module('ecgOperatorService', [])
             create: function(operator) {
                 return $http({
                     method: 'POST',
-                    data: operator,
+                    headers:{'Content-Type':'application/x-www-form-urlencoded'},
+                    data: $.param(operator),
                     url: uri
                 }).then(function(res) {
                     if (res.status === 201) {
@@ -75,7 +78,8 @@ angular.module('ecgOperatorService', [])
             update: function(operator) {
                 return $http({
                     method: 'PUT',
-                    data: operator,
+                    headers:{'Content-Type':'application/x-www-form-urlencoded'},
+                    data: $.param(operator),
                     url: uri + '/' + operator.id
                 });
             },

@@ -21,7 +21,7 @@
 
 		<tr>
 		<td><label for="expert-gender">性别:</label></td>
-		<td><select ng-model="expert.updateobj.gender" ng-options="g.value as g.label for g in expert.genders" required></select></td>
+		<td><select ng-model="expert.updateobj.gender" ng-options="g.value as g.label for g in expert.genders"></select></td>
 		</tr>
 
 		<tr>
@@ -34,7 +34,6 @@
 			      <i data-time-icon="icon-time" data-date-icon="icon-calendar">
 			      </i>
 			    </span>
-			    <span class="required">*</span>
 		    </div>
 		</td>
 		</tr>
@@ -52,8 +51,8 @@
 		<tr>
 		<td ><label for="expert-mobile">电话:</label></td>
 		<td>
-		<input ng-model="expert.updateobj.mobile" class="input-xlarge" id="expert-mobile" required placeholder="请输入联系电话,固话请带区号">
-		<span class="required">*</span></td>
+		<input ng-model="expert.updateobj.mobile" class="input-xlarge" id="expert-mobile" placeholder="请输入联系电话,固话请带区号">
+		</td>
 		</tr>
 
 		<tr>

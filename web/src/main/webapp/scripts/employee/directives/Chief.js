@@ -84,8 +84,6 @@ angular.module('ecgChief', [])
         format: "yyyy-MM-dd",
         language: "zh-CN",
         pickTime: false
-    }).on('changeDate', function(e) {
-        $scope.chief.newobj.birthday = $('#chief-birthday input').val();
     });
 
     $scope.chief.showDatePicker = function() {
