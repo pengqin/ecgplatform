@@ -78,7 +78,8 @@ angular.module('ecgChiefService', [])
             update: function(chief) {
                 return $http({
                     method: 'PUT',
-                    data: chief,
+                    headers:{'Content-Type':'application/x-www-form-urlencoded'},
+                    data: $.param(chief),
                     url: uri + '/' + chief.id
                 });
             },

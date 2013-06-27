@@ -33,7 +33,7 @@ angular.module('ecgProfileService', [])
                     if (res.data.datas && res.data.datas.length === 1) {
                         return initUser(res.data.datas[0]);
                     } else {
-                        return null
+                        return null;
                     }
                 }, function() {
                     return null;
@@ -42,7 +42,8 @@ angular.module('ecgProfileService', [])
             update: function(employee) {
                 return $http({
                     method: 'PUT',
-                    data: employee,
+                    headers:{'Content-Type':'application/x-www-form-urlencoded'},
+                    data: $.param(employee),
                     url: uri + '/' + employee.id
                 });
             }

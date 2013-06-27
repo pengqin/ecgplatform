@@ -86,8 +86,6 @@ angular.module('ecgOperator', [])
         format: "yyyy-MM-dd",
         language: "zh-CN",
         pickTime: false
-    }).on('changeDate', function(e) {
-        $scope.operator.newobj.birthday = $('#operator-birthday input').val();
     });
 
     $scope.operator.showDatePicker = function() {

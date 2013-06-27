@@ -13,7 +13,7 @@
 
 		<tr>
 		<td><label for="operator-name">姓名:</label></td>
-		<td></input>
+		<td>
 			<input ng-model="operator.newobj.name" class="input-xlarge" id="operator-name" focus required placeholder="请输入姓名"></input>
 			<span class="required">*</span></td>
 		</tr>
@@ -28,12 +28,11 @@
 		<td>
 			
 			<div id="operator-birthday" class="input-append date">
-			    <input ng-model="operator.newobj.birthday" type="text" readonly="readonly" placeholder="请选择出生日期" required></input>
+			    <input ng-model="operator.newobj.birthday" type="text" readonly="readonly" placeholder="请选择出生日期"></input>
 			    <span class="add-on">
 			      <i data-time-icon="icon-time" data-date-icon="icon-calendar">
 			      </i>
 			    </span>
-			    <span class="required">*</span>
 		    </div>
 		</td>
 		</tr>
