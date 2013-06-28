@@ -71,7 +71,7 @@ public class Employee implements Domain {
 	public void setName(String name) {
 		this.name = name;
 	}
-
+	@NotBlank
 	public String getUsername() {
 		return username;
 	}
@@ -80,6 +80,7 @@ public class Employee implements Domain {
 		this.username = username;
 	}
 	@JsonIgnore
+	@NotBlank
 	public String getPassword() {
 		return password;
 	}

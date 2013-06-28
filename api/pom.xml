@@ -25,6 +25,7 @@
     <dozer.version>5.4.0</dozer.version>
     <slf4j.version>1.7.5</slf4j.version>
     <log4j.version>1.2.17</log4j.version>
+    <mockito.version>1.9.5</mockito.version>
     <junit.version>4.11</junit.version>
                     
     <source.encoding>UTF-8</source.encoding>

@@ -30,6 +30,14 @@ public interface EmployeeService  extends BaseService<Employee , Long> {
 	 * @return
 	 */
 	public boolean checkPassword(String target , String source);
+	/**
+	 * <p>修改密码</p>
+	 * @param id
+	 * @param oldPassword
+	 * @param newPassword
+	 * @return
+	 */
+	public void changePassword(Long id , String oldPassword , String newPassword);
 	
 	/**
 	 * <p>generate rest token</p>
