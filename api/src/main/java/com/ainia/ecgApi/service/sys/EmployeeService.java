@@ -21,15 +21,6 @@ public interface EmployeeService  extends BaseService<Employee , Long> {
 	 * @return
 	 */
 	public Employee findByUsername(String username);
-	
-	/**
-	 * <p>check the password</p>
-	 * boolean
-	 * @param target
-	 * @param source
-	 * @return
-	 */
-	public boolean checkPassword(String target , String source);
 	/**
 	 * <p>修改密码</p>
 	 * @param id
@@ -39,11 +30,4 @@ public interface EmployeeService  extends BaseService<Employee , Long> {
 	 */
 	public void changePassword(Long id , String oldPassword , String newPassword);
 	
-	/**
-	 * <p>generate rest token</p>
-	 * boolean
-	 * @param username
-	 * @return
-	 */
-	public String generateToken(String username);
 }
