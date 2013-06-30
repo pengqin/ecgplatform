@@ -20,5 +20,5 @@ script:
   - TYPE I
   - PASV
   - STOR web.war
-  - bye
+  - BYE
   - EOF
