@@ -137,8 +137,8 @@ angular.module('ecgExpert', [])
 
 }])
 // 基本信息
-.controller('ExpertEditController', ['$scope', '$routeParams', '$timeout', '$location', 'EnumService', 'ExpertService',
-    function ($scope, $routeParams, $timeout, $location, EnumService, ExpertService) {
+.controller('ExpertEditController', ['$scope', '$routeParams', '$timeout', '$location', 'EnumService', 'ProfileService', 'ExpertService',
+    function ($scope, $routeParams, $timeout, $location, EnumService, ProfileService, ExpertService) {
     $scope.expert.updateobj = null; //ExpertService.get($routeParams.id);
     ExpertService.get($routeParams.id).then(function(expert) {
         $scope.expert.updateobj = expert;
@@ -173,8 +173,7 @@ angular.module('ecgExpert', [])
 
     $scope.expert.resetPassword = function() {
         $scope.dialog.showStandby();
-        $scope.expert.updateobj.password = $scope.expert.updateobj.username;
-        ExpertService.update($scope.expert.updateobj)
+        ProfileService.updatePassword($scope.expert.updateobj.id, '', '')
         .then(function(result) {
             $scope.dialog.hideStandby();
             $scope.popup.success("重置密码成功!");

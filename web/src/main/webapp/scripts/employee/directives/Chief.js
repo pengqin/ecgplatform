@@ -133,8 +133,8 @@ angular.module('ecgChief', [])
 
 }])
 // 基本信息
-.controller('ChiefEditController', ['$scope', '$routeParams', '$timeout', '$location', 'EnumService', 'ChiefService',
-    function ($scope, $routeParams, $timeout, $location, EnumService, ChiefService) {
+.controller('ChiefEditController', ['$scope', '$routeParams', '$timeout', '$location', 'EnumService', 'ProfileService', 'ChiefService',
+    function ($scope, $routeParams, $timeout, $location, EnumService, ProfileService, ChiefService) {
     $scope.chief.updateobj = null; //ChiefService.get($routeParams.id);
     ChiefService.get($routeParams.id).then(function(chief) {
         $scope.chief.updateobj = chief;
@@ -169,15 +169,14 @@ angular.module('ecgChief', [])
 
     $scope.chief.resetPassword = function() {
         $scope.dialog.showStandby();
-        $scope.chief.updateobj.password = $scope.chief.updateobj.username;
-        ChiefService.update($scope.chief.updateobj)
+        ProfileService.updatePassword($scope.chief.updateobj.id, '', '')
         .then(function(result) {
             $scope.dialog.hideStandby();
             $scope.popup.success("重置密码成功!");
         }, function() {
             $scope.dialog.hideStandby();
             $scope.popup.error("重置密码失败!");
-        });;
+        });
     };
 }])
 .directive("ecgChiefEdit", [ '$location', function($location) {

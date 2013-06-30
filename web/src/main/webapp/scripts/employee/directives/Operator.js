@@ -135,8 +135,8 @@ angular.module('ecgOperator', [])
 
 }])
 // 基本信息
-.controller('OperatorEditController', ['$scope', '$routeParams', '$timeout', '$location', 'EnumService', 'OperatorService',
-    function ($scope, $routeParams, $timeout, $location, EnumService, OperatorService) {
+.controller('OperatorEditController', ['$scope', '$routeParams', '$timeout', '$location', 'EnumService', 'ProfileService', 'OperatorService',
+    function ($scope, $routeParams, $timeout, $location, EnumService, ProfileService, OperatorService) {
     $scope.operator.updateobj = null; //OperatorService.get($routeParams.id);
     OperatorService.get($routeParams.id).then(function(operator) {
         $scope.operator.updateobj = operator;
@@ -171,8 +171,7 @@ angular.module('ecgOperator', [])
 
     $scope.operator.resetPassword = function() {
         $scope.dialog.showStandby();
-        $scope.operator.updateobj.password = $scope.operator.updateobj.username;
-        OperatorService.update($scope.operator.updateobj)
+        ProfileService.updatePassword($scope.operator.updateobj.id, '', '')
         .then(function(result) {
             $scope.dialog.hideStandby();
             $scope.popup.success("重置密码成功!");
