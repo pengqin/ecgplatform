@@ -40,10 +40,15 @@ angular.module('ecgProfileService', [])
                 });
             },
             update: function(employee) {
+                var data = $.extend({}, employee);
+                delete data.isAdmin;
+                delete data.isChief;
+                delete data.isExpert;
+                delete data.isOperator;
                 return $http({
                     method: 'PUT',
                     headers:{'Content-Type':'application/x-www-form-urlencoded'},
-                    data: $.param(employee),
+                    data: $.param(data),
                     url: uri + '/' + employee.id
                 });
             }

@@ -5,12 +5,12 @@
 
 		<tr>
 		<td width="80px"><label>编号:</label></td>
-		<td>{{session.user.id}}</td>
+		<td>{{chief.updateobj.username}}</td>
 		</tr>
 
 		<tr>
 		<td width="80px"><label for="chief-username">登录名:</label></td>
-		<td>{{session.user.username}}</td>
+		<td>{{chief.updateobj.username}}</td>
 
 		<tr>
 		<td width="80px"><label for="chief-name">姓名:</label></td>
@@ -52,7 +52,7 @@
 		<td ><label for="chief-mobile">电话:</label></td>
 		<td>
 		<input ng-model="chief.updateobj.mobile" class="input-xlarge" id="chief-mobile" placeholder="请输入联系电话,固话请带区号">
-		<span class="required">*</span></td>
+		</td>
 		</tr>
 
 		<tr>
