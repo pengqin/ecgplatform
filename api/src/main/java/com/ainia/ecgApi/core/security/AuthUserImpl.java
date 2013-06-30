@@ -28,11 +28,11 @@ public class AuthUserImpl implements AuthUser {
 	}
 
 	public Long getId() {
-		return null;
+		return id;
 	}
 
 	public String getUsername() {
-		return null;
+		return usernmame;
 	}
 
 	public String getUsernmame() {

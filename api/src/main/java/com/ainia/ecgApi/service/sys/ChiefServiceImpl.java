@@ -1,5 +1,7 @@
 package com.ainia.ecgApi.service.sys;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,12 +24,24 @@ public class ChiefServiceImpl extends BaseServiceImpl<Chief , Long> implements C
 {
 	@Autowired
 	private ChiefDao chiefDao;
+	@Autowired
+	private EmployeeService employeeService;
 
 	@Override
 	public BaseDao<Chief, Long> getBaseDao() {
 		return chiefDao;
+	}
+
+	@Override
+	public Chief save(Chief domain) {
+		return employeeService.save(domain);
+	}
+
+	@Override
+	public List<Chief> save(Iterable domains) {
+		return employeeService.save(domains);
 	} 
 
-
+	
 	
 }

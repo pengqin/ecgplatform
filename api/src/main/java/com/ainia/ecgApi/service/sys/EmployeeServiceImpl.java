@@ -52,14 +52,15 @@ public class EmployeeServiceImpl extends BaseServiceImpl<Employee , Long> implem
 		if (employee == null) {
 			throw new ServiceException("exception.notFound");
 		}
-		if (!employee.getUsername().equals(authenticateService.getCurrentUser().getUsername())) {
-			throw new ServiceException("exception.password.changeByOwner");
+		
+		if (!employee.isSuperAdmin() && !employee.getUsername().equals(authenticateService.getCurrentUser().getUsername())) {
+			throw new ServiceException("exception.password.cannotChange");
 		}
 		
-		if (!authenticateService.checkPassword(oldPassword , employee.getPassword() , null)) {
+		if (!authenticateService.checkPassword(employee.getPassword() , oldPassword , null)) {
 			throw new ServiceException("exception.oldPassword.notEquals");
 		}
-		employee.setPassword(newPassword);
+		employee.setPassword(authenticateService.encodePassword(newPassword , null));
 		this.employeeDao.save(employee);
 	}
 

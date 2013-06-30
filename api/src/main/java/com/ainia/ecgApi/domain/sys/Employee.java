@@ -57,6 +57,10 @@ public class Employee implements Domain {
 	public void onUpdate() {
 		this.lastUpdated = new Date();
 	}
+	@Transient
+	public boolean isSuperAdmin() {
+		return new Long(1).equals(this.getId());
+	}
 	
 	public void setId(Long id) {
 		this.id = id;

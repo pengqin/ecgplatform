@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ainia.ecgApi.core.crud.BaseController;
@@ -65,9 +66,10 @@ public class EmployeeController extends BaseController<Employee , Long> {
 	 * @return
 	 * ResponseEntity
 	 */
-	@RequestMapping(value = "{id}/changePassword" ,method = RequestMethod.POST)
+	@RequestMapping(value = "{id}/password" ,method = RequestMethod.PUT)
 	@ResponseBody
-	public ResponseEntity changePassword(@PathVariable("id") Long id , String oldPassword , String newPassword) {
+	public ResponseEntity changePassword(@PathVariable("id") Long id , @RequestParam("oldPassword") String oldPassword ,
+										 @RequestParam("newPassword") String newPassword) {
 		employeeService.changePassword(id, oldPassword, newPassword);
 		return new ResponseEntity(HttpStatus.OK);
 	}
