@@ -5,10 +5,11 @@ require("./common/main");
 require("./task/main");
 require("./monitor/main");
 require("./employee/main");
+require("./user/main");
 
 var welcomeTemp = require("./common/templates/welcome.html");
 
-angular.module('ecgApp', ['ecgCommon', 'ecgTask', 'ecgMonitor', 'ecgEmployee'])
+angular.module('ecgApp', ['ecgCommon', 'ecgTask', 'ecgMonitor', 'ecgEmployee', 'ecgUser'])
 .config(['$httpProvider', '$routeProvider', function ($httpProvider, $routeProvider) {
         //console.info($cookieStore.get('AiniaOpAuthToken'));
         var token = $.cookie('AiniaOpAuthToken');
