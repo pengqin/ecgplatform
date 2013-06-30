@@ -77,10 +77,10 @@ angular.module('ecgChiefService', [])
             },
             update: function(chief) {
                 return $http({
-                    method: 'POST',
+                    method: 'PUT',
                     headers:{'Content-Type':'application/x-www-form-urlencoded'},
                     data: $.param(chief),
-                    url: uri + '/' + chief.id + "?_method=PATCH"
+                    url: uri + '/' + chief.id
                 });
             },
             getRules: function(id) {
