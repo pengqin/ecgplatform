@@ -29,6 +29,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @DiscriminatorValue("employee")
 public class Employee implements Domain {
 	
+	public static final String PASSWORD = "password";
+	
 	private Long id;
 	private String name;
 	private String username;

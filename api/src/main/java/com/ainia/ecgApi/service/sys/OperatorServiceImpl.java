@@ -46,4 +46,24 @@ public class OperatorServiceImpl extends BaseServiceImpl<Operator, Long>
 	public List<Operator> save(Iterable domains) {
 		return employeeService.save(domains);
 	} 
+	
+	@Override
+	public Operator update(Operator operator) {
+		return employeeService.update(operator);
+	}
+
+	@Override
+	public List<Operator> update(Iterable operators) {
+		return employeeService.update(operators);
+	}
+
+	@Override
+	public Operator patch(Operator operator) {
+		return employeeService.patch(operator);
+	}
+
+	@Override
+	public List<Operator> patch(Iterable operators) {
+		return employeeService.patch(operators);
+	} 
 }

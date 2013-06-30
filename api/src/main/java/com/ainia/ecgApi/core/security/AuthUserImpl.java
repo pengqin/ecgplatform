@@ -47,4 +47,8 @@ public class AuthUserImpl implements AuthUser {
 		return roles;
 	}
 
+	public boolean isSuperAdmin() {
+		return new Long(1).equals(this.getId());
+	}
+
 }

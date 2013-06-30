@@ -46,4 +46,24 @@ public class ExpertServiceImpl extends BaseServiceImpl<Expert , Long> implements
 	public List<Expert> save(Iterable domains) {
 		return employeeService.save(domains);
 	} 
+	
+	@Override
+	public Expert update(Expert expert) {
+		return employeeService.update(expert);
+	}
+
+	@Override
+	public List<Expert> update(Iterable experts) {
+		return employeeService.update(experts);
+	}
+
+	@Override
+	public Expert patch(Expert expert) {
+		return employeeService.patch(expert);
+	}
+
+	@Override
+	public List<Expert> patch(Iterable experts) {
+		return employeeService.patch(experts);
+	} 
 }

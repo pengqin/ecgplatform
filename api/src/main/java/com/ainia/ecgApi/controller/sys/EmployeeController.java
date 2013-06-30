@@ -1,5 +1,6 @@
 package com.ainia.ecgApi.controller.sys;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -68,9 +69,15 @@ public class EmployeeController extends BaseController<Employee , Long> {
 	 */
 	@RequestMapping(value = "{id}/password" ,method = RequestMethod.PUT)
 	@ResponseBody
-	public ResponseEntity changePassword(@PathVariable("id") Long id , @RequestParam("oldPassword") String oldPassword ,
-										 @RequestParam("newPassword") String newPassword) {
-		employeeService.changePassword(id, oldPassword, newPassword);
+	public ResponseEntity changePassword(@PathVariable("id") Long id , 
+										 @RequestParam(value = "oldPassword" , required = false) String oldPassword ,
+										 @RequestParam(value = "newPassword" , required = false) String newPassword) {
+		if (StringUtils.isBlank(oldPassword) || StringUtils.isBlank(newPassword)) {
+			employeeService.resetPassword(id);
+		}
+		else {
+			employeeService.changePassword(id, oldPassword, newPassword);
+		}
 		return new ResponseEntity(HttpStatus.OK);
 	}
 	
