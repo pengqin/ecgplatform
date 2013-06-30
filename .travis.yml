@@ -13,9 +13,8 @@ script:
   - mvn package
   - cd target
   - ftp -v -n 182.18.31.105 << EOF
-  - USER ainia ppainia
-  - TYPE I
-  - PASV
-  - STOR web.war
-  - BYE
-  - EOF
+  - user ainia ppainia
+  - binary
+  - hash
+  - put web.war
+  - bye
