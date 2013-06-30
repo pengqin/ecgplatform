@@ -95,7 +95,7 @@ angular.module('ecgOperator', [])
     $scope.operator.create = function() {
         $scope.dialog.showStandby();
         $scope.operator.newobj.birthday = $('#operator-birthday input').val();
-        $scope.operator.newobj.pasasword = $scope.operator.newobj.username;
+        $scope.operator.newobj.password = $scope.operator.newobj.username;
         OperatorService.create($scope.operator.newobj)
         .then(function(result) {
             $scope.dialog.hideStandby();

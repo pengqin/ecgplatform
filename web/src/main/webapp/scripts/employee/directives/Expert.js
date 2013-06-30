@@ -97,7 +97,7 @@ angular.module('ecgExpert', [])
     $scope.expert.create = function() {
         $scope.dialog.showStandby();
         $scope.expert.newobj.birthday = $('#expert-birthday input').val();
-        $scope.expert.newobj.pasasword = $scope.expert.newobj.username;
+        $scope.expert.newobj.password = $scope.expert.newobj.username;
         ExpertService.create($scope.expert.newobj)
         .then(function(result) {
             $scope.dialog.hideStandby();
