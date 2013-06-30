@@ -6,7 +6,7 @@ before_script:
   - svn -h
   - sudo apt-get install ftp
   - ftp -h
-  - sudo apt-get install scp
+  - sudo apt-get install ssh
   - scp -h
 script:
   - cd api
