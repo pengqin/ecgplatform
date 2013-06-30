@@ -1,9 +1,7 @@
-ftp -v -n 182.18.31.105 << EOF
+ftp -inv 182.18.31.105 <<EOF
 user ainia ppainia
+passive
 binary
-PASV
-ls
-put web.war web.war
-close
+put web.war
 bye
 !
