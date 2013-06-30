@@ -14,5 +14,5 @@ script:
   - mvn package
   - cd target
   - ls -al
-  - scp web.war ainia@182.18.31.105:9322:web.war <<< EOF
+  - scp -P9322 web.war ainia@182.18.31.105:web.war <<< EOF
   - ppainia
