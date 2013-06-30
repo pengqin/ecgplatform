@@ -11,10 +11,6 @@ script:
   - mvn install
   - cd ../web
   - mvn package
-  - cd target
-  - ftp -v -n 182.18.31.105 << EOF
-  - user ainia ppainia
-  - binary
-  - hash
-  - put web.war
-  - bye
+  - cd ..
+  - chmod +x upload.sh
+  - ./upload.sh
