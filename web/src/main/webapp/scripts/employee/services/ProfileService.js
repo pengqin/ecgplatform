@@ -23,8 +23,8 @@ angular.module('ecgProfileService', [])
         };
 
         return {
-            get: function() {
-                var username = $.cookie("AiniaOpUsrename");
+            get: function(username) {
+                var username = username || $.cookie("AiniaOpUsrename");
                 return $http({
                     method: 'GET',
                     cache: false,
@@ -50,6 +50,14 @@ angular.module('ecgProfileService', [])
                     headers:{'Content-Type':'application/x-www-form-urlencoded'},
                     data: $.param(data),
                     url: uri + '/' + employee.id
+                });
+            },
+            updatePassword: function(id, oldpwd, newpwd) {
+                return $http({
+                    method: 'PUT',
+                    headers:{'Content-Type':'application/x-www-form-urlencoded'},
+                    data: $.param({oldPassword: oldpwd, newPassword: newpwd}),
+                    url: uri + '/' + id + '/password'
                 });
             }
         };

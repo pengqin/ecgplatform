@@ -5,9 +5,10 @@
 		<table class="ecgprops">
 
 		<tr>
-		<td width="80px" valign="top"><label for="expert-username">登录名:</label></td>
+		<td width="100px" valign="top"><label for="expert-username">登录名:</label></td>
 		<td>
-			<input ng-model="expert.newobj.username" class="input-xlarge" id="expert-username" focus required placeholder="请输入登录名"></input>
+			<input ng-model="expert.newobj.username" class="input-xlarge" id="expert-username" ng-change="expert.checkUnique()"
+		   	focus required placeholder="请输入登录名"></input>
 			<span class="required">*</span><span class="desc">初次登录密码与登录名一致</span></td>
 		</tr>
 
@@ -72,9 +73,9 @@
 <div class="row-fluid">
 	<div class="span12">
 		<button class="btn" type="button"
-				ng-class="{'btn-primary': createExpertForm.$valid}" 
+				ng-class="{'btn-primary': createExpertForm.$valid && expert.isUnique}" 
 				ng-click="expert.create()"
-				ng-disabled="!createExpertForm.$valid">
+				ng-disabled="!createExpertForm.$valid || !expert.isUnique">
 			<i class="icon-save"></i>保存
 		</button>
 		<a href="#/expert" class="btn"><i class="icon-remove"></i>取消</a>

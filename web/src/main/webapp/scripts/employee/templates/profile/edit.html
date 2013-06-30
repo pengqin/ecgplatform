@@ -4,16 +4,16 @@
 		<table class="ecgprops">
 
 		<tr>
-		<td width="80px"><label>编号:</label></td>
+		<td width="100px"><label>编号:</label></td>
 		<td>{{profile.user.id}}</td>
 		</tr>
 
 		<tr>
-		<td width="80px"><label for="profile-username">登录名:</label></td>
+		<td width="100px"><label for="profile-username">登录名:</label></td>
 		<td>{{profile.user.username}}</td>
 
 		<tr>
-		<td width="80px"><label for="profile-name">姓名:</label></td>
+		<td width="100px"><label for="profile-name">姓名:</label></td>
 		<td>{{profile.user.name}}</td>
 		</tr>
 
@@ -42,25 +42,10 @@
 		</tr>
 
 		<tr>
-		<td ><label for="profile-title">职务:</label></td>
-		<td><input ng-model="profile.user.title" class="input-xlarge" id="profile-title" placeholder="请输入职务信息"></td>
-		</tr>
-
-		<tr>
 		<td ><label for="profile-mobile">电话:</label></td>
 		<td>
 		<input ng-model="profile.user.mobile" class="input-xlarge" id="profile-mobile" placeholder="请输入联系电话,固话请带区号">
 		</td>
-		</tr>
-
-		<tr>
-		<td ><label for="profile-hospital">所在医院:</label></td>
-		<td><input ng-model="profile.user.hospital" class="input-xlarge" id="profile-hospital" placeholder="请输入所在医院" ></td>
-		</tr>
-
-		<tr>
-		<td ><label for="profile-dismissed">工作状态:</label></td>
-		<td><select ng-model="profile.user.dismissed" ng-options="g.value as g.label for g in profile.dismissedStates"></select></td>
 		</tr>
 
 		</table>

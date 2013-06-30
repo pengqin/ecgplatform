@@ -5,9 +5,10 @@
 		<table class="ecgprops">
 
 		<tr>
-		<td width="80px" valign="top"><label for="operator-username">登录名:</label></td>
+		<td width="100px" valign="top"><label for="operator-username">登录名:</label></td>
 		<td>
-			<input ng-model="operator.newobj.username" class="input-xlarge" id="operator-username" focus required placeholder="请输入登录名"></input>
+			<input ng-model="operator.newobj.username" class="input-xlarge" id="operator-username" ng-change="operator.checkUnique()" 
+			 focus required placeholder="请输入登录名"></input>
 			<span class="required">*</span><span class="desc">初次登录密码与登录名一致</span></td>
 		</tr>
 
@@ -61,9 +62,9 @@
 <div class="row-fluid">
 	<div class="span12">
 		<button class="btn" type="button"
-				ng-class="{'btn-primary': createOperatorForm.$valid}" 
+				ng-class="{'btn-primary': createOperatorForm.$valid && operator.isUnique}" 
 				ng-click="operator.create()"
-				ng-disabled="!createOperatorForm.$valid">
+				ng-disabled="!createOperatorForm.$valid || !operator.isUnique"">
 			<i class="icon-save"></i>保存
 		</button>
 		<a href="#/operator" class="btn"><i class="icon-remove"></i>取消</a>

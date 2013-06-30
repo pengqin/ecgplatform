@@ -73,8 +73,8 @@ angular.module('ecgOperator', [])
     };
 
 }])
-.controller('OperatorNewController', ['$scope', '$timeout', '$location', 'EnumService', 'OperatorService',
-    function ($scope, $timeout, $location, EnumService, OperatorService) {
+.controller('OperatorNewController', ['$scope', '$timeout', '$location', 'EnumService', 'ProfileService', 'OperatorService',
+    function ($scope, $timeout, $location, EnumService, ProfileService, OperatorService) {
     $scope.subheader.title = "新增专家";
 
     $scope.operator = {};
@@ -90,6 +90,21 @@ angular.module('ecgOperator', [])
 
     $scope.operator.showDatePicker = function() {
         $('#operator-birthday').datetimepicker('show');
+    };
+
+    $scope.operator.isUnique = true;
+    $scope.operator.checkUnique = function() {
+        ProfileService.get($scope.operator.newobj.username).then(function(user) {
+            if (user) { 
+                $scope.operator.isUnique = false;
+                $scope.popup.warn("用户" + $scope.operator.newobj.username + "已存在!");
+            } else {
+                $scope.operator.isUnique = true;
+            }
+        }, function() {
+            $scope.operator.isUnique = true;
+            $scope.popup.warn("查询用户是否唯一时出错!");
+        });
     };
 
     $scope.operator.create = function() {
