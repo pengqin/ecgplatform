@@ -5,11 +5,17 @@ before_script:
   - sudo apt-get install subversion
   - svn -h
   - sudo apt-get install ftp
+  - ftp -h
 script:
   - cd api
   - mvn install
   - cd ../web
   - mvn package
   - cd target
-  - ftp ainia:ppainia@182.18.31.105
+  - ftp -v -n 182.18.31.105 << EOF
+  - user ainia ppainia
+  - binary
+  - hash
   - put web.war
+  - bye
+  - EOF
