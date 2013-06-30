@@ -15,4 +15,5 @@ script:
   - cd target
   - ls -al
   - scp -P9322 web.war ainia@182.18.31.105:web.war <<< EOF
+  - yes
   - ppainia
