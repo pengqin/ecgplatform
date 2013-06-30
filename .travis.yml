@@ -13,10 +13,7 @@ script:
   - mvn package
   - cd target
   - ftp -v -n 182.18.31.105 << EOF
-  - USER ainia
-  - PASS ppainia
-  - OPTS UTF8 ON
-  - CWD /opt/jetty7/webapps
+  - USER ainia ppainia
   - TYPE I
   - PASV
   - STOR web.war
