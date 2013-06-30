@@ -13,8 +13,6 @@ script:
   - cd ../web
   - mvn package
   - cd target
-  - cp ../../upload.sh ./
-  - chmod +x upload.sh
   - ls -al
-  - scp web.war ainia:ppainia@182.18.31.105
-  - ./upload.sh
+  - scp web.war ainia@182.18.31.105:web.war <<< EOF
+  - ppainia
