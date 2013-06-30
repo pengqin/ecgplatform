@@ -93,7 +93,7 @@ angular.module('ecgChief', [])
     $scope.chief.create = function() {
         $scope.dialog.showStandby();
         $scope.chief.newobj.birthday = $('#chief-birthday input').val();
-        $scope.chief.newobj.pasasword = $scope.chief.newobj.username;
+        $scope.chief.newobj.password = $scope.chief.newobj.username;
         ChiefService.create($scope.chief.newobj)
         .then(function(result) {
             $scope.dialog.hideStandby();
