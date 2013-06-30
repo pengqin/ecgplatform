@@ -64,10 +64,18 @@ angular.module('ecgProfile', [])
     function ($scope, $routeParams, $timeout, $location, EnumService, ProfileService) {
 
    	$scope.profile.user = null;
+    ProfileService.get().then(function(user) {
+        $scope.profile.user = user;
+    });
+
+    $scope.profile.passwordIsEuqal = false;
+    $scope.profile.compare = function() {
+        $scope.profile.passwordIsEuqal = $scope.profile.user.newPassword === $scope.profile.user.confirmPassword;
+    };
 
     $scope.profile.updatePassword = function() {
         $scope.dialog.showStandby();
-        ProfileService.update($scope.profile.user)
+        ProfileService.updatePassword($scope.profile.user.id, $scope.profile.user.oldPassword, $scope.profile.user.newPassword)
         .then(function(result) {
             $scope.dialog.hideStandby();
             $scope.popup.success("修改密码成功!");
@@ -77,7 +85,7 @@ angular.module('ecgProfile', [])
         });;
     };
 }])
-.directive("ecgProfilePasword", [ '$location', function($location) {
+.directive("ecgProfilePassword", [ '$location', function($location) {
     return {
         restrict : 'E',
         replace : false,

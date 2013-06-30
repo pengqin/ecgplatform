@@ -73,8 +73,8 @@ angular.module('ecgExpert', [])
     };
 
 }])
-.controller('ExpertNewController', ['$scope', '$timeout', '$location', 'EnumService', 'ExpertService',
-    function ($scope, $timeout, $location, EnumService, ExpertService) {
+.controller('ExpertNewController', ['$scope', '$timeout', '$location', 'EnumService', 'ProfileService', 'ExpertService',
+    function ($scope, $timeout, $location, EnumService, ProfileService, ExpertService) {
     $scope.subheader.title = "新增专家";
 
     $scope.expert = {};
@@ -92,6 +92,21 @@ angular.module('ecgExpert', [])
 
     $scope.expert.showDatePicker = function() {
         $('#expert-birthday').datetimepicker('show');
+    };
+
+    $scope.expert.isUnique = true;
+    $scope.expert.checkUnique = function() {
+        ProfileService.get($scope.expert.newobj.username).then(function(user) {
+            if (user) { 
+                $scope.expert.isUnique = false;
+                $scope.popup.warn("用户" + $scope.expert.newobj.username + "已存在!");
+            } else {
+                $scope.expert.isUnique = true;
+            }
+        }, function() {
+            $scope.expert.isUnique = true;
+            $scope.popup.warn("查询用户是否唯一时出错!");
+        });
     };
 
     $scope.expert.create = function() {

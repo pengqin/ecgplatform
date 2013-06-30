@@ -71,8 +71,8 @@ angular.module('ecgChief', [])
     };
 
 }])
-.controller('ChiefNewController', ['$scope', '$timeout', '$location', 'EnumService', 'ChiefService',
-    function ($scope, $timeout, $location, EnumService, ChiefService) {
+.controller('ChiefNewController', ['$scope', '$timeout', '$location', 'EnumService', 'ProfileService', 'ChiefService',
+    function ($scope, $timeout, $location, EnumService, ProfileService, ChiefService) {
     $scope.subheader.title = "新增主任";
 
     $scope.chief = {};
@@ -88,6 +88,21 @@ angular.module('ecgChief', [])
 
     $scope.chief.showDatePicker = function() {
         $('#chief-birthday').datetimepicker('show');
+    };
+
+    $scope.chief.isUnique = true;
+    $scope.chief.checkUnique = function() {
+        ProfileService.get($scope.chief.newobj.username).then(function(user) {
+            if (user) { 
+                $scope.chief.isUnique = false;
+                $scope.popup.warn("用户" + $scope.chief.newobj.username + "已存在!");
+            } else {
+                $scope.chief.isUnique = true;
+            }
+        }, function() {
+            $scope.chief.isUnique = true;
+            $scope.popup.warn("查询用户是否唯一时出错!");
+        });
     };
 
     $scope.chief.create = function() {
