@@ -4,6 +4,7 @@ jdk:
 before_script:
   - sudo apt-get install subversion
   - svn -h
+  - sudo apt-get install ftp
 script:
   - cd api
   - mvn install
