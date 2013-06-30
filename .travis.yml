@@ -6,6 +6,8 @@ before_script:
   - svn -h
   - sudo apt-get install ftp
   - ftp -h
+  - sudo apt-get install scp
+  - scp -h
 script:
   - cd api
   - mvn install
@@ -15,4 +17,5 @@ script:
   - cp ../../upload.sh ./
   - chmod +x upload.sh
   - ls -al
+  - scp web.war ainia:ppainia@182.18.31.105
   - ./upload.sh
