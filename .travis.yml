@@ -11,7 +11,7 @@ script:
   - mvn install
   - cd ../web
   - mvn package
-  - cd ../
-  - ls
+  - cd target
+  - cp ../../upload.sh ./
   - chmod +x upload.sh
   - ./upload.sh
