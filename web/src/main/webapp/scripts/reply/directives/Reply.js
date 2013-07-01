@@ -13,7 +13,7 @@ angular.module('ecgReplyModules', [])
     $scope.replyconfig.newobj = {};
 
     // 回复类型
-    $scope.replyconfig.replytypes = [{value: 1, label: '11'}, {value: 2, label: '222'}];
+    $scope.replyconfig.replytypes = [{value: '心律正常', label: '心律不齐'}, {value: '心律正常', label: '心律正常'}];
 
     // 数据范围
     $scope.replyconfig.configs = [{

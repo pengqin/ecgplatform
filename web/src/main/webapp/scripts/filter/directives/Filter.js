@@ -46,7 +46,9 @@ angular.module('ecgFilterModules', [])
 
     // create
     $scope.filter.save = function() {
-        console.info('save');
+        $scope.dialog.showStandby();
+        $scope.dialog.hideStandby();
+        $scope.popup.success("保存成功!");
     }
 
 }]);
