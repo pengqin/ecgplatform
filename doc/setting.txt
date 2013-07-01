@@ -10,3 +10,12 @@ http://www.ainia.com.cn/health/accounts/login/
 
 nurse0001
 gndh12345
+
+
+ssh
+
+182.18.31.105 9322
+ainia ppainia
+
+stop.sh
+nohup ./run.sh > nohup.out &
