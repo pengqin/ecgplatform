@@ -139,4 +139,6 @@ table tbody tr.active {
 }
 .filters input {
 	margin: 0px;
+	width:40px;
+	text-align:right;
 }
