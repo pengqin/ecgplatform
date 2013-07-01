@@ -1,0 +1,64 @@
+<div class="row-fluid">
+	<div class="span12">
+		<form name="updateChiefForm">
+		<table class="ecgprops">
+
+		<tr>
+		<td width="100px"><label>编号:</label></td>
+		<td>{{profile.user.id}}</td>
+		</tr>
+
+		<tr>
+		<td width="100px"><label for="profile-username">登录名:</label></td>
+		<td>{{profile.user.username}}</td>
+
+		<tr>
+		<td width="100px"><label for="profile-name">姓名:</label></td>
+		<td>{{profile.user.name}}</td>
+		</tr>
+
+		<tr>
+		<td><label for="profile-gender">性别:</label></td>
+		<td><select ng-model="profile.user.gender" ng-options="g.value as g.label for g in profile.genders" required></select></td>
+		</tr>
+
+		<tr>
+		<td ><label for="profile-birthday">出生日期:</label></td>
+		<td>
+			
+			<div id="profile-birthday" class="input-append date">
+			    <input ng-model="profile.user.birthday" type="text"></input>
+			    <span class="add-on">
+			      <i data-time-icon="icon-time" data-date-icon="icon-calendar">
+			      </i>
+			    </span>
+		    </div>
+		</td>
+		</tr>
+
+		<tr>
+		<td ><label for="profile-idCard">身份证:</label></td>
+		<td><input ng-model="profile.user.idCard" class="input-xlarge" id="profile-idCard" placeholder="请输入18位身份证号码"></td>
+		</tr>
+
+		<tr>
+		<td ><label for="profile-mobile">电话:</label></td>
+		<td>
+		<input ng-model="profile.user.mobile" class="input-xlarge" id="profile-mobile" placeholder="请输入联系电话,固话请带区号">
+		</td>
+		</tr>
+
+		</table>
+		</form>
+    </div>
+</div>
+<div class="row-fluid">
+	<div class="span12">
+		<button class="btn" type="button"
+				ng-class="{'btn-primary': updateChiefForm.$valid}" 
+				ng-click="profile.update()"
+				ng-disabled="!updateChiefForm.$valid">
+			<i class="icon-save"></i>保存
+		</button>
+    </div>
+</div>

@@ -48,7 +48,7 @@ define(function(require, exports) {
 
             setting.data = formECGSingleSeg(now.getTime() + now.getTimezoneOffset(), PlotService.getPlotData());
 
-            var plot = $('#ecgplot').ECGPlot(setting);
+            $('#ecgplot').ECGPlot(setting);
         }
 
         // watch the selected event

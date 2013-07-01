@@ -14,6 +14,7 @@ define(function(require, exports) {
             template : template,
             controller : "TaskProcessReportController",
             link : function($scope, $element, $attrs) {
+                
             }
         };
     } ]);

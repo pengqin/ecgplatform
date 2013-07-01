@@ -4,13 +4,15 @@ jdk:
 before_script:
   - sudo apt-get install subversion
   - svn -h
-script: 
+  - sudo apt-get install ftp
+  - ftp -h
+  - sudo apt-get install ssh
+script:
+  - cd api
+  - mvn install
+  - cd ../web
   - mvn package
-  - cd web
-  - svn checkout https://svn.sinaapp.com/ecgtest/1 target --username cloverren@163.com --password cloverren --no-auth-cache
   - cd target
-  - svn delete ecgtest.war
-  - svn commit -m "delete old war" --username cloverren@163.com --password cloverren --no-auth-cache
-  - mv -f web.war ecgtest.war
-  - svn add ecgtest.war
-  - svn commit -m "upload new war" --username cloverren@163.com --password cloverren --no-auth-cache
+  - ls -al
+  - ssh-keygen -t rsa
+  - scp ~/.ssh/id_rsa.pub -P9322 web.war ainia@182.18.31.105:web.war

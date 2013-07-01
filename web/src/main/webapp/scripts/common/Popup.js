@@ -33,7 +33,7 @@ define(function(require, exports) {
       setTimeout(function() {
         $('#popup' + popup.id + ' button').trigger("click");
       }, 7000);
-    }
+    };
     // show a success message
     $scope.popup.success = function(msg) {
       var popup = {

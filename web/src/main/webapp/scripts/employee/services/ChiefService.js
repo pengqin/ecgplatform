@@ -2,57 +2,86 @@
 define(function(require, exports) {
 
 angular.module('ecgChiefService', [])
-    .factory("ChiefService", function() {
-        var chiefs = [], chiefsTotal = 100;
-        for (var i=0; i<chiefsTotal; i++) {
-            chiefs.push({
-                id: i, 
-                name: "主任"+i,
-                gender: i % 2,
-                birthday: "1950-07-09",
-                idCard: "44080319881191999" + i,
-                title: "主任" + i,
-                tel: "010-89898989",
-                hospital: "医院" + i,
-                dismissed: i % 2
-            });
-        }
+    .factory("ChiefService", function($rootScope, $http) {
+        var uri = "/api/chief";
 
         return {
             queryAll: function() {
-                return chiefs;
+                return $http({
+                    method: 'GET',
+                    url: uri
+                }).then(function(res) { // 构造session用户
+                    if (res.data.datas && res.data.datas.length > 0) {
+                        return res.data.datas;
+                    } else {
+                        return [];    
+                    }
+                }, function() {
+                    $rootScope.popup.error('服务器异常,无法获取数据');
+                    return [];
+                });
             },
             getTotal: function() {
-                return chiefsTotal;
+                return 0;
             },
             remove: function(id) {
-                
+                return $http({
+                    method: 'DELETE',
+                    url: uri + '/' + id
+                });
             },
             getPlainObject: function() {
                 return {
                     name: "",
+                    username: "",
+                    status: "OFFLINE",
                     gender: 1,
                     birthday: "",
                     idCard: "",
                     title: "",
-                    tel: "",
-                    hospital: "",
-                    dismissed: 1
+                    mobile: "",
+                    hospital: "AINIA健康中心",
+                    enabled: true,
+                    dismissed: false,
+                    expire: '2099-01-01',
+                    roles: "chief"
                 };
             },
             create: function(chief) {
-                chief.id = (new Date()).getTime();
-                chiefs.push(chief);
+                return $http({
+                    method: 'POST',
+                    headers:{'Content-Type':'application/x-www-form-urlencoded'},
+                    data: $.param(chief),
+                    url: uri
+                }).then(function(res) {
+                    if (res.status === 201) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }, function() {
+                    return false;
+                });
             },
             get: function(id) {
-                for (var i=0; i<chiefsTotal; i++) {
-                    if (chiefs[i].id == id) {
-                        return chiefs[i];
-                    }
-                }
+                return $http({
+                    method: 'GET',
+                    cache: false,
+                    url: uri + '/' + id
+                }).then(function(res) {
+                    return res.data;
+                }, function() {
+                    $rootScope.popup.error('服务器异常,无法获取标识为' + id + '的数据.');
+                    return null;
+                });
             },
-            update: function() {
-
+            update: function(chief) {
+                return $http({
+                    method: 'PUT',
+                    headers:{'Content-Type':'application/x-www-form-urlencoded'},
+                    data: $.param(chief),
+                    url: uri + '/' + chief.id
+                });
             },
             getRules: function(id) {
                 return [];

@@ -1,0 +1,87 @@
+<div class="row-fluid">
+	<div class="span12">
+		<form name="updateChiefForm">
+		<table class="ecgprops">
+
+		<tr>
+		<td width="100px"><label>编号:</label></td>
+		<td>{{expert.updateobj.id}}</td>
+		</tr>
+
+		<tr>
+		<td width="100px"><label for="expert-username">登录名:</label></td>
+		<td>{{expert.updateobj.username}}</td>
+
+		<tr>
+		<td width="100px"><label for="expert-name">姓名:</label></td>
+		<td>
+			<input ng-model="expert.updateobj.name" class="input-xlarge" id="expert-name" required placeholder="请输入姓名">
+			<span class="required">*</span></td>
+		</tr>
+
+		<tr>
+		<td><label for="expert-gender">性别:</label></td>
+		<td><select ng-model="expert.updateobj.gender" ng-options="g.value as g.label for g in expert.genders"></select></td>
+		</tr>
+
+		<tr>
+		<td ><label for="expert-birthday">出生日期:</label></td>
+		<td>
+			
+			<div id="expert-birthday" class="input-append date">
+			    <input ng-model="expert.updateobj.birthday" type="text"></input>
+			    <span class="add-on">
+			      <i data-time-icon="icon-time" data-date-icon="icon-calendar">
+			      </i>
+			    </span>
+		    </div>
+		</td>
+		</tr>
+
+		<tr>
+		<td ><label for="expert-idCard">身份证:</label></td>
+		<td><input ng-model="expert.updateobj.idCard" class="input-xlarge" id="expert-idCard" placeholder="请输入18位身份证号码"></td>
+		</tr>
+
+		<tr>
+		<td ><label for="expert-title">职务:</label></td>
+		<td><input ng-model="expert.updateobj.title" class="input-xlarge" id="expert-title" placeholder="请输入职务信息"></td>
+		</tr>
+
+		<tr>
+		<td ><label for="expert-mobile">电话:</label></td>
+		<td>
+		<input ng-model="expert.updateobj.mobile" class="input-xlarge" id="expert-mobile" placeholder="请输入联系电话,固话请带区号">
+		</td>
+		</tr>
+
+		<tr>
+		<td ><label for="expert-hospital">所在医院:</label></td>
+		<td><input ng-model="expert.updateobj.hospital" class="input-xlarge" id="expert-hospital" placeholder="请输入所在医院"></td>
+		</tr>
+
+		<tr>
+		<td ><label for="expert-dismissed">工作状态:</label></td>
+		<td><select ng-model="expert.updateobj.dismissed" ng-options="g.value as g.label for g in expert.dismissedStates"></select></td>
+		</tr>
+
+		</table>
+		</form>
+    </div>
+</div>
+<div class="row-fluid">
+	<div class="span12">
+		<button class="btn" type="button"
+				ng-class="{'btn-primary': updateChiefForm.$valid}" 
+				ng-click="expert.update()"
+				ng-disabled="!updateChiefForm.$valid">
+			<i class="icon-save"></i>保存
+		</button>
+		<button class="btn btn-primary" type="button"
+				ng-click="expert.resetPassword()"
+				title="新密码将和登录名一致">
+			<i class="icon-lock"></i>重置密码
+		</button>
+		<a href="#/expert" class="btn"><i class="icon-list"></i>返回</a>
+    </div>
+</div>
