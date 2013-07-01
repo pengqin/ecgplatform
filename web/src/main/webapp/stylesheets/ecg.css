@@ -133,3 +133,10 @@ table tbody tr.active {
 .replyconfigs .bar {
 	cursor: pointer;
 }
+/* 过滤规则 */
+.filters td {
+	line-height: 47px;
+}
+.filters input {
+	margin: 0px;
+}
