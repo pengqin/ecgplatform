@@ -128,3 +128,8 @@ table tbody tr.active {
 .ecgprops .progress {
 	margin-bottom: 2px;
 }
+
+/* 回复设置*/
+.replyconfigs .bar {
+	cursor: pointer;
+}

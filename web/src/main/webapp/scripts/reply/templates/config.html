@@ -1,0 +1,35 @@
+<div class="row-fluid">
+    <div class="block block-without-border span12">
+    	<!-- 区间 -->
+		<div class="progress replyconfigs">
+			<div ng-repeat="config in replyconfig.configs" ng-click="replyconfig.replys = config.replys "
+				 class="bar bar-{{config.level}}" style="width: {{config.percent}}%;">
+			{{config.min}} - {{config.max}} ({{config.replys.length}})
+			</div>
+		</div>
+
+		<!-- 当前区间的回复 -->
+		<table class="table table-striped" ng-show="replyconfig.replys">
+		<thead>
+			<tr>
+			<th width="15%">类型</th>
+			<th>回复内容</th>
+			<th width="15%">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="reply in replyconfig.replys">
+				<td>{{reply.type}}</td>
+				<td>{{reply.text}}</td>
+				<td>
+					<button class="btn btn-small btn-primary" type="button">编辑</button>
+					<button class="btn btn-small btn-danger" type="button">删除</button>
+				</td>
+			</tr>
+		</tbody>
+		</table>
+
+		<!-- 未选择区间 -->
+		<div ng-show="!replyconfig.replys" style="text-align:center;font-size:16px;">请点击上方任意区间</div>
+    </div>
+</div>
