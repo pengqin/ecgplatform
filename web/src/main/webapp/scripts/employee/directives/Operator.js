@@ -94,6 +94,7 @@ angular.module('ecgOperator', [])
 
     $scope.operator.isUnique = true;
     $scope.operator.checkUnique = function() {
+        if (!$scope.operator.newobj.username) { return; }
         ProfileService.get($scope.operator.newobj.username).then(function(user) {
             if (user) { 
                 $scope.operator.isUnique = false;

@@ -92,6 +92,7 @@ angular.module('ecgChief', [])
 
     $scope.chief.isUnique = true;
     $scope.chief.checkUnique = function() {
+        if (!$scope.chief.newobj.username) { return; }
         ProfileService.get($scope.chief.newobj.username).then(function(user) {
             if (user) { 
                 $scope.chief.isUnique = false;

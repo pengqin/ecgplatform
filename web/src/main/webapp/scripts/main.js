@@ -6,12 +6,15 @@ require("./task/main");
 require("./monitor/main");
 require("./employee/main");
 require("./user/main");
+require("./reply/main");
+require("./filter/main");
 
 var welcomeTemp = require("./common/templates/welcome.html");
+var helpTemp = require("./common/templates/help.html");
+var faqTemp = require("./common/templates/faq.html");
 
-angular.module('ecgApp', ['ecgCommon', 'ecgTask', 'ecgMonitor', 'ecgEmployee', 'ecgUser'])
+angular.module('ecgApp', ['ecgCommon', 'ecgTask', 'ecgMonitor', 'ecgEmployee', 'ecgUser', 'ecgReply', 'ecgFilter'])
 .config(['$httpProvider', '$routeProvider', function ($httpProvider, $routeProvider) {
-        //console.info($cookieStore.get('AiniaOpAuthToken'));
         var token = $.cookie('AiniaOpAuthToken');
         // header头带认证参数
          $httpProvider.defaults.headers.common['Authorization'] = token;
@@ -22,6 +25,18 @@ angular.module('ecgApp', ['ecgCommon', 'ecgTask', 'ecgMonitor', 'ecgEmployee', '
             template: welcomeTemp,
             controller: function($scope) {
                 $scope.subheader.title = "系统首页";
+            }
+        })
+        .when('/help', {
+            template: helpTemp,
+            controller: function($scope) {
+                $scope.subheader.title = "使用帮助";
+            }
+        })
+        .when('/faq', {
+            template: faqTemp,
+            controller: function($scope) {
+                $scope.subheader.title = "常见问题";
             }
         })
         .otherwise({

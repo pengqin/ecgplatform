@@ -96,6 +96,7 @@ angular.module('ecgExpert', [])
 
     $scope.expert.isUnique = true;
     $scope.expert.checkUnique = function() {
+        if (!$scope.expert.newobj.username) { return; }
         ProfileService.get($scope.expert.newobj.username).then(function(user) {
             if (user) { 
                 $scope.expert.isUnique = false;
