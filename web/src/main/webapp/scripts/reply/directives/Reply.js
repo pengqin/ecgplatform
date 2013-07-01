@@ -9,6 +9,12 @@ angular.module('ecgReplyModules', [])
     // 命名空间
     $scope.replyconfig = {};
 
+    // 回复新对象
+    $scope.replyconfig.newobj = {};
+
+    // 回复类型
+    $scope.replyconfig.replytypes = [{value: 1, label: '11'}, {value: 2, label: '222'}];
+
     // 数据范围
     $scope.replyconfig.configs = [{
     	id: 1,
@@ -116,11 +122,27 @@ angular.module('ecgReplyModules', [])
     	}]
     }];
 
+    // 计算每个区间的百分比
     $($scope.replyconfig.configs).each(function(i, config) {
     	config.percent = (config.max - config.min) / 200 * 100;
     });
 
-    $scope.replyconfig.replys = null;
+    // 当前选择中config
+    $scope.replyconfig.selected = null;
+
+    // 新增回复
+    $scope.replyconfig.create = function() {
+    	$scope.replyconfig.selected.replys.push($scope.replyconfig.newobj);
+    	$scope.replyconfig.newobj = {};
+    	$scope.popup.success("新增默认回复成功!");
+    };
+
+    // 选择某个config
+    $scope.replyconfig.onselect = function(config) {
+		$scope.replyconfig.newobj = {};
+		$scope.replyconfig.selected = config;
+    };
+
 }]);
 
 
