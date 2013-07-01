@@ -8,6 +8,8 @@ require("./employee/main");
 require("./user/main");
 
 var welcomeTemp = require("./common/templates/welcome.html");
+var helpTemp = require("./common/templates/help.html");
+var faqTemp = require("./common/templates/faq.html");
 
 angular.module('ecgApp', ['ecgCommon', 'ecgTask', 'ecgMonitor', 'ecgEmployee', 'ecgUser'])
 .config(['$httpProvider', '$routeProvider', function ($httpProvider, $routeProvider) {
@@ -22,6 +24,18 @@ angular.module('ecgApp', ['ecgCommon', 'ecgTask', 'ecgMonitor', 'ecgEmployee', '
             template: welcomeTemp,
             controller: function($scope) {
                 $scope.subheader.title = "系统首页";
+            }
+        })
+        .when('/help', {
+            template: helpTemp,
+            controller: function($scope) {
+                $scope.subheader.title = "使用帮助";
+            }
+        })
+        .when('/faq', {
+            template: faqTemp,
+            controller: function($scope) {
+                $scope.subheader.title = "常见问题";
             }
         })
         .otherwise({
