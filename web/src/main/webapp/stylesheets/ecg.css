@@ -128,3 +128,15 @@ table tbody tr.active {
 .ecgprops .progress {
 	margin-bottom: 2px;
 }
+
+/* 回复设置*/
+.replyconfigs .bar {
+	cursor: pointer;
+}
+/* 过滤规则 */
+.filters td {
+	line-height: 47px;
+}
+.filters input {
+	margin: 0px;
+}

@@ -1,0 +1,31 @@
+<div class="row-fluid">
+    <div class="block block-without-border span12">
+		<!-- 当前区间的回复 -->
+		<table class="table table-striped filters" >
+		<thead>
+			<tr>
+			<th width="10%">设备类型</th>
+			<th width="10%">指标编码</th>
+			<th width="10%">指标名称</th>
+			<th>范围设定</th>
+			<th width="20%">说明</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="filter in filter.data">
+				<td>{{filter.type}}</td>
+				<td>{{filter.code}}</td>
+				<td>{{filter.name}}</td>
+				<td>
+				<button class="btn btn-small" type="button">无下限</button>
+				<input type="text" value="{{filter.min}}" style="width:30px;text-align:right">
+				<span>-</span>
+				<input type="text" value="{{filter.max}}" style="width:30px;text-align:right">
+				<button class="btn btn-small" type="button">无上限</button>
+				</td>
+				<td>{{filter.desc}}</td>
+			</tr>
+		</tbody>
+		</table>
+    </div>
+</div>
