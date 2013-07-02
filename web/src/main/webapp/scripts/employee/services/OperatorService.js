@@ -31,7 +31,7 @@ angular.module('ecgOperatorService', [])
                     idCard: "",
                     title: "",
                     mobile: "",
-                    hospital: "AINIA健康中心",
+                    company: "AINIA健康中心",
                     enabled: true,
                     dismissed: false,
                     expire: '2099-01-01',

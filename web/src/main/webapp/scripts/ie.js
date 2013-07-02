@@ -18,7 +18,6 @@ document.createElement('ecg-task-process-report');
 // task module
 document.createElement('ecg-plot');
 document.createElement('ecg-task-card');
-document.createElement('ecg-undone-task-view');
 document.createElement('ecg-user-card');
 
 
