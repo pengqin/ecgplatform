@@ -186,7 +186,7 @@ angular.module('ecgExpert', [])
 }])
 .directive("ecgExpertEdit", [ '$location', function($location) {
     return {
-        restrict : 'E',
+        restrict : 'A',
         replace : false,
         template : expertEditTemp,
         controller : "ExpertEditController",
@@ -211,7 +211,7 @@ angular.module('ecgExpert', [])
 }])
 .directive("ecgExpertRules", [ '$location', function($location) {
     return {
-        restrict : 'E',
+        restrict : 'A',
         replace : false,
         template : expertRulesTemp,
         controller : "ExpertRulesController",
@@ -236,7 +236,7 @@ angular.module('ecgExpert', [])
 }])
 .directive("ecgExpertOperators", [ '$location', function($location) {
     return {
-        restrict : 'E',
+        restrict : 'A',
         replace : false,
         template : expertOperatorsTemp,
         controller : "ExpertOperatorsController",

@@ -182,7 +182,7 @@ angular.module('ecgChief', [])
 }])
 .directive("ecgChiefEdit", [ '$location', function($location) {
     return {
-        restrict : 'E',
+        restrict : 'A',
         replace : false,
         template : chiefEditTemp,
         controller : "ChiefEditController",

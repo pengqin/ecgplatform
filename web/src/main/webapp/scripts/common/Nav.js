@@ -11,7 +11,7 @@ define(function(require, exports) {
     })
     .directive("ecgNav", ['$location', function ($location) {
         return {
-            restrict: 'E',
+            restrict: 'A',
             replace: true,
             template: navTemplate,
             controller: "NavController",

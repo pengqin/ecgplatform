@@ -7,8 +7,8 @@ define(function(require, exports) {
   })
   .directive("ecgFooter", ['$location', function ($location) {
     return {
-      restrict: 'E',
-      replace: false,
+      restrict: 'A',
+      replace: true,
       template: footerTemplate,
       controller: "FooterController",
       link: function ($scope, $element, $attrs) {

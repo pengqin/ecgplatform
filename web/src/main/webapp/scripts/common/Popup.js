@@ -87,8 +87,8 @@ define(function(require, exports) {
   }])
   .directive("ecgPopup", ['$location', function ($location) {
     return {
-      restrict: 'E',
-      replace: false,
+      restrict: 'A',
+      replace: true,
       template: popupTemplate,
       controller: "PopupController",
       link: function ($scope, $element, $attrs) {

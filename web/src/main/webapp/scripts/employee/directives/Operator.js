@@ -184,7 +184,7 @@ angular.module('ecgOperator', [])
 }])
 .directive("ecgOperatorEdit", [ '$location', function($location) {
     return {
-        restrict : 'E',
+        restrict : 'A',
         replace : false,
         template : operatorEditTemp,
         controller : "OperatorEditController",
@@ -209,7 +209,7 @@ angular.module('ecgOperator', [])
 }])
 .directive("ecgOperatorRules", [ '$location', function($location) {
     return {
-        restrict : 'E',
+        restrict : 'A',
         replace : false,
         template : operatorRulesTemp,
         controller : "OperatorRulesController",
@@ -234,7 +234,7 @@ angular.module('ecgOperator', [])
 }])
 .directive("ecgOperatorExperts", [ '$location', function($location) {
     return {
-        restrict : 'E',
+        restrict : 'A',
         replace : false,
         template : operatorExpertsTemp,
         controller : "OperatorExpertsController",

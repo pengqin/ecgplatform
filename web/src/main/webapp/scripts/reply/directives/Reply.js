@@ -145,7 +145,7 @@ angular.module('ecgReplyModules', [])
     };
 
     // 删除某条回复
-    $scope.replyconfig.delete = function(deletedItem) {
+    $scope.replyconfig.remove = function(deletedItem) {
     	var idx = -1;
     	$($scope.replyconfig.selected.replys).each(function(i, reply) {
     		if (deletedItem.id === reply.id) {
