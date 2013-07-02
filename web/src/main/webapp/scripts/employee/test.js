@@ -2,9 +2,71 @@
 define(function(require, exports) {
 
     exports.testEmployee = function(it, ChiefService, ExpertService, OperatorService, ProfileService) {
+        // profile
         it("the ProfileService should be defined", function() {
             expect(ProfileService).not.to.be(undefined);
         });
+
+        it("the session user's profile should be retrieved, updated and roll back.", function() {
+            var sessionuser, username = $.cookie("AiniaOpUsername");
+            ProfileService.get(username).then(function(profile) {
+                if (profile) {
+                    // retrieved
+                    expect(profile).not.to.be(undefined);
+                    sessionuser = profile;
+                    sessionuser.gender = 0;
+                    // updated
+                    ProfileService.update(sessionuser).then(function() {
+                        done();
+                    }, function() {
+                        throw new Error('the profile can\'t be updated');
+                    });
+                } else {
+                    throw new Error('the profile can\'t be retrieved');
+                }
+            });
+        });
+
+        it("the session user's password should be updated", function() {
+            var sessionuser, username = $.cookie("AiniaOpUsername");
+            ProfileService.get(username).then(function(profile) {
+                if (profile) {
+                    // retrieved
+                    expect(profile).not.to.be(undefined);
+                    sessionuser = profile;
+                    // updated
+                    ProfileService.updatePassword(sessionuser.id, TESTCONFIGS.password, TESTCONFIGS.password + 'updated')
+                    .then(function() {
+                        $.ajax({
+                            url: '/api/auth',
+                            data: {
+                                'username': TESTCONFIGS.username,
+                                'password': TESTCONFIGS.password + 'updated'
+                            },
+                            type: 'POST',
+                            dataType: 'json'
+                        }).then(function(res) {
+                            // expect token
+                            expect(res.token).not.to.be(undefined);
+                            // roll back
+                            ProfileService.updatePassword(sessionuser.id, TESTCONFIGS.password + 'updated', TESTCONFIGS.password)
+                            .then(function() {
+                                done();
+                            }, function() {
+                                throw new Error('the session user\'s password can\'t be rollback');
+                            });
+                        }, function() {
+                            throw new Error('the session user can\'t login in');
+                        });
+                    }, function() {
+                        throw new Error('the session user\'s password can\'t be updated');
+                    });
+                } else {
+                    throw new Error('the profile can\'t be retrieved');
+                }
+            });
+        });
+
         // Chief
         it("the ChiefService should be defined", function() {
             expect(ChiefService).not.to.be(undefined);

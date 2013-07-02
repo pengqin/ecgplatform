@@ -29,7 +29,7 @@ angular.module('ecgProfileService', [])
                     method: 'GET',
                     cache: false,
                     url: "/api/employee?username=" + username
-                }).then(function(res) { // 构造session用户
+                }).then(function(res) {
                     if (res.data.datas && res.data.datas.length === 1) {
                         return initUser(res.data.datas[0]);
                     } else {

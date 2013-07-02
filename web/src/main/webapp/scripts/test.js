@@ -42,14 +42,14 @@ angular.module('ecgTestApp', ['ecgCommon', 'ecgTask', 'ecgMonitor', 'ecgEmployee
 $.ajax({
     url: '/api/auth',
     data: {
-        'username': 'admin',
-        'password': 'passw0rd'
+        'username': TESTCONFIGS.username,
+        'password': TESTCONFIGS.password
     },
     type: 'POST',
     dataType: 'json'
 }).then(function(res) {
     // 保存token
-    $.cookie("AiniaOpUsername", 'admin');
+    $.cookie("AiniaOpUsername", TESTCONFIGS.username);
     $.cookie('AiniaOpAuthToken', res.token, { expires: 1, path: '/' });
     // 构造测试环境
     angular.bootstrap(document, ["ecgTestApp"]);
