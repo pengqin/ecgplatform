@@ -172,7 +172,7 @@ angular.module('ecgOperator', [])
 
     $scope.operator.resetPassword = function() {
         $scope.dialog.showStandby();
-        ProfileService.updatePassword($scope.operator.updateobj.id, '', '')
+        ProfileService.resetPassword($scope.operator.updateobj.id)
         .then(function(result) {
             $scope.dialog.hideStandby();
             $scope.popup.success("重置密码成功!");

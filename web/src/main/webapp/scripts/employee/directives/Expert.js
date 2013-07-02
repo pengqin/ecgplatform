@@ -174,7 +174,7 @@ angular.module('ecgExpert', [])
 
     $scope.expert.resetPassword = function() {
         $scope.dialog.showStandby();
-        ProfileService.updatePassword($scope.expert.updateobj.id, '', '')
+        ProfileService.resetPassword($scope.expert.updateobj.id)
         .then(function(result) {
             $scope.dialog.hideStandby();
             $scope.popup.success("重置密码成功!");
