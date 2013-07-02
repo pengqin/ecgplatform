@@ -155,3 +155,7 @@ table tbody tr.active {
 	width:40px;
 	text-align:right;
 }
+
+#ecgplot img {
+	max-width: 1600px;
+}
