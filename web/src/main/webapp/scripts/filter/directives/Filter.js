@@ -44,6 +44,13 @@ angular.module('ecgFilterModules', [])
     	desc: '百分比'
     }];
 
+    // create
+    $scope.filter.save = function() {
+        $scope.dialog.showStandby();
+        $scope.dialog.hideStandby();
+        $scope.popup.success("保存成功!");
+    }
+
 }]);
 
 

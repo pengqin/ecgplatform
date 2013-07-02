@@ -1,5 +1,19 @@
 <div class="row-fluid">
 	<div class="span12 buttons">
+		<!--
+		<a href="#/user/new" class="btn" ng-show="session.user.isChief() || session.user.isAdmin()"><i class="icon-plus" ></i>新增用户</a>
+		<button class="btn" type="button"
+				ng-class="{'btn-danger': user.selectedItem != null}"
+				ng-click="user.confirmDisable()" ng-disabled="user.selectedItem == null">
+			<i class="icon-remove"></i>禁用用户
+		</button>
+		<button class="btn" type="button"
+				ng-class="{'btn-danger': user.selectedItem != null}"
+				ng-show="session.user.isChief() || session.user.isAdmin()"
+				ng-click="user.confirmDelete()" ng-disabled="user.selectedItem == null">
+			<i class="icon-remove"></i>删除用户
+		</button>
+		-->
 		<input type="text" placeholder="请输入任意关键字" title="请输入任意关键字" ng-model="user.query" ng-change="user.queryChanged(user.query)">
     </div>
 </div>
@@ -9,15 +23,8 @@
 		  <thead></thead>
 		  <tbody>
 		    <tr ng-click="user.selectedItem = item" ng-class="{'active': user.selectedItem == item}">
-				<td at-implicit sortable title="登录名" attribute="username" class="ecgGridLik" ng-click="user.showPage(item)"></td>
+				<td at-implicit sortable title="手机" attribute="mobileNum" class="ecgGridLik" ng-click="user.showPage(item)"></td>
 				<td at-implicit sortable title="姓名" attribute="name"></td>
-				<td sortable title="性别">
-					{{user.getGenderLabel(item)}}
-				</td>
-				<td sortable title="是否在职">
-					{{user.getDismissedLabel(item)}}
-				</td>
-				<td at-implicit sortable title="电话" attribute="mobile"></td>
 		    </tr>
 		  </tbody>
 		</table>

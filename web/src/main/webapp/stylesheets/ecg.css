@@ -81,6 +81,14 @@ i {
 /*对于pane的特殊设置*/
 .block-body-grid { 
     margin: 0px;
+    padding: 0px;
+}
+.block-body-grid table{ 
+    margin: 0px;
+    padding: 0px;
+}
+.block-body-grid table tr { 
+	cursor: pointer;
 }
 .block-without-border {
 	border: none;
@@ -130,8 +138,13 @@ table tbody tr.active {
 }
 
 /* 回复设置*/
+.replyconfigs {
+	height: 50px;
+}
 .replyconfigs .bar {
 	cursor: pointer;
+	height: 50px;
+	line-height: 50px;
 }
 /* 过滤规则 */
 .filters td {
@@ -139,4 +152,10 @@ table tbody tr.active {
 }
 .filters input {
 	margin: 0px;
+	width:40px;
+	text-align:right;
+}
+
+#ecgplot img {
+	max-width: 1600px;
 }

@@ -10,7 +10,7 @@ angular.module('ecgChiefService', [])
                 return $http({
                     method: 'GET',
                     url: uri
-                }).then(function(res) { // 构造session用户
+                }).then(function(res) {
                     if (res.data.datas && res.data.datas.length > 0) {
                         return res.data.datas;
                     } else {
@@ -19,15 +19,6 @@ angular.module('ecgChiefService', [])
                 }, function() {
                     $rootScope.popup.error('服务器异常,无法获取数据');
                     return [];
-                });
-            },
-            getTotal: function() {
-                return 0;
-            },
-            remove: function(id) {
-                return $http({
-                    method: 'DELETE',
-                    url: uri + '/' + id
                 });
             },
             getPlainObject: function() {
@@ -40,7 +31,7 @@ angular.module('ecgChiefService', [])
                     idCard: "",
                     title: "",
                     mobile: "",
-                    hospital: "AINIA健康中心",
+                    company: "AINIA健康中心",
                     enabled: true,
                     dismissed: false,
                     expire: '2099-01-01',
@@ -81,6 +72,12 @@ angular.module('ecgChiefService', [])
                     headers:{'Content-Type':'application/x-www-form-urlencoded'},
                     data: $.param(chief),
                     url: uri + '/' + chief.id
+                });
+            },
+            remove: function(id) {
+                return $http({
+                    method: 'DELETE',
+                    url: uri + '/' + id
                 });
             },
             getRules: function(id) {

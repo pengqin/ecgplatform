@@ -21,30 +21,25 @@ angular.module('ecgUserService', [])
                     return [];
                 });
             },
-            getTotal: function() {
-                return 0;
-            },
-            remove: function(id) {
-                return $http({
-                    method: 'DELETE',
-                    url: uri + '/' + id
-                });
-            },
             getPlainObject: function() {
                 return {
-                    name: "",
-                    username: "",
-                    status: "OFFLINE",
-                    gender: 1,
-                    birthday: "",
-                    idCard: "",
-                    title: "",
-                    mobile: "",
-                    hospital: "AINIA健康中心",
-                    enabled: true,
-                    dismissed: false,
-                    expire: '2099-01-01',
-                    roles: "user"
+                    "mobile": "", // 应该是 mobile 必填
+                    "name": "", // 必填
+                    "username": "", // 可作为别名登录，但是现在没需求 留空 手机就是唯一登录凭证
+                    "password": "",
+                    "birthday": "", // 可空
+                    "address": "", // 可空
+                    "stature": 0, // 可空
+                    "weight": 0, // 可空
+                    "city": "", // 可空
+                    "emContact1": "", // 可空
+                    "emContact1Tel": "", // 可空
+                    "emContact2": "", // 可空
+                    "emContact2Tel": "", // 可空
+                    "badHabits": "", // 可空
+                    "anamnesis": "", // 可空
+                    "remark": "", // 可空
+                    "isFree": true
                 };
             },
             create: function(user) {
@@ -71,7 +66,7 @@ angular.module('ecgUserService', [])
                 }).then(function(res) {
                     return res.data;
                 }, function() {
-                    $rootScope.popup.error('服务器异常,无法获取标识为' + id + '的数据.');
+                    $rootScope.popup.error('服务器异常,无法获取标识为' + id + '的用户数据.');
                     return null;
                 });
             },
@@ -82,7 +77,13 @@ angular.module('ecgUserService', [])
                     data: $.param(user),
                     url: uri + '/' + user.id
                 });
-            }
+            },           
+            remove: function(id) {
+                return $http({
+                    method: 'DELETE',
+                    url: uri + '/' + id
+                });
+            },
         };
     });
 });

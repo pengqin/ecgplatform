@@ -21,9 +21,6 @@ angular.module('ecgFilterService', [])
                     return [];
                 });
             },
-            getTotal: function() {
-                return 0;
-            },
             remove: function(id) {
                 return $http({
                     method: 'DELETE',

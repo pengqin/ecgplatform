@@ -6,16 +6,6 @@ define(function(require, exports) {
     angular.module('ecgUserCard', [])
     .controller('UserCardController', ['$scope', 'TaskService',
     function($scope, TaskService) {
-        $scope.undone.user = {};
-        $scope.$watch('undone.selectedItems',
-            function(newVal, oldVal) {
-                if (!newVal || newVal.length === 0) { return; }
-                $scope.undone.user = {
-                    name: newVal[0].guest
-                };
-            }, 
-            true
-        );
     }])
     .directive("ecgUserCard", [ '$location', function($location) {
         return {

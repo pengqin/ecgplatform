@@ -7,12 +7,12 @@ define(function(require, exports) {
     .controller('UndoneTaskViewController', ['$scope', 'TaskService',
     function($scope, TaskService) {
         $scope.showView = function() {
-            return $scope.undone.selectedItems && $scope.undone.selectedItems.length > 0;
+            return $scope.undone.selected !== null;
         };
     }])
     .directive("ecgUndoneTaskView", [ '$location', function($location) {
         return {
-            restrict : 'E',
+            restrict : 'A',
             replace : false,
             template : template,
             controller : "UndoneTaskViewController",

@@ -51,7 +51,7 @@ angular.module('ecgProfile', [])
 }])
 .directive("ecgProfileEdit", [ '$location', function($location) {
     return {
-        restrict : 'E',
+        restrict : 'A',
         replace : false,
         template : profileEditTemp,
         controller : "ProfileEditController",
@@ -87,7 +87,7 @@ angular.module('ecgProfile', [])
 }])
 .directive("ecgProfilePassword", [ '$location', function($location) {
     return {
-        restrict : 'E',
+        restrict : 'A',
         replace : false,
         template : profilePasswordTemp,
         controller : "ProfilPasswordController",

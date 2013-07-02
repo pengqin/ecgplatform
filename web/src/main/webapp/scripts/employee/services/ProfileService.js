@@ -24,12 +24,12 @@ angular.module('ecgProfileService', [])
 
         return {
             get: function(username) {
-                var username = username || $.cookie("AiniaOpUsrename");
+                var username = username || $.cookie("AiniaOpUsername");
                 return $http({
                     method: 'GET',
                     cache: false,
                     url: "/api/employee?username=" + username
-                }).then(function(res) { // 构造session用户
+                }).then(function(res) {
                     if (res.data.datas && res.data.datas.length === 1) {
                         return initUser(res.data.datas[0]);
                     } else {
@@ -59,6 +59,9 @@ angular.module('ecgProfileService', [])
                     data: $.param({oldPassword: oldpwd, newPassword: newpwd}),
                     url: uri + '/' + id + '/password'
                 });
+            },
+            resetPassword: function(id) {
+                return this.updatePassword(id, '', '');
             }
         };
     });

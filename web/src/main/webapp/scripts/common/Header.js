@@ -16,8 +16,8 @@ define(function(require, exports) {
   })
   .directive("ecgHeader", ['$location', function ($location) {
     return {
-      restrict: 'E',
-      replace: false,
+      restrict: 'A',
+      replace: true,
       template: headerTemplate,
       controller: "HeaderController",
       link: function ($scope, $element, $attrs) {
@@ -26,8 +26,8 @@ define(function(require, exports) {
   }])
   .directive("ecgSubHeader", ['$location', function ($location) {
     return {
-      restrict: 'E',
-      replace: false,
+      restrict: 'A',
+      replace: true,
       template: subheaderTemplate,
       controller: "SubHeaderController",
       link: function ($scope, $element, $attrs) {

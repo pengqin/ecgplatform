@@ -9,6 +9,12 @@ angular.module('ecgReplyModules', [])
     // 命名空间
     $scope.replyconfig = {};
 
+    // 回复新对象
+    $scope.replyconfig.newobj = {};
+
+    // 回复类型
+    $scope.replyconfig.replytypes = [{value: '心律正常', label: '心律不齐'}, {value: '心律正常', label: '心律正常'}];
+
     // 数据范围
     $scope.replyconfig.configs = [{
     	id: 1,
@@ -116,11 +122,61 @@ angular.module('ecgReplyModules', [])
     	}]
     }];
 
+    // 计算每个区间的百分比
     $($scope.replyconfig.configs).each(function(i, config) {
-    	config.percent = (config.max - config.min) / 200 * 100;
+    	config.percent = (config.max - config.min + 0.64) / 200 * 100;
     });
 
-    $scope.replyconfig.replys = null;
+    // 当前选择中config
+    $scope.replyconfig.selected = null;
+
+    // 新增回复
+    $scope.replyconfig.create = function() {
+    	$scope.replyconfig.newobj.id = (new Date()).getTime();
+    	$scope.replyconfig.selected.replys.push($scope.replyconfig.newobj);
+    	$scope.replyconfig.newobj = {};
+    	$scope.popup.success("新增默认回复成功!");
+    };
+
+    // 选择某个config
+    $scope.replyconfig.onselect = function(config) {
+		$scope.replyconfig.newobj = {};
+		$scope.replyconfig.selected = config;
+    };
+
+    // 删除某条回复
+    $scope.replyconfig.remove = function(deletedItem) {
+    	var idx = -1;
+    	$($scope.replyconfig.selected.replys).each(function(i, reply) {
+    		if (deletedItem.id === reply.id) {
+    			idx = i;
+    		}
+    	});
+    	if (idx >= 0) {
+    		$scope.dialog.confirm({
+	            text: "请确认删除, 该操作无法恢复!",
+	            handler: function() {
+	                $scope.dialog.showStandby();
+	                $scope.replyconfig.selected.replys.splice(idx, 1);
+	                $scope.dialog.hideStandby();
+	                $scope.popup.success("删除成功!");
+	                /*
+	                ChiefService.remove(selectedItem.id)
+	                .then(function() {
+	                    $scope.dialog.hideStandby();
+	                    $scope.chief.selectedItem = null;
+	                    $scope.popup.success("删除成功!");
+	                    // 刷新
+	                    refreshGrid();
+	                }, function() {
+	                    $scope.dialog.hideStandby();
+	                    $scope.popup.error("无法删除该数据,可能是您的权限不足,请联系管理员!");
+	                });*/
+	            }
+	        });
+    	}
+    };
+
 }]);
 
 

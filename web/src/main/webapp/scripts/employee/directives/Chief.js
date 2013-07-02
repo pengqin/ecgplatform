@@ -92,6 +92,7 @@ angular.module('ecgChief', [])
 
     $scope.chief.isUnique = true;
     $scope.chief.checkUnique = function() {
+        if (!$scope.chief.newobj.username) { return; }
         ProfileService.get($scope.chief.newobj.username).then(function(user) {
             if (user) { 
                 $scope.chief.isUnique = false;
@@ -168,20 +169,25 @@ angular.module('ecgChief', [])
     };
 
     $scope.chief.resetPassword = function() {
-        $scope.dialog.showStandby();
-        ProfileService.updatePassword($scope.chief.updateobj.id, '', '')
-        .then(function(result) {
-            $scope.dialog.hideStandby();
-            $scope.popup.success("重置密码成功!");
-        }, function() {
-            $scope.dialog.hideStandby();
-            $scope.popup.error("重置密码失败!");
+        $scope.dialog.confirm({
+            text: "重置后登录密码将于登录名一致，确定继续?",
+            handler: function() {
+                $scope.dialog.showStandby();
+                ProfileService.resetPassword($scope.chief.updateobj.id)
+                .then(function(result) {
+                    $scope.dialog.hideStandby();
+                    $scope.popup.success("重置密码成功!");
+                }, function() {
+                    $scope.dialog.hideStandby();
+                    $scope.popup.error("重置密码失败!");
+                });
+            }
         });
     };
 }])
 .directive("ecgChiefEdit", [ '$location', function($location) {
     return {
-        restrict : 'E',
+        restrict : 'A',
         replace : false,
         template : chiefEditTemp,
         controller : "ChiefEditController",
