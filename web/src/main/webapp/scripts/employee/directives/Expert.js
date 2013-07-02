@@ -173,20 +173,25 @@ angular.module('ecgExpert', [])
     };
 
     $scope.expert.resetPassword = function() {
-        $scope.dialog.showStandby();
-        ProfileService.updatePassword($scope.expert.updateobj.id, '', '')
-        .then(function(result) {
-            $scope.dialog.hideStandby();
-            $scope.popup.success("重置密码成功!");
-        }, function() {
-            $scope.dialog.hideStandby();
-            $scope.popup.error("重置密码失败!");
-        });;
+        $scope.dialog.confirm({
+            text: "重置后登录密码将于登录名一致，确定继续?",
+            handler: function() {
+                $scope.dialog.showStandby();
+                ProfileService.resetPassword($scope.expert.updateobj.id)
+                .then(function(result) {
+                    $scope.dialog.hideStandby();
+                    $scope.popup.success("重置密码成功!");
+                }, function() {
+                    $scope.dialog.hideStandby();
+                    $scope.popup.error("重置密码失败!");
+                });
+            }
+        });
     };
 }])
 .directive("ecgExpertEdit", [ '$location', function($location) {
     return {
-        restrict : 'E',
+        restrict : 'A',
         replace : false,
         template : expertEditTemp,
         controller : "ExpertEditController",
@@ -211,7 +216,7 @@ angular.module('ecgExpert', [])
 }])
 .directive("ecgExpertRules", [ '$location', function($location) {
     return {
-        restrict : 'E',
+        restrict : 'A',
         replace : false,
         template : expertRulesTemp,
         controller : "ExpertRulesController",
@@ -236,7 +241,7 @@ angular.module('ecgExpert', [])
 }])
 .directive("ecgExpertOperators", [ '$location', function($location) {
     return {
-        restrict : 'E',
+        restrict : 'A',
         replace : false,
         template : expertOperatorsTemp,
         controller : "ExpertOperatorsController",

@@ -3,7 +3,7 @@ define(function(require, exports) {
 
     var template = require("../templates/reply.html");
 
-    angular.module('ecgReply', [])
+    angular.module('ecgTaskReply', [])
     .controller('ReplyController', ['$scope', 'TaskService',
     function($scope, TaskService) {
         $scope.undone.reply = {};
@@ -17,9 +17,9 @@ define(function(require, exports) {
             true
         );
     }])
-    .directive("ecgReply", [ '$location', function($location) {
+    .directive("ecgTaskReply", [ '$location', function($location) {
         return {
-            restrict : 'E',
+            restrict : 'A',
             replace : false,
             template : template,
             controller : "ReplyController",

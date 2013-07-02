@@ -48,7 +48,7 @@ define(function(require, exports) {
     }])
     .directive("ecgUndoneTaskList", [ '$location', function($location) {
         return {
-            restrict : 'E',
+            restrict : 'A',
             replace : false,
             template : template,
             controller : "UndoneTaskListController",

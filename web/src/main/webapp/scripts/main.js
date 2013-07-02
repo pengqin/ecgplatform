@@ -57,7 +57,7 @@ angular.module('ecgApp', ['ecgCommon', 'ecgTask', 'ecgMonitor', 'ecgEmployee', '
     }
 
     // 判断是否登录
-    var username = $.cookie("AiniaOpUsrename");
+    var username = $.cookie("AiniaOpUsername");
     if (!username) {
         logout('请先登录!');
         return;

@@ -80,8 +80,8 @@ define(function(require, exports) {
   })
   .directive("ecgDialog", ['$location', function ($location) {
     return {
-      restrict: 'E',
-      replace: false,
+      restrict: 'A',
+      replace: true,
       template: dialogTempalte,
       controller: "DialogController",
       link: function ($scope, $element, $attrs) {

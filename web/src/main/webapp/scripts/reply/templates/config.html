@@ -3,7 +3,7 @@
     	<!-- 区间 -->
 		<div class="progress replyconfigs">
 			<div ng-repeat="config in replyconfig.configs" ng-click="replyconfig.onselect(config)"
-				 class="bar bar-{{config.level}}" style="width: {{config.percent}}%;" title="设置了{{config.replys.length}}条回复">
+				 class="bar bar-{{config.level}}" style="width:16.6%\9; width: {{config.percent}}%;" title="设置了{{config.replys.length}}条回复">
 			{{config.min}} - {{config.max}} ({{config.replys.length}})
 			</div>
 		</div>
@@ -22,7 +22,7 @@
 				<td>{{reply.type}}</td>
 				<td>{{reply.text}}</td>
 				<td>
-					<button class="btn btn-small btn-danger" type="button" ng-click="replyconfig.delete(reply)">删除</button>
+					<button class="btn btn-small btn-danger" type="button" ng-click="replyconfig.remove(reply)">删除</button>
 				</td>
 			</tr>
 		</tbody>
