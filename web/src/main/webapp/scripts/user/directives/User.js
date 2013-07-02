@@ -32,6 +32,34 @@ angular.module('ecgUserModules', [])
         $scope.user.filteredData = $scope.user.data;
     }
 
+    // 禁用功能
+    $scope.user.confirmDisable = function() {
+        var selectedItem = $scope.user.selectedItem;
+        if (selectedItem === null) {
+            $scope.dialog.alert({
+                text: '请选择一条记录!'
+            });
+            return;
+        }
+        $scope.dialog.confirm({
+            text: "禁用用户:" + selectedItem.name + ", 是否继续!",
+            handler: function() {
+                $scope.dialog.showStandby();
+                UserService.disable(selectedItem.id)
+                .then(function() {
+                    $scope.dialog.hideStandby();
+                    $scope.user.selectedItem = null;
+                    $scope.popup.success("删除成功!");
+                    // 刷新
+                    refreshGrid();
+                }, function() {
+                    $scope.dialog.hideStandby();
+                    $scope.popup.error("无法删除该数据,可能是您的权限不足,请联系管理员!");
+                });
+            }
+        });
+    };
+
     // 删除功能
     $scope.user.confirmDelete = function() {
         var selectedItem = $scope.user.selectedItem;
@@ -92,6 +120,7 @@ angular.module('ecgUserModules', [])
 
     $scope.user.isUnique = true;
     $scope.user.checkUnique = function() {
+        /*
         ProfileService.get($scope.user.newobj.username).then(function(user) {
             if (user) { 
                 $scope.user.isUnique = false;
@@ -102,7 +131,7 @@ angular.module('ecgUserModules', [])
         }, function() {
             $scope.user.isUnique = true;
             $scope.popup.warn("查询用户是否唯一时出错!");
-        });
+        });*/
     };
 
     $scope.user.create = function() {
