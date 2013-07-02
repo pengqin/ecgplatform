@@ -5,32 +5,32 @@
 		<table class="ecgprops">
 
 		<tr>
-		<td width="100px" valign="top"><label for="chief-username">登录名:</label></td>
+		<td width="150px" valign="top"><label for="user-mobile">手机号码:</label></td>
 		<td>
-			<input ng-model="chief.newobj.username" class="input-xlarge" id="chief-username"
-				   focus required placeholder="请输入登录名" ng-change="chief.checkUnique()"></input>
-			<span class="required">*</span><span class="desc">初次登录密码与登录名一致</span></td>
+			<input ng-model="user.newobj.mobile" class="input-xlarge" id="user-mobile"
+				   focus required placeholder="请输入登录名" ng-change="user.checkUnique()"></input>
+			<span class="required">*</span><span class="desc">初始登录密码与手机一致</span></td>
 		</tr>
 
 		<tr>
-		<td><label for="chief-name">姓名:</label></td>
+		<td><label for="user-name">姓名:</label></td>
 		<td>
-			<input ng-model="chief.newobj.name" class="input-xlarge" id="chief-name" focus required placeholder="请输入姓名"></input>
+			<input ng-model="user.newobj.name" class="input-xlarge" id="user-name" focus required placeholder="请输入姓名"></input>
 			<span class="required">*</span>
 		</td>
 		</tr>
 
 		<tr>
-		<td><label for="chief-gender">性别:</label></td>
-		<td><select ng-model="chief.newobj.gender" ng-options="g.value as g.label for g in chief.genders"></select></td>
+		<td><label for="user-gender">性别:</label></td>
+		<td><select ng-model="user.newobj.gender" ng-options="g.value as g.label for g in user.genders"></select></td>
 		</tr>
 
 		<tr>
-		<td ><label for="chief-birthday">出生日期:</label></td>
+		<td ><label for="user-birthday">出生日期:</label></td>
 		<td>
 			
-			<div id="chief-birthday" class="input-append date">
-			    <input ng-model="chief.newobj.birthday" type="text" readonly="readonly" placeholder="请选择出生日期"></input>
+			<div id="user-birthday" class="input-append date">
+			    <input ng-model="user.newobj.birthday" type="text" readonly="readonly" placeholder="请选择出生日期"></input>
 			    <span class="add-on">
 			      <i data-time-icon="icon-time" data-date-icon="icon-calendar">
 			      </i>
@@ -40,30 +40,55 @@
 		</tr>
 
 		<tr>
-		<td ><label for="chief-idCard">身份证:</label></td>
-		<td><input ng-model="chief.newobj.idCard" class="input-xlarge" id="chief-idCard" placeholder="请输入18位身份证号码"></input></td>
+		<td ><label for="user-idCard">身份证:</label></td>
+		<td><input ng-model="user.newobj.idCard" class="input-xlarge" id="user-idCard" placeholder="请输入18位身份证号码"></input></td>
 		</tr>
 
 		<tr>
-		<td ><label for="chief-title">职务:</label></td>
-		<td><input ng-model="chief.newobj.title" class="input-xlarge" id="chief-title" placeholder="请输入职务信息"></input></td>
+		<td ><label for="user-address">现住址:</label></td>
+		<td><input ng-model="user.newobj.address" class="input-xlarge" id="user-address" placeholder="请输入职务信息"></input></td>
 		</tr>
 
 		<tr>
-		<td ><label for="chief-tel">电话:</label></td>
+		<td ><label for="user-anamnesis">既往病史:</label></td>
 		<td>
-		<input ng-model="chief.newobj.mobile" class="input-xlarge" id="chief-tel" placeholder="请输入联系电话,固话请带区号"></input>
+		<input ng-model="user.newobj.anamnesis" class="input-xlarge" id="user-anamnesis" placeholder="请输入联系电话,固话请带区号"></input>
 		</td>
 		</tr>
 
 		<tr>
-		<td ><label for="chief-company">所在医院:</label></td>
-		<td><input ng-model="chief.newobj.company" class="input-xlarge" id="chief-company" placeholder="请输入所在医院" ></input></td>
+		<td ><label for="user-stature">身高:</label></td>
+		<td><input ng-model="user.newobj.stature" class="input-xlarge" id="user-stature" placeholder="请输入身高" ></input></td>
 		</tr>
 
 		<tr>
-		<td ><label for="chief-dismissed">工作状态:</label></td>
-		<td><select ng-model="chief.newobj.dismissed" ng-options="g.value as g.label for g in chief.dismissedStates"></select></td>
+		<td ><label for="user-weight">体重:</label></td>
+		<td><input ng-model="user.newobj.weight" class="input-xlarge" id="user-weight" placeholder="请输入体重" ></input></td>
+		</tr>
+
+		<tr>
+		<td ><label for="user-badHabits">不良嗜好:</label></td>
+		<td><input ng-model="user.newobj.badHabits" class="input-xlarge" id="user-badHabits" placeholder="请输入不良嗜好" ></input></td>
+		</tr>
+
+		<tr>
+		<td ><label for="user-emContact1">紧急联系人(1):</label></td>
+		<td><input ng-model="user.newobj.emContact1" class="input-xlarge" id="user-emContact1" placeholder="请输入紧急联系人" ></input></td>
+		</tr>
+
+		<tr>
+		<td ><label for="user-emContact1Tel">紧急联系人号码(1):</label></td>
+		<td><input ng-model="user.newobj.emContact1Tel" class="input-xlarge" id="user-emContact1Tel" placeholder="请输入紧急联系人号码" ></input></td>
+		</tr>
+
+		<tr>
+		<td ><label for="user-emContact2">紧急联系人(2):</label></td>
+		<td><input ng-model="user.newobj.emContact2" class="input-xlarge" id="user-emContact2" placeholder="请输入紧急联系人" ></input></td>
+		</tr>
+
+		<tr>
+		<td ><label for="user-emContact2Tel">紧急联系人号码(2):</label></td>
+		<td><input ng-model="user.newobj.emContact2Tel" class="input-xlarge" id="user-emContact2Tel" placeholder="请输入紧急联系人号码" ></input></td>
 		</tr>
 
 		</table>
@@ -73,11 +98,11 @@
 <div class="row-fluid">
 	<div class="span12">
 		<button class="btn" type="button"
-				ng-class="{'btn-primary': createChiefForm.$valid && chief.isUnique}" 
-				ng-click="chief.create()"
-				ng-disabled="!createChiefForm.$valid || !chief.isUnique">
+				ng-class="{'btn-primary': createChiefForm.$valid && user.isUnique}" 
+				ng-click="user.create()"
+				ng-disabled="!createChiefForm.$valid || !user.isUnique">
 			<i class="icon-save"></i>保存
 		</button>
-		<a href="#/chief" class="btn"><i class="icon-remove"></i>取消</a>
+		<a href="#/user" class="btn"><i class="icon-remove"></i>取消</a>
     </div>
 </div>

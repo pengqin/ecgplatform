@@ -11,6 +11,7 @@ require("./filter/main");
 
 var testCommon = require("./common/test").testCommon;
 var testEmployee = require("./employee/test").testEmployee;
+var testUser = require("./user/test").testUser;
 
 // 定义模块
 angular.module('ecgTestApp', ['ecgCommon', 'ecgTask', 'ecgMonitor', 'ecgEmployee', 'ecgUser', 'ecgReply', 'ecgFilter'])
@@ -21,8 +22,10 @@ angular.module('ecgTestApp', ['ecgCommon', 'ecgTask', 'ecgMonitor', 'ecgEmployee
 }])
 .run([        '$rootScope', '$http','EnumService',
               'ChiefService', 'ExpertService', 'OperatorService', 'ProfileService',
+              'UserService',
       function($rootScope,   $http,  EnumService,
-               ChiefService,   ExpertService,   OperatorService ,  ProfileService) {
+               ChiefService,   ExpertService,   OperatorService ,  ProfileService,
+               UserService) {
     // 判断是否登录成功
     var token = $.cookie("AiniaOpAuthToken");
     describe("App REST Test", function() {
@@ -34,6 +37,8 @@ angular.module('ecgTestApp', ['ecgCommon', 'ecgTask', 'ecgMonitor', 'ecgEmployee
         testCommon(it, EnumService);
         // 验证员工模块
         testEmployee(it, ChiefService, ExpertService, OperatorService, ProfileService);
+        // 验证用户模块
+        testUser(it, UserService);
     });
     mocha.run();
 }]);
