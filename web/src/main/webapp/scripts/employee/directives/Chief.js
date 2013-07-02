@@ -170,7 +170,7 @@ angular.module('ecgChief', [])
 
     $scope.chief.resetPassword = function() {
         $scope.dialog.showStandby();
-        ProfileService.updatePassword($scope.chief.updateobj.id, '', '')
+        ProfileService.resetPassword($scope.chief.updateobj.id)
         .then(function(result) {
             $scope.dialog.hideStandby();
             $scope.popup.success("重置密码成功!");

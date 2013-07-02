@@ -24,7 +24,7 @@ angular.module('ecgProfileService', [])
 
         return {
             get: function(username) {
-                var username = username || $.cookie("AiniaOpUsrename");
+                var username = username || $.cookie("AiniaOpUsername");
                 return $http({
                     method: 'GET',
                     cache: false,
@@ -59,6 +59,9 @@ angular.module('ecgProfileService', [])
                     data: $.param({oldPassword: oldpwd, newPassword: newpwd}),
                     url: uri + '/' + id + '/password'
                 });
+            },
+            resetPassword: function(id) {
+                return this.updatePassword(id, '', '');
             }
         };
     });
