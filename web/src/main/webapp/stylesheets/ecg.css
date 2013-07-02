@@ -81,6 +81,14 @@ i {
 /*对于pane的特殊设置*/
 .block-body-grid { 
     margin: 0px;
+    padding: 0px;
+}
+.block-body-grid table{ 
+    margin: 0px;
+    padding: 0px;
+}
+.block-body-grid table tr { 
+	cursor: pointer;
 }
 .block-without-border {
 	border: none;

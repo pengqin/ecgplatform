@@ -12,7 +12,7 @@ angular.module('ecgTaskService', [])
                 for (var i=0; i<10; i++) {
                     undones.push({
                         id: i,
-                        guest: "张三"+i,
+                        user: "张三"+i,
                         checkState: "正常",
                         processState: "未处理",
                     });

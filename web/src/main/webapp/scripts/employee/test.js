@@ -149,7 +149,7 @@ define(function(require, exports) {
                     expect(pesistedChief.status).to.be(chief.status);
                     expect(pesistedChief.title).to.be(chief.title);
                     expect(pesistedChief.mobile).to.be(chief.mobile);
-                    expect(pesistedChief.hospital).to.be(chief.hospital);
+                    expect(pesistedChief.company).to.be(chief.company);
                     expect(pesistedChief.enabled).to.be(chief.enabled);
                     expect(pesistedChief.dismissed).to.be(chief.dismissed);
                     expect(pesistedChief.roles).to.be(chief.roles);
@@ -167,7 +167,7 @@ define(function(require, exports) {
             chief.idCard = '440803198801122455';
             chief.title= '主任1';
             chief.mobile= '13800000000';
-            chief.hospital = 'chief hospital';
+            chief.company = 'chief company';
             chief.enabled = false;
             chief.dismissed = true;
             ChiefService.update(chief).then(function() {
@@ -186,7 +186,7 @@ define(function(require, exports) {
                     expect(pesistedChief.status).to.be(chief.status);
                     expect(pesistedChief.title).to.be(chief.title);
                     expect(pesistedChief.mobile).to.be(chief.mobile);
-                    expect(pesistedChief.hospital).to.be(chief.hospital);
+                    expect(pesistedChief.company).to.be(chief.company);
                     expect(pesistedChief.enabled).to.be(chief.enabled);
                     expect(pesistedChief.dismissed).to.be(chief.dismissed);
                     expect(pesistedChief.roles).to.be(chief.roles);
@@ -329,7 +329,7 @@ define(function(require, exports) {
                     expect(pesistedExpert.status).to.be(expert.status);
                     expect(pesistedExpert.title).to.be(expert.title);
                     expect(pesistedExpert.mobile).to.be(expert.mobile);
-                    expect(pesistedExpert.hospital).to.be(expert.hospital);
+                    expect(pesistedExpert.company).to.be(expert.company);
                     expect(pesistedExpert.enabled).to.be(expert.enabled);
                     expect(pesistedExpert.dismissed).to.be(expert.dismissed);
                     expect(pesistedExpert.roles).to.be(expert.roles);
@@ -347,7 +347,7 @@ define(function(require, exports) {
             expert.idCard = '440803198801122455';
             expert.title= '主任1';
             expert.mobile= '13800000000';
-            expert.hospital = 'expert hospital';
+            expert.company = 'expert company';
             expert.enabled = false;
             expert.dismissed = true;
             ExpertService.update(expert).then(function() {
@@ -366,7 +366,7 @@ define(function(require, exports) {
                     expect(pesistedExpert.status).to.be(expert.status);
                     expect(pesistedExpert.title).to.be(expert.title);
                     expect(pesistedExpert.mobile).to.be(expert.mobile);
-                    expect(pesistedExpert.hospital).to.be(expert.hospital);
+                    expect(pesistedExpert.company).to.be(expert.company);
                     expect(pesistedExpert.enabled).to.be(expert.enabled);
                     expect(pesistedExpert.dismissed).to.be(expert.dismissed);
                     expect(pesistedExpert.roles).to.be(expert.roles);
@@ -509,7 +509,7 @@ define(function(require, exports) {
                     expect(pesistedOperator.status).to.be(operator.status);
                     expect(pesistedOperator.title).to.be(operator.title);
                     expect(pesistedOperator.mobile).to.be(operator.mobile);
-                    expect(pesistedOperator.hospital).to.be(operator.hospital);
+                    expect(pesistedOperator.company).to.be(operator.company);
                     expect(pesistedOperator.enabled).to.be(operator.enabled);
                     expect(pesistedOperator.dismissed).to.be(operator.dismissed);
                     expect(pesistedOperator.roles).to.be(operator.roles);
@@ -527,7 +527,7 @@ define(function(require, exports) {
             operator.idCard = '440803198801122455';
             operator.title= '主任1';
             operator.mobile= '13800000000';
-            operator.hospital = 'operator hospital';
+            operator.company = 'operator company';
             operator.enabled = false;
             operator.dismissed = true;
             OperatorService.update(operator).then(function() {
@@ -546,7 +546,7 @@ define(function(require, exports) {
                     expect(pesistedOperator.status).to.be(operator.status);
                     expect(pesistedOperator.title).to.be(operator.title);
                     expect(pesistedOperator.mobile).to.be(operator.mobile);
-                    expect(pesistedOperator.hospital).to.be(operator.hospital);
+                    expect(pesistedOperator.company).to.be(operator.company);
                     expect(pesistedOperator.enabled).to.be(operator.enabled);
                     expect(pesistedOperator.dismissed).to.be(operator.dismissed);
                     expect(pesistedOperator.roles).to.be(operator.roles);
