@@ -13,6 +13,9 @@ var testCommon = require("./common/test").testCommon;
 var testEmployee = require("./employee/test").testEmployee;
 var testUser = require("./user/test").testUser;
 
+// GOABAL VAL
+window.PATH = window.location.pathname.slice(0, window.location.pathname.lastIndexOf("/"));
+
 // 定义模块
 angular.module('ecgTestApp', ['ecgCommon', 'ecgTask', 'ecgMonitor', 'ecgEmployee', 'ecgUser', 'ecgReply', 'ecgFilter'])
 .config(['$httpProvider', '$routeProvider', function ($httpProvider, $routeProvider) {
@@ -45,7 +48,7 @@ angular.module('ecgTestApp', ['ecgCommon', 'ecgTask', 'ecgMonitor', 'ecgEmployee
 
 // 尝试登陆
 $.ajax({
-    url: '/api/auth',
+    url: PATH + '/api/auth',
     data: {
         'username': TESTCONFIGS.username,
         'password': TESTCONFIGS.password

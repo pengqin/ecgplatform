@@ -3,7 +3,7 @@ define(function(require, exports) {
 
 angular.module('ecgOperatorService', [])
     .factory("OperatorService", function($rootScope, $http) {
-        var uri = "/api/operator";
+        var uri = PATH + "/api/operator";
 
         return {
             queryAll: function() {

@@ -99,7 +99,7 @@ define(function(require, exports) {
             });
         });
 
-        it("the chief should not be created without blank password", function(done) {
+        it("the chief should not be created without password", function(done) {
             var invalid = ChiefService.getPlainObject();
             invalid.name = 'test' + (new Date()).getTime();
             invalid.username = 'test' + (new Date()).getTime();
@@ -283,7 +283,7 @@ define(function(require, exports) {
             });
         });
 
-        it("the expert should not be created without blank password", function(done) {
+        it("the expert should not be created without password", function(done) {
             var invalid = ExpertService.getPlainObject();
             invalid.name = 'test' + (new Date()).getTime();
             invalid.username = 'test' + (new Date()).getTime();
@@ -466,7 +466,7 @@ define(function(require, exports) {
             });
         });
 
-        it("the operator should not be created without blank password", function(done) {
+        it("the operator should not be created without password", function(done) {
             var invalid = OperatorService.getPlainObject();
             invalid.name = 'test' + (new Date()).getTime();
             invalid.username = 'test' + (new Date()).getTime();

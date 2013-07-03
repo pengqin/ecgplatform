@@ -3,7 +3,7 @@ define(function(require, exports) {
 
 angular.module('ecgExpertService', [])
     .factory("ExpertService", function($rootScope, $http) {
-        var uri = "/api/expert";
+        var uri = PATH + "/api/expert";
 
         return {
             queryAll: function() {

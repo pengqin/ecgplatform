@@ -3,7 +3,7 @@ define(function(require, exports) {
 
 angular.module('ecgChiefService', [])
     .factory("ChiefService", function($rootScope, $http) {
-        var uri = "/api/chief";
+        var uri = PATH + "/api/chief";
 
         return {
             queryAll: function() {

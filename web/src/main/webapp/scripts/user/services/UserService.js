@@ -3,7 +3,7 @@ define(function(require, exports) {
 
 angular.module('ecgUserService', [])
     .factory("UserService", function($rootScope, $http) {
-        var uri = "/api/user";
+        var uri = PATH + "/api/user";
 
         return {
             queryAll: function() {
