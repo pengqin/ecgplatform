@@ -51,12 +51,12 @@ angular.module('ecgOperator', [])
                 .then(function() {
                     $scope.dialog.hideStandby();
                     $scope.operator.selectedItem = null;
-                    $scope.popup.success("删除成功!");
+                    $scope.message.success("删除成功!");
                     // 刷新
                     refreshGrid();
                 }, function() {
                     $scope.dialog.hideStandby();
-                    $scope.popup.error("无法删除该数据,可能是您的权限不足,请联系管理员!");
+                    $scope.message.error("无法删除该数据,可能是您的权限不足,请联系管理员!");
                 });
             }
         });
@@ -98,13 +98,13 @@ angular.module('ecgOperator', [])
         ProfileService.get($scope.operator.newobj.username).then(function(user) {
             if (user) { 
                 $scope.operator.isUnique = false;
-                $scope.popup.warn("用户" + $scope.operator.newobj.username + "已存在!");
+                $scope.message.warn("用户" + $scope.operator.newobj.username + "已存在!");
             } else {
                 $scope.operator.isUnique = true;
             }
         }, function() {
             $scope.operator.isUnique = true;
-            $scope.popup.warn("查询用户是否唯一时出错!");
+            $scope.message.warn("查询用户是否唯一时出错!");
         });
     };
 
@@ -116,14 +116,14 @@ angular.module('ecgOperator', [])
         .then(function(result) {
             $scope.dialog.hideStandby();
             if (result) {
-                $scope.popup.success("新增成功!");
+                $scope.message.success("新增成功!");
                 $location.path("/operator");
             } else {
-                $scope.popup.error("新增失败!");
+                $scope.message.error("新增失败!");
             }
         }, function() {
             $scope.dialog.hideStandby();
-            $scope.popup.error("服务器异常,新增失败!");
+            $scope.message.error("服务器异常,新增失败!");
         });;
     };
 }])
@@ -163,10 +163,10 @@ angular.module('ecgOperator', [])
         OperatorService.update($scope.operator.updateobj)
         .then(function(result) {
             $scope.dialog.hideStandby();
-            $scope.popup.success("编辑成功!");
+            $scope.message.success("编辑成功!");
         }, function() {
             $scope.dialog.hideStandby();
-            $scope.popup.error("编辑失败!");
+            $scope.message.error("编辑失败!");
         });;
     };
 
@@ -178,10 +178,10 @@ angular.module('ecgOperator', [])
                 ProfileService.resetPassword($scope.operator.updateobj.id)
                 .then(function(result) {
                     $scope.dialog.hideStandby();
-                    $scope.popup.success("重置密码成功!");
+                    $scope.message.success("重置密码成功!");
                 }, function() {
                     $scope.dialog.hideStandby();
-                    $scope.popup.error("重置密码失败!");
+                    $scope.message.error("重置密码失败!");
                 });
             }
         });
@@ -208,7 +208,7 @@ angular.module('ecgOperator', [])
         // OperatorService.update($scope.operator.updateobj);
         $timeout(function() {
             $scope.dialog.hideStandby();
-            $scope.popup.success("修改自定义规则成功!");
+            $scope.message.success("修改自定义规则成功!");
         }, 2000);
     };
 }])
@@ -233,7 +233,7 @@ angular.module('ecgOperator', [])
         // OperatorService.update($scope.operator.updateobj);
         $timeout(function() {
             $scope.dialog.hideStandby();
-            $scope.popup.success("配置专家成功!");
+            $scope.message.success("配置专家成功!");
         }, 2000);
     };
 }])

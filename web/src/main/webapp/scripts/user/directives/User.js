@@ -49,12 +49,12 @@ angular.module('ecgUserModules', [])
                 .then(function() {
                     $scope.dialog.hideStandby();
                     $scope.user.selectedItem = null;
-                    $scope.popup.success("删除成功!");
+                    $scope.message.success("删除成功!");
                     // 刷新
                     refreshGrid();
                 }, function() {
                     $scope.dialog.hideStandby();
-                    $scope.popup.error("无法删除该数据,可能是您的权限不足,请联系管理员!");
+                    $scope.message.error("无法删除该数据,可能是您的权限不足,请联系管理员!");
                 });
             }
         });
@@ -77,12 +77,12 @@ angular.module('ecgUserModules', [])
                 .then(function() {
                     $scope.dialog.hideStandby();
                     $scope.user.selectedItem = null;
-                    $scope.popup.success("删除成功!");
+                    $scope.message.success("删除成功!");
                     // 刷新
                     refreshGrid();
                 }, function() {
                     $scope.dialog.hideStandby();
-                    $scope.popup.error("无法删除该数据,可能是您的权限不足,请联系管理员!");
+                    $scope.message.error("无法删除该数据,可能是您的权限不足,请联系管理员!");
                 });
             }
         });
@@ -122,13 +122,13 @@ angular.module('ecgUserModules', [])
         UserService.findAllByMobile($scope.user.newobj.mobile).then(function(users) {
             if (users.length > 0) { 
                 $scope.user.isUnique = false;
-                $scope.popup.warn("手机号码" + $scope.user.newobj.mobile + "已存在!");
+                $scope.message.warn("手机号码" + $scope.user.newobj.mobile + "已存在!");
             } else {
                 $scope.user.isUnique = true;
             }
         }, function() {
             $scope.user.isUnique = true;
-            $scope.popup.warn("查询用户是否唯一时出错!");
+            $scope.message.warn("查询用户是否唯一时出错!");
         });
     };
 
@@ -140,14 +140,14 @@ angular.module('ecgUserModules', [])
         .then(function(result) {
             $scope.dialog.hideStandby();
             if (result) {
-                $scope.popup.success("新增用户成功!");
+                $scope.message.success("新增用户成功!");
                 $location.path("/user");
             } else {
-                $scope.popup.error("新增用户失败!");
+                $scope.message.error("新增用户失败!");
             }
         }, function() {
             $scope.dialog.hideStandby();
-            $scope.popup.error("服务器异常,新增失败!");
+            $scope.message.error("服务器异常,新增失败!");
         });;
     };
 }])
@@ -186,10 +186,10 @@ angular.module('ecgUserModules', [])
         UserService.update($scope.user.updateobj)
         .then(function(result) {
             $scope.dialog.hideStandby();
-            $scope.popup.success("编辑用户成功!");
+            $scope.message.success("编辑用户成功!");
         }, function() {
             $scope.dialog.hideStandby();
-            $scope.popup.error("编辑用户失败!");
+            $scope.message.error("编辑用户失败!");
         });;
     };
 
@@ -202,10 +202,10 @@ angular.module('ecgUserModules', [])
                 UserService.update($scope.user.updateobj)
                 .then(function(result) {
                     $scope.dialog.hideStandby();
-                    $scope.popup.success("重置密码成功!");
+                    $scope.message.success("重置密码成功!");
                 }, function() {
                     $scope.dialog.hideStandby();
-                    $scope.popup.error("重置密码失败!");
+                    $scope.message.error("重置密码失败!");
                 });
             }
         });

@@ -3,11 +3,11 @@ define(function(require, exports) {
 
 require("./Nav");
 require("./Header");
-require("./Popup");
+require("./Message");
 require("./Footer");
 require("./Dialog");
 
-angular.module('ecgCommon', ["angular-table", "ecgNav", "ecgHeader", "ecgPopup", "ecgFooter", "ecgDialog"])
+angular.module('ecgCommon', ["angular-table", "ecgNav", "ecgHeader", "ecgMessage", "ecgFooter", "ecgDialog"])
 .factory("EnumService", function() {
     return {
         getGenders: function() {

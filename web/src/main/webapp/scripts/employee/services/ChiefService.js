@@ -17,7 +17,7 @@ angular.module('ecgChiefService', [])
                         return [];    
                     }
                 }, function() {
-                    $rootScope.popup.error('服务器异常,无法获取数据');
+                    $rootScope.message.error('服务器异常,无法获取数据');
                     return [];
                 });
             },
@@ -62,7 +62,7 @@ angular.module('ecgChiefService', [])
                 }).then(function(res) {
                     return res.data;
                 }, function() {
-                    $rootScope.popup.error('服务器异常,无法获取标识为' + id + '的数据.');
+                    $rootScope.message.error('服务器异常,无法获取标识为' + id + '的数据.');
                     return null;
                 });
             },
