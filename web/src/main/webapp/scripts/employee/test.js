@@ -99,7 +99,7 @@ define(function(require, exports) {
             });
         });
 
-        it("the chief should not be created when username and name but with blank password", function(done) {
+        it("the chief should not be created without blank password", function(done) {
             var invalid = ChiefService.getPlainObject();
             invalid.name = 'test' + (new Date()).getTime();
             invalid.username = 'test' + (new Date()).getTime();
@@ -166,6 +166,7 @@ define(function(require, exports) {
                     expect(pesistedChief.name).to.be(chief.name);
                     expect(pesistedChief.status).to.be(chief.status);
                     expect(pesistedChief.title).to.be(chief.title);
+                    expect(pesistedChief.birthday).to.be(chief.birthday);
                     expect(pesistedChief.mobile).to.be(chief.mobile);
                     expect(pesistedChief.company).to.be(chief.company);
                     expect(pesistedChief.enabled).to.be(chief.enabled);
@@ -204,6 +205,7 @@ define(function(require, exports) {
                     expect(pesistedChief.status).to.be(chief.status);
                     expect(pesistedChief.title).to.be(chief.title);
                     expect(pesistedChief.mobile).to.be(chief.mobile);
+                    expect(pesistedChief.birthday).to.be(chief.birthday);
                     expect(pesistedChief.company).to.be(chief.company);
                     expect(pesistedChief.enabled).to.be(chief.enabled);
                     expect(pesistedChief.dismissed).to.be(chief.dismissed);
@@ -281,7 +283,7 @@ define(function(require, exports) {
             });
         });
 
-        it("the expert should not be created when username and name but with blank password", function(done) {
+        it("the expert should not be created without blank password", function(done) {
             var invalid = ExpertService.getPlainObject();
             invalid.name = 'test' + (new Date()).getTime();
             invalid.username = 'test' + (new Date()).getTime();
@@ -348,6 +350,7 @@ define(function(require, exports) {
                     expect(pesistedExpert.name).to.be(expert.name);
                     expect(pesistedExpert.status).to.be(expert.status);
                     expect(pesistedExpert.title).to.be(expert.title);
+                    expect(pesistedExpert.birthday).to.be(expert.birthday);
                     expect(pesistedExpert.mobile).to.be(expert.mobile);
                     expect(pesistedExpert.company).to.be(expert.company);
                     expect(pesistedExpert.enabled).to.be(expert.enabled);
@@ -384,6 +387,7 @@ define(function(require, exports) {
                     expect(pesistedExpert.username).to.be(expert.username);
                     expect(pesistedExpert.name).to.be(expert.name);
                     expect(pesistedExpert.status).to.be(expert.status);
+                    expect(pesistedExpert.birthday).to.be(expert.birthday);
                     expect(pesistedExpert.title).to.be(expert.title);
                     expect(pesistedExpert.mobile).to.be(expert.mobile);
                     expect(pesistedExpert.company).to.be(expert.company);
@@ -462,7 +466,7 @@ define(function(require, exports) {
             });
         });
 
-        it("the operator should not be created when username and name but with blank password", function(done) {
+        it("the operator should not be created without blank password", function(done) {
             var invalid = OperatorService.getPlainObject();
             invalid.name = 'test' + (new Date()).getTime();
             invalid.username = 'test' + (new Date()).getTime();
@@ -528,6 +532,7 @@ define(function(require, exports) {
                     expect(pesistedOperator.username).to.be(operator.username);
                     expect(pesistedOperator.name).to.be(operator.name);
                     expect(pesistedOperator.status).to.be(operator.status);
+                    expect(pesistedOperator.birthday).to.be(operator.birthday);
                     expect(pesistedOperator.title).to.be(operator.title);
                     expect(pesistedOperator.mobile).to.be(operator.mobile);
                     expect(pesistedOperator.company).to.be(operator.company);
