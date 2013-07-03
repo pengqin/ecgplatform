@@ -22,7 +22,7 @@ define(function(require, exports) {
 
     // show the message
     $scope.message.show = function(message) {
-      var alertClass = 'alert-' + message.type || 'info', date = new Date();
+      var alertClass = 'alert-' + message.type || 'info', date = new Date(), timeout = 10000;
       date.setTime(message.id);
       $("#ecgMessage").append(
         '<div id="message' + message.id + '" class="alert ' + alertClass + '">' +
@@ -30,9 +30,12 @@ define(function(require, exports) {
         '[' + $filter('date')(date, 'HH:mm:ss') + '] ' + message.text || '操作完成.' + 
         '</div>'
       );
+      if (message.type === 'success' || message.type === 'info') {
+        timeout = 5000;
+      }
       setTimeout(function() {
         $('#message' + message.id + ' button').trigger("click");
-      }, 5000);
+      }, timeout);
     };
     // show a success message
     $scope.message.success = function(msg) {
@@ -78,12 +81,12 @@ define(function(require, exports) {
       MessageService.create(message);
       $scope.message.show(message);
     };
-    
+    /*
     $scope.message.success(1111);
     $scope.message.info(1111);
     $scope.message.error(1111);
     $scope.message.warn(1111);
-    
+    */
   }])
   .directive("ecgMessage", ['$location', function ($location) {
     return {
