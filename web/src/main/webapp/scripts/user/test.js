@@ -41,7 +41,7 @@ define(function(require, exports) {
             });
         });
 
-        it("the user should not be created when username and name but with blank password", function(done) {
+        it("the user should not be created without password", function(done) {
             var invalid = UserService.getPlainObject();
             invalid.mobile = '13800000000';
             invalid.name = 'user' + (new Date()).getTime();

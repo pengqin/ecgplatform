@@ -13,6 +13,9 @@ var welcomeTemp = require("./common/templates/welcome.html");
 var helpTemp = require("./common/templates/help.html");
 var faqTemp = require("./common/templates/faq.html");
 
+// GOABAL VAL
+window.PATH = window.location.pathname.slice(0, window.location.pathname.lastIndexOf("/"));
+    
 angular.module('ecgApp', ['ecgCommon', 'ecgTask', 'ecgMonitor', 'ecgEmployee', 'ecgUser', 'ecgReply', 'ecgFilter'])
 .config(['$httpProvider', '$routeProvider', function ($httpProvider, $routeProvider) {
         var token = $.cookie('AiniaOpAuthToken');
@@ -43,7 +46,8 @@ angular.module('ecgApp', ['ecgCommon', 'ecgTask', 'ecgMonitor', 'ecgEmployee', '
             redirectTo: '/welcome'
         });
 }])
-.run(['$rootScope', '$http', function($rootScope, $http) {
+.run(['$rootScope', '$http', 'ProfileService', function($rootScope, $http, ProfileService) {
+
     // 公用函数:退出系统
     function logout(msg) {
         if (msg) { alert(msg); }
@@ -63,40 +67,19 @@ angular.module('ecgApp', ['ecgCommon', 'ecgTask', 'ecgMonitor', 'ecgEmployee', '
         return;
     }
 
-    // 构造session用户函数
-    function initUser(props) {
-        var user = $.extend({}, props || {roles: ''});
-        user.isAdmin = function() {
-            return this.roles.indexOf('admin') >= 0;
-        };
-        user.isChief = function() {
-            return this.roles.indexOf('chief') >= 0;
-        };
-        user.isExpert = function() {
-            return this.roles.indexOf('expert') >= 0;
-        };
-        user.isOperator = function() {
-            return this.roles.indexOf('operator') >= 0;
-        };
-        return user;
-    };
-
     // 设置session的用户
     $rootScope.session = {user: {roles: ""}};
-    $http({
-        method: 'GET',
-        cache: false,
-        url: "/api/employee?username=" + username
-    }).then(function(res) { // 构造session用户
-        if (res.data.datas && res.data.datas.length === 1) {
-            $rootScope.session.user = initUser(res.data.datas[0]);
+    ProfileService.get(username)
+    .then(function(user) {
+        if (user) {
+            $rootScope.session.user = user;
         } else {
             logout('无法获取您登录名为' + username +'用户信息。请与管理员联系!');
         }
     }, function() {
         logout('获取您登录名为' + username +'用户信息时, 服务器异常。请与管理员联系!');
-        return;
-    }).then(function() { // 显示工作界面
+    })
+    .then(function() { // 显示工作界面
         inited();
     });
 

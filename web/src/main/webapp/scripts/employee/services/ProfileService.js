@@ -3,7 +3,7 @@ define(function(require, exports) {
 
 angular.module('ecgProfileService', [])
     .factory("ProfileService", function($rootScope, $http) {
-        var uri = "/api/employee";
+        var uri = PATH + "/api/employee";
 
         function initUser(props) {
             var user = $.extend({}, props || {roles: ''});
@@ -28,7 +28,7 @@ angular.module('ecgProfileService', [])
                 return $http({
                     method: 'GET',
                     cache: false,
-                    url: "/api/employee?username=" + username
+                    url: uri + "?username=" + username
                 }).then(function(res) {
                     if (res.data.datas && res.data.datas.length === 1) {
                         return initUser(res.data.datas[0]);
