@@ -42,10 +42,10 @@ angular.module('ecgProfile', [])
         ProfileService.update($scope.profile.user)
         .then(function(result) {
             $scope.dialog.hideStandby();
-            $scope.popup.success("编辑成功!");
+            $scope.message.success("编辑成功!");
         }, function() {
             $scope.dialog.hideStandby();
-            $scope.popup.error("编辑失败!");
+            $scope.message.error("编辑失败!");
         });;
     };
 }])
@@ -78,10 +78,10 @@ angular.module('ecgProfile', [])
         ProfileService.updatePassword($scope.profile.user.id, $scope.profile.user.oldPassword, $scope.profile.user.newPassword)
         .then(function(result) {
             $scope.dialog.hideStandby();
-            $scope.popup.success("修改密码成功!");
+            $scope.message.success("修改密码成功!");
         }, function() {
             $scope.dialog.hideStandby();
-            $scope.popup.error("修改密码失败!");
+            $scope.message.error("修改密码失败!");
         });;
     };
 }])

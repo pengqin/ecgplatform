@@ -135,7 +135,7 @@ angular.module('ecgReplyModules', [])
     	$scope.replyconfig.newobj.id = (new Date()).getTime();
     	$scope.replyconfig.selected.replys.push($scope.replyconfig.newobj);
     	$scope.replyconfig.newobj = {};
-    	$scope.popup.success("新增默认回复成功!");
+    	$scope.message.success("新增默认回复成功!");
     };
 
     // 选择某个config
@@ -159,18 +159,18 @@ angular.module('ecgReplyModules', [])
 	                $scope.dialog.showStandby();
 	                $scope.replyconfig.selected.replys.splice(idx, 1);
 	                $scope.dialog.hideStandby();
-	                $scope.popup.success("删除成功!");
+	                $scope.message.success("删除成功!");
 	                /*
 	                ChiefService.remove(selectedItem.id)
 	                .then(function() {
 	                    $scope.dialog.hideStandby();
 	                    $scope.chief.selectedItem = null;
-	                    $scope.popup.success("删除成功!");
+	                    $scope.message.success("删除成功!");
 	                    // 刷新
 	                    refreshGrid();
 	                }, function() {
 	                    $scope.dialog.hideStandby();
-	                    $scope.popup.error("无法删除该数据,可能是您的权限不足,请联系管理员!");
+	                    $scope.message.error("无法删除该数据,可能是您的权限不足,请联系管理员!");
 	                });*/
 	            }
 	        });

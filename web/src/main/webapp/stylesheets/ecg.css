@@ -28,6 +28,10 @@ i {
 	margin: auto;
 }
 
+/*消息提示*/
+#ecgMessage .alert {
+	margin: 0px;
+}
 /*菜单*/
 .sidebar-nav {
 	width: 160px;

@@ -13,6 +13,6 @@ script:
   - cd ../web
   - mvn package
   - cd target
-  - ls -al
-  - ssh-keygen -t rsa
-  - scp ~/.ssh/id_rsa.pub -P9322 web.war ainia@182.18.31.105:web.war
+  - mv ../../upload.sh ./
+  - chmod +x upload.sh
+  - ./upload.sh

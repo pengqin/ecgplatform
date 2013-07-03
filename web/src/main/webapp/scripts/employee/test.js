@@ -88,33 +88,37 @@ define(function(require, exports) {
             expect(ChiefService.getPlainObject).not.to.be(undefined);
         });
 
+        it("the chief should not be created without username and name", function(done) {
+            var invalid = ChiefService.getPlainObject();
+            ChiefService.create(invalid).then(function(flag) {
+                if (flag) {
+                    throw new Error('the chief can be created');
+                } else {
+                    done();
+                }
+            });
+        });
+
+        it("the chief should not be created without blank password", function(done) {
+            var invalid = ChiefService.getPlainObject();
+            invalid.name = 'test' + (new Date()).getTime();
+            invalid.username = 'test' + (new Date()).getTime();
+            invalid.password = '';
+ 
+            ChiefService.create(invalid).then(function(flag) {
+                if (flag) {
+                    throw new Error('the chief can be created');
+                } else {
+                    done();
+                }
+            });
+        });
+
         var chief = ChiefService.getPlainObject();
 
-        it("the chief should not be created without username and name", function(done) {
-            ChiefService.create(chief).then(function(flag) {
-                if (flag) {
-                    throw new Error('the chief can be created');
-                } else {
-                    done();
-                }
-            });
-        });
-
-        it("the chief should not be created when username and name but with blank password", function(done) {
+        it("the chief should be created when username, name and password are set", function(done) {
             chief.name = 'test' + (new Date()).getTime();
             chief.username = 'test' + (new Date()).getTime();
-            chief.password = '';
- 
-            ChiefService.create(chief).then(function(flag) {
-                if (flag) {
-                    throw new Error('the chief can be created');
-                } else {
-                    done();
-                }
-            });
-        });
-
-        it("the chief should be created when username, name and password are set", function(done) {
             chief.password = chief.name;
  
             ChiefService.create(chief).then(function(flag) {
@@ -126,9 +130,23 @@ define(function(require, exports) {
             });
         });
 
+        it("the chief should able to login in with default password", function(done) {
+            $.ajax({
+                url: '/api/auth',
+                data: {
+                    'username': chief.username,
+                    'password': chief.password
+                },
+                type: 'POST',
+                dataType: 'json'
+            }).then(function(res) {
+                done();
+            }, function() {
+                throw new Error('the chief can\'t login in');
+            });
+        });
+
         it("the chief id should be retrieved by ProfileService", function(done) {
-            chief.password = 'password' + (new Date()).getTime();
- 
             ProfileService.get(chief.username).then(function(employee) {
                 if (employee) {
                     expect(employee.id).not.to.be(undefined);
@@ -148,6 +166,7 @@ define(function(require, exports) {
                     expect(pesistedChief.name).to.be(chief.name);
                     expect(pesistedChief.status).to.be(chief.status);
                     expect(pesistedChief.title).to.be(chief.title);
+                    expect(pesistedChief.birthday).to.be(chief.birthday);
                     expect(pesistedChief.mobile).to.be(chief.mobile);
                     expect(pesistedChief.company).to.be(chief.company);
                     expect(pesistedChief.enabled).to.be(chief.enabled);
@@ -186,6 +205,7 @@ define(function(require, exports) {
                     expect(pesistedChief.status).to.be(chief.status);
                     expect(pesistedChief.title).to.be(chief.title);
                     expect(pesistedChief.mobile).to.be(chief.mobile);
+                    expect(pesistedChief.birthday).to.be(chief.birthday);
                     expect(pesistedChief.company).to.be(chief.company);
                     expect(pesistedChief.enabled).to.be(chief.enabled);
                     expect(pesistedChief.dismissed).to.be(chief.dismissed);
@@ -194,22 +214,6 @@ define(function(require, exports) {
                 } else {
                     throw new Error('the chief can\'t be retieved by id');
                 }
-            });
-        });
-
-        it("the chief should able to login in with default password", function(done) {
-            $.ajax({
-                url: '/api/auth',
-                data: {
-                    'username': chief.username,
-                    'password': chief.password
-                },
-                type: 'POST',
-                dataType: 'json'
-            }).then(function(res) {
-                done();
-            }, function() {
-                throw new Error('the chief can\'t login in');
             });
         });
 
@@ -264,37 +268,41 @@ define(function(require, exports) {
         });
 
         it("the getPlainObject method of ExpertService should be defined", function() {
-            console.info(ExpertService.getPlainObject);
             expect(ExpertService.getPlainObject).not.to.be(undefined);
+        });
+
+
+        it("the expert should not be created without username and name", function(done) {
+            var invalid = ExpertService.getPlainObject();
+            ExpertService.create(invalid).then(function(flag) {
+                if (flag) {
+                    throw new Error('the expert can be created');
+                } else {
+                    done();
+                }
+            });
+        });
+
+        it("the expert should not be created without blank password", function(done) {
+            var invalid = ExpertService.getPlainObject();
+            invalid.name = 'test' + (new Date()).getTime();
+            invalid.username = 'test' + (new Date()).getTime();
+            invalid.password = '';
+ 
+            ExpertService.create(invalid).then(function(flag) {
+                if (flag) {
+                    throw new Error('the expert can be created');
+                } else {
+                    done();
+                }
+            });
         });
 
         var expert = ExpertService.getPlainObject();
 
-        it("the expert should not be created without username and name", function(done) {
-            ExpertService.create(expert).then(function(flag) {
-                if (flag) {
-                    throw new Error('the expert can be created');
-                } else {
-                    done();
-                }
-            });
-        });
-
-        it("the expert should not be created when username and name but with blank password", function(done) {
+        it("the expert should be created when username, name and password are set", function(done) {
             expert.name = 'test' + (new Date()).getTime();
             expert.username = 'test' + (new Date()).getTime();
-            expert.password = '';
- 
-            ExpertService.create(expert).then(function(flag) {
-                if (flag) {
-                    throw new Error('the expert can be created');
-                } else {
-                    done();
-                }
-            });
-        });
-
-        it("the expert should be created when username, name and password are set", function(done) {
             expert.password = expert.name;
  
             ExpertService.create(expert).then(function(flag) {
@@ -306,9 +314,23 @@ define(function(require, exports) {
             });
         });
 
+        it("the expert should able to login in with default password", function(done) {
+            $.ajax({
+                url: '/api/auth',
+                data: {
+                    'username': expert.username,
+                    'password': expert.password
+                },
+                type: 'POST',
+                dataType: 'json'
+            }).then(function(res) {
+                done();
+            }, function() {
+                throw new Error('the expert can\'t login in');
+            });
+        });
+
         it("the expert id should be retrieved by ProfileService", function(done) {
-            expert.password = 'password' + (new Date()).getTime();
- 
             ProfileService.get(expert.username).then(function(employee) {
                 if (employee) {
                     expect(employee.id).not.to.be(undefined);
@@ -328,6 +350,7 @@ define(function(require, exports) {
                     expect(pesistedExpert.name).to.be(expert.name);
                     expect(pesistedExpert.status).to.be(expert.status);
                     expect(pesistedExpert.title).to.be(expert.title);
+                    expect(pesistedExpert.birthday).to.be(expert.birthday);
                     expect(pesistedExpert.mobile).to.be(expert.mobile);
                     expect(pesistedExpert.company).to.be(expert.company);
                     expect(pesistedExpert.enabled).to.be(expert.enabled);
@@ -364,6 +387,7 @@ define(function(require, exports) {
                     expect(pesistedExpert.username).to.be(expert.username);
                     expect(pesistedExpert.name).to.be(expert.name);
                     expect(pesistedExpert.status).to.be(expert.status);
+                    expect(pesistedExpert.birthday).to.be(expert.birthday);
                     expect(pesistedExpert.title).to.be(expert.title);
                     expect(pesistedExpert.mobile).to.be(expert.mobile);
                     expect(pesistedExpert.company).to.be(expert.company);
@@ -374,22 +398,6 @@ define(function(require, exports) {
                 } else {
                     throw new Error('the expert can\'t be retieved by id');
                 }
-            });
-        });
-
-        it("the expert should able to login in with default password", function(done) {
-            $.ajax({
-                url: '/api/auth',
-                data: {
-                    'username': expert.username,
-                    'password': expert.password
-                },
-                type: 'POST',
-                dataType: 'json'
-            }).then(function(res) {
-                done();
-            }, function() {
-                throw new Error('the expert can\'t login in');
             });
         });
 
@@ -444,37 +452,40 @@ define(function(require, exports) {
         });
 
         it("the getPlainObject method of OperatorService should be defined", function() {
-            console.info(OperatorService.getPlainObject);
             expect(OperatorService.getPlainObject).not.to.be(undefined);
+        });
+
+        it("the operator should not be created without username and name", function(done) {
+            var invalid = OperatorService.getPlainObject();
+            OperatorService.create(invalid).then(function(flag) {
+                if (flag) {
+                    throw new Error('the operator can be created');
+                } else {
+                    done();
+                }
+            });
+        });
+
+        it("the operator should not be created without blank password", function(done) {
+            var invalid = OperatorService.getPlainObject();
+            invalid.name = 'test' + (new Date()).getTime();
+            invalid.username = 'test' + (new Date()).getTime();
+            invalid.password = '';
+ 
+            OperatorService.create(invalid).then(function(flag) {
+                if (flag) {
+                    throw new Error('the operator can be created');
+                } else {
+                    done();
+                }
+            });
         });
 
         var operator = OperatorService.getPlainObject();
 
-        it("the operator should not be created without username and name", function(done) {
-            OperatorService.create(operator).then(function(flag) {
-                if (flag) {
-                    throw new Error('the operator can be created');
-                } else {
-                    done();
-                }
-            });
-        });
-
-        it("the operator should not be created when username and name but with blank password", function(done) {
+        it("the operator should be created when username, name and password are set", function(done) {
             operator.name = 'test' + (new Date()).getTime();
             operator.username = 'test' + (new Date()).getTime();
-            operator.password = '';
- 
-            OperatorService.create(operator).then(function(flag) {
-                if (flag) {
-                    throw new Error('the operator can be created');
-                } else {
-                    done();
-                }
-            });
-        });
-
-        it("the operator should be created when username, name and password are set", function(done) {
             operator.password = operator.name;
  
             OperatorService.create(operator).then(function(flag) {
@@ -486,9 +497,23 @@ define(function(require, exports) {
             });
         });
 
+        it("the operator should able to login in with default password", function(done) {
+            $.ajax({
+                url: '/api/auth',
+                data: {
+                    'username': operator.username,
+                    'password': operator.password
+                },
+                type: 'POST',
+                dataType: 'json'
+            }).then(function(res) {
+                done();
+            }, function() {
+                throw new Error('the operator can\'t login in');
+            });
+        });
+
         it("the operator id should be retrieved by ProfileService", function(done) {
-            operator.password = 'password' + (new Date()).getTime();
- 
             ProfileService.get(operator.username).then(function(employee) {
                 if (employee) {
                     expect(employee.id).not.to.be(undefined);
@@ -507,6 +532,7 @@ define(function(require, exports) {
                     expect(pesistedOperator.username).to.be(operator.username);
                     expect(pesistedOperator.name).to.be(operator.name);
                     expect(pesistedOperator.status).to.be(operator.status);
+                    expect(pesistedOperator.birthday).to.be(operator.birthday);
                     expect(pesistedOperator.title).to.be(operator.title);
                     expect(pesistedOperator.mobile).to.be(operator.mobile);
                     expect(pesistedOperator.company).to.be(operator.company);
@@ -554,22 +580,6 @@ define(function(require, exports) {
                 } else {
                     throw new Error('the operator can\'t be retieved by id');
                 }
-            });
-        });
-
-        it("the operator should able to login in with default password", function(done) {
-            $.ajax({
-                url: '/api/auth',
-                data: {
-                    'username': operator.username,
-                    'password': operator.password
-                },
-                type: 'POST',
-                dataType: 'json'
-            }).then(function(res) {
-                done();
-            }, function() {
-                throw new Error('the operator can\'t login in');
             });
         });
 
