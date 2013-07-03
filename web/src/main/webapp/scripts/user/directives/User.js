@@ -106,7 +106,6 @@ angular.module('ecgUserModules', [])
     $scope.user = {};
     $scope.user.newobj = UserService.getPlainObject();
     $scope.user.genders = EnumService.getGenders();
-    $scope.user.dismissedStates = EnumService.getDismissedStates();
 
     $('#user-birthday').datetimepicker({
         format: "yyyy-MM-dd",
@@ -120,32 +119,31 @@ angular.module('ecgUserModules', [])
 
     $scope.user.isUnique = true;
     $scope.user.checkUnique = function() {
-        /*
-        ProfileService.get($scope.user.newobj.username).then(function(user) {
-            if (user) { 
+        UserService.findAllByMobile($scope.user.newobj.mobile).then(function(users) {
+            if (users.length > 0) { 
                 $scope.user.isUnique = false;
-                $scope.popup.warn("用户" + $scope.user.newobj.username + "已存在!");
+                $scope.popup.warn("手机号码" + $scope.user.newobj.mobile + "已存在!");
             } else {
                 $scope.user.isUnique = true;
             }
         }, function() {
             $scope.user.isUnique = true;
             $scope.popup.warn("查询用户是否唯一时出错!");
-        });*/
+        });
     };
 
     $scope.user.create = function() {
         $scope.dialog.showStandby();
         $scope.user.newobj.birthday = $('#user-birthday input').val();
-        $scope.user.newobj.password = $scope.user.newobj.username;
+        $scope.user.newobj.password = $scope.user.newobj.mobile;
         UserService.create($scope.user.newobj)
         .then(function(result) {
             $scope.dialog.hideStandby();
             if (result) {
-                $scope.popup.success("新增成功!");
+                $scope.popup.success("新增用户成功!");
                 $location.path("/user");
             } else {
-                $scope.popup.error("新增失败!");
+                $scope.popup.error("新增用户失败!");
             }
         }, function() {
             $scope.dialog.hideStandby();
@@ -169,7 +167,6 @@ angular.module('ecgUserModules', [])
         $scope.user.updateobj = user;
     });
     $scope.user.genders = EnumService.getGenders();
-    $scope.user.dismissedStates = EnumService.getDismissedStates();
 
     $('#user-birthday').datetimepicker({
         format: "yyyy-MM-dd",
@@ -189,29 +186,34 @@ angular.module('ecgUserModules', [])
         UserService.update($scope.user.updateobj)
         .then(function(result) {
             $scope.dialog.hideStandby();
-            $scope.popup.success("编辑成功!");
+            $scope.popup.success("编辑用户成功!");
         }, function() {
             $scope.dialog.hideStandby();
-            $scope.popup.error("编辑失败!");
+            $scope.popup.error("编辑用户失败!");
         });;
     };
 
     $scope.user.resetPassword = function() {
-        $scope.dialog.showStandby();
-        $scope.user.updateobj.password = $scope.user.updateobj.username;
-        UserService.update($scope.user.updateobj)
-        .then(function(result) {
-            $scope.dialog.hideStandby();
-            $scope.popup.success("重置密码成功!");
-        }, function() {
-            $scope.dialog.hideStandby();
-            $scope.popup.error("重置密码失败!");
-        });;
+        $scope.dialog.confirm({
+            text: "重置后登录密码将与手机号码一致，确定继续?",
+            handler: function() {
+                $scope.dialog.showStandby();
+                $scope.user.updateobj.password = $scope.user.updateobj.mobile;
+                UserService.update($scope.user.updateobj)
+                .then(function(result) {
+                    $scope.dialog.hideStandby();
+                    $scope.popup.success("重置密码成功!");
+                }, function() {
+                    $scope.dialog.hideStandby();
+                    $scope.popup.error("重置密码失败!");
+                });
+            }
+        });
     };
 }])
 .directive("ecgUserEdit", [ '$location', function($location) {
     return {
-        restrict : 'E',
+        restrict : 'A',
         replace : false,
         template : userEditTemp,
         controller : "UserEditController",
