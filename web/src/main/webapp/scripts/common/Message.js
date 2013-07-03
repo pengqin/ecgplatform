@@ -22,7 +22,7 @@ define(function(require, exports) {
 
     // show the message
     $scope.message.show = function(message) {
-      var alertClass = 'alert-' + message.type || 'info', date = new Date(), timeout = 10000;
+      var alertClass = 'alert-' + message.type || 'info', date = new Date();
       date.setTime(message.id);
       $("#ecgMessage").append(
         '<div id="message' + message.id + '" class="alert ' + alertClass + '">' +
@@ -31,11 +31,11 @@ define(function(require, exports) {
         '</div>'
       );
       if (message.type === 'success' || message.type === 'info') {
-        timeout = 5000;
+        setTimeout(function() {
+          $('#message' + message.id + ' button').trigger("click");
+        }, 5000);
       }
-      setTimeout(function() {
-        $('#message' + message.id + ' button').trigger("click");
-      }, timeout);
+      
     };
     // show a success message
     $scope.message.success = function(msg) {
