@@ -45,14 +45,12 @@ angular.module('ecgChiefService', [])
                     data: $.param(chief),
                     url: uri
                 }).then(function(res) {
-                    console.info(res);
                     if (res.status === 201) {
                         return true;
                     } else {
                         return false;
                     }
                 }, function() {
-                    console.info('error');
                     return false;
                 });
             },

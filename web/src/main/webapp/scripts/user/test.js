@@ -24,10 +24,9 @@ define(function(require, exports) {
             expect(UserService.getPlainObject).not.to.be(undefined);
         });
 
-        var User = UserService.getPlainObject();
-
         it("the User should not be created without username and name", function(done) {
-            UserService.create(User).then(function(flag) {
+            var invalid = UserService.getPlainObject();
+            UserService.create(invalid).then(function(flag) {
                 if (flag) {
                     throw new Error('the User can be created');
                 } else {
@@ -37,11 +36,12 @@ define(function(require, exports) {
         });
 
         it("the User should not be created when username and name but with blank password", function(done) {
-            User.mobile = '13800000000';
-            User.name = 'user' + (new Date()).getTime();
-            User.password = '';
+            var invalid = UserService.getPlainObject();
+            invalid.mobile = '13800000000';
+            invalid.name = 'user' + (new Date()).getTime();
+            invalid.password = '';
  
-            UserService.create(User).then(function(flag) {
+            UserService.create(invalid).then(function(flag) {
                 if (flag) {
                     throw new Error('the User can be created');
                 } else {
@@ -50,10 +50,13 @@ define(function(require, exports) {
             });
         });
 
+        var user = UserService.getPlainObject();
         it("the User should be created when username, name and password are set", function(done) {
-            User.password = User.mobile;
+            user.mobile = '13800000000';
+            user.name = 'user' + (new Date()).getTime();
+            user.password = User.mobile;
  
-            UserService.create(User).then(function(flag) {
+            UserService.create(user).then(function(flag) {
                 if (flag) {
                     done();
                 } else {
@@ -93,7 +96,7 @@ define(function(require, exports) {
             User.company = 'User company';
             User.enabled = false;
             User.dismissed = true;
-            UserService.update(User).then(function() {
+            UserService.update(user).then(function() {
                 done();
             }, function() {
                 throw new Error('the User can\'t be updated.');
