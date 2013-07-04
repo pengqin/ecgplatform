@@ -7,7 +7,7 @@
 		<tr>
 		<td width="150px" valign="top"><label for="user-mobile">手机号码:</label></td>
 		<td>
-			<input ng-model="user.newobj.mobile" class="input-xlarge" id="user-mobile"
+			<input ng-model="user.newobj.mobile" class="input-xlarge" id="user-mobile" ng-pattern="/^(86)*0*13\d{9}$/"
 				   focus required placeholder="请输入登录名" ng-change="user.checkUnique()"></input>
 			<span class="required">*</span><span class="desc">初始登录密码与手机一致</span></td>
 		</tr>
@@ -41,7 +41,8 @@
 
 		<tr>
 		<td ><label for="user-idCard">身份证:</label></td>
-		<td><input ng-model="user.newobj.idCard" class="input-xlarge" id="user-idCard" placeholder="请输入18位身份证号码"></input></td>
+		<td><input ng-model="user.newobj.idCard" ng-pattern="/^(\d{18,18}|\d{17,17}[xX])$/"
+			 class="input-xlarge" id="user-idCard" placeholder="请输入18位身份证号码"></input></td>
 		</tr>
 
 		<tr>
@@ -58,12 +59,14 @@
 
 		<tr>
 		<td ><label for="user-stature">身高:</label></td>
-		<td><input ng-model="user.newobj.stature" class="input-xlarge" id="user-stature" placeholder="请输入身高" ></input></td>
+		<td><input ng-model="user.newobj.stature" ng-pattern="/^(\d*)\.?\d+$/"
+			 class="input-xlarge" id="user-stature" placeholder="请输入身高" ></input></td>
 		</tr>
 
 		<tr>
 		<td ><label for="user-weight">体重:</label></td>
-		<td><input ng-model="user.newobj.weight" class="input-xlarge" id="user-weight" placeholder="请输入体重" ></input></td>
+		<td><input ng-model="user.newobj.weight" ng-pattern="/^(\d*)\.?\d+$/"
+			 class="input-xlarge" id="user-weight" placeholder="请输入体重" ></input></td>
 		</tr>
 
 		<tr>
@@ -73,12 +76,14 @@
 
 		<tr>
 		<td ><label for="user-emContact1">紧急联系人(1):</label></td>
-		<td><input ng-model="user.newobj.emContact1" class="input-xlarge" id="user-emContact1" placeholder="请输入紧急联系人" ></input></td>
+		<td><input ng-model="user.newobj.emContact1"
+			 class="input-xlarge" id="user-emContact1" placeholder="请输入紧急联系人" ></input></td>
 		</tr>
 
 		<tr>
 		<td ><label for="user-emContact1Tel">紧急联系人号码(1):</label></td>
-		<td><input ng-model="user.newobj.emContact1Tel" class="input-xlarge" id="user-emContact1Tel" placeholder="请输入紧急联系人号码" ></input></td>
+		<td><input ng-model="user.newobj.emContact1Tel" ng-pattern="/^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,14}$/"
+		     class="input-xlarge" id="user-emContact1Tel" placeholder="请输入紧急联系人号码" ></input></td>
 		</tr>
 
 		<tr>
@@ -88,7 +93,8 @@
 
 		<tr>
 		<td ><label for="user-emContact2Tel">紧急联系人号码(2):</label></td>
-		<td><input ng-model="user.newobj.emContact2Tel" class="input-xlarge" id="user-emContact2Tel" placeholder="请输入紧急联系人号码" ></input></td>
+		<td><input ng-model="user.newobj.emContact2Tel" ng-pattern="/^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,14}$/"
+			 class="input-xlarge" id="user-emContact2Tel" placeholder="请输入紧急联系人号码" ></input></td>
 		</tr>
 
 		</table>

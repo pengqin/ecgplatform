@@ -51,7 +51,7 @@ angular.module('ecgExpert', [])
                 .then(function() {
                     $scope.dialog.hideStandby();
                     $scope.expert.selectedItem = null;
-                    $scope.message.success("删除成功!");
+                    $scope.message.success("删除专家成功!");
                     // 刷新
                     refreshGrid();
                 }, function() {
@@ -100,13 +100,13 @@ angular.module('ecgExpert', [])
         ProfileService.get($scope.expert.newobj.username).then(function(user) {
             if (user) { 
                 $scope.expert.isUnique = false;
-                $scope.message.warn("用户" + $scope.expert.newobj.username + "已存在!");
+                $scope.message.warn("登录名为" + $scope.expert.newobj.username + "的员工已存在!");
             } else {
                 $scope.expert.isUnique = true;
             }
         }, function() {
             $scope.expert.isUnique = true;
-            $scope.message.warn("查询用户是否唯一时出错!");
+            $scope.message.warn("查询登录名是否唯一时出错!");
         });
     };
 
@@ -118,14 +118,14 @@ angular.module('ecgExpert', [])
         .then(function(result) {
             $scope.dialog.hideStandby();
             if (result) {
-                $scope.message.success("新增成功!");
+                $scope.message.success("新增专家成功!");
                 $location.path("/expert");
             } else {
-                $scope.message.error("新增失败!");
+                $scope.message.error("新增专家失败!");
             }
         }, function() {
             $scope.dialog.hideStandby();
-            $scope.message.error("服务器异常,新增失败!");
+            $scope.message.error("服务器异常,新增专家失败!");
         });;
     };
 }])
@@ -141,9 +141,15 @@ angular.module('ecgExpert', [])
 .controller('ExpertEditController', ['$scope', '$routeParams', '$timeout', '$location', 'EnumService', 'ProfileService', 'ExpertService',
     function ($scope, $routeParams, $timeout, $location, EnumService, ProfileService, ExpertService) {
     $scope.expert.updateobj = null; //ExpertService.get($routeParams.id);
-    ExpertService.get($routeParams.id).then(function(expert) {
-        $scope.expert.updateobj = expert;
-    });
+
+    // 初始化界面,并获得最新version
+    function refresh() {
+        ExpertService.get($routeParams.id).then(function(expert) {
+            $scope.expert.updateobj = expert;
+        });
+    };
+    refresh();
+
     $scope.expert.genders = EnumService.getGenders();
     $scope.expert.dismissedStates = EnumService.getDismissedStates();
 
@@ -165,10 +171,11 @@ angular.module('ecgExpert', [])
         ExpertService.update($scope.expert.updateobj)
         .then(function(result) {
             $scope.dialog.hideStandby();
-            $scope.message.success("编辑成功!");
+            $scope.message.success("编辑专家成功!");
+            refresh();
         }, function() {
             $scope.dialog.hideStandby();
-            $scope.message.error("编辑失败!");
+            $scope.message.error("编辑专家失败!");
         });;
     };
 
@@ -181,6 +188,7 @@ angular.module('ecgExpert', [])
                 .then(function(result) {
                     $scope.dialog.hideStandby();
                     $scope.message.success("重置密码成功!");
+                    refresh();
                 }, function() {
                     $scope.dialog.hideStandby();
                     $scope.message.error("重置密码失败!");

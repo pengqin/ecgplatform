@@ -139,9 +139,15 @@ angular.module('ecgOperator', [])
 .controller('OperatorEditController', ['$scope', '$routeParams', '$timeout', '$location', 'EnumService', 'ProfileService', 'OperatorService',
     function ($scope, $routeParams, $timeout, $location, EnumService, ProfileService, OperatorService) {
     $scope.operator.updateobj = null; //OperatorService.get($routeParams.id);
-    OperatorService.get($routeParams.id).then(function(operator) {
-        $scope.operator.updateobj = operator;
-    });
+
+    // 初始化界面,并获得最新version
+    function refresh() {
+        OperatorService.get($routeParams.id).then(function(operator) {
+            $scope.operator.updateobj = operator;
+        });
+    };
+    refresh();
+
     $scope.operator.genders = EnumService.getGenders();
     $scope.operator.dismissedStates = EnumService.getDismissedStates();
 
@@ -164,6 +170,7 @@ angular.module('ecgOperator', [])
         .then(function(result) {
             $scope.dialog.hideStandby();
             $scope.message.success("编辑成功!");
+            refresh();
         }, function() {
             $scope.dialog.hideStandby();
             $scope.message.error("编辑失败!");
@@ -179,6 +186,7 @@ angular.module('ecgOperator', [])
                 .then(function(result) {
                     $scope.dialog.hideStandby();
                     $scope.message.success("重置密码成功!");
+                    refresh();
                 }, function() {
                     $scope.dialog.hideStandby();
                     $scope.message.error("重置密码失败!");

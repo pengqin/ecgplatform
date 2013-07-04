@@ -1,4 +1,7 @@
-<div class="row-fluid">
+<div class="row-fluid" ng-show="!operator.updateobj">
+	<div class="span12">数据加载中,请稍候...</div>
+</div>
+<div class="row-fluid" ng-show="operator.updateobj">
 	<div class="span12">
 		<form name="updateOperatorForm">
 		<table class="ecgprops">
@@ -40,13 +43,15 @@
 
 		<tr>
 		<td ><label for="operator-idCard">身份证:</label></td>
-		<td><input ng-model="operator.updateobj.idCard" class="input-xlarge" id="operator-idCard" placeholder="请输入18位身份证号码"></td>
+		<td><input ng-model="operator.updateobj.idCard" ng-pattern="/^(\d{18,18}|\d{17,17}[xX])$/"
+			 class="input-xlarge" id="operator-idCard" placeholder="请输入18位身份证号码"></td>
 		</tr>
 
 		<tr>
 		<td ><label for="operator-mobile">电话:</label></td>
 		<td>
-		<input ng-model="operator.updateobj.mobile" class="input-xlarge" id="operator-mobile" placeholder="请输入联系电话,固话请带区号">
+		<input ng-model="operator.updateobj.mobile" ng-pattern="/^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,14}$/"
+		 class="input-xlarge" id="operator-mobile" placeholder="请输入联系电话,固话请带区号">
 		</td>
 		</tr>
 
@@ -59,7 +64,7 @@
 		</form>
     </div>
 </div>
-<div class="row-fluid">
+<div class="row-fluid" ng-show="operator.updateobj">
 	<div class="span12">
 		<button class="btn" type="button"
 				ng-class="{'btn-primary': updateOperatorForm.$valid}" 

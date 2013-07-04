@@ -140,6 +140,12 @@ table tbody tr.active {
 .ecgprops .progress {
 	margin-bottom: 2px;
 }
+.ecgprops input {
+	margin-bottom: 0px;
+}
+.ecgprops input.ng-invalid {
+	border: 2px solid red;
+}
 
 /* 回复设置*/
 .replyconfigs {
@@ -151,10 +157,10 @@ table tbody tr.active {
 	line-height: 50px;
 }
 /* 过滤规则 */
-.filters td {
+.rules td {
 	line-height: 47px;
 }
-.filters input {
+.rules input {
 	margin: 0px;
 	width:40px;
 	text-align:right;

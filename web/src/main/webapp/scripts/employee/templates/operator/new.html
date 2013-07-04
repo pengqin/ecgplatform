@@ -7,9 +7,10 @@
 		<tr>
 		<td width="100px" valign="top"><label for="operator-username">登录名:</label></td>
 		<td>
-			<input ng-model="operator.newobj.username" class="input-xlarge" id="operator-username" ng-change="operator.checkUnique()" 
+			<input ng-model="operator.newobj.username" ng-pattern="/^[a-zA-Z0-9_]{3,16}$/"
+			 class="input-xlarge" id="operator-username" ng-change="operator.checkUnique()" 
 			 focus required placeholder="请输入登录名"></input>
-			<span class="required">*</span><span class="desc">初次登录密码与登录名一致</span></td>
+			<span class="required">*</span><span class="desc">只能为字母和数字组合。至少3个字符，最多16个。初始登录密码与登录名一致</span></td>
 		</tr>
 
 		<tr>
@@ -40,7 +41,8 @@
 
 		<tr>
 		<td ><label for="operator-idCard">身份证:</label></td>
-		<td><input ng-model="operator.newobj.idCard" class="input-xlarge" id="operator-idCard" placeholder="请输入18位身份证号码"></input></td>
+		<td><input ng-model="operator.newobj.idCard" ng-pattern="/^(\d{18,18}|\d{17,17}[xX])$/"
+			 class="input-xlarge" id="operator-idCard" placeholder="请输入18位身份证号码"></input></td>
 		</tr>
 
 		<tr>
