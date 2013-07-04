@@ -18,9 +18,14 @@ angular.module('ecgProfile', [])
     function ($scope, $routeParams, $timeout, $location, EnumService, ProfileService) {
 
    	$scope.profile.user = null;
-   	ProfileService.get().then(function(user) {
-        $scope.profile.user = user;
-    });
+
+    function refresh() {
+        ProfileService.get().then(function(user) {
+            $scope.profile.user = user;
+        });
+    }
+    refresh();
+
     $scope.profile.genders = EnumService.getGenders();
     $scope.profile.dismissedStates = EnumService.getDismissedStates();
 
@@ -43,6 +48,7 @@ angular.module('ecgProfile', [])
         .then(function(result) {
             $scope.dialog.hideStandby();
             $scope.message.success("编辑成功!");
+            refresh();
         }, function() {
             $scope.dialog.hideStandby();
             $scope.message.error("编辑失败!");
@@ -64,9 +70,13 @@ angular.module('ecgProfile', [])
     function ($scope, $routeParams, $timeout, $location, EnumService, ProfileService) {
 
    	$scope.profile.user = null;
-    ProfileService.get().then(function(user) {
-        $scope.profile.user = user;
-    });
+
+    function refresh() {
+        ProfileService.get().then(function(user) {
+            $scope.profile.user = user;
+        });
+    }
+    refresh();
 
     $scope.profile.passwordIsEuqal = false;
     $scope.profile.compare = function() {
@@ -79,6 +89,7 @@ angular.module('ecgProfile', [])
         .then(function(result) {
             $scope.dialog.hideStandby();
             $scope.message.success("修改密码成功!");
+            refresh();
         }, function() {
             $scope.dialog.hideStandby();
             $scope.message.error("修改密码失败!");

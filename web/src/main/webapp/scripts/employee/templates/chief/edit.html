@@ -1,4 +1,7 @@
-<div class="row-fluid">
+<div class="row-fluid" ng-show="!chief.updateobj">
+	<div class="span12">数据加载中,请稍候...</div>
+</div>
+<div class="row-fluid" ng-show="chief.updateobj">
 	<div class="span12">
 		<form name="updateChiefForm">
 		<table class="ecgprops">
@@ -40,7 +43,8 @@
 
 		<tr>
 		<td ><label for="chief-idCard">身份证:</label></td>
-		<td><input ng-model="chief.updateobj.idCard" class="input-xlarge" id="chief-idCard" placeholder="请输入18位身份证号码"></td>
+		<td><input ng-model="chief.updateobj.idCard" ng-pattern="/^(\d{18,18}|\d{17,17}[xX])$/"
+			 class="input-xlarge" id="chief-idCard" placeholder="请输入18位身份证号码"></td>
 		</tr>
 
 		<tr>
@@ -51,7 +55,8 @@
 		<tr>
 		<td ><label for="chief-mobile">电话:</label></td>
 		<td>
-		<input ng-model="chief.updateobj.mobile" class="input-xlarge" id="chief-mobile" placeholder="请输入联系电话,固话请带区号">
+		<input ng-model="chief.updateobj.mobile" ng-pattern="/^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,14}$/"
+			   class="input-xlarge" id="chief-mobile" placeholder="请输入联系电话,固话请带区号">
 		</td>
 		</tr>
 
@@ -69,7 +74,7 @@
 		</form>
     </div>
 </div>
-<div class="row-fluid">
+<div class="row-fluid" ng-show="chief.updateobj">
 	<div class="span12">
 		<button class="btn" type="button"
 				ng-class="{'btn-primary': updateChiefForm.$valid}" 

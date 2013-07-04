@@ -8,8 +8,9 @@
 		<td width="100px" valign="top"><label for="chief-username">登录名:</label></td>
 		<td>
 			<input ng-model="chief.newobj.username" class="input-xlarge" id="chief-username"
-				   focus required placeholder="请输入登录名" ng-change="chief.checkUnique()"></input>
-			<span class="required">*</span><span class="desc">初次登录密码与登录名一致</span></td>
+				   focus required ng-pattern="/^[a-zA-Z0-9_]{3,16}$/"
+				   placeholder="请输入登录名" ng-change="chief.checkUnique()"></input>
+			<span class="required">*</span><span class="desc">只能为字母和数字组合。至少3个字符，最多16个。初始登录密码与登录名一致</span></td>
 		</tr>
 
 		<tr>
@@ -41,7 +42,8 @@
 
 		<tr>
 		<td ><label for="chief-idCard">身份证:</label></td>
-		<td><input ng-model="chief.newobj.idCard" class="input-xlarge" id="chief-idCard" placeholder="请输入18位身份证号码"></input></td>
+		<td><input ng-model="chief.newobj.idCard" ng-pattern="/^(\d{18,18}|\d{17,17}[xX])$/"
+			class="input-xlarge" id="chief-idCard" placeholder="请输入18位身份证号码"></input></td>
 		</tr>
 
 		<tr>
@@ -52,7 +54,8 @@
 		<tr>
 		<td ><label for="chief-tel">电话:</label></td>
 		<td>
-		<input ng-model="chief.newobj.mobile" class="input-xlarge" id="chief-tel" placeholder="请输入联系电话,固话请带区号"></input>
+		<input ng-model="chief.newobj.mobile" ng-pattern="/^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,14}$/"
+		 class="input-xlarge" id="chief-tel" placeholder="请输入联系电话,固话请带区号"></input>
 		</td>
 		</tr>
 

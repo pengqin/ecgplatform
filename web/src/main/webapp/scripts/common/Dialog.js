@@ -81,10 +81,10 @@ define(function(require, exports) {
         $('#ecgDialog').modal('hide');
       }
       var current = (new Date()).getTime();
-      if (current - showtime > 2000) {
+      if (current - showtime > 1500) {
         hide();
       } else {
-        $timeout(hide, 2000);
+        $timeout(hide, 1500);
       }
   	};
   }])

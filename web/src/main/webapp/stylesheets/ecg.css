@@ -141,6 +141,10 @@ table tbody tr.active {
 	margin-bottom: 2px;
 }
 
+.ecgprops input.ng-invalid {
+	border: 2px solid red;
+}
+
 /* 回复设置*/
 .replyconfigs {
 	height: 50px;

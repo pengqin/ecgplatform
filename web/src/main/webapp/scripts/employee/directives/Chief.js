@@ -49,7 +49,7 @@ angular.module('ecgChief', [])
                 .then(function() {
                     $scope.dialog.hideStandby();
                     $scope.chief.selectedItem = null;
-                    $scope.message.success("删除成功!");
+                    $scope.message.success("删除主任成功!");
                     // 刷新
                     refreshGrid();
                 }, function() {
@@ -96,13 +96,13 @@ angular.module('ecgChief', [])
         ProfileService.get($scope.chief.newobj.username).then(function(user) {
             if (user) { 
                 $scope.chief.isUnique = false;
-                $scope.message.warn("用户" + $scope.chief.newobj.username + "已存在!");
+                $scope.message.warn("登录名为" + $scope.chief.newobj.username + "的员工已存在!");
             } else {
                 $scope.chief.isUnique = true;
             }
         }, function() {
             $scope.chief.isUnique = true;
-            $scope.message.warn("查询用户是否唯一时出错!");
+            $scope.message.warn("查询登录名是否唯一时出错!");
         });
     };
 
@@ -114,14 +114,14 @@ angular.module('ecgChief', [])
         .then(function(result) {
             $scope.dialog.hideStandby();
             if (result) {
-                $scope.message.success("新增成功!");
+                $scope.message.success("新增主任成功!");
                 $location.path("/chief");
             } else {
-                $scope.message.error("新增失败!");
+                $scope.message.error("新增主任失败!");
             }
         }, function() {
             $scope.dialog.hideStandby();
-            $scope.message.error("服务器异常,新增失败!");
+            $scope.message.error("服务器异常,新增主任失败!");
         });;
     };
 }])
@@ -142,6 +142,8 @@ angular.module('ecgChief', [])
     function refresh() {
         ChiefService.get($routeParams.id).then(function(chief) {
             $scope.chief.updateobj = chief;
+        }, function() {
+            $scope.message.error("加载主任数据失败.");
         });
     };
     refresh();
@@ -167,11 +169,11 @@ angular.module('ecgChief', [])
         ChiefService.update($scope.chief.updateobj)
         .then(function(result) {
             $scope.dialog.hideStandby();
-            $scope.message.success("编辑成功!");
+            $scope.message.success("编辑主任成功!");
             refresh();
         }, function() {
             $scope.dialog.hideStandby();
-            $scope.message.error("编辑失败!");
+            $scope.message.error("编辑主任失败!");
         });;
     };
 

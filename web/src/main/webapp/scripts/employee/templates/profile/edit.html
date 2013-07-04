@@ -38,13 +38,15 @@
 
 		<tr>
 		<td ><label for="profile-idCard">身份证:</label></td>
-		<td><input ng-model="profile.user.idCard" class="input-xlarge" id="profile-idCard" placeholder="请输入18位身份证号码"></td>
+		<td><input ng-model="profile.user.idCard" ng-pattern="/^(\d{18,18}|\d{17,17}[xX])$/"
+			 class="input-xlarge" id="profile-idCard" placeholder="请输入18位身份证号码"></td>
 		</tr>
 
 		<tr>
 		<td ><label for="profile-mobile">电话:</label></td>
 		<td>
-		<input ng-model="profile.user.mobile" class="input-xlarge" id="profile-mobile" placeholder="请输入联系电话,固话请带区号">
+		<input ng-model="profile.user.mobile" ng-pattern="/^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,14}$/"
+		 class="input-xlarge" id="profile-mobile" placeholder="请输入联系电话,固话请带区号">
 		</td>
 		</tr>
 
