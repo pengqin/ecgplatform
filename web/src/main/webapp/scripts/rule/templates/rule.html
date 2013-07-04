@@ -4,7 +4,7 @@
 		<button class="btn" type="button"
 				ng-click="rule.save()"
 				ng-show="session.user.isChief() || session.user.isAdmin()"
-				ng-disabled="!ruleForm.$valid">
+				ng-disabled="!rule.data.length">
 			<i class="icon-save"></i>保存修改
 		</button>
 		<button class="btn" type="button"
@@ -26,7 +26,8 @@
 			<th width="10%">指标编码</th>
 			<th width="15%">指标名称</th>
 			<th>范围设定</th>
-			<th width="35%">说明</th>
+			<th width="25%">说明</th>
+			<th width="10%">相关回复</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -42,6 +43,7 @@
 				<button class="btn btn-small" type="button" ng-click="item.max = 9999">无上限</button>
 				</td>
 				<td>{{item.desc}}</td>
+				<td><a href="javascript:void(0)" ng-click="rule.editReplyConfig(item)">设置回复</td>
 			</tr>
 		</tbody>
 		</table>
