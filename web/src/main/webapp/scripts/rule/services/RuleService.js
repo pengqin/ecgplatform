@@ -3,9 +3,11 @@ define(function(require, exports) {
 
 angular.module('ecgRuleService', [])
     .factory("RuleService", function($rootScope, $http) {
-        var uri = "/api/rule";
+        var uri = PATH + "/api/rule";
 
-        var mock = [{
+        var mock1, mock2;
+        /*
+        var mock1 = [{
             id: 1,
             type: 11,
             code: 1,
@@ -43,6 +45,38 @@ angular.module('ecgRuleService', [])
             desc: '百分比'
         }];
 
+        var mock2 = [{
+            id: 1,
+            min:  0,
+            max: 30,
+            level: 'danger'
+        }, {
+            id: 2,
+            min:  31,
+            max: 45,
+            level: 'danger'
+        }, {
+            id: 3,
+            min:  46,
+            max: 59,
+            level: 'warning'
+        }, {
+            id: 4,
+            min:  60,
+            max: 90,
+            level: 'success'
+        }, {
+            id: 5,
+            min:  90,
+            max: 100,
+            level: 'warning'
+        }, {
+            id: 6,
+            min: 101,
+            max: 200,
+            level: 'danger'
+        }];*/
+
         return {
             queryAll: function(params) {
                 var params = params || {};
@@ -57,7 +91,7 @@ angular.module('ecgRuleService', [])
                     }
                 }, function() {
                     $rootScope.message.error('服务器异常,无法获取数据');
-                    return mock || [];
+                    return (params.code ? mock2: mock1) || [];
                 });
             },
             getPlainObject: function() {
@@ -67,7 +101,8 @@ angular.module('ecgRuleService', [])
                     "name": "", // 必填
                     "min": 1, // 必填 数字
                     "max": 100, // 必填 数字
-                    "desc": ""
+                    "desc": "",
+                    "usage": "filter",
                 };
             },
             create: function(rule) {

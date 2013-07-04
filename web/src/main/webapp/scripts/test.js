@@ -6,7 +6,6 @@ require("./task/main");
 require("./monitor/main");
 require("./employee/main");
 require("./user/main");
-require("./reply/main");
 require("./rule/main");
 
 var testCommon = require("./common/test").testCommon;
@@ -17,7 +16,7 @@ var testUser = require("./user/test").testUser;
 window.PATH = window.location.pathname.slice(0, window.location.pathname.lastIndexOf("/"));
 
 // 定义模块
-angular.module('ecgTestApp', ['ecgCommon', 'ecgTask', 'ecgMonitor', 'ecgEmployee', 'ecgUser', 'ecgReply', 'ecgRule'])
+angular.module('ecgTestApp', ['ecgCommon', 'ecgTask', 'ecgMonitor', 'ecgEmployee', 'ecgUser', 'ecgRule'])
 .config(['$httpProvider', '$routeProvider', function ($httpProvider, $routeProvider) {
     var token = $.cookie('AiniaOpAuthToken');
         // header头带认证参数
