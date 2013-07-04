@@ -137,9 +137,15 @@ angular.module('ecgChief', [])
 .controller('ChiefEditController', ['$scope', '$routeParams', '$timeout', '$location', 'EnumService', 'ProfileService', 'ChiefService',
     function ($scope, $routeParams, $timeout, $location, EnumService, ProfileService, ChiefService) {
     $scope.chief.updateobj = null; //ChiefService.get($routeParams.id);
-    ChiefService.get($routeParams.id).then(function(chief) {
-        $scope.chief.updateobj = chief;
-    });
+
+    // 初始化界面,并获得最新version
+    function refresh() {
+        ChiefService.get($routeParams.id).then(function(chief) {
+            $scope.chief.updateobj = chief;
+        });
+    };
+    refresh();
+
     $scope.chief.genders = EnumService.getGenders();
     $scope.chief.dismissedStates = EnumService.getDismissedStates();
 
@@ -162,6 +168,7 @@ angular.module('ecgChief', [])
         .then(function(result) {
             $scope.dialog.hideStandby();
             $scope.message.success("编辑成功!");
+            refresh();
         }, function() {
             $scope.dialog.hideStandby();
             $scope.message.error("编辑失败!");
@@ -177,6 +184,7 @@ angular.module('ecgChief', [])
                 .then(function(result) {
                     $scope.dialog.hideStandby();
                     $scope.message.success("重置密码成功!");
+                    refresh();
                 }, function() {
                     $scope.dialog.hideStandby();
                     $scope.message.error("重置密码失败!");

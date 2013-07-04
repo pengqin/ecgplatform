@@ -163,9 +163,15 @@ angular.module('ecgUserModules', [])
 .controller('UserEditController', ['$scope', '$routeParams', '$timeout', '$location', 'EnumService', 'UserService',
     function ($scope, $routeParams, $timeout, $location, EnumService, UserService) {
     $scope.user.updateobj = null; //UserService.get($routeParams.id);
-    UserService.get($routeParams.id).then(function(user) {
-        $scope.user.updateobj = user;
-    });
+
+    // 初始化界面,并获得最新version
+    function refresh() {
+        UserService.get($routeParams.id).then(function(user) {
+            $scope.user.updateobj = user;
+        });
+    };
+    refresh();
+
     $scope.user.genders = EnumService.getGenders();
 
     $('#user-birthday').datetimepicker({
@@ -187,6 +193,7 @@ angular.module('ecgUserModules', [])
         .then(function(result) {
             $scope.dialog.hideStandby();
             $scope.message.success("编辑用户成功!");
+            refresh();
         }, function() {
             $scope.dialog.hideStandby();
             $scope.message.error("编辑用户失败!");
@@ -203,6 +210,7 @@ angular.module('ecgUserModules', [])
                 .then(function(result) {
                     $scope.dialog.hideStandby();
                     $scope.message.success("重置密码成功!");
+                    refresh();
                 }, function() {
                     $scope.dialog.hideStandby();
                     $scope.message.error("重置密码失败!");
