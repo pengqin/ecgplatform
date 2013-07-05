@@ -25,10 +25,10 @@ angular.module('ecgTestApp', ['ecgCommon', 'ecgTask', 'ecgMonitor', 'ecgEmployee
 }])
 .run([        '$rootScope', '$http','EnumService',
               'ChiefService', 'ExpertService', 'OperatorService', 'ProfileService',
-              'UserService', 'RuleService',
+              'UserService', 'RuleService', 'ReplyConfigService',
       function($rootScope,   $http,  EnumService,
                ChiefService,   ExpertService,   OperatorService ,  ProfileService,
-               UserService, RuleService) {
+               UserService, RuleService, ReplyConfigService) {
     // 判断是否登录成功
     var token = $.cookie("AiniaOpAuthToken");
     describe("App REST Test", function() {
@@ -42,8 +42,8 @@ angular.module('ecgTestApp', ['ecgCommon', 'ecgTask', 'ecgMonitor', 'ecgEmployee
         testEmployee(it, ChiefService, ExpertService, OperatorService, ProfileService);
         // 验证用户模块
         testUser(it, UserService);
-        // 验证规则模块
-        testRule(it, RuleService);
+        // 验证规则及回复模块
+        testRule(it, RuleService, ReplyConfigService);
     });
     mocha.run();
 }]);

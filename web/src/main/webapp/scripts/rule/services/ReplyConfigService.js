@@ -46,6 +46,9 @@ angular.module('ecgReplyConfigService', [])
             },
             getPlainObject: function() {
                 return {
+                    title: "标题",
+                    result: "",
+                    content: ""
                 };
             },
             create: function(rule, reply) {
