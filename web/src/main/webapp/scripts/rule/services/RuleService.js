@@ -103,7 +103,7 @@ angular.module('ecgRuleService', [])
                     "max": 100, // 必填 数字
                     "unit": "单位", // 可填 单位
                     "remark": "", // 可填 说明
-                    "level": "info", // 可填 级别
+                    "level": "success", // 可填 级别
                     "usage": "filter",
                     "canReply": false,
                     "user_id": null // 预留字段

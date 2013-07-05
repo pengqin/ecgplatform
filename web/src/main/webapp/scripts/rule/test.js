@@ -2,7 +2,7 @@
 'use strict';
 define(function(require, exports) {
 
-    exports.testRule = function(it, RuleService) {
+    exports.testRule = function(it, RuleService, ReplyConfigService) {
 
         // Rule
         it("the ruleService should be defined", function() {
@@ -63,12 +63,14 @@ define(function(require, exports) {
         });
 
         it("the rule should be retrieved when type, code is given and usage set as filter", function(done) {
+            rule.type = '11';
+            rule.code = '1';
             RuleService.queryAll({
             	type: rule.type,
             	code: rule.code,
             	usage: 'filter'
             }).then(function(rules) {
-                if (rules.length == 1) {
+                if (rules.length > 0) {
                     rule.id = rules[0].id;
                     done();
                 } else {
@@ -101,6 +103,105 @@ define(function(require, exports) {
             });
         });
 
+        // 回复设置相关case
+
+        var replyrule = null, replyconfig = null;
+
+        it("the rule for replyconfig should be retrieved", function(done) {
+            RuleService.queryAll({
+                type: rule.type,
+                code: rule.code,
+                usage: 'reply'
+            }).then(function(rules) {
+                if (rules.length > 0) {
+                    replyrule = rules[0];
+                    done();
+                } else {
+                    throw new Error('the rule can\'t be created');
+                }
+            });
+        });
+
+        it("the replyconfig for a specific rule should not be created without required fields", function(done) {
+            expect(replyrule).not.to.be(null);
+            
+            var newobj = ReplyConfigService.getPlainObject();
+
+            ReplyConfigService.create(replyrule, newobj)
+            .then(function(flag) {
+                if (flag) {
+                    throw new Error('the rule can\'t not be created');
+                } else {
+                    done();
+                }
+            }, function() {
+                throw new Error('the rule can\'t not be created');
+            });
+        });
+
+        it("the replyconfig for a specific rule should be created", function(done) {
+            expect(replyrule).not.to.be(null);
+
+            var newobj = ReplyConfigService.getPlainObject();
+            newobj.result = 0;
+            newobj.content = "快速回复内容";
+
+            ReplyConfigService.create(replyrule, newobj)
+            .then(function(flag) {
+                if (flag) {
+                    done();
+                } else {
+                    throw new Error('the rule can\'t be created');
+                }
+            }, function() {
+                throw new Error('the rule can\'t be created');
+            });
+        });
+
+        it("the new replyconfig for a specific rule should be retrieved", function(done) {
+            expect(replyrule).not.to.be(null);
+
+            ReplyConfigService.queryAllbyRule(replyrule)
+            .then(function(replyconfigs) {
+                if (replyconfigs.length > 0) {
+                    replyconfig = replyconfigs[0];
+                    done();
+                } else {
+                    throw new Error('the rule can\'t be created');
+                }
+            }, function() {
+                throw new Error('the rule can\'t be created');
+            });
+        });
+
+        it("the replyconfig for a specific rule should be updated", function(done) {
+            expect(replyrule).not.to.be(null);
+            expect(replyconfig).not.to.be(null);
+            
+            replyconfig.result = 1;
+            replyconfig.content = "修改内容";
+
+            ReplyConfigService.update(replyrule, replyconfig)
+            .then(function() {
+                done();
+            }, function() {
+                throw new Error('the rule can\'t be updated');
+            });
+        });
+
+        it("the replyconfig for a specific rule should be removed", function(done) {
+            expect(replyrule).not.to.be(null);
+            expect(replyconfig).not.to.be(null);
+
+            ReplyConfigService.remove(replyrule, replyconfig.id)
+            .then(function() {
+                done();
+            }, function() {
+                throw new Error('the rule can\'t be removed');
+            });
+        });
+
+        // 删除rule
         it("the rule should be removed", function(done) {
             RuleService.remove(rule.id).then(function() {
                 done();

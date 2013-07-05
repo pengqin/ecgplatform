@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<project
+    basedir="."
+    default="copy" >
+
+	<property name="api.dir" value="../api" />
+
+	
+    <target name="clean">
+        <delete dir="${api.dir}/src/main/resources/sql/h2" />
+    </target>
+    
+	<target name="copy" depends="clean">
+		<!-- 拷贝HTML -->
+		<copy todir="${api.dir}/src/main/resources/sql/h2">
+			<fileset dir="${basedir}/src/main/resources/sql/h2">
+			</fileset>
+		</copy>
+	</target>
+
+</project>

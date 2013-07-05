@@ -146,8 +146,18 @@ angular.module('ecgRuleModules', [])
     $scope.replyconfig.rules = 
         RuleService.queryAll({code: $routeParams.code, usage: 'reply'})
         .then(function(rules) {
+            var min = 999999, max = -999999, range = 100;
             $(rules).each(function(i, rule) {
-                rule.percent = (rule.max - rule.min + 0.64) / 200 * 100;
+                if (rule.min < min) {
+                    min = rule.min
+                }
+                if (rule.max > max) {
+                    max = rule.max
+                }
+            });
+            range = max - min;
+            $(rules).each(function(i, rule) {
+                rule.percent = (rule.max - rule.min + 0.64) / range * 100;
                 rule.replyconfigs = [];
                 refreshReplyConfigs(rule, i);
             });
@@ -178,7 +188,7 @@ angular.module('ecgRuleModules', [])
             .then(function() {
                 $scope.dialog.hideStandby();
                 $scope.chief.selectedReplyConfig = null;
-                $scope.message.success("更新成功!");
+                $scope.message.success("更新回复设置成功!");
                 refreshReplyConfigs($scope.replyconfig.selectedRule);
             }, function() {
                 $scope.dialog.hideStandby();
@@ -186,12 +196,16 @@ angular.module('ecgRuleModules', [])
             });
         } else {
             ReplyConfigService.create($scope.replyconfig.selectedRule, $scope.replyconfig.selectedReplyConfig)
-            .then(function() {
+            .then(function(flag) {
                 $scope.dialog.hideStandby();
-                $scope.chief.selectedReplyConfig = null;
-                $scope.message.success("新增成功!");
-                $scope.replyconfig.reset();
-                refreshReplyConfigs($scope.replyconfig.selectedRule);
+                if (flag) {
+                    $scope.chief.selectedReplyConfig = null;
+                    $scope.message.success("新增回复设置成功!");
+                    $scope.replyconfig.reset();
+                    refreshReplyConfigs($scope.replyconfig.selectedRule);
+                } else {
+                    $scope.message.error("无法新增回复设置!");
+                }
             }, function() {
                 $scope.dialog.hideStandby();
                 $scope.message.error("无法新增,可能是您的权限不足,请联系管理员!");
