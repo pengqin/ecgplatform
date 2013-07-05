@@ -11,6 +11,7 @@ require("./rule/main");
 var testCommon = require("./common/test").testCommon;
 var testEmployee = require("./employee/test").testEmployee;
 var testUser = require("./user/test").testUser;
+var testRule = require("./rule/test").testRule;
 
 // GOABAL VAL
 window.PATH = window.location.pathname.slice(0, window.location.pathname.lastIndexOf("/"));
@@ -24,10 +25,10 @@ angular.module('ecgTestApp', ['ecgCommon', 'ecgTask', 'ecgMonitor', 'ecgEmployee
 }])
 .run([        '$rootScope', '$http','EnumService',
               'ChiefService', 'ExpertService', 'OperatorService', 'ProfileService',
-              'UserService',
+              'UserService', 'RuleService',
       function($rootScope,   $http,  EnumService,
                ChiefService,   ExpertService,   OperatorService ,  ProfileService,
-               UserService) {
+               UserService, RuleService) {
     // 判断是否登录成功
     var token = $.cookie("AiniaOpAuthToken");
     describe("App REST Test", function() {
@@ -41,6 +42,8 @@ angular.module('ecgTestApp', ['ecgCommon', 'ecgTask', 'ecgMonitor', 'ecgEmployee
         testEmployee(it, ChiefService, ExpertService, OperatorService, ProfileService);
         // 验证用户模块
         testUser(it, UserService);
+        // 验证规则模块
+        testRule(it, RuleService);
     });
     mocha.run();
 }]);

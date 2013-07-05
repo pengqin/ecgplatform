@@ -101,8 +101,12 @@ angular.module('ecgRuleService', [])
                     "name": "", // 必填
                     "min": 1, // 必填 数字
                     "max": 100, // 必填 数字
-                    "desc": "",
+                    "unit": "单位", // 可填 单位
+                    "remark": "", // 可填 说明
+                    "level": "info", // 可填 级别
                     "usage": "filter",
+                    "canReply": false,
+                    "user_id": null // 预留字段
                 };
             },
             create: function(rule) {
