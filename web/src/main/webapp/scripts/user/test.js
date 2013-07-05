@@ -87,51 +87,47 @@ define(function(require, exports) {
             });
         });
 
-        it("the user should be updated", function(done) {
-            user.gender = 0;
-            user.birthday = '1983-01-11';
-            user.address = '地址';
-            user.idCard = '440803198801122455';
-            user.stature = 1.72;
-            user.weight = 50;
-            user.city = '北京';
-            user.emContact1 = "联系人1",
-            user.emContact1Tel = "11111",
-            user.emContact2 = "联系人2",
-            user.emContact2Tel = "22222",
-            user.badHabits = "不良嗜好",
-            user.anamnesis = "心脏病",
-            user.isFree = false;
-
-            UserService.update(user).then(function() {
-                done();
-            }, function() {
-                throw new Error('the user can\'t be updated.');
-            });
-        });
-
         it("the user should be updated as expectation", function(done) {
-            UserService.get(user.id).then(function(pesistedUser) {
-                if (pesistedUser) {
-                    expect(pesistedUser.id).to.be(user.id);
-                    expect(pesistedUser.mobile).to.be(user.mobile);
-                    expect(pesistedUser.name).to.be(user.name);
-                    expect(pesistedUser.birthday).to.be(user.birthday);
-                    expect(pesistedUser.idCard).to.be(user.idCard);
-                    expect(pesistedUser.stature).to.be(user.stature);
-                    expect(pesistedUser.weight).to.be(user.weight);
-                    expect(pesistedUser.city).to.be(user.city);
-                    expect(pesistedUser.emContact1).to.be(user.emContact1);
-                    expect(pesistedUser.emContact1Tel).to.be(user.emContact1Tel);
-                    expect(pesistedUser.emContact2).to.be(user.emContact2);
-                    expect(pesistedUser.emContact2Tel).to.be(user.emContact2Tel);
-                    expect(pesistedUser.badHabits).to.be(user.badHabits);
-                    expect(pesistedUser.anamnesis).to.be(user.anamnesis);
-                    expect(pesistedUser.isFree).to.be(user.isFree);
-                    done();
-                } else {
-                    throw new Error('the user can\'t be retieved by id');
-                }
+            UserService.get(user.id).then(function(user) {
+                user.gender = 0;
+                user.birthday = '1983-01-11';
+                user.address = '地址';
+                user.idCard = '440803198801122455';
+                user.stature = 1.72;
+                user.weight = 50;
+                user.city = '北京';
+                user.emContact1 = "联系人1",
+                user.emContact1Tel = "11111",
+                user.emContact2 = "联系人2",
+                user.emContact2Tel = "22222",
+                user.badHabits = "不良嗜好",
+                user.anamnesis = "心脏病",
+                user.isFree = false;
+                delete user.version;
+                UserService.update(user).then(function() {
+                    UserService.get(user.id).then(function(pesistedUser) {
+                        if (pesistedUser) {
+                            expect(pesistedUser.id).to.be(user.id);
+                            expect(pesistedUser.username).to.be(user.username);
+                            expect(pesistedUser.name).to.be(user.name);
+                            expect(pesistedUser.status).to.be(user.status);
+                            expect(pesistedUser.title).to.be(user.title);
+                            expect(pesistedUser.mobile).to.be(user.mobile);
+                            expect(pesistedUser.birthday).to.be(user.birthday);
+                            expect(pesistedUser.company).to.be(user.company);
+                            expect(pesistedUser.enabled).to.be(user.enabled);
+                            expect(pesistedUser.dismissed).to.be(user.dismissed);
+                            expect(pesistedUser.roles).to.be(user.roles);
+                            done();
+                        } else {
+                            throw new Error('the user can\'t be retieved again');
+                        }
+                    });
+                }, function() {
+                    throw new Error('the user can\'t be updated by id');
+                });
+            }, function() {
+                throw new Error('the user can\'t be retrieved by id');
             });
         });
 
