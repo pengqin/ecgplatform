@@ -27,13 +27,13 @@ angular.module('ecgRuleService', [])
                     "type": 11, // 必填 数字
                     "code": "", // 必填 数字
                     "name": "", // 必填
-                    "min": 1, // 必填 数字
-                    "max": 100, // 必填 数字
+                    "min": 0, // 必填 数字
+                    "max": 1000, // 必填 数字
                     "unit": "单位", // 可填 单位
                     "remark": "", // 可填 说明
                     "level": "success", // 可填 级别
-                    "usage": "filter",
-                    "canReply": false,
+                    "usage": "group",
+                    "canReply": true,
                     "user_id": null // 预留字段
                 };
             },
@@ -66,6 +66,8 @@ angular.module('ecgRuleService', [])
                 });
             },
             update: function(rule) {
+                delete rule.replys;
+                delete rule.version;
                 return $http({
                     method: 'PUT',
                     headers:{'Content-Type':'application/x-www-form-urlencoded'},

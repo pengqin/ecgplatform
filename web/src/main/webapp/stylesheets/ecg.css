@@ -146,6 +146,9 @@ table tbody tr.active {
 .ecgprops input.ng-invalid {
 	border: 2px solid red;
 }
+.ecgprops .rulelevel {
+	cursor: pointer;
+}
 
 /* 回复设置*/
 .replyconfigs {

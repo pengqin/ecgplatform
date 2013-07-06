@@ -15,4 +15,3 @@ document.createElement('ecg-experts-task-report');
 document.createElement('ecg-operators-task-report');
 document.createElement('ecg-task-current-report');
 document.createElement('ecg-task-process-report');
-

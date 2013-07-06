@@ -17,7 +17,7 @@ angular.module('ecgRuleModules', [])
 
     // 初始化及刷新功能
     function refreshGrid() {
-        $scope.rule.data = RuleService.queryAll({usage: 'filter'});
+        $scope.rule.data = RuleService.queryAll({usage: 'group'});
     };
     refreshGrid();
 
@@ -113,7 +113,7 @@ angular.module('ecgRuleModules', [])
     // 测试rule唯一性
     $scope.rule.checkUnique = function() {
         if (!$scope.rule.newobj.code) { return; }
-        RuleService.queryAll({code: $scope.rule.newobj.code, usage: 'filter'}).then(function(rules) {
+        RuleService.queryAll({code: $scope.rule.newobj.code, usage: 'group'}).then(function(rules) {
             if (rules.length > 0) { 
                 $scope.rule.isUnique = false;
                 $scope.message.warn("指标编码为" + $scope.rule.newobj.code + "的规则已存在!");
@@ -139,6 +139,20 @@ angular.module('ecgRuleModules', [])
             $scope.dialog.hideStandby();
             if (result) {
                 $scope.message.success("新增规则成功!");
+                $scope.rule.newobj.usage = "filter";
+                RuleService.create($scope.rule.newobj)
+                .then(function(result) {
+                    $scope.dialog.hideStandby();
+                    if (result) {
+                        $scope.message.success("新增规则初始区间成功!");
+                        $location.path("/rule");
+                    } else {
+                        $scope.message.error("新增规则初始区间失败!");
+                    }
+                }, function() {
+                    $scope.dialog.hideStandby();
+                    $scope.message.error("服务器异常,新增失败!");
+                });
                 $location.path("/rule");
             } else {
                 $scope.message.error("新增规则失败!");
@@ -146,7 +160,7 @@ angular.module('ecgRuleModules', [])
         }, function() {
             $scope.dialog.hideStandby();
             $scope.message.error("服务器异常,新增失败!");
-        });;
+        });
     };
 
 }])
@@ -175,7 +189,7 @@ angular.module('ecgRuleModules', [])
     // 测试rule唯一性
     $scope.rule.checkUnique = function() {
         if (!$scope.rule.updateobj.code) { return; }
-        RuleService.queryAll({code: $scope.rule.updateobj.code, usage: 'filter'}).then(function(rules) {
+        RuleService.queryAll({code: $scope.rule.updateobj.code, usage: 'group'}).then(function(rules) {
             if (rules.length > 0) { 
                 $scope.rule.isUnique = false;
                 $scope.message.warn("指标编码为" + $scope.rule.updateobj.code + "的规则已存在!");
@@ -224,24 +238,19 @@ angular.module('ecgRuleModules', [])
     // 回复类型
     $scope.replyconfig.results = EnumService.getResults();
     $scope.replyconfig.getResultLabel = function(replyconfig) {
-        console.info(replyconfig);
         return EnumService.getResultsLabel(replyconfig.result);
     };
 
-    // 初始化/更新回复
-    function refreshReplyConfigs(rule, i) {
-        ReplyConfigService.queryAllbyRule(rule).then(function(replyconfigs) {
-            rule.replyconfigs = replyconfigs;
-            if (i === 0) {
-                $scope.replyconfig.selectedRule = rule;
-            }
-        });
-    };
 
     // 数据范围
-    $scope.replyconfig.rules = 
-        RuleService.queryAll({code: $routeParams.code, usage: 'reply'})
+    $scope.replyconfig.rules = null; 
+
+    function refreshRules() {
+        reset();
+        $scope.dialog.showStandby();
+        RuleService.queryAll({code: $routeParams.code, usage: 'filter'})
         .then(function(rules) {
+            $scope.dialog.hideStandby();
             var min = 999999, max = -999999, range = 100;
             $(rules).each(function(i, rule) {
                 if (rule.min < min) {
@@ -253,13 +262,31 @@ angular.module('ecgRuleModules', [])
             });
             range = max - min;
             $(rules).each(function(i, rule) {
-                rule.percent = (rule.max - rule.min + 0.64) / range * 100;
+                rule.percent = (rule.max - rule.min) / range * 100;
                 rule.replyconfigs = [];
                 refreshReplyConfigs(rule, i);
             });
-            return rules;
-        });
 
+            rules.sort(function(a, b) {
+                return a.min > b.min ? 1 : -1;
+            });
+            $scope.replyconfig.rules = rules;
+        }, function () {
+            $scope.dialog.hideStandby();
+            $scope.message.error("加载区间失败!");
+        });
+    };
+    refreshRules();
+
+    // 初始化/更新回复
+    function refreshReplyConfigs(rule, i) {
+        ReplyConfigService.queryAllbyRule(rule).then(function(replyconfigs) {
+            rule.replyconfigs = replyconfigs;
+            if (i === 0) {
+                $scope.replyconfig.selectedRule = rule;
+            }
+        });
+    };
 
     // 当前选择中config
     $scope.replyconfig.selectedRule = null;
@@ -277,9 +304,77 @@ angular.module('ecgRuleModules', [])
         $scope.replyconfig.selectedReplyConfig = config;
     };
 
+    // 新区间
+    $scope.replyconfig.newRule = function() {
+        var point = parseFloat(prompt("请输入1-1000之间的数字:"), 10);
+        if (isNaN(point)) {
+            return;
+        }
+
+        if (!angular.isNumber(point)) {
+            $scope.message.warn("请输入数字!");
+            return;
+        }
+
+        if (point < 1 || point > 1000) {
+            $scope.message.warn("只能输入1-1000之间的数字!");
+            return;
+        }
+
+        var updateobj, newobj;
+        $($scope.replyconfig.rules).each(function(i, rule) {
+            if (rule.min < point && point < rule.max) {
+                updateobj = rule;
+                newobj = $.extend({}, rule);
+            }
+        });
+        if (updateobj) {
+            updateobj.max = point;
+            newobj.min = point;
+            delete newobj.id;
+            $scope.dialog.showStandby();
+            RuleService.update(updateobj)
+            .then(function() {
+                RuleService.create(newobj)
+                .then(function(flag) {
+                    if (flag) {
+                        $scope.dialog.hideStandby();
+                        $scope.message.success("新增区间成功!");
+                        refreshRules();
+                    } else {
+                        $scope.dialog.hideStandby();
+                        $scope.message.error("新增区间失败!");
+                    }
+                }, function() {
+                    $scope.dialog.hideStandby();
+                    $scope.message.error("新增区间失败!");
+                });
+            }, function() {
+                $scope.dialog.hideStandby();
+                $scope.message.error("修改已有区间失败!");
+            });
+        } else {
+            $scope.message.warn("该点已存在或超出可填范围!");
+        }
+    };
+    
+    // 修改level 
+    $scope.replyconfig.setLevel = function(level) {
+        $scope.replyconfig.selectedRule.level = level;
+        $scope.dialog.showStandby();
+        RuleService.update($scope.replyconfig.selectedRule)
+        .then(function() {
+            $scope.message.success("修改级别成功!");
+            refreshRules();
+        }, function() {
+            $scope.message.error("修改级别失败!");
+        });
+    };
+
     // 新增/更新回复
     $scope.replyconfig.save = function() {
         if ($scope.replyconfig.selectedReplyConfig.id) {
+            $scope.dialog.showStandby();
             ReplyConfigService.update($scope.replyconfig.selectedRule, $scope.replyconfig.selectedReplyConfig)
             .then(function() {
                 $scope.dialog.hideStandby();
@@ -290,6 +385,7 @@ angular.module('ecgRuleModules', [])
                 $scope.message.error("无法新增,可能是您的权限不足,请联系管理员!");
             });
         } else {
+            $scope.dialog.showStandby();
             ReplyConfigService.create($scope.replyconfig.selectedRule, $scope.replyconfig.selectedReplyConfig)
             .then(function(flag) {
                 $scope.dialog.hideStandby();
@@ -309,9 +405,10 @@ angular.module('ecgRuleModules', [])
     };
 
     // reset
-    $scope.replyconfig.reset = function() {
+    function reset() {
         $scope.replyconfig.selectedReplyConfig = ReplyConfigService.getPlainObject();
-    };
+    }
+    $scope.replyconfig.reset = reset;
 
     // 删除某条回复
     $scope.replyconfig.remove = function(deletedItem) {
@@ -319,6 +416,7 @@ angular.module('ecgRuleModules', [])
             text: "请确认删除, 该操作无法恢复!",
             handler: function() {
                 $scope.replyconfig.reset();
+                $scope.dialog.showStandby();
                 ReplyConfigService.remove($scope.replyconfig.selectedRule, deletedItem.id)
                 .then(function() {
                     $scope.dialog.hideStandby();
