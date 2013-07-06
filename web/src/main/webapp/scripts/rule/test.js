@@ -125,9 +125,9 @@ define(function(require, exports) {
         it("the replyconfig for a specific rule should not be created without required fields", function(done) {
             expect(replyrule).not.to.be(null);
             
-            var newobj = ReplyConfigService.getPlainObject();
+            var invalid = ReplyConfigService.getPlainObject();
 
-            ReplyConfigService.create(replyrule, newobj)
+            ReplyConfigService.create(replyrule, invalid)
             .then(function(flag) {
                 if (flag) {
                     throw new Error('the rule can\'t not be created');
