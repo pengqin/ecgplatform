@@ -4,11 +4,11 @@
 		<button class="btn" type="button"
 				ng-click="rule.save()"
 				ng-show="session.user.isChief() || session.user.isAdmin()"
-				ng-disabled="!rule.data.length">
-			<i class="icon-save"></i>保存修改
+				ng-disabled="!rule.data.length || !ruleForm.$valid">
+			<i class="icon-save"></i>快速保存区间
 		</button>
 		<button class="btn" type="button"
-				ng-class="{'btn-danger': user.selectedItem != null}"
+				ng-class="{'btn-danger': rule.selectedItem != null}"
 				ng-show="session.user.isChief() || session.user.isAdmin()"
 				ng-click="rule.confirmDelete()" ng-disabled="rule.selectedItem == null">
 			<i class="icon-remove"></i>删除规则
@@ -25,25 +25,25 @@
 			<th width="10%">设备类型</th>
 			<th width="10%">指标编码</th>
 			<th width="15%">指标名称</th>
-			<th>范围设定</th>
+			<th>区间设定</th>
 			<th width="25%">说明</th>
-			<th width="10%">相关回复</th>
+			<th width="10%">默认回复</th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr ng-repeat="item in rule.data" ng-click="rule.selectedItem = item" ng-class="{'active': rule.selectedItem == item}">
 				<td>{{item.type}}</td>
 				<td>{{item.code}}</td>
-				<td>{{item.name}}</td>
+				<td class="ecgGridLik" ng-click="rule.showPage(item)">{{item.name}}</td>
 				<td>
-				<button class="btn btn-small" type="button" ng-click="item.min = -1">无下限</button>
-				<input type="text" name="min{{item.type}}" value="{{item.min}}" required></input>
+				<button class="btn btn-small" type="button" ng-click="rule.setRange(item, 'min', -1)">无下限</button>
+				<input type="text" ng-model="item.min" class="input-mini" required ng-pattern="/^-?\d+$/"></input>
 				<span>-</span>
-				<input type="text" name="max{{item.type}}" value="{{item.max}}" required></input>
-				<button class="btn btn-small" type="button" ng-click="item.max = 9999">无上限</button>
+				<input type="text" ng-model="item.max" class="input-mini" required ng-pattern="/^-?\d+$/"></input>
+				<button class="btn btn-small" type="button" ng-click="rule.setRange(item, 'max', 9999)">无上限</button>
 				</td>
 				<td>{{item.remark}}</td>
-				<td><a href="javascript:void(0)" ng-click="rule.editReplyConfig(item)">设置回复</td>
+				<td><a href="javascript:void(0)" ng-click="rule.editReplyConfig(item)" ng-show="item.canReply">设置回复</td>
 			</tr>
 		</tbody>
 		</table>

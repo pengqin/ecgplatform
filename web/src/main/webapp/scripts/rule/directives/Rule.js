@@ -2,7 +2,7 @@
 define(function(require, exports) {
 
 angular.module('ecgRuleModules', [])
-.controller('RuleController', ['$scope', '$location', 'RuleService', function ($scope, $location, RuleService) {
+.controller('RuleController', ['$scope', '$timeout', '$location', 'RuleService', function ($scope, $timeout, $location, RuleService) {
     // 表格头
     $scope.subheader.title = "规则设置";
 
@@ -10,7 +10,7 @@ angular.module('ecgRuleModules', [])
     $scope.rule = {};
 
     // 当前选择的item
-    $scope.rule.selectedReplyConfig = null;
+    $scope.rule.selectedItem = null;
 
     // 规则数据
     $scope.rule.data = null;
@@ -21,19 +21,39 @@ angular.module('ecgRuleModules', [])
     };
     refreshGrid();
 
-    // create
+    // save
     $scope.rule.save = function() {
-        // TODO:
+        var length = $scope.rule.data.$$v.length, count = 0, editable = true;
+        $($scope.rule.data.$$v).each(function(i, rule) {
+            if (rule.min > rule.max) {
+                $scope.message.warn("规则:" + rule.name + '区间范围异常,无法保存。');
+                editable = false;
+            }
+        });
+
+        if (!editable) { return; }
+
         $($scope.rule.data.$$v).each(function(i, rule) {
             $scope.dialog.showStandby();
             RuleService.update(rule)
-            .then(function() {
+            .then(function() {  
                 $scope.dialog.hideStandby();
-                rule.version += 1;
+                count ++;
+                if (count === length) {
+                    $scope.message.success("快速保存区间成功!");
+                    // 刷新
+                    refreshGrid();
+                }
             }, function() {
                 $scope.dialog.hideStandby();
+                $scope.message.success("快速保存区间失败!");
             });
         });
+    };
+
+    // 编辑功能
+    $scope.rule.showPage = function(item) {
+        $location.path("rule/" + item.id);
     };
 
     // edit config
@@ -43,7 +63,7 @@ angular.module('ecgRuleModules', [])
 
     // 删除功能
     $scope.rule.confirmDelete = function() {
-        var selectedReplyConfig = $scope.rule.selectedReplyConfig;
+        var selectedReplyConfig = $scope.rule.selectedItem;
         if (selectedReplyConfig === null) {
             $scope.dialog.alert({
                 text: '请选择一条记录!'
@@ -51,13 +71,13 @@ angular.module('ecgRuleModules', [])
             return;
         }
         $scope.dialog.confirm({
-            text: "请确认删除针对指标[" + selectedReplyConfig.name + "]的规则, 该操作无法恢复!",
+            text: "请确认删除[" + selectedReplyConfig.name + "]的规则, 该操作无法恢复!",
             handler: function() {
                 $scope.dialog.showStandby();
                 RuleService.remove(selectedReplyConfig.id)
                 .then(function() {
                     $scope.dialog.hideStandby();
-                    $scope.rule.selectedReplyConfig = null;
+                    $scope.rule.selectedItem = null;
                     $scope.message.success("删除成功!");
                     // 刷新
                     refreshGrid();
@@ -68,8 +88,16 @@ angular.module('ecgRuleModules', [])
             }
         });
     };
+
+    // 设置上下限,主要是为了清除selectedItem
+    $scope.rule.setRange = function(item, range, value) {
+        item[range] = value;
+        $timeout(function() {
+            $scope.rule.selectedItem = null;
+        }, 0);
+    };
 }])
-.controller('RuleNewController', ['$scope', 'RuleService', function ($scope, RuleService) {
+.controller('RuleNewController', ['$scope', '$location', 'RuleService', function ($scope, $location, RuleService) {
     // 表格头
     $scope.subheader.title = "新增规则";
 
@@ -85,10 +113,10 @@ angular.module('ecgRuleModules', [])
     // 测试rule唯一性
     $scope.rule.checkUnique = function() {
         if (!$scope.rule.newobj.code) { return; }
-        RuleService.queryAll({code: $scope.rule.newobj.code}).then(function(rules) {
+        RuleService.queryAll({code: $scope.rule.newobj.code, usage: 'filter'}).then(function(rules) {
             if (rules.length > 0) { 
                 $scope.rule.isUnique = false;
-                $scope.message.warn("指标编码为" + $scope.rule.newobj.username + "的规则已存在!");
+                $scope.message.warn("指标编码为" + $scope.rule.newobj.code + "的规则已存在!");
             } else {
                 $scope.rule.isUnique = true;
             }
@@ -100,12 +128,17 @@ angular.module('ecgRuleModules', [])
 
     // 创建函数
     $scope.rule.create = function() {
+        if ($scope.rule.newobj.min > $scope.rule.newobj.max) {
+            $scope.message.warn("区间范围异常,无法保存。");
+            return;
+        }
+
         $scope.dialog.showStandby();
         RuleService.create($scope.rule.newobj)
         .then(function(result) {
             $scope.dialog.hideStandby();
             if (result) {
-                $scope.message.success("新增规则户成功!");
+                $scope.message.success("新增规则成功!");
                 $location.path("/rule");
             } else {
                 $scope.message.error("新增规则失败!");
@@ -113,6 +146,68 @@ angular.module('ecgRuleModules', [])
         }, function() {
             $scope.dialog.hideStandby();
             $scope.message.error("服务器异常,新增失败!");
+        });;
+    };
+
+}])
+.controller('RuleEditController', ['$scope', '$routeParams', 'RuleService', function ($scope, $routeParams, RuleService) {
+    // 表格头
+    $scope.subheader.title = "编辑规则";
+
+    // 命名空间
+    $scope.rule = {};
+
+    // 规则是否唯一
+    $scope.rule.isUnique = true;
+
+    // 当前编辑的item
+    $scope.rule.updateobj = null;
+        // 初始化界面,并获得最新version
+    function refresh() {
+        RuleService.get($routeParams.id).then(function(rule) {
+            $scope.rule.updateobj = rule;
+        }, function() {
+            $scope.message.error("加载规则数据失败.");
+        });
+    };
+    refresh();
+
+    // 测试rule唯一性
+    $scope.rule.checkUnique = function() {
+        if (!$scope.rule.updateobj.code) { return; }
+        RuleService.queryAll({code: $scope.rule.updateobj.code, usage: 'filter'}).then(function(rules) {
+            if (rules.length > 0) { 
+                $scope.rule.isUnique = false;
+                $scope.message.warn("指标编码为" + $scope.rule.updateobj.code + "的规则已存在!");
+            } else {
+                $scope.rule.isUnique = true;
+            }
+        }, function() {
+            $scope.rule.isUnique = true;
+            $scope.message.warn("查询规则是否唯一时出错!");
+        });
+    };
+
+    // 创建函数
+    $scope.rule.update = function() {
+        if ($scope.rule.updateobj.min > $scope.rule.updateobj.max) {
+            $scope.message.warn("区间范围异常,无法保存。");
+            return;
+        }
+        
+        $scope.dialog.showStandby();
+        RuleService.update($scope.rule.updateobj)
+        .then(function(result) {
+            $scope.dialog.hideStandby();
+            if (result) {
+                $scope.message.success("编辑规则成功!");
+                refresh();
+            } else {
+                $scope.message.error("编辑规则失败!");
+            }
+        }, function() {
+            $scope.dialog.hideStandby();
+            $scope.message.error("服务器异常,编辑规则失败!");
         });;
     };
 
@@ -129,6 +224,7 @@ angular.module('ecgRuleModules', [])
     // 回复类型
     $scope.replyconfig.results = EnumService.getResults();
     $scope.replyconfig.getResultLabel = function(replyconfig) {
+        console.info(replyconfig);
         return EnumService.getResultsLabel(replyconfig.result);
     };
 
@@ -149,10 +245,10 @@ angular.module('ecgRuleModules', [])
             var min = 999999, max = -999999, range = 100;
             $(rules).each(function(i, rule) {
                 if (rule.min < min) {
-                    min = rule.min
+                    min = rule.min;
                 }
                 if (rule.max > max) {
-                    max = rule.max
+                    max = rule.max;
                 }
             });
             range = max - min;
@@ -187,7 +283,6 @@ angular.module('ecgRuleModules', [])
             ReplyConfigService.update($scope.replyconfig.selectedRule, $scope.replyconfig.selectedReplyConfig)
             .then(function() {
                 $scope.dialog.hideStandby();
-                $scope.chief.selectedReplyConfig = null;
                 $scope.message.success("更新回复设置成功!");
                 refreshReplyConfigs($scope.replyconfig.selectedRule);
             }, function() {
@@ -199,7 +294,6 @@ angular.module('ecgRuleModules', [])
             .then(function(flag) {
                 $scope.dialog.hideStandby();
                 if (flag) {
-                    $scope.chief.selectedReplyConfig = null;
                     $scope.message.success("新增回复设置成功!");
                     $scope.replyconfig.reset();
                     refreshReplyConfigs($scope.replyconfig.selectedRule);
@@ -224,13 +318,13 @@ angular.module('ecgRuleModules', [])
         $scope.dialog.confirm({
             text: "请确认删除, 该操作无法恢复!",
             handler: function() {
+                $scope.replyconfig.reset();
                 ReplyConfigService.remove($scope.replyconfig.selectedRule, deletedItem.id)
                 .then(function() {
                     $scope.dialog.hideStandby();
-                    $scope.chief.selectedReplyConfig = null;
                     $scope.message.success("删除成功!");
                     // 刷新
-                    refreshGrid();
+                    refreshReplyConfigs($scope.replyconfig.selectedRule);
                 }, function() {
                     $scope.dialog.hideStandby();
                     $scope.message.error("无法删除该数据,可能是您的权限不足,请联系管理员!");

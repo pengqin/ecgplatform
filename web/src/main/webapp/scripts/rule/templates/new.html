@@ -54,7 +54,7 @@
 <div class="row-fluid">
 	<div class="span12">
 		<button class="btn" type="button"
-				ng-class="{'btn-primary': createRuleForm.$valid}" 
+				ng-class="{'btn-primary': createRuleForm.$valid && rule.isUnique}" 
 				ng-click="rule.create()"
 				ng-disabled="!createRuleForm.$valid || !rule.isUnique">
 			<i class="icon-save"></i>保存

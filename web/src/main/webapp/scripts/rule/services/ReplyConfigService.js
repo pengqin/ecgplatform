@@ -68,6 +68,7 @@ angular.module('ecgReplyConfigService', [])
                 });
             },
             update: function(rule, reply) {
+                delete reply.version;
                 return $http({
                     method: 'PUT',
                     headers:{'Content-Type':'application/x-www-form-urlencoded'},

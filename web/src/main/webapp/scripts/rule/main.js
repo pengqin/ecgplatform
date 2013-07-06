@@ -7,6 +7,7 @@ require("./directives/Rule");
 
 var ruleTemp = require("./templates/rule.html");
 var newTemp = require("./templates/new.html");
+var editTemp = require("./templates/edit.html");
 var replyconfigTemp = require("./templates/replyconfig.html");
 
 angular.module('ecgRule', ['ecgRuleService', 'ecgReplyConfigService', 'ecgRuleModules'])
@@ -19,6 +20,10 @@ angular.module('ecgRule', ['ecgRuleService', 'ecgReplyConfigService', 'ecgRuleMo
     .when('/rule/new', {
         template: newTemp,
         controller: 'RuleNewController'
+    })
+    .when('/rule/:id', {
+        template: editTemp,
+        controller: 'RuleEditController'
     })
     .when('/rule/:code/replyconfig', {
         template: replyconfigTemp,

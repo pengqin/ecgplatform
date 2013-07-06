@@ -4,7 +4,7 @@
 		<div class="progress replyconfigs">
 			<div ng-repeat="rule in replyconfig.rules" ng-click="replyconfig.onselectrule(rule)"
 				 class="bar bar-{{rule.level}}" style="width:16.6%\9; width: {{rule.percent}}%;" title="设置了{{rule.replyconfigs.length}}条回复">
-			{{rule.min}} - {{rule.max}} ({{rule.replyconfigs.length}})
+			{{rule.min}} - {{rule.max}} <br> ({{rule.replyconfigs.length}})
 			</div>
 		</div>
 
@@ -22,7 +22,7 @@
 				ng-click="replyconfig.selectedReplyConfig = replyconfg"
 				ng-class="{'active': replyconfig.selectedReplyConfig == replyconfg}">
 				<td>{{replyconfig.getResultLabel(replyconfg)}}</td>
-				<td>{{replyconfg.text}}</td>
+				<td>{{replyconfg.content}}</td>
 				<td>
 					<button class="btn btn-small btn-danger" type="button" ng-click="replyconfig.remove(replyconfg)">删除</button>
 				</td>
