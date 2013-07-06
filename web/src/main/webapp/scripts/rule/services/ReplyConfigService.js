@@ -41,9 +41,6 @@ angular.module('ecgReplyConfigService', [])
                     return mock || [];
                 });
             },
-            getTotal: function() {
-                return 0;
-            },
             getPlainObject: function() {
                 return {
                     title: "标题",
@@ -51,11 +48,11 @@ angular.module('ecgReplyConfigService', [])
                     content: ""
                 };
             },
-            create: function(rule, reply) {
+            create: function(rule, replyconfig) {
                 return $http({
                     method: 'POST',
                     headers:{'Content-Type':'application/x-www-form-urlencoded'},
-                    data: $.param(reply),
+                    data: $.param(replyconfig),
                     url: PATH + "/api/rule/" + rule.id + "/replyconfig"
                 }).then(function(res) {
                     if (res.status === 201) {
@@ -67,13 +64,23 @@ angular.module('ecgReplyConfigService', [])
                     return false;
                 });
             },
-            update: function(rule, reply) {
-                delete reply.version;
+            get: function(rule, replyconfig) {
+                return $http({
+                    method: 'GET',
+                    url: PATH + "/api/rule/" + rule.id + "/replyconfig/" + replyconfig.id
+                }).then(function(res) {
+                    return res.data;
+                }, function() {
+                    return null;
+                });
+            },
+            update: function(rule, replyconfig) {
+                delete replyconfig.version;
                 return $http({
                     method: 'PUT',
                     headers:{'Content-Type':'application/x-www-form-urlencoded'},
-                    data: $.param(reply),
-                    url: PATH + "/api/rule/" + rule.id + "/replyconfig/" + reply.id
+                    data: $.param(replyconfig),
+                    url: PATH + "/api/rule/" + rule.id + "/replyconfig/" + replyconfig.id
                 });
             },
             remove: function(rule, id) {
