@@ -364,10 +364,12 @@ angular.module('ecgRuleModules', [])
         $scope.dialog.showStandby();
         RuleService.update($scope.replyconfig.selectedRule)
         .then(function() {
+            $scope.dialog.hideStandby();
             $scope.message.success("修改级别成功!");
-            refreshRules();
         }, function() {
+            $scope.dialog.hideStandby();
             $scope.message.error("修改级别失败!");
+            refreshRules();
         });
     };
 
