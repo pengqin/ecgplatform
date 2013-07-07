@@ -46,6 +46,8 @@ angular.module('ecgApp', ['ecgCommon', 'ecgTask', 'ecgMonitor', 'ecgEmployee', '
         });
 }])
 .run(['$rootScope', '$http', 'ProfileService', function($rootScope, $http, ProfileService) {
+    // 设置全局变量
+    $rootScope.PATH = PATH;
 
     // 公用函数:退出系统
     function logout(msg) {
@@ -72,6 +74,7 @@ angular.module('ecgApp', ['ecgCommon', 'ecgTask', 'ecgMonitor', 'ecgEmployee', '
     .then(function(user) {
         if (user) {
             $rootScope.session.user = user;
+            $.cookie("AiniaOpUserId", user.id, { expires: 1, path: '/' });
         } else {
             logout('无法获取您登录名为' + username +'用户信息。请与管理员联系!');
         }

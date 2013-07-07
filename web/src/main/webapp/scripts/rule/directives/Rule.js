@@ -152,7 +152,7 @@ angular.module('ecgRuleModules', [])
 
     // 创建函数
     $scope.rule.create = function() {
-        if ($scope.rule.newobj.min > $scope.rule.newobj.max) {
+        if (parseFloat($scope.rule.newobj.min) > parseFloat($scope.rule.newobj.max)) {
             $scope.message.warn("区间范围异常,无法保存。");
             return;
         }
@@ -162,20 +162,19 @@ angular.module('ecgRuleModules', [])
         .then(function(result) {
             $scope.dialog.hideStandby();
             if (result) {
-                $scope.message.success("新增规则成功!");
                 $scope.rule.newobj.usage = "filter";
                 RuleService.create($scope.rule.newobj)
                 .then(function(result) {
                     $scope.dialog.hideStandby();
                     if (result) {
-                        $scope.message.success("新增默认检测区间成功!");
+                        $scope.message.success("新增规则及其初始检测区间成功!");
                         $location.path("/rule");
                     } else {
-                        $scope.message.error("新增规则初始区间失败!");
+                        $scope.message.error("新增初始检测区间失败!");
                     }
                 }, function() {
                     $scope.dialog.hideStandby();
-                    $scope.message.error("服务器异常,新增失败!");
+                    $scope.message.error("服务器异常,新增规则失败!");
                 });
                 $location.path("/rule");
             } else {
@@ -264,7 +263,7 @@ angular.module('ecgRuleModules', [])
 
     function refreshRules() {
         reset();
-        $scope.dialog.showStandby();
+        $scope.dialog.showStandby({text: '正在加载数据，请稍候......'});
         RuleService.queryAll({code: $routeParams.code, usage: 'filter'})
         .then(function(rules) {
             $scope.dialog.hideStandby();
