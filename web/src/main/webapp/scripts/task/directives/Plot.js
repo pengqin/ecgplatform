@@ -3,9 +3,9 @@ define(function(require, exports) {
 
     var template = require("../templates/plot.html");
 
-    angular.module('ecgPlot', ['ecgPlotService'])
-    .controller('PlotController', ['$scope', 'PlotService',
-    function($scope, PlotService) {
+    angular.module('ecgPlot', [])
+    .controller('PlotController', ['$scope',
+    function($scope) {
 
     }])
     .directive("ecgPlot", [ '$location', function($location) {

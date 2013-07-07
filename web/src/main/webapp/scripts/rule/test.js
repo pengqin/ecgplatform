@@ -68,7 +68,7 @@ define(function(require, exports) {
             RuleService.queryAll({
             	type: rule.type,
             	code: rule.code,
-            	usage: 'filter'
+            	usage: 'group'
             }).then(function(rules) {
                 if (rules.length > 0) {
                     rule.id = rules[0].id;
@@ -111,7 +111,7 @@ define(function(require, exports) {
             RuleService.queryAll({
                 type: rule.type,
                 code: rule.code,
-                usage: 'reply'
+                usage: 'filter'
             }).then(function(rules) {
                 if (rules.length > 0) {
                     replyrule = rules[0];

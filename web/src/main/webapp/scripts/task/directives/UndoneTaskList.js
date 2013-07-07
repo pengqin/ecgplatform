@@ -4,17 +4,31 @@ define(function(require, exports) {
 var template = require("../templates/undonetasklist.html");
 
 angular.module('ecgUndoneTaskList', [])
-.controller('UndoneTaskListController', ['$scope', 'TaskService',
-function($scope, TaskService) {
+.controller('UndoneTaskListController', ['$scope', 'ProfileService', 'TaskService',
+function($scope, ProfileService, TaskService) {
     $scope.undone.data = null;
     $scope.undone.selected = null;
 
     function refreshGrid() {
-        TaskService.queryAllTaskByEmployee(
-            $scope.session.user, 
-            {status: 'undone'}
-        ).then(function(tasks) {
-            $scope.undone.data = tasks;
+        var username = $.cookie("AiniaOpUsername");
+
+        ProfileService.get(username)
+        .then(function(user) {
+            return user;
+        }, function() {
+            return null
+        })
+        .then(function(user) {
+            if (user) {
+                TaskService.queryAllTaskByEmployee(
+                    user, 
+                    {status: 'undone'}
+                ).then(function(tasks) {
+                    $scope.undone.data = tasks;
+                });
+            } else {
+                $scope.message.error("无法加载用户数据");
+            }
         });
     };
     refreshGrid();
