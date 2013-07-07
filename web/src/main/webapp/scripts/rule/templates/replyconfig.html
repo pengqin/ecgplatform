@@ -1,4 +1,4 @@
-<div class="row-fluid" ng-show="session.user.isAdmin()">
+<div class="row-fluid" ng-show="session.user.isChief() || session.user.isAdmin()">
 	<div class="span12 buttons">
 		<button class="btn" type="button"
 				ng-click="replyconfig.newRule()">

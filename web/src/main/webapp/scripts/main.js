@@ -46,6 +46,8 @@ angular.module('ecgApp', ['ecgCommon', 'ecgTask', 'ecgMonitor', 'ecgEmployee', '
         });
 }])
 .run(['$rootScope', '$http', 'ProfileService', function($rootScope, $http, ProfileService) {
+    // 设置全局变量
+    $rootScope.PATH = PATH;
 
     // 公用函数:退出系统
     function logout(msg) {

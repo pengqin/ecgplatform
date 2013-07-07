@@ -69,7 +69,7 @@ define(function(require, exports) {
   		var opts = opts || {};
   		$scope.dialog.state = 'standby';
   		$scope.dialog.dialogTitle = opts.title || '提示';
-  		$scope.dialog.dialogText = opts.text || '操作进行中,请等待.';
+  		$scope.dialog.dialogText = opts.text || '操作进行中,请耐心等待.';
       showtime = (new Date()).getTime();
       show();
   	};
