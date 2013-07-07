@@ -15,8 +15,8 @@ define(function(require, exports) {
             if(!$scope.done.selected) { return; }
 
             TaskService.getReplyByExamination($scope.done.selected.examinationId)
-            .then(function(reply) {
-                $scope.examinationreply.reply = reply;
+            .then(function(replys) {
+                $scope.examinationreply.reply = replys[0];
             });
         });
     }])

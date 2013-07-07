@@ -4,6 +4,32 @@ define(function(require, exports) {
 
     exports.testTask = function(it, ProfileService, TaskService) {
 
+        /**
+         * 测试用例场景设计
+
+         * 接线员A查询得到6个未完成任务
+         * 管理员/专家将其中一个任务转发给接线员B
+         * 管理员/专家将其中一个任务转发给专家A
+         * 接线员A查询到2个未完成任务
+         * 管理员/专家查询到4个未完成任务
+         * 接线员A回复一个任务
+         * 接线员A转任务给专家A
+         * 接线员A查询到0个未完成任务
+         * 接线员A查询到1个未完成任务
+         * 接线员A能查看检测请求信息，回复信息
+
+         * 接线员B查询得到1个未完成任务
+         * 接线员B回复任务
+         * 接线员B查询到0个未完成任务
+         * 接线员B查询到1个未完成任务
+
+         * 专家A查询到2个未完成任务
+         * 专家A回复任务
+         * 专家A查询到1个未完成任务
+         * 专家A查询到1个完成任务
+         * 专家A能查看检测请求信息，回复信息
+
+         */
         // Rule
         it("the services should be defined", function() {
             expect(ProfileService).not.to.be(undefined);

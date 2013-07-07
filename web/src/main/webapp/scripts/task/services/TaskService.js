@@ -133,24 +133,6 @@ angular.module('ecgTaskService', [])
                     }
                 }, function() {
                     return false;
-                }).then(function(flag) {
-                    // TODO flag 
-                    if (!flag) {
-                        return $http({
-                            method: 'PUT',
-                            headers:{'Content-Type':'application/x-www-form-urlencoded'},
-                            data: $.param({
-                                status: 'completed'
-                            }),
-                            url: PATH + '/api/examination/' + examination.id
-                        }).then(function(res) {
-                            return true;
-                        }, function() {
-                            return false;
-                        })
-                    } else {
-                        return false;
-                    }
                 });
             },
             queryExpertsByOperators: function(user) {
@@ -188,8 +170,8 @@ angular.module('ecgTaskService', [])
                     method: 'GET',
                     url: PATH + '/api/examination/' + examinationId + '/reply'
                 }).then(function(res) {
-                    if (res.data.datas && res.data.datas.length > 0) {
-                        return res.data.datas;
+                    if (res.data && res.data.length > 0) {
+                        return res.data;
                     } else {
                         return [];    
                     }

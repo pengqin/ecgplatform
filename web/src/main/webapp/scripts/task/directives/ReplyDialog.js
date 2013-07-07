@@ -13,6 +13,7 @@ define(function(require, exports) {
   	$scope.replydialog.execute = function() {
   		if ($scope.replydialog.handler instanceof Function) {
   			$scope.replydialog.handler($scope.replydialog.reply);
+        $scope.replydialog.reply = TaskService.getPlainReply();
   		}
   	};
 
