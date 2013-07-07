@@ -22,6 +22,7 @@ angular.module('ecgRuleModules', [])
     refreshGrid();
 
     // save
+    /*
     $scope.rule.save = function() {
         var length = $scope.rule.data.$$v.length, count = 0, editable = true;
         $($scope.rule.data.$$v).each(function(i, rule) {
@@ -49,7 +50,7 @@ angular.module('ecgRuleModules', [])
                 $scope.message.success("快速保存区间失败!");
             });
         });
-    };
+    };*/
 
     // 编辑功能
     $scope.rule.showPage = function(item) {
@@ -74,16 +75,39 @@ angular.module('ecgRuleModules', [])
             text: "请确认删除[" + selectedReplyConfig.name + "]的规则, 该操作无法恢复!",
             handler: function() {
                 $scope.dialog.showStandby();
-                RuleService.remove(selectedReplyConfig.id)
-                .then(function() {
-                    $scope.dialog.hideStandby();
-                    $scope.rule.selectedItem = null;
-                    $scope.message.success("删除成功!");
-                    // 刷新
-                    refreshGrid();
-                }, function() {
-                    $scope.dialog.hideStandby();
-                    $scope.message.error("无法删除该数据,可能是您的权限不足,请联系管理员!");
+
+
+                function removeGroup() {
+                    RuleService.remove(selectedReplyConfig.id)
+                    .then(function() {
+                        $scope.dialog.hideStandby();
+                        $scope.rule.selectedItem = null;
+                        $scope.message.success("删除规则成功!");
+                        // 刷新
+                        refreshGrid();
+                    }, function() {
+                        $scope.dialog.hideStandby();
+                        $scope.message.error("无法删除该规则,可能是您的权限不足,请联系管理员!");
+                    });
+                }
+
+                var filters, count = 0, len = 0;
+
+                RuleService.queryAll({code: selectedReplyConfig.code, usage: 'filter'})
+                .then(function(filters) {
+                    len = filters.length;
+                    $(filters).each(function(i, filter) {
+                        RuleService.remove(filter.id)
+                        .then(function() {
+                            count++;
+                            if (count === len) {
+                                removeGroup();
+                            }
+                        }, function() {
+                            $scope.dialog.hideStandby();
+                            $scope.message.error("无法删除该规则下的检测区间!");
+                        });
+                    });
                 });
             }
         });
@@ -144,7 +168,7 @@ angular.module('ecgRuleModules', [])
                 .then(function(result) {
                     $scope.dialog.hideStandby();
                     if (result) {
-                        $scope.message.success("新增规则初始区间成功!");
+                        $scope.message.success("新增默认检测区间成功!");
                         $location.path("/rule");
                     } else {
                         $scope.message.error("新增规则初始区间失败!");
@@ -235,13 +259,6 @@ angular.module('ecgRuleModules', [])
     // 命名空间
     $scope.replyconfig = {};
 
-    // 回复类型
-    $scope.replyconfig.results = EnumService.getResults();
-    $scope.replyconfig.getResultLabel = function(replyconfig) {
-        return EnumService.getResultsLabel(replyconfig.result);
-    };
-
-
     // 数据范围
     $scope.replyconfig.rules = null; 
 
@@ -270,6 +287,11 @@ angular.module('ecgRuleModules', [])
             rules.sort(function(a, b) {
                 return a.min > b.min ? 1 : -1;
             });
+
+            $(rules).each(function(i, rule) {
+                rule.arrayIdx = i;
+            });
+
             $scope.replyconfig.rules = rules;
         }, function () {
             $scope.dialog.hideStandby();
@@ -296,7 +318,7 @@ angular.module('ecgRuleModules', [])
     $scope.replyconfig.onselectrule = function(rule) {
         $scope.replyconfig.newobj = {};
         $scope.replyconfig.selectedRule = rule;
-        $scope.replyconfig.reset();
+        reset();
     };
 
     // 选择某个config
@@ -360,6 +382,7 @@ angular.module('ecgRuleModules', [])
     
     // 修改level 
     $scope.replyconfig.setLevel = function(level) {
+        if ($scope.replyconfig.selectedRule.level === level) { return; }
         $scope.replyconfig.selectedRule.level = level;
         $scope.dialog.showStandby();
         RuleService.update($scope.replyconfig.selectedRule)
@@ -370,6 +393,56 @@ angular.module('ecgRuleModules', [])
             $scope.dialog.hideStandby();
             $scope.message.error("修改级别失败!");
             refreshRules();
+        });
+    };
+
+    // 删除区间
+    $scope.replyconfig.confirmDeleteRule = function() {
+        var selectedItem = $scope.replyconfig.selectedRule;
+        if (selectedItem === null) {
+            $scope.dialog.alert({
+                text: '请选择一个区间!'
+            });
+            return;
+        }
+        if ($scope.replyconfig.rules.length === 1) {
+            $scope.dialog.alert({
+                text: '至少保留一个区间!'
+            });
+            return;
+        }
+        $scope.dialog.confirm({
+            text: "请确认删除区间[" + selectedItem.min + "," + selectedItem.max + ")及其相关预设回复, 该操作无法恢复!",
+            handler: function() {
+                var updateobj;
+                if (selectedItem.arrayIdx === 0) {
+                    updateobj = $scope.replyconfig.rules[1];
+                    updateobj.min = selectedItem.min;
+                } else {
+                    updateobj = $scope.replyconfig.rules[selectedItem.arrayIdx - 1];
+                    updateobj.max = selectedItem.max;
+                }
+                $scope.dialog.showStandby();
+                RuleService.update(updateobj).then(function() {
+                    RuleService.remove(selectedItem.id)
+                    .then(function() {
+                        $scope.dialog.hideStandby();
+                        $scope.message.success("删除区间成功!");
+                        /// 刷新
+                        refreshRules();
+                    }, function() {
+                        $scope.dialog.hideStandby();
+                        $scope.message.error("无法删除该数据,可能是您的权限不足,请联系管理员!");
+                        // 刷新
+                        refreshRules();
+                    });
+                }, function() {
+                    $scope.message.error("更新相邻区间失败!");
+                    // 刷新
+                    refreshRules();
+                });
+                
+            }
         });
     };
 
@@ -393,7 +466,7 @@ angular.module('ecgRuleModules', [])
                 $scope.dialog.hideStandby();
                 if (flag) {
                     $scope.message.success("新增回复设置成功!");
-                    $scope.replyconfig.reset();
+                    reset();
                     refreshReplyConfigs($scope.replyconfig.selectedRule);
                 } else {
                     $scope.message.error("无法新增回复设置!");
@@ -410,14 +483,17 @@ angular.module('ecgRuleModules', [])
     function reset() {
         $scope.replyconfig.selectedReplyConfig = ReplyConfigService.getPlainObject();
     }
-    $scope.replyconfig.reset = reset;
+    $scope.replyconfig.reset = function() {
+        refreshReplyConfigs($scope.replyconfig.selectedRule);
+        reset();
+    };
 
     // 删除某条回复
     $scope.replyconfig.remove = function(deletedItem) {
         $scope.dialog.confirm({
             text: "请确认删除, 该操作无法恢复!",
             handler: function() {
-                $scope.replyconfig.reset();
+                reset();
                 $scope.dialog.showStandby();
                 ReplyConfigService.remove($scope.replyconfig.selectedRule, deletedItem.id)
                 .then(function() {

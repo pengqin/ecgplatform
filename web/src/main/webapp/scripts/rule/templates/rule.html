@@ -24,10 +24,10 @@
 			<tr>
 			<th width="10%">设备类型</th>
 			<th width="10%">指标编码</th>
-			<th width="15%">指标名称</th>
-			<!--th>区间设定</th-->
+			<th width="10%">指标名称</th>
+			<th>检测区间</th-->
 			<th width="25%">说明</th>
-			<th width="10%">检测区间及回复</th>
+			<th width="15%">操作</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -35,13 +35,7 @@
 				<td>{{item.type}}</td>
 				<td>{{item.code}}</td>
 				<td class="ecgGridLik" ng-click="rule.showPage(item)">{{item.name}}</td>
-				<!--td>
-				<button class="btn btn-small" type="button" ng-click="rule.setRange(item, 'min', -1)">无下限</button>
-				<input type="text" ng-model="item.min" class="input-mini" required ng-pattern="/^-?\d+$/"></input>
-				<span>-</span>
-				<input type="text" ng-model="item.max" class="input-mini" required ng-pattern="/^-?\d+$/"></input>
-				<button class="btn btn-small" type="button" ng-click="rule.setRange(item, 'max', 9999)">无上限</button>
-				</td-->
+				<td>[{{item.min}}, {{item.max}})</td>
 				<td>{{item.remark}}</td>
 				<td><a href="javascript:void(0)" ng-click="rule.editReplyConfig(item)" ng-show="item.canReply">设置</td>
 			</tr>

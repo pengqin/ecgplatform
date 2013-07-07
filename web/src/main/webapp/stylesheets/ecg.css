@@ -131,7 +131,7 @@ table tbody tr.active {
 }
 .ecgprops .desc {
 	display: block;
-	color: #ccc;
+	color: red;
 }
 .ecgprops .prop {
 	display:inline-block;
@@ -148,6 +148,7 @@ table tbody tr.active {
 }
 .ecgprops .rulelevel {
 	cursor: pointer;
+	margin-right: 5px;
 }
 
 /* 回复设置*/
