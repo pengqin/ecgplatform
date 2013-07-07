@@ -75,9 +75,9 @@ angular.module('ecgTaskService', [])
 
                 url = "/api/task";
                 if (user.roles === 'operator') {
-                    url = "/api/operator/" + user.id;
+                    url = "/api/operator/" + user.id + '/task';
                 } else if (user.roles === 'expert') {
-                    url = "/api/expert/" + user.id;
+                    url = "/api/expert/" + user.id + '/task';
                 }
 
                 if (opts.status === 'undone') {
