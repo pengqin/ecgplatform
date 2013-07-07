@@ -71,16 +71,24 @@ angular.module('ecgTaskService', [])
                 return undones;
             },
             queryAllTaskByEmployee: function(user, opts) {
-                var userId = $.cookie("AiniaOpUserId"),
-                    opts = opts || {}, params = '?'
+                var opts = opts || {}, url, params = '?';
+
+                url = "/api/task";
+                if (user.roles === 'operator') {
+                    url = "/api/operator/" + user.id;
+                } else if (user.roles === 'expert') {
+                    url = "/api/expert/" + user.id;
+                }
+
                 if (opts.status === 'undone') {
                     params += 'status=pending&status=proceeding';
                 } else if (opts.status === 'done') {
                     params += 'status=completed';
                 }
+
                 return $http({
                     method: 'GET',
-                    url: PATH + '/api/' + userId + '/task' + params
+                    url: PATH + url + params
                 }).then(function(res) {
                     if (res.data.datas && res.data.datas.length > 0) {
                         return res.data.datas;

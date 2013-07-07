@@ -4,17 +4,31 @@ define(function(require, exports) {
 var template = require("../templates/donetasklist.html");
 
 angular.module('ecgDoneTaskList', [])
-.controller('DoneTaskListController', ['$scope', 'TaskService',
-function($scope, TaskService) {
+.controller('DoneTaskListController', ['$scope', 'ProfileService', 'TaskService',
+function($scope, ProfileService, TaskService) {
     $scope.done.data = null;
     $scope.done.selected = null;
 
     function refreshGrid() {
-        TaskService.queryAllTaskByEmployee(
-            $scope.session.user, 
-            {status: 'done'}
-        ).then(function(tasks) {
-            $scope.done.data = tasks;
+        var username = $.cookie("AiniaOpUsername");
+
+        ProfileService.get(username)
+        .then(function(user) {
+            return user;
+        }, function() {
+            return null
+        })
+        .then(function(user) {
+            if (user) {
+                TaskService.queryAllTaskByEmployee(
+                    user, 
+                    {status: 'done'}
+                ).then(function(tasks) {
+                    $scope.done.data = tasks;
+                });
+            } else {
+                $scope.message.error("无法加载用户数据");
+            }
         });
     };
     refreshGrid();
