@@ -1,5 +1,5 @@
 <h5 class="ecgHd">检测简报</h5>
-<table class="ecgprops">
+<table class="ecgprops" ng-show="examinationview && examinationview.examination">
 <tr>
 <td><label>测试项目:</label></td>
 <td><span class="prop">{{examinationview.examination.testItem}}</span></td>
@@ -32,3 +32,7 @@
 <td><span class="prop">{{examinationview.examination.pulserate}}</span></td>
 </tr>
 </table>
+
+<div ng-show="examinationview && !examinationview.examination">
+	正在加载检测请求数据...
+</div>

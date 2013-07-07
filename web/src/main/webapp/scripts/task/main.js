@@ -8,14 +8,16 @@ require("./directives/UndoneTaskView");
 require("./directives/UserCard");
 require("./directives/ExaminationView");
 require("./directives/Plot");
-require("./directives/Reply");
 require("./directives/ReplyDialog");
 require("./directives/ForwardDialog");
+require("./directives/DoneTaskList");
+require("./directives/DoneTaskView");
+require("./directives/ExaminationReply");
 
 var undoneTemp = require("./templates/undone.html");
 var doneTemp = require("./templates/done.html");
 
-angular.module('ecgTask', ['ecgTaskService', 'ecgUndoneTaskList', 'ecgUndoneTaskView', 'ecgReplyDialog', 'ecgForwardDialog'])
+angular.module('ecgTask', ['ecgTaskService', 'ecgUndoneTaskList', 'ecgUndoneTaskView', 'ecgReplyDialog', 'ecgForwardDialog', 'ecgDoneTaskList', 'ecgDoneTaskView', 'ecgExaminationReply'])
 .controller('UndoneTaskController', ['$scope', 'TaskService', function ($scope, TaskService) {
     $scope.undone = {};
     $scope.subheader.title = "待办工作";
@@ -26,11 +28,15 @@ angular.module('ecgTask', ['ecgTaskService', 'ecgUndoneTaskList', 'ecgUndoneTask
             $scope.replydialog.hide();
             $scope.dialog.showStandby();
             TaskService.reply($scope.undone.selected.examination, reply)
-            .then(function() {
+            .then(function(flag) {
                 $scope.dialog.hideStandby();
-                $scope.message.success("该检测请求已处理完毕，如需查询，请点击菜单已办工作!");
+                if (flag) {
+                    $scope.message.success("该检测请求已处理完毕，如需查询，请点击菜单已办工作!");
+                    $scope.undone.selected = null;
+                } else {
+                    $scope.message.error("无法处理该条记录，请联系管理员!");
+                }
                 // 刷新
-                $scope.undone.selected = null;
                 $scope.undone.refreshGrid();
             }, function() {
                 $scope.dialog.hideStandby();
@@ -45,11 +51,15 @@ angular.module('ecgTask', ['ecgTaskService', 'ecgUndoneTaskList', 'ecgUndoneTask
             $scope.forwarddialog.hide();
             $scope.dialog.showStandby();
             TaskService.forward($scope.undone.selected, expert)
-            .then(function() {
+            .then(function(flag) {
                 $scope.dialog.hideStandby();
-                $scope.message.success("该检测请求已转发，如需查询，请点击菜单已办工作!");
+                if (flag) {
+                    $scope.message.success("该检测请求已处理完毕，如需查询，请点击菜单已办工作!");
+                    $scope.undone.selected = null;
+                } else {
+                    $scope.message.error("无法处理该条记录，请联系管理员!");
+                }
                 // 刷新
-                $scope.undone.selected = null;
                 $scope.undone.refreshGrid();
             }, function() {
                 $scope.dialog.hideStandby();

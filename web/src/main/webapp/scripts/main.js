@@ -74,6 +74,7 @@ angular.module('ecgApp', ['ecgCommon', 'ecgTask', 'ecgMonitor', 'ecgEmployee', '
     .then(function(user) {
         if (user) {
             $rootScope.session.user = user;
+            $.cookie("AiniaOpUserId", user.id, { expires: 1, path: '/' });
         } else {
             logout('无法获取您登录名为' + username +'用户信息。请与管理员联系!');
         }
