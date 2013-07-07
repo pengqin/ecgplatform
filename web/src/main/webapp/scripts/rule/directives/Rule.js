@@ -152,7 +152,7 @@ angular.module('ecgRuleModules', [])
 
     // 创建函数
     $scope.rule.create = function() {
-        if ($scope.rule.newobj.min > $scope.rule.newobj.max) {
+        if (parseFloat($scope.rule.newobj.min) > parseFloat($scope.rule.newobj.max)) {
             $scope.message.warn("区间范围异常,无法保存。");
             return;
         }

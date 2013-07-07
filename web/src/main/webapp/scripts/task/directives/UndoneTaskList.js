@@ -6,11 +6,16 @@ var template = require("../templates/undonetasklist.html");
 angular.module('ecgUndoneTaskList', [])
 .controller('UndoneTaskListController', ['$scope', 'TaskService',
 function($scope, TaskService) {
-    $scope.undone.data = TaskService.queryAllTaskByEmployee($scope.session.user, {status: 'pending'});
+    $scope.undone.data = null;
     $scope.undone.selected = null;
 
     function refreshGrid() {
-        //$scope.undone.data = TaskService.queryAllTaskByEmployee($scope.session.user, {status: 'pending', status: 'proceeding'});
+        TaskService.queryAllTaskByEmployee(
+            $scope.session.user, 
+            {status: 'undone'}
+        ).then(function(tasks) {
+            $scope.undone.data = tasks;
+        });
     };
     refreshGrid();
 
