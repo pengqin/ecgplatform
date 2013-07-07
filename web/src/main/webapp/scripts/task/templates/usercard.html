@@ -1,23 +1,28 @@
 <h5 class="ecgHd">用户信息</h5>
-<table class="ecgprops">
+<table class="ecgprops" ng-show="usercard && usercard.user">
 <tr>
 <td><label>姓名:</label></td>
-<td><span class="prop">{{undone.selected.user}}</span></td>
+<td><span class="prop">{{usercard.user.name}}</span></td>
 <td><label>时间:</label></td>
-<td><span class="prop">2013年05月12日 13:56</span></td>
+<td><span class="prop">{{usercard.user.createdDate}}</span></td>
 <td><label>电话:</label></td>
-<td><span class="prop">13912345678</span></td>
+<td><span class="prop">{{usercard.user.mobile}}</span></td>
 </tr>
 <tr>
 <td valign="top"><label>紧急联系人:</label></td>
-<td colspan="5"><span class="prop">张大 - 13912345678</span><br/><span class="prop">张大 - 13912345678</span></td>
+<td colspan="5">
+	<span class="prop" ng-show="usercard.user.emContact1">{{usercard.user.emContact1}} - {{usercard.user.emContact1Tel}}</span><br/>
+	<span class="prop" ng-show="usercard.user.emContact2">{{usercard.user.emContact2}} - {{usercard.user.emContact2Tel}}</span></td>
 </tr>
 <tr>
 <td valign="top"><label>不良爱好:</label></td>
-<td colspan="5"><span class="prop">无</span></td>
+<td colspan="5"><span class="prop">{{usercard.user.badHabits}}</span></td>
 </tr>
 <tr>
 <td valign="top"><label>既往病史:</label></td>
-<td colspan="5"><span class="prop">无</span></td>
+<td colspan="5"><span class="prop">{{usercard.user.anamnesis}}</span></td>
 </tr>
 </table>
+<div ng-show="usercard && !usercard.user">
+	正在加载用户数据...
+</div>

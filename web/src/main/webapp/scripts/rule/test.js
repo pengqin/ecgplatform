@@ -125,9 +125,9 @@ define(function(require, exports) {
         it("the replyconfig for a specific rule should not be created without required fields", function(done) {
             expect(replyrule).not.to.be(null);
             
-            var newobj = ReplyConfigService.getPlainObject();
+            var invalid = ReplyConfigService.getPlainObject();
 
-            ReplyConfigService.create(replyrule, newobj)
+            ReplyConfigService.create(replyrule, invalid)
             .then(function(flag) {
                 if (flag) {
                     throw new Error('the rule can\'t not be created');
@@ -174,16 +174,23 @@ define(function(require, exports) {
             });
         });
 
-        it("the replyconfig for a specific rule should be updated", function(done) {
+        it("the replyconfig for a specific rule should be updated as expectation", function(done) {
             expect(replyrule).not.to.be(null);
             expect(replyconfig).not.to.be(null);
             
-            replyconfig.result = 1;
-            replyconfig.content = "修改内容";
+            replyconfig.result = (new Date()).getTime();
+            replyconfig.content = "修改内容" + (new Date()).getTime();
 
             ReplyConfigService.update(replyrule, replyconfig)
             .then(function() {
-                done();
+                ReplyConfigService.get(replyrule, replyconfig).then(function(pesistedReplyConfig) {
+                    expect(pesistedReplyConfig).not.to.be(null);
+                    expect(pesistedReplyConfig.result).to.be(replyconfig.result);
+                    expect(pesistedReplyConfig.content).to.be(replyconfig.content);
+                    done();
+                }, function() {
+                    throw new Error('the rule can\'t be retrieved');
+                });
             }, function() {
                 throw new Error('the rule can\'t be updated');
             });

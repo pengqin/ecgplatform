@@ -15,10 +15,3 @@ document.createElement('ecg-experts-task-report');
 document.createElement('ecg-operators-task-report');
 document.createElement('ecg-task-current-report');
 document.createElement('ecg-task-process-report');
-// task module
-document.createElement('ecg-plot');
-document.createElement('ecg-task-card');
-document.createElement('ecg-user-card');
-
-
-

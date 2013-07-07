@@ -131,7 +131,7 @@ table tbody tr.active {
 }
 .ecgprops .desc {
 	display: block;
-	color: #ccc;
+	color: red;
 }
 .ecgprops .prop {
 	display:inline-block;
@@ -146,6 +146,10 @@ table tbody tr.active {
 .ecgprops input.ng-invalid {
 	border: 2px solid red;
 }
+.ecgprops .rulelevel {
+	cursor: pointer;
+	margin-right: 5px;
+}
 
 /* 回复设置*/
 .replyconfigs {
@@ -154,7 +158,8 @@ table tbody tr.active {
 .replyconfigs .bar {
 	cursor: pointer;
 	height: 50px;
-	line-height: 50px;
+	line-height: 20px;
+	padding-top: 5px;
 }
 /* 过滤规则 */
 .rules td {
@@ -162,7 +167,6 @@ table tbody tr.active {
 }
 .rules input {
 	margin: 0px;
-	width:40px;
 	text-align:right;
 }
 
