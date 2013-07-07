@@ -6,20 +6,16 @@ define(function(require, exports) {
     angular.module('ecgTaskCard', [])
     .controller('TaskCardController', ['$scope', 'TaskService',
     function($scope, TaskService) {
-        $scope.undone.task = {};
-        $scope.$watch('undone.selectedItems',
-            function(newVal, oldVal) {
-                if (!newVal || newVal.length === 0) { return; }
-                $scope.undone.task = {
-                    name: 'test'
-                };
-            }, 
-            true
-        );
+        $scope.taskcard = {};
+        $scope.taskcard.task = null;
+        $scope.$watch('undone.selected',function() {
+            if(!$scope.undone.selected) { return; }
+            $scope.taskcard.task = $scope.undone.selected;
+        });
     }])
     .directive("ecgTaskCard", [ '$location', function($location) {
         return {
-            restrict : 'E',
+            restrict : 'A',
             replace : false,
             template : template,
             controller : "TaskCardController",

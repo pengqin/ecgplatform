@@ -13,17 +13,17 @@ insert into employee (id ,type, name , username , password , roles , status,enab
 --employee end
 --insert into expert_operator(expert_id , operator_id) values (3 , 4);
 insert into health_rule (id , name , code , usage , can_reply , type , user_id , unit , level ,min , max,created_date,remark , version)
-values (1 , '心跳规则' , '1' , 'filter' ,1, '11', null , '次' , 'success' , 80 , 100 , '2012-06-04 01:00:00' , '心跳数字的用于检测的区间' , 1);
+values (1 , '心跳规则' , '1' , 'group' ,1, '11', null , '次' , 'success' , 80 , 100 , '2012-06-04 01:00:00' , '心跳数字的用于检测的区间' , 1);
 
 insert into health_rule (id , name , code , usage , can_reply, type , user_id , unit , level ,min , max,created_date,remark , version)
-values (2 , '心跳规则的回复区间' , '1' , 'reply' , 1, '11' , null , '次' , 'danger' , 0 , 40 , '2012-06-04 01:00:00' , '心跳规则的说明' , 1);
+values (2 , '心跳规则的回复区间' , '1' , 'filter' , 1, '11' , null , '次' , 'danger' , 0 , 40 , '2012-06-04 01:00:00' , '心跳规则的说明' , 1);
 insert into health_rule (id , name , code , usage , can_reply, type , user_id , unit , level ,min , max,created_date,remark , version)
-values (3 , '心跳规则的回复区间' , '1' , 'reply' , 1, '11' , null , '次' , 'warning' , 41 , 60 , '2012-06-04 01:00:00' , '心跳规则的说明' , 1);
+values (3 , '心跳规则的回复区间' , '1' , 'filter' , 1, '11' , null , '次' , 'warning' , 41 , 60 , '2012-06-04 01:00:00' , '心跳规则的说明' , 1);
 insert into health_rule (id , name , code , usage , can_reply, type , user_id , unit , level ,min , max,created_date,remark , version)
-values (4 , '心跳规则的回复区间' , '1' , 'reply' , 1, '11' , null , '次' , 'success' , 61 , 90 , '2012-06-04 01:00:00' , '心跳规则的说明' , 1);
+values (4 , '心跳规则的回复区间' , '1' , 'filter' , 1, '11' , null , '次' , 'success' , 61 , 90 , '2012-06-04 01:00:00' , '心跳规则的说明' , 1);
 insert into health_rule (id , name , code , usage , can_reply, type , user_id , unit , level ,min , max,created_date,remark , version)
-values (5 , '心跳规则的回复区间' , '1' , 'reply' , 1, '11' , null , '次' , 'warning' , 91 , 100 , '2012-06-04 01:00:00' , '心跳规则的说明' , 1);
+values (5 , '心跳规则的回复区间' , '1' , 'filter' , 1, '11' , null , '次' , 'warning' , 91 , 100 , '2012-06-04 01:00:00' , '心跳规则的说明' , 1);
 insert into health_rule (id , name , code , usage , can_reply, type , user_id , unit , level ,min , max,created_date,remark , version)
-values (6 , '心跳规则的回复区间' , '1' , 'reply' , 1, '11' , null , '次' , 'danger' , 101 , 200 , '2012-06-04 01:00:00' , '心跳规则的说明' , 1);
+values (6 , '心跳规则的回复区间' , '1' , 'filter' , 1, '11' , null , '次' , 'danger' , 101 , 200 , '2012-06-04 01:00:00' , '心跳规则的说明' , 1);
 
 commit;

@@ -1,4 +1,4 @@
-<a class="block-heading">待办工作<span class="label label-warning">3条异常</span><span class="label label-warning">2条人工异常</span></a>
+<a class="block-heading">待办工作<!--span class="label label-warning">3条异常</span><span class="label label-warning">2条人工异常</span--></a>
 <div class="block-body block-body-grid collapse in">
 	<!-- 当前区间的回复 -->
 	<table class="table table-striped">
@@ -11,9 +11,9 @@
 	</thead>
 	<tbody>
 		<tr ng-repeat="item in undone.data" ng-click="undone.selected = item">
-			<td>{{item.user}}</td>
-			<td>{{item.checkState}}</td>
-			<td></td>
+			<td>{{item.userName}}</td>
+			<td>{{item.status}}</td>
+			<td>{{item.isHandler}}</td>
 		</tr>
 	</tbody>
 	</table>
