@@ -2,7 +2,6 @@
 define(function(require, exports) {
 
 require("./services/TaskService");
-require("./services/PlotService");
 require("./directives/UndoneTaskList");
 require("./directives/UndoneTaskView");
 require("./directives/UserCard");
