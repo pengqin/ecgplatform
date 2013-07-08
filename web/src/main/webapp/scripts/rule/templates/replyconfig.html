@@ -6,7 +6,7 @@
 		</button>
 		<button class="btn" type="button"
 				ng-click="replyconfig.confirmDeleteRule()"
-				ng-disabled="replyconfig.selectedRule == null || replyconfig.rules.length == 1">
+				ng-disabled="replyconfig.selectedRule == null || replyconfig.selectedRule.level == 'outside'">
 			<i class="icon-remove"></i>删除区间
 		</button>
 		<a href="#/rule" class="btn"><i class="icon-list"></i>返回</a>
