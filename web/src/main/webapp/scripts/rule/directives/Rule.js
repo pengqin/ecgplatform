@@ -262,7 +262,7 @@ angular.module('ecgRuleModules', [])
     $scope.replyconfig.rules = null; 
 
     // level名称
-    $scope.replyconfig.getLevelLabel = EnumService.getLevelLabel
+    $scope.replyconfig.getLevelLabel = EnumService.getLevelLabel;
 
     function refreshRules() {
         reset();

@@ -7,7 +7,7 @@ define(function(require, exports) {
     .controller('ExaminationReplyController', ['$scope', 'TaskService',
     function($scope, TaskService) {
         $scope.examinationreply = {};
-        $scope.examinationreply.reply = null;
+        $scope.examinationreply.replys = null;
         
         // 监听已完成
         $scope.$watch('done.selected',function() {
@@ -16,7 +16,7 @@ define(function(require, exports) {
 
             TaskService.getReplyByExamination($scope.done.selected.examinationId)
             .then(function(replys) {
-                $scope.examinationreply.reply = replys[0];
+                $scope.examinationreply.replys = replys;
             });
         });
     }])

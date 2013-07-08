@@ -13,29 +13,36 @@ insert into employee (id ,type, name , username , password , roles , status,enab
 --employee end
 --insert into expert_operator(expert_id , operator_id) values (3 , 4);
 insert into health_rule (id , name , code , usage , can_reply , type , user_id , unit , level ,min , max,created_date,remark , version)
-values (1 , '心跳规则' , '1' , 'group' ,1, '11', null , '次' , 'success' , 80 , 100 , '2012-06-04 01:00:00' , '心跳数字的用于检测的区间' , 1);
+values (1 , '心跳规则' , '3' , 'group' ,1, '11', null , '次' , 'success' , 0 , 100 , '2012-06-04 01:00:00' , '心跳数字的用于检测的区间' , 1);
+insert into health_rule (id , name , code , usage , can_reply, type , user_id , unit , level ,min , max,created_date,remark , version)
+values (2 , '心跳规则的回复区间' , '3' , 'filter' , 1, '11' , null , '次' , 'danger' , 0 , 59 , '2012-06-04 01:00:00' , '心跳规则的说明' , 1);
+insert into health_rule (id , name , code , usage , can_reply, type , user_id , unit , level ,min , max,created_date,remark , version)
+values (3 , '心跳规则的回复区间' , '3' , 'filter' , 1, '11' , null , '次' , 'success' , 60 , 90 , '2012-06-04 01:00:00' , '心跳规则的说明' , 1);
+insert into health_rule (id , name , code , usage , can_reply, type , user_id , unit , level ,min , max,created_date,remark , version)
+values (4 , '心跳规则的回复区间' , '3' , 'filter' , 1, '11' , null , '次' , 'warning' , 90 , 100 , '2012-06-04 01:00:00' , '心跳规则的说明' , 1);
 
+
+insert into health_rule (id , name , code , usage , can_reply , type , user_id , unit , level ,min , max,created_date,remark , version)
+values (5 , '呼吸规则' , '5' , 'group' ,1, '11', null , '次' , 'success' , 0 , 100 , '2012-06-04 01:00:00' , '心跳数字的用于检测的区间' , 1);
 insert into health_rule (id , name , code , usage , can_reply, type , user_id , unit , level ,min , max,created_date,remark , version)
-values (2 , '心跳规则的回复区间' , '1' , 'filter' , 1, '11' , null , '次' , 'danger' , 0 , 40 , '2012-06-04 01:00:00' , '心跳规则的说明' , 1);
+values (6 , '呼吸规则的回复区间' , '5' , 'filter' , 1, '11' , null , '次' , 'warning' , 0 , 40 , '2012-06-04 01:00:00' , '呼吸规则的说明' , 1);
 insert into health_rule (id , name , code , usage , can_reply, type , user_id , unit , level ,min , max,created_date,remark , version)
-values (3 , '心跳规则的回复区间' , '1' , 'filter' , 1, '11' , null , '次' , 'warning' , 41 , 60 , '2012-06-04 01:00:00' , '心跳规则的说明' , 1);
+values (7 , '呼吸规则的回复区间' , '5' , 'filter' , 1, '11' , null , '次' , 'success' , 41 , 90 , '2012-06-04 01:00:00' , '呼吸规则的说明' , 1);
 insert into health_rule (id , name , code , usage , can_reply, type , user_id , unit , level ,min , max,created_date,remark , version)
-values (4 , '心跳规则的回复区间' , '1' , 'filter' , 1, '11' , null , '次' , 'success' , 61 , 90 , '2012-06-04 01:00:00' , '心跳规则的说明' , 1);
-insert into health_rule (id , name , code , usage , can_reply, type , user_id , unit , level ,min , max,created_date,remark , version)
-values (5 , '心跳规则的回复区间' , '1' , 'filter' , 1, '11' , null , '次' , 'warning' , 91 , 100 , '2012-06-04 01:00:00' , '心跳规则的说明' , 1);
-insert into health_rule (id , name , code , usage , can_reply, type , user_id , unit , level ,min , max,created_date,remark , version)
-values (6 , '心跳规则的回复区间' , '1' , 'filter' , 1, '11' , null , '次' , 'danger' , 101 , 200 , '2012-06-04 01:00:00' , '心跳规则的说明' , 1);
+values (8, '呼吸规则的回复区间' , '5' , 'filter' , 1, '11' , null , '次' , 'warning' , 91 , 100 , '2012-06-04 01:00:00' , '呼吸规则的说明' , 1);
+
+
 -- health_examination start
 insert into health_examination (id , user_id , test_item , user_name , user_type , level , blood_pressure_low,blood_pressure_high,heart_rhythm , breath,body_temp,pulserate,heart_data,latitude,altitude,temp,humidity,pressure,charge_type,heart_features,algorithm_version,created_date,version) 
 values (1,1,'PHONE', '测试用户','VIP','danger',80,120,60,60,37.5,60,'',0.0,200,37.6,null,null,'YEAR',null,null,'2013-07-04 01:00:00',1);
 insert into health_examination (id , user_id , test_item , user_name , user_type , level , blood_pressure_low,blood_pressure_high,heart_rhythm , breath,body_temp,pulserate,heart_data,latitude,altitude,temp,humidity,pressure,charge_type,heart_features,algorithm_version,created_date,version) 
-values (2,1,'PHONE', '测试用户','VIP','danger',80,120,60,60,37.5,60,'',0.0,200,37.6,null,null,'YEAR',null,null,'2013-07-04 01:00:00',1);
+values (2,1,'PHONE', '测试用户','VIP','danger',80,120,80,80,37.5,60,'',0.0,200,37.6,null,null,'YEAR',null,null,'2013-07-04 01:00:00',1);
 insert into health_examination (id , user_id , test_item , user_name , user_type , level , blood_pressure_low,blood_pressure_high,heart_rhythm , breath,body_temp,pulserate,heart_data,latitude,altitude,temp,humidity,pressure,charge_type,heart_features,algorithm_version,created_date,version) 
-values (3,1,'PHONE', '测试用户','VIP','danger',80,120,60,60,37.5,60,'',0.0,200,37.6,null,null,'YEAR',null,null,'2013-07-04 01:00:00',1);
+values (3,1,'PHONE', '测试用户','VIP','danger',80,120,40,40,37.5,60,'',0.0,200,37.6,null,null,'YEAR',null,null,'2013-07-04 01:00:00',1);
 insert into health_examination (id , user_id , test_item , user_name , user_type , level , blood_pressure_low,blood_pressure_high,heart_rhythm , breath,body_temp,pulserate,heart_data,latitude,altitude,temp,humidity,pressure,charge_type,heart_features,algorithm_version,created_date,version) 
-values (4,1,'PHONE', '测试用户','VIP','danger',80,120,60,60,37.5,60,'',0.0,200,37.6,null,null,'YEAR',null,null,'2013-07-04 01:00:00',1);
+values (4,1,'PHONE', '测试用户','VIP','danger',80,120,90,90,37.5,60,'',0.0,200,37.6,null,null,'YEAR',null,null,'2013-07-04 01:00:00',1);
 insert into health_examination (id , user_id , test_item , user_name , user_type , level , blood_pressure_low,blood_pressure_high,heart_rhythm , breath,body_temp,pulserate,heart_data,latitude,altitude,temp,humidity,pressure,charge_type,heart_features,algorithm_version,created_date,version) 
-values (5,1,'PHONE', '测试用户','VIP','danger',80,120,60,60,37.5,60,'',0.0,200,37.6,null,null,'YEAR',null,null,'2013-07-04 01:00:00',1);
+values (5,1,'PHONE', '测试用户','VIP','danger',80,120,10,10,37.5,60,'',0.0,200,37.6,null,null,'YEAR',null,null,'2013-07-04 01:00:00',1);
 
 -- health_examination end
 -- task start

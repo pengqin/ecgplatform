@@ -23,23 +23,29 @@ angular.module('ecgTask', ['ecgTaskService', 'ecgUndoneTaskList', 'ecgUndoneTask
 
     // 回复
     $scope.undone.reply = function() {
-        $scope.replydialog.show({handler: function(reply) {
+        $scope.replydialog.show({examination: $scope.undone.selected.examination, handler: function(replys) {
+            var len = replys.length, count = 0;
             $scope.replydialog.hide();
             $scope.dialog.showStandby();
-            TaskService.reply($scope.undone.selected.examination, reply)
-            .then(function(flag) {
-                $scope.dialog.hideStandby();
-                if (flag) {
-                    $scope.message.success("该检测请求已处理完毕，如需查询，请点击菜单已办工作!");
-                    $scope.undone.selected = null;
-                } else {
+            $(replys).each(function(i, reply) {
+                TaskService.reply($scope.undone.selected.examination, reply)
+                .then(function(flag) {
+                    $scope.dialog.hideStandby();
+                    if (flag) {
+                        count++;
+                    } else {
+                        $scope.message.error("无法处理该条记录，请联系管理员!");
+                    }
+                    if (count === len) {
+                        $scope.message.success("该检测请求已处理完毕，如需查询，请点击菜单已办工作!");
+                        $scope.undone.selected = null;
+                        // 刷新
+                        $scope.undone.refreshGrid();
+                    }
+                }, function() {
+                    $scope.dialog.hideStandby();
                     $scope.message.error("无法处理该条记录，请联系管理员!");
-                }
-                // 刷新
-                $scope.undone.refreshGrid();
-            }, function() {
-                $scope.dialog.hideStandby();
-                $scope.message.error("无法处理该条记录，请联系管理员!");
+                });
             });
         }});
     };

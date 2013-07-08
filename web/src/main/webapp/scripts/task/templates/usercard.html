@@ -11,16 +11,18 @@
 <tr>
 <td valign="top"><label>紧急联系人:</label></td>
 <td colspan="5">
-	<span class="prop" ng-show="usercard.user.emContact1">{{usercard.user.emContact1}} - {{usercard.user.emContact1Tel}}</span><br/>
-	<span class="prop" ng-show="usercard.user.emContact2">{{usercard.user.emContact2}} - {{usercard.user.emContact2Tel}}</span></td>
+	<span class="prop" ng-show="!usercard.user.emContact2 && !usercard.user.emContact2">无</span>
+	<span class="prop" ng-show="usercard.user.emContact1">{{usercard.user.emContact1}} - {{usercard.user.emContact1Tel}}<br/></span>
+	<span class="prop" ng-show="usercard.user.emContact2">{{usercard.user.emContact2}} - {{usercard.user.emContact2Tel}}</span>
+</td>
 </tr>
 <tr>
 <td valign="top"><label>不良爱好:</label></td>
-<td colspan="5"><span class="prop">{{usercard.user.badHabits}}</span></td>
+<td colspan="5"><span class="prop">{{usercard.user.badHabits || '无'}}</span></td>
 </tr>
 <tr>
 <td valign="top"><label>既往病史:</label></td>
-<td colspan="5"><span class="prop">{{usercard.user.anamnesis}}</span></td>
+<td colspan="5"><span class="prop">{{usercard.user.anamnesis || '无'}}</span></td>
 </tr>
 </table>
 <div ng-show="usercard && !usercard.user">
