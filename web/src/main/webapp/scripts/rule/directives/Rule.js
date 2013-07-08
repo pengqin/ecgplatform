@@ -261,6 +261,9 @@ angular.module('ecgRuleModules', [])
     // 数据范围
     $scope.replyconfig.rules = null; 
 
+    // level名称
+    $scope.replyconfig.getLevelLabel = EnumService.getLevelLabel
+
     function refreshRules() {
         reset();
         $scope.dialog.showStandby({text: '正在加载数据，请稍候......'});

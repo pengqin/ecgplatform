@@ -41,13 +41,13 @@
 		<td width="100px" valign="top"><label for="replyconfig-username">区间级别:</label></td>
 		<td>
 			<span class="label label-success rulelevel" ng-click="replyconfig.setLevel('success')">
-				<i class="icon-ok" ng-show="replyconfig.selectedRule.level == 'success'"></i>正常
+				<i class="icon-ok" ng-show="replyconfig.selectedRule.level == 'success'"></i>{{replyconfig.getLevelLabel('success')}}
 			</span>
 			<span class="label label-warning rulelevel" ng-click="replyconfig.setLevel('warning')">
-				<i class="icon-ok" ng-show="replyconfig.selectedRule.level == 'warning'"></i>需要关注
+				<i class="icon-ok" ng-show="replyconfig.selectedRule.level == 'warning'"></i>{{replyconfig.getLevelLabel('warning')}}
 			</span>
 			<span class="label label-important rulelevel" ng-click="replyconfig.setLevel('danger')">
-				<i class="icon-ok" ng-show="replyconfig.selectedRule.level == 'danger'"></i>危险或数据异常
+				<i class="icon-ok" ng-show="replyconfig.selectedRule.level == 'danger'"></i>{{replyconfig.getLevelLabel('danger')}}
 			</span>
 		</tr>
 

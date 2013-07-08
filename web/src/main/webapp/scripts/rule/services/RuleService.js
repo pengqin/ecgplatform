@@ -38,6 +38,12 @@ angular.module('ecgRuleService', [])
                 };
             },
             create: function(rule) {
+                var rule = $.extend({}, rule);
+                delete rule.id;
+                delete rule.replys;
+                delete rule.replyconfigs;
+                delete rule.percent;
+                delete rule.arrayIdx;
                 return $http({
                     method: 'POST',
                     headers:{'Content-Type':'application/x-www-form-urlencoded'},
@@ -66,8 +72,12 @@ angular.module('ecgRuleService', [])
                 });
             },
             update: function(rule) {
+                var rule = $.extend({}, rule);
                 delete rule.replys;
+                delete rule.replyconfigs;
                 delete rule.version;
+                delete rule.percent;
+                delete rule.arrayIdx;
                 return $http({
                     method: 'PUT',
                     headers:{'Content-Type':'application/x-www-form-urlencoded'},
