@@ -4,10 +4,10 @@ define(function(require, exports) {
 
     angular.module('ecgNav', [])
     .controller('NavController', function ($scope) {
-        $scope.nav = {}
+        $scope.nav = {};
         $scope.nav.getRoles = function() {
             return $scope.session.user.roles;
-        }
+        };
     })
     .directive("ecgNav", ['$location', function ($location) {
         return {

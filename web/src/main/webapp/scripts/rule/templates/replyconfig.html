@@ -85,7 +85,7 @@
     </div>
 </div>
 
-<div class="row-fluid" ng-show="replyconfig.selectedRule">
+<div class="row-fluid" ng-show="replyconfig.showForm()">
 	<div class="span12">
 		<form name="saveReplyForm">
 		<table class="ecgprops">
@@ -111,7 +111,7 @@
     </div>
 </div>
 
-<div class="row-fluid" ng-show="replyconfig.selectedRule">
+<div class="row-fluid" ng-show="replyconfig.showForm()">
 	<div class="span12">
 		<button class="btn" type="button"
 				ng-class="{'btn-primary': saveReplyForm.$valid}" 

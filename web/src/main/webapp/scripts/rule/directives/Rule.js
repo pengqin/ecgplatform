@@ -91,7 +91,7 @@ angular.module('ecgRuleModules', [])
                     });
                 }
 
-                var filters, count = 0, len = 0;
+                var count = 0, len = 0;
 
                 RuleService.queryAll({code: selectedReplyConfig.code, usage: 'filter'})
                 .then(function(filters) {
@@ -342,7 +342,7 @@ angular.module('ecgRuleModules', [])
             return;
         }
 
-        var updateobj, newobj;
+        var updateobj = null, newobj;
         $($scope.replyconfig.rules).each(function(i, rule) {
             if (rule.min < point && point < rule.max) {
                 updateobj = rule;
@@ -506,6 +506,20 @@ angular.module('ecgRuleModules', [])
                 });
             }
         });
+    };
+
+    // 是否显示新增或者修改界面
+    $scope.replyconfig.showForm = function() {
+        var flag = false;
+        if ($scope.replyconfig.selectedRule) {
+            if ($scope.replyconfig.selectedReplyConfig.id) {
+                flag = true;
+            }
+            if ($scope.replyconfig.selectedRule.replyconfigs.length < 1) {
+                flag = true;
+            }
+        }
+        return flag;
     };
 
 }]);

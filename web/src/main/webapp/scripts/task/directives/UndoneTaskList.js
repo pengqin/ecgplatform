@@ -16,7 +16,7 @@ function($scope, ProfileService, TaskService) {
         .then(function(user) {
             return user;
         }, function() {
-            return null
+            return null;
         })
         .then(function(user) {
             if (user) {
