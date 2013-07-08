@@ -4,11 +4,16 @@ define(function(require, exports) {
 var template = require("../templates/donetasklist.html");
 
 angular.module('ecgDoneTaskList', [])
-.controller('DoneTaskListController', ['$scope', 'ProfileService', 'TaskService',
-function($scope, ProfileService, TaskService) {
+.controller('DoneTaskListController', ['$scope', 'EnumService', 'ProfileService', 'TaskService',
+function($scope, EnumService, ProfileService, TaskService) {
     $scope.done.data = null;
     $scope.done.selected = null;
 
+    // level名称
+    $scope.done.getLevelLabel = EnumService.getLevelLabel;
+    // level名称
+    $scope.done.getWorkStatusLabel = EnumService.getWorkStatusLabel;
+    
     function refreshGrid() {
         var username = $.cookie("AiniaOpUsername");
 
@@ -16,7 +21,7 @@ function($scope, ProfileService, TaskService) {
         .then(function(user) {
             return user;
         }, function() {
-            return null
+            return null;
         })
         .then(function(user) {
             if (user) {

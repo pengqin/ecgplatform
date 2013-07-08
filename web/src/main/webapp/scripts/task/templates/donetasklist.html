@@ -12,8 +12,8 @@
 	<tbody>
 		<tr ng-repeat="item in done.data" ng-click="done.selected = item">
 			<td>{{item.userName}}</td>
-			<td>{{item.level}}</td>
-			<td>{{item.status}}</td>
+			<td>{{done.getLevelLabel(item.level)}}</td>
+			<td>{{done.getWorkStatusLabel(item.status)}}</td>
 		</tr>
 	</tbody>
 	</table>

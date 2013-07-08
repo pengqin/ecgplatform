@@ -5,46 +5,6 @@ angular.module('ecgTaskService', [])
     .factory("TaskService", ['$rootScope', '$http', function($rootScope, $http) {
         var undones = [], dones = [];
 
-        var mock1 = [];
-        for (var i=0; i<10; i++) {
-            mock1.push({
-                id: i,
-                userId: 1,
-                userName: '客户'+i,
-                operatorId: '1',
-                operatorName: '接线员',
-                expertId: '1',
-                expertName: '专家',
-                status: 'pending',
-                level: 'success',
-                examinationId: i,
-                auto: false
-            });
-        }
-
-        var mock2 = {
-            id: 1,
-            userId: 1,
-            userName: '客户',
-            createdDate: '2011-01-11 12:22:00',
-            testItem: '1',
-            status: 'normal',
-            isHandler: false,
-            bloodPressureLow: 60, // 低压
-            bloodPressureHigh: 100, // 高压
-            heartRhythm: 80, // 心率
-            bloodOxygen: 40, // 血氧
-            breath: 40, // 呼吸
-            temperature: 37.3, // 温度
-            pulserate: 68 // 脉率
-        };
-
-        var mock3 = {
-            title: "标题",
-            result: "结果",
-            content: "内容"
-        };
-
         return {
             getAllUndones: function() {
                 while (undones.length !== 0) {
@@ -97,7 +57,7 @@ angular.module('ecgTaskService', [])
                     }
                 }, function() {
                     $rootScope.message.error('服务器异常,无法获取数据');
-                    return mock1 || [];
+                    return [];
                 });
             },
             getExamination: function(id) {
@@ -109,7 +69,7 @@ angular.module('ecgTaskService', [])
                     return res.data;
                 }, function() {
                     $rootScope.message.error('服务器异常,无法获取标识为' + id + '的数据.');
-                    return mock2 || null;
+                    return null;
                 });
             },
             getPlainReply: function() {
@@ -120,10 +80,13 @@ angular.module('ecgTaskService', [])
                 };
             },
             reply: function(examination, reply) {
+                var newreply = this.getPlainReply();
+                    newreply.result = reply.result;
+                    newreply.content = reply.content;
                 return $http({
                     method: 'POST',
                     headers:{'Content-Type':'application/x-www-form-urlencoded'},
-                    data: $.param(reply),
+                    data: $.param(newreply),
                     url: PATH + '/api/examination/' + examination.id + '/reply'
                 }).then(function(res) {
                     if (res.status === 201) {
@@ -133,24 +96,6 @@ angular.module('ecgTaskService', [])
                     }
                 }, function() {
                     return false;
-                }).then(function(flag) {
-                    // TODO flag 
-                    if (!flag) {
-                        return $http({
-                            method: 'PUT',
-                            headers:{'Content-Type':'application/x-www-form-urlencoded'},
-                            data: $.param({
-                                status: 'completed'
-                            }),
-                            url: PATH + '/api/examination/' + examination.id
-                        }).then(function(res) {
-                            return true;
-                        }, function() {
-                            return false;
-                        })
-                    } else {
-                        return false;
-                    }
                 });
             },
             queryExpertsByOperators: function(user) {
@@ -188,14 +133,14 @@ angular.module('ecgTaskService', [])
                     method: 'GET',
                     url: PATH + '/api/examination/' + examinationId + '/reply'
                 }).then(function(res) {
-                    if (res.data.datas && res.data.datas.length > 0) {
-                        return res.data.datas;
+                    if (res.data && res.data.length > 0) {
+                        return res.data;
                     } else {
                         return [];    
                     }
                 }, function() {
                     $rootScope.message.error('服务器异常,无法获取数据');
-                    return mock3 || [];
+                    return [];
                 });
             }
         };

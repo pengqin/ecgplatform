@@ -1,12 +1,11 @@
 <div class="row-fluid">
 	<div class="span12 buttons">
 		<button class="btn" type="button"
-				ng-show="session.user.isOperator() || session.user.isAdmin()"
 				ng-click="undone.reply()" ng-disabled="undone.selected == null || undone.selected.examination == null">
 			<i class="icon-edit"></i>提交回复
 		</button>
 		<button class="btn" type="button"
-				ng-show="session.user.isOperator() || session.user.isAdmin()"
+				ng-show="!session.user.isExpert()"
 				ng-click="undone.forward()" ng-disabled="undone.selected == null || undone.selected.examination == null">
 			<i class="icon-share-alt"></i>转交专家
 		</button>

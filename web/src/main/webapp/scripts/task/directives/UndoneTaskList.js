@@ -4,10 +4,17 @@ define(function(require, exports) {
 var template = require("../templates/undonetasklist.html");
 
 angular.module('ecgUndoneTaskList', [])
-.controller('UndoneTaskListController', ['$scope', 'ProfileService', 'TaskService',
-function($scope, ProfileService, TaskService) {
+.controller('UndoneTaskListController', 
+    ['$scope', 'EnumService', 'TaskService', 'ProfileService',
+function($scope, EnumService, TaskService, ProfileService) {
+
     $scope.undone.data = null;
     $scope.undone.selected = null;
+
+    // level名称
+    $scope.undone.getLevelLabel = EnumService.getLevelLabel;
+    // level名称
+    $scope.undone.getWorkStatusLabel = EnumService.getWorkStatusLabel;
 
     function refreshGrid() {
         var username = $.cookie("AiniaOpUsername");
@@ -16,7 +23,7 @@ function($scope, ProfileService, TaskService) {
         .then(function(user) {
             return user;
         }, function() {
-            return null
+            return null;
         })
         .then(function(user) {
             if (user) {
