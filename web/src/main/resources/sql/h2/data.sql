@@ -1,7 +1,7 @@
 insert into user (id, mobile , username, name, password, gender, id_card , type ,birthday,address,stature,weight,city,em_contact1,em_contact1_tel,em_contact2,em_contact2_tel , bad_habits , anamnesis , created_date , last_updated , remark ,is_free , version)
-values (1,'13911111111' ,'测试用户1','测试用户1','691b14d79bf0fa2215f155235df5e670b64394cc',1 ,'430203198502011218', 'SIMPLE','1983-06-04 01:00:00','����',1.72,72,'','','','','','','','2012-06-04 01:00:00','2012-06-04 01:00:00','',1,1);
+values (1,'13911111111' ,'测试用户1','测试用户1','691b14d79bf0fa2215f155235df5e670b64394cc',1 ,'430203198502011218', 'SIMPLE','1983-06-04 01:00:00','地址1',1.72,72,'','','','','','','','2012-06-04 01:00:00','2012-06-04 01:00:00','',1,1);
 insert into user (id, mobile , username, name, password, gender, id_card , type ,birthday,address,stature,weight,city,em_contact1,em_contact1_tel,em_contact2,em_contact2_tel , bad_habits , anamnesis , created_date , last_updated , remark ,is_free , version)
-values (2,'13922222222' ,'测试用户2','测试用户2','691b14d79bf0fa2215f155235df5e670b64394cc',1 ,'430203198502011218', 'SIMPLE','1983-06-04 01:00:00','����',1.72,72,'','','','','','','','2012-06-04 01:00:00','2012-06-04 01:00:00','',1,1);
+values (2,'13922222222' ,'测试用户2','测试用户2','691b14d79bf0fa2215f155235df5e670b64394cc',1 ,'430203198502011218', 'SIMPLE','1983-06-04 01:00:00','地址2',1.72,72,'','','','','','','','2012-06-04 01:00:00','2012-06-04 01:00:00','',1,1);
 
 
 --employee start
@@ -66,15 +66,15 @@ values (10, '标题' , '呼吸异常的建议' ,'呼吸异常' ,  12, '2012-06-0
 
 -- health_examination start
 insert into health_examination (id , user_id , test_item , user_name , user_type , level , blood_pressure_low,blood_pressure_high,heart_rhythm , breath,body_temp,pulserate,heart_data,latitude,altitude,temp,humidity,pressure,charge_type,heart_features,algorithm_version,created_date,version) 
-values (1,1,'PHONE', '测试用户1','VIP','danger',80,120,60,60,37.5,60,'',0.0,200,37.6,null,null,'YEAR',null,null,'2013-07-04 01:00:00',1);
+values (1,1,'PHONE', '测试用户1','VIP','success',80,120,60,60,37.5,60,'',0.0,200,37.6,null,null,'YEAR',null,null,'2013-07-04 01:00:00',1);
 insert into health_examination (id , user_id , test_item , user_name , user_type , level , blood_pressure_low,blood_pressure_high,heart_rhythm , breath,body_temp,pulserate,heart_data,latitude,altitude,temp,humidity,pressure,charge_type,heart_features,algorithm_version,created_date,version) 
-values (2,1,'PHONE', '测试用户1','VIP','warning',80,120,-100,80,37.5,60,'',0.0,200,37.6,null,null,'YEAR',null,null,'2013-07-04 01:00:00',1);
+values (2,1,'PHONE', '测试用户1','VIP','outside',80,120,-100,80,37.5,60,'',0.0,200,37.6,null,null,'YEAR',null,null,'2013-07-04 01:00:00',1);
 insert into health_examination (id , user_id , test_item , user_name , user_type , level , blood_pressure_low,blood_pressure_high,heart_rhythm , breath,body_temp,pulserate,heart_data,latitude,altitude,temp,humidity,pressure,charge_type,heart_features,algorithm_version,created_date,version) 
-values (3,2,'PHONE', '测试用户2','VIP','success',80,120,300,40,37.5,60,'',0.0,200,37.6,null,null,'YEAR',null,null,'2013-07-04 01:00:00',1);
+values (3,2,'PHONE', '测试用户2','VIP','outside',80,120,300,40,37.5,60,'',0.0,200,37.6,null,null,'YEAR',null,null,'2013-07-04 01:00:00',1);
 insert into health_examination (id , user_id , test_item , user_name , user_type , level , blood_pressure_low,blood_pressure_high,heart_rhythm , breath,body_temp,pulserate,heart_data,latitude,altitude,temp,humidity,pressure,charge_type,heart_features,algorithm_version,created_date,version) 
-values (4,2,'PHONE', '测试用户2','VIP','outside',80,120,77,90,37.5,60,'',0.0,200,37.6,null,null,'YEAR',null,null,'2013-07-04 01:00:00',1);
+values (4,2,'PHONE', '测试用户2','VIP','warning',80,120,77,90,37.5,60,'',0.0,200,37.6,null,null,'YEAR',null,null,'2013-07-04 01:00:00',1);
 insert into health_examination (id , user_id , test_item , user_name , user_type , level , blood_pressure_low,blood_pressure_high,heart_rhythm , breath,body_temp,pulserate,heart_data,latitude,altitude,temp,humidity,pressure,charge_type,heart_features,algorithm_version,created_date,version) 
-values (5,2,'PHONE', '测试用户2','VIP','success',80,120,10,10,37.5,60,'',0.0,200,37.6,null,null,'YEAR',null,null,'2013-07-04 01:00:00',1);
+values (5,2,'PHONE', '测试用户2','VIP','danger',80,120,10,10,37.5,60,'',0.0,200,37.6,null,null,'YEAR',null,null,'2013-07-04 01:00:00',1);
 
 -- health_examination end
 -- task start
