@@ -29,15 +29,15 @@ insert into health_rule (id , name , code , usage , can_reply, type , user_id , 
 values (6 , '心跳规则的无效区间' , '3' , 'filter' , 1, '11' , null , '次' , 'outside' , 100 , 9999 , '2012-06-04 01:00:00' , '心跳规则的说明' , 1);
 
 insert into health_rule_reply (id , title , content , result , rule_id, created_date, last_updated, version)
-values (1, '标题' , '心跳异常' , '心跳异常的建议' , 2, '2012-06-04 01:00:00', '2012-06-04 01:00:00' , 1);
+values (1, '标题' ,  '心跳异常的建议' , '心跳异常' ,2, '2012-06-04 01:00:00', '2012-06-04 01:00:00' , 1);
 insert into health_rule_reply (id , title , content , result , rule_id, created_date, last_updated, version)
-values (2, '标题' , '需要检查' , '需要检查的建议' , 3, '2012-06-04 01:00:00', '2012-06-04 01:00:00' , 1);
+values (2, '标题' , '需要检查的建议' ,'需要检查' ,  3, '2012-06-04 01:00:00', '2012-06-04 01:00:00' , 1);
 insert into health_rule_reply (id , title , content , result , rule_id, created_date, last_updated, version)
-values (3, '标题' , '心跳正常' , '心跳正常的建议' , 4, '2012-06-04 01:00:00', '2012-06-04 01:00:00' , 1);
+values (3, '标题' , '心跳正常的建议' , '心跳正常' , 4, '2012-06-04 01:00:00', '2012-06-04 01:00:00' , 1);
 insert into health_rule_reply (id , title , content , result , rule_id, created_date, last_updated, version)
-values (4, '标题' , '需要检查' , '需要检查的建议' , 5, '2012-06-04 01:00:00', '2012-06-04 01:00:00' , 1);
+values (4, '标题' , '需要检查的建议' , '需要检查' , 5, '2012-06-04 01:00:00', '2012-06-04 01:00:00' , 1);
 insert into health_rule_reply (id , title , content , result , rule_id, created_date, last_updated, version)
-values (5, '标题' , '心跳异常' , '心跳异常的建议' , 6, '2012-06-04 01:00:00', '2012-06-04 01:00:00' , 1);
+values (5, '标题' , '心跳异常的建议' , '心跳异常' , 6, '2012-06-04 01:00:00', '2012-06-04 01:00:00' , 1);
 
 insert into health_rule (id , name , code , usage , can_reply , type , user_id , unit , level ,min , max,created_date,remark , version)
 values (7 , '呼吸规则' , '5' , 'group' ,1, '11', null , '次' , 'success' , 0 , 100 , '2012-06-04 01:00:00' , '心跳数字的用于检测的区间' , 1);
@@ -53,15 +53,15 @@ insert into health_rule (id , name , code , usage , can_reply, type , user_id , 
 values (12 , '呼吸规则的回复区间' , '5' , 'filter' , 1, '11' , null , '次' , 'outside' , 100 , 9999 , '2012-06-04 01:00:00' , '呼吸规则的说明' , 1);
 
 insert into health_rule_reply (id , title , content , result , rule_id, created_date, last_updated, version)
-values (6, '标题' , '呼吸异常' , '呼吸异常的建议' , 8, '2012-06-04 01:00:00', '2012-06-04 01:00:00' , 1);
+values (6, '标题' , '呼吸异常的建议' , '呼吸异常' ,  8, '2012-06-04 01:00:00', '2012-06-04 01:00:00' , 1);
 insert into health_rule_reply (id , title , content , result , rule_id, created_date, last_updated, version)
-values (7, '标题' , '需要检查呼吸' , '需要检查呼吸的建议' , 9, '2012-06-04 01:00:00', '2012-06-04 01:00:00' , 1);
+values (7, '标题' ,  '需要检查呼吸的建议' ,'需要检查呼吸' , 9, '2012-06-04 01:00:00', '2012-06-04 01:00:00' , 1);
 insert into health_rule_reply (id , title , content , result , rule_id, created_date, last_updated, version)
-values (8, '标题' , '呼吸正常' , '呼吸正常的建议' , 10, '2012-06-04 01:00:00', '2012-06-04 01:00:00' , 1);
+values (8, '标题' ,  '呼吸正常的建议' ,'呼吸正常' , 10, '2012-06-04 01:00:00', '2012-06-04 01:00:00' , 1);
 insert into health_rule_reply (id , title , content , result , rule_id, created_date, last_updated, version)
-values (9, '标题' , '需要检查呼吸' , '需要检查呼吸的建议' , 11, '2012-06-04 01:00:00', '2012-06-04 01:00:00' , 1);
+values (9, '标题' ,  '需要检查呼吸的建议' , '需要检查呼吸' ,11, '2012-06-04 01:00:00', '2012-06-04 01:00:00' , 1);
 insert into health_rule_reply (id , title , content , result , rule_id, created_date, last_updated, version)
-values (10, '标题' , '呼吸异常' , '呼吸异常的建议' , 12, '2012-06-04 01:00:00', '2012-06-04 01:00:00' , 1);
+values (10, '标题' , '呼吸异常的建议' ,'呼吸异常' ,  12, '2012-06-04 01:00:00', '2012-06-04 01:00:00' , 1);
 
 
 -- health_examination start
