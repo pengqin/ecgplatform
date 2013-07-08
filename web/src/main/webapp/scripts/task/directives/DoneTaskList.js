@@ -13,6 +13,23 @@ function($scope, EnumService, ProfileService, TaskService) {
     $scope.done.getLevelLabel = EnumService.getLevelLabel;
     // level名称
     $scope.done.getWorkStatusLabel = EnumService.getWorkStatusLabel;
+
+    $scope.done.translateLevel = function(level) {
+        switch(level) {
+        case 'danger':
+            return 'important';
+        break;
+        case 'success':
+            return 'success';
+        break;
+        case 'warning':
+            return 'warning';
+        break;
+        case 'outside':
+            return 'inverse';
+        break;
+        }
+    };
     
     function refreshGrid() {
         var username = $.cookie("AiniaOpUsername");

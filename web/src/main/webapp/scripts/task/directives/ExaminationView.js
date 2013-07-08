@@ -4,10 +4,14 @@ define(function(require, exports) {
     var template = require("../templates/examinationview.html");
 
     angular.module('ecgExaminationView', [])
-    .controller('ExaminationViewController', ['$scope', 'TaskService',
-    function($scope, TaskService) {
+    .controller('ExaminationViewController', ['$scope', 'EnumService', 'TaskService',
+    function($scope, EnumService, TaskService) {
         $scope.examinationview = {};
         $scope.examinationview.examination = null;
+
+        $scope.examinationview.getLevelLabel = EnumService.getLevelLabel;
+        // level名称
+        $scope.examinationview.getWorkStatusLabel = EnumService.getWorkStatusLabel;
 
         // 监听未完成
         $scope.$watch('undone.selected',function() {
