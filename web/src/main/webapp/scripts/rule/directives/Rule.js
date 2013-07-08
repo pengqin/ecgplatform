@@ -162,20 +162,44 @@ angular.module('ecgRuleModules', [])
         .then(function(result) {
             $scope.dialog.hideStandby();
             if (result) {
+                var len = 3, count = 0, newobjs = [], low, high;
+
                 $scope.rule.newobj.usage = "filter";
-                RuleService.create($scope.rule.newobj)
-                .then(function(result) {
-                    $scope.dialog.hideStandby();
-                    if (result) {
-                        $scope.message.success("新增规则及其初始检测区间成功!");
-                        $location.path("/rule");
-                    } else {
-                        $scope.message.error("新增初始检测区间失败!");
-                    }
-                }, function() {
-                    $scope.dialog.hideStandby();
-                    $scope.message.error("服务器异常,新增规则失败!");
+
+                var low = $.extend({}, $scope.rule.newobj);
+                low.max =low.min;
+                low.min = -9999;
+                low.level = 'outside';
+                newobjs.push(low);
+
+                newobjs.push($scope.rule.newobj);
+
+                high = $.extend({}, $scope.rule.newobj);
+                high.min =high.max;
+                high.max = 9999;
+                high.level = 'outside';
+                newobjs.push(high);
+
+                $(newobjs).each(function(i, newobj) {
+                    RuleService.create(newobj)
+                    .then(function(result) {
+                        $scope.dialog.hideStandby();
+                        if (result) {
+                            count++;
+                        } else {
+                            $scope.message.error("新增初始检测区间失败!");
+                        }
+                        if (len === count) {
+                            $scope.message.success("新增规则及其初始检测区间成功!");
+                            $location.path("/rule");
+                        }
+                    }, function() {
+                        $scope.dialog.hideStandby();
+                        $scope.message.error("服务器异常,新增规则失败!");
+                    });
                 });
+
+
                 $location.path("/rule");
             } else {
                 $scope.message.error("新增规则失败!");
@@ -272,16 +296,24 @@ angular.module('ecgRuleModules', [])
             $scope.dialog.hideStandby();
             var min = 999999, max = -999999, range = 100;
             $(rules).each(function(i, rule) {
-                if (rule.min < min) {
-                    min = rule.min;
-                }
-                if (rule.max > max) {
-                    max = rule.max;
+                if (rule.level !== 'outside') {
+                    rule.min = parseFloat(rule.min);
+                    rule.max = parseFloat(rule.max);
+                    if (rule.min < min) {
+                        min = rule.min;
+                    }
+                    if (rule.max > max) {
+                        max = rule.max;
+                    }
                 }
             });
             range = max - min;
             $(rules).each(function(i, rule) {
-                rule.percent = (rule.max - rule.min) / range * 100;
+                if (rule.min === -9999 || rule.max === 9999) {
+                    rule.percent = '5';
+                } else {
+                    rule.percent = (rule.max - rule.min) / range * 90;
+                }
                 rule.replyconfigs = [];
                 refreshReplyConfigs(rule, i);
             });
@@ -315,6 +347,11 @@ angular.module('ecgRuleModules', [])
     // 当前选择中config
     $scope.replyconfig.selectedRule = null;
     $scope.replyconfig.selectedReplyConfig = ReplyConfigService.getPlainObject();
+
+    // 是否显示某个label的区间
+    $scope.replyconfig.getRuleText = function(rule) {
+        return rule.level === 'outside' ? '' : rule.min + ' - ' + rule.max;
+    };
 
     // 选择某个config
     $scope.replyconfig.onselectrule = function(rule) {

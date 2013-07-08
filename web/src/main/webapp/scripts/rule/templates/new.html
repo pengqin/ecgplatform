@@ -33,11 +33,11 @@
 		<tr>
 		<td valign="top"><label for="rule-min">范围设定:</label></td>
 		<td>
-			<button class="btn btn-small" type="button" ng-click="rule.newobj.min = -1">无下限</button>
-			<input type="text" id="rule-min" ng-model="rule.newobj.min" min="-1" class="input-mini"  ng-pattern="/^-?\d+$/" required></input>
+			<!--button class="btn btn-small" type="button" ng-click="rule.newobj.min = -1">无下限</button-->
+			<input type="text" id="rule-min" ng-model="rule.newobj.min" min="0" max="999" class="input-mini"  ng-pattern="/^-?\d+$/" required></input>
 			<span>-</span>
-			<input type="text" ng-model="rule.newobj.max" max="9999" class="input-mini" ng-pattern="/^\d+$/" required></input>
-			<button class="btn btn-small" type="button" ng-click="rule.newobj.max = 9999">无上限</button>
+			<input type="text" ng-model="rule.newobj.max" min="2" max="1000" class="input-mini" ng-pattern="/^\d+$/" required></input>
+			<!--button class="btn btn-small" type="button" ng-click="rule.newobj.max = 9999">无上限</button-->
 			<span class="desc">注意:检测范围设定后,不可修改</span>
 		</td>
 		</tr>

@@ -13,10 +13,15 @@ define(function(require, exports) {
         $scope.$watch('done.selected',function() {
             if (!$scope.done) { return; }
             if(!$scope.done.selected) { return; }
+            if ($scope.done.selected.replys) {
+                $scope.examinationreply.replys = $scope.done.selected.replys;
+                return;
+            }
 
             TaskService.getReplyByExamination($scope.done.selected.examinationId)
             .then(function(replys) {
                 $scope.examinationreply.replys = replys;
+                $scope.done.selected.replys = replys;
             });
         });
     }])

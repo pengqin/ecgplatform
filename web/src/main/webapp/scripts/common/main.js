@@ -10,9 +10,10 @@ require("./Dialog");
 angular.module('ecgCommon', ["angular-table", "ecgNav", "ecgHeader", "ecgMessage", "ecgFooter", "ecgDialog"])
 .factory("EnumService", function() {
     var levels = {
-        'danger': '危险或数据异常',
+        'danger': '危险',
         'warning': '值得关注',
-        'success': '正常'
+        'success': '健康',
+        'outside': '数据异常'
     };
     var workstatus = {
         'pending': '等待处理',
