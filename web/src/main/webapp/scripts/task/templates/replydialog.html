@@ -32,6 +32,7 @@
     </table>
     </form>
 
+    <!--
     <a href="javascript:void(0)" ng-show="!replydialog.showconfigs" ng-click="replydialog.showconfigs = true">展开预设回复(4条)</a>
     <a href="javascript:void(0)" ng-show="replydialog.showconfigs" ng-click="replydialog.showconfigs = false">收起预设回复</a>
     <div ng-show="replydialog.showconfigs">
@@ -46,7 +47,9 @@
         <div class="tab-pane" ng-class="{'active': replydialog.tab == 2}"></div>
       </div>
     </div>
+    -->
   </div>
+
   <div class="modal-footer">
     <button class="btn" ng-class="{'btn-primary': saveReplyForm.$valid}" ng-click="replydialog.execute()" ng-disabled="!saveReplyForm.$valid">提交</button>
     <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
