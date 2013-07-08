@@ -15,8 +15,12 @@ define(function(require, exports) {
             
             if (!$scope.undone) { return; }
             if(!$scope.undone.selected) { return; }
-            if($scope.undone.selected.examination) { return; }
+            if($scope.undone.selected.examination) { 
+                $scope.examinationview.examination = $scope.undone.selected.examination
+                return; 
+            }
 
+            
             $scope.examinationview.examination = null;
             TaskService.getExamination($scope.undone.selected.examinationId)
             .then(function(examination) {

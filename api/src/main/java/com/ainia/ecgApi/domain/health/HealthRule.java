@@ -62,7 +62,8 @@ public class HealthRule implements Domain {
 	public enum Level {
 		danger,
 		warning,
-		success
+		success,
+		outside
 	}
 	@PrePersist
 	public void onCreate() {

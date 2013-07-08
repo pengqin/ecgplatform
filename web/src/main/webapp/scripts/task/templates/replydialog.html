@@ -16,7 +16,7 @@
       <tr ng-repeat="reply in replydialog.replys">
         <td>
         <p style="width:500px; word-wrap: break-word;">
-          检测结果： {{reply.result}} <br/>检测建议： {{reply.content}}
+          <strong>检测结果：</strong> {{reply.result}} <br/><strong>检测建议：</strong> {{reply.content}}
         </p>
         </td>
         <td>
@@ -42,27 +42,28 @@
      
     <div class="tab-content">
       <div class="tab-pane" ng-class="{'active': replydialog.tab == 1}">
-        <table class="table table-hover" ng-show="replydialog.rules.length > 0">
+        <table class="table table-hover" ng-show="replydialog.rules && replydialog.rules.length > 0">
         <tbody>
           <tr ng-repeat="rule in replydialog.rules"
-              ng-click="replydialog.selectedRule = rule">
+              ng-click="replydialog.usereply(rule)">
             <td>
               <p style="width:500px; word-wrap: break-word;">
-              检测内容： {{rule.name}} 检测值：{{rule.val}} 检测值所在区间： [{{rule.min}}, {{rule.max}})<br/>
-              预设结果： {{rule.replyconfig.result}} <br/>
-              预设建议： {{rule.replyconfig.content}} <br/>
+              <strong>检测内容：</strong> {{rule.name}} <strong>检测值</strong>：<span class="label label-{{rule.level}}">{{rule.val}}</span>
+              <strong>检测值所在区间：</strong> [{{rule.min}}, {{rule.max}})<br/>
+              <strong>预设结果：</strong> {{rule.replyconfig.result}} <br/>
+              <strong>预设建议：</strong> {{rule.replyconfig.content}} <br/>
               </p>
             </td>
             <td width="15%">
-              <button class="btn btn-small" type="button" ng-click="replydialog.usereply(rule)" ng-disabled="rule.used">选用</button>
+              <button class="btn btn-small" type="button" ng-disabled="rule.used">选用</button>
             </td>
           </tr>
         </tbody>
         </table>
-        <div ng-show="replydialog.rules.length == 0">
+        <div ng-show="!replydialog.rules">
           正在加载预设回复，请耐心等待......
         </div>
-        <div ng-show="replydialog.norules">
+        <div ng-show="replydialog.rules.length == 0">
           抱歉，没有预设回复，请和管理员联系。
         </div>
       </div>
@@ -105,7 +106,8 @@
   </div>
 
   <div class="modal-footer">
-    <button class="btn btn-primary" ng-click="replydialog.useallreply()">使用全部预设回复</button>
+    <button class="btn" ng-class="{'btn-primary':  replydialog.rules && replydialog.rules.length > 0}" 
+      ng-disabled="!replydialog.rules || replydialog.rules.length == 0" ng-click="replydialog.useallreply()">使用全部预设回复</button>
     <button class="btn" ng-class="{'btn-primary':  replydialog.replys.length}" 
     ng-click="replydialog.execute()" ng-disabled="!replydialog.replys.length">提交</button>
     <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>

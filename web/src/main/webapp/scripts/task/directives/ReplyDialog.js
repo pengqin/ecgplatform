@@ -11,14 +11,14 @@ define(function(require, exports) {
     // 预设变量
     $scope.replydialog.replys = [];
     $scope.replydialog.tab = 1;
-    $scope.replydialog.rules = [];
+    $scope.replydialog.rules = null;
     $scope.replydialog.norules = false;
     $scope.replydialog.reply = TaskService.getPlainReply();
 
     function reset() {
       $scope.replydialog.replys = [];
       $scope.replydialog.tab = 1;
-      $scope.replydialog.rules = [];
+      $scope.replydialog.rules = null;
       $scope.replydialog.norules = false;
       $scope.replydialog.reply = TaskService.getPlainReply();
     };
@@ -73,6 +73,9 @@ define(function(require, exports) {
                     min = parseFloat(rule.min),
                     max = parseFloat(rule.max);
                 if (codes[rule.code] && min <= val && val < max) {
+                    if (!$scope.replydialog.rules) {
+                      $scope.replydialog.rules = [];
+                    }
                     rule.val = val;
                     ReplyConfigService.queryAllbyRule(rule)
                     .then(function(replyconfigs) {

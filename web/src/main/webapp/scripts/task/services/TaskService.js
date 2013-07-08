@@ -113,13 +113,12 @@ angular.module('ecgTaskService', [])
                     return [];
                 });
             },
-            forward: function(task, expert) {
+            forward: function(task) {
                 return $http({
                     method: 'PUT',
                     headers:{'Content-Type':'application/x-www-form-urlencoded'},
                     data: $.param({
-                        status: 'pending',
-                        expertId: expert.id
+                        status: 'proceeding'
                     }),
                     url: PATH + '/api/task/' + task.id
                 }).then(function(res) {

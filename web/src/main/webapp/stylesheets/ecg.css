@@ -167,6 +167,10 @@ table tbody tr.active {
 	line-height: 20px;
 	padding-top: 5px;
 }
+.replyconfigs .bar-outside {
+	background-color: #333;
+	background-image: none;
+}
 /* 过滤规则 */
 .rules td {
 	line-height: 47px;
@@ -178,4 +182,14 @@ table tbody tr.active {
 
 #ecgplot img {
 	max-width: 1600px;
+}
+
+#ecgReplyDialog .label {
+	display: inline-block;
+	width: 30px;
+	text-align: right;
+}
+#ecgReplyDialog .label-outside {
+	background-image: none;
+	background-color: #333;
 }

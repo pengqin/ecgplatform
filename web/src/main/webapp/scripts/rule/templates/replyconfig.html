@@ -20,7 +20,7 @@
 		<div class="progress replyconfigs">
 			<div ng-repeat="rule in replyconfig.rules" ng-click="replyconfig.onselectrule(rule)"
 				 class="bar bar-{{rule.level}}" style="width:16.6%\9; width: {{rule.percent}}%;" title="设置了{{rule.replyconfigs.length}}条回复">
-			{{rule.min}} - {{rule.max}} <br> ({{rule.replyconfigs.length}})
+			{{replyconfig.getRuleText(rule)}} <br> ({{rule.replyconfigs.length}})
 			</div>
 		</div>
     </div>
@@ -39,7 +39,7 @@
 
 		<tr>
 		<td width="100px" valign="top"><label for="replyconfig-username">区间级别:</label></td>
-		<td>
+		<td ng-show="replyconfig.selectedRule.level != 'outside'">
 			<span class="label label-success rulelevel" ng-click="replyconfig.setLevel('success')">
 				<i class="icon-ok" ng-show="replyconfig.selectedRule.level == 'success'"></i>{{replyconfig.getLevelLabel('success')}}
 			</span>
@@ -49,6 +49,12 @@
 			<span class="label label-important rulelevel" ng-click="replyconfig.setLevel('danger')">
 				<i class="icon-ok" ng-show="replyconfig.selectedRule.level == 'danger'"></i>{{replyconfig.getLevelLabel('danger')}}
 			</span>
+		</td>
+		<td ng-show="replyconfig.selectedRule.level == 'outside'">
+			<span class="label label-inverse">
+				<i class="icon-ok" ng-show="replyconfig.selectedRule.level == 'outside'"></i>{{replyconfig.getLevelLabel('outside')}}
+			</span>
+		</td>
 		</tr>
 
 		</table>
