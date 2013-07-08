@@ -5,17 +5,17 @@
 <td><span class="prop">{{examinationview.examination.testItem}}</span></td>
 <td><label>健康状态:</label></td>
 <td>
-<span class="prop">
-<div class="btn-group">
+<span class="prop">{{examinationview.getLevelLabel(examinationview.examination.level)}}
+<!--div class="btn-group">
   <a class="btn btn-small dropdown-toggle" data-toggle="dropdown" href="#">正常<span class="caret"></span></a>
   <ul class="dropdown-menu">
     <li><a href="#">人工异常</a></li>
   </ul>
 </div>
-</span>
+</span-->
 </td>
 <td><label>处理状态:</label></td>
-<td cols="6"><span class="prop">{{examinationview.examination.isHandler}}</span></td>
+<td cols="6"><span class="prop">{{examinationview.getWorkStatusLabel(undone.selected.status || done.selected.status)}}</span></td>
 </tr>
 <tr>
 <td><label>血压:</label></td>

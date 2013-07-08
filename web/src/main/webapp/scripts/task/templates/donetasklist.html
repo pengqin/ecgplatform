@@ -12,7 +12,7 @@
 	<tbody>
 		<tr ng-repeat="item in done.data" ng-click="done.selected = item" ng-class="{'active': done.selected == item}">
 			<td nowrap>{{item.userName}}</td>
-			<td nowrap>{{done.getLevelLabel(item.level)}}</td>
+			<td nowrap><span class="label label-{{done.translateLevel(item.level)}}">{{done.getLevelLabel(item.level)}}</span></td>
 			<td nowrap>{{done.getWorkStatusLabel(item.status)}}</td>
 		</tr>
 	</tbody>

@@ -12,7 +12,7 @@
 	<tbody>
 		<tr ng-repeat="item in undone.data" ng-click="undone.selected = item">
 			<td nowrap>{{item.userName}}</td>
-			<td nowrap>{{undone.getLevelLabel(item.level)}}</td>
+			<td nowrap><span class="label label-{{undone.translateLevel(item.level)}}">{{undone.getLevelLabel(item.level)}}</span></td>
 			<td nowrap>{{undone.getWorkStatusLabel(item.status)}}</td>
 		</tr>
 	</tbody>
