@@ -98,10 +98,11 @@ angular.module('ecgOperatorService', [])
                     return false;
                 });
             },
-            unlinkOperator: function(operator, expert) {
+            unlinkExpert: function(operator, expert) {
+                var id = operator.id || operator;
                 return $http({
                     method: 'DELETE',
-                    url: uri + '/' + operator.id + '/expert' + expert.id
+                    url: uri + '/' + id + '/expert/' + expert.id
                 });
             },
             getExperts: function(operator) {

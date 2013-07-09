@@ -611,10 +611,10 @@ define(function(require, exports) {
         it("the expert should be unlinked with the operator", function(done) {
             expect(expert).not.to.be(undefined);
             expect(operator).not.to.be(undefined);
-            OperatorService.unlinkExpert(expert, operator).then(function() {
+            OperatorService.unlinkExpert(operator, expert).then(function() {
                 done();
             }, function() {
-                throw new Error('the expert can\'t be unlinked again with server errors');
+                throw new Error('the expert can\'t be unlinked');
             });
         });
 

@@ -235,12 +235,9 @@ angular.module('ecgExpert', [])
 // 配置接线员
 .controller('ExpertOperatorsController', ['$scope', '$routeParams', '$timeout', '$location', 'EnumService', 'ExpertService',
     function ($scope, $routeParams, $timeout, $location, EnumService, ExpertService) {
-    $scope.expert.operators = 
-    [{"id":4,"name":"接线员","username":"operator","status":"INLINE","enabled":true,"dismissed":false,"gender":1,"expire":null,"birthday":"1983-06-04","idCard":"430203198602031218","mobile":"13028339212","createdDate":"2012-06-04 01:00:00","lastUpdated":"2012-06-04 01:00:00","roles":"operator","company":null,"title":null,"version":1,"superAdmin":false},
-    {"id":5,"name":"接线员","username":"operator","status":"INLINE","enabled":true,"dismissed":false,"gender":1,"expire":null,"birthday":"1983-06-04","idCard":"430203198602031218","mobile":"13028339212","createdDate":"2012-06-04 01:00:00","lastUpdated":"2012-06-04 01:00:00","roles":"operator","company":null,"title":null,"version":1,"superAdmin":false}];
+    $scope.expert.operators = null;
 
     function refreshLinks() {
-        return;
         ExpertService.getOperators($routeParams.id).then(function(operators) {
             $scope.expert.operators = operators;
         }, function() {
@@ -258,11 +255,44 @@ angular.module('ecgExpert', [])
         }
     };
 
+    $scope.expert.isCheckAll = false;
+    $scope.expert.checkAll = function() {
+        $scope.expert.isCheckAll = !$scope.expert.isCheckAll;
+        $($scope.expert.operators).each(function(i, operator) {
+            operator.removed = $scope.expert.isCheckAll;
+        });
+    }
+
+    $scope.expert.addOperators = function() {
+        $scope.operatordialog.show({
+            handler: function(operators) {
+                var len = operators.length, count = 0;
+                $(operators).each(function(i, operator) {
+                    $scope.dialog.showStandby();
+                    ExpertService.linkOperator($routeParams.id, operator)
+                    .then(function(flag) {
+                        $scope.dialog.hideStandby();
+                        if (flag) {
+                            count++;
+                        } else {
+                            $scope.message.error("无法绑定接线员：" + operator.name);
+                        }
+                        if (count === len) {
+                            $scope.message.success("成功绑定！");
+                            refreshLinks();
+                        }
+                    }, function() {
+                        $scope.dialog.hideStandby();
+                        $scope.message.error("无法绑定接线员：" + operator.name);
+                    });
+                });
+            }
+        });
+    };
+    
     $scope.expert.removeOperators = function() {
         
         var removes = [], operators = $scope.expert.operators, len = 0, count = 0;
-
-        
 
         $(operators).each(function(i, operator) {
             if (operator.removed) {
@@ -279,21 +309,26 @@ angular.module('ecgExpert', [])
 
         len = removes.length;
 
-        $scope.dialog.showStandby();
-        $(removes).each(function(i, remove) {
-            ExpertService.unlinkOperator($routeParams.id, remove)
-            .then(function() {
-                count++;
-                if (count == len) {
-                    $scope.dialog.hideStandby();
-                    $scope.message.error("成功删除绑定！");
-                    refreshLinks();
-                }
-            }, function() {
-                count++;
-                $scope.dialog.hideStandby();
-                $scope.message.error("无法删除该绑定，用户名为：" + remove.name);
-            });
+        $scope.dialog.confirm({
+            text: "请确认删除这些专家与接线员绑定, 该操作无法恢复!",
+            handler: function() {
+                $scope.dialog.showStandby();
+                $(removes).each(function(i, remove) {
+                    ExpertService.unlinkOperator($routeParams.id, remove)
+                    .then(function() {
+                        count++;
+                        if (count === len) {
+                            $scope.dialog.hideStandby();
+                            $scope.message.success("成功删除绑定！");
+                            refreshLinks();
+                        }
+                    }, function() {
+                        count++;
+                        $scope.dialog.hideStandby();
+                        $scope.message.error("无法删除该绑定，用户名为：" + remove.name);
+                    });
+                });
+            }
         });
     };
 }])

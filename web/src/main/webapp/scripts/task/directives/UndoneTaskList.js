@@ -17,7 +17,6 @@ function($scope, EnumService, TaskService, ProfileService) {
     $scope.undone.getWorkStatusLabel = EnumService.getWorkStatusLabel;
 
     $scope.undone.translateLevel = function(level) {
-        console.info(level);
         switch(level) {
         case 'danger':
             return 'important';

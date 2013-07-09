@@ -1,17 +1,18 @@
 <div class="row-fluid">
 	<div class="span12">
-		<div ng-repeat="operator in expert.operators" class="employeeLink">
-			<div class="alert fade in">
-        	<input type="checkbox" ng-click="expert.check(operator)"> <strong>{{operator.name}}</strong>
+		<div ng-repeat="operator in expert.operators" class="employeeLink" ng-click="expert.check(operator)">
+			<div class="alert alert-info">
+        	<input type="checkbox" ng-checked="operator.removed"> <strong>{{operator.name}}</strong>
         	</div>
       	</div>
     </div>
+    <p><form class="form-inline"><label class="checkbox"><input type="checkbox" ng-click="expert.checkAll()">全部选择</label></form></p>
 </div>
 <div class="row-fluid">
 	<div class="span12">
 		<button class="btn btn-primary" type="button"
 				ng-click="expert.addOperators()">
-			<i class="icon-save"></i>新增
+			<i class="icon-plus"></i>新增
 		</button>
 		<button class="btn btn-danger" type="button"
 				ng-click="expert.removeOperators()">
@@ -20,3 +21,4 @@
 		<a href="#/expert" class="btn"><i class="icon-list"></i>返回</a>
     </div>
 </div>
+<div ecg-operator-dialog></div>

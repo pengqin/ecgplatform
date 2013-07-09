@@ -4,6 +4,7 @@ define(function(require, exports) {
 var operatorEditTemp = require("../templates/operator/edit.html");
 var operatorRulesTemp = require("../templates/operator/rules.html");
 var operatorExpertsTemp = require("../templates/operator/experts.html");
+var operatorDialogTemp = require("../templates/operator/operatorsdialog.html");
 
 angular.module('ecgOperator', [])
 .controller('OperatorController', ['$scope', '$filter', '$timeout', '$location', 'EnumService', 'OperatorService', function ($scope, $filter, $timeout, $location, EnumService, OperatorService) {
@@ -254,7 +255,53 @@ angular.module('ecgOperator', [])
         link : function($scope, $element, $attrs) {
         }
     };
-}]);
+}])
+.controller('OperatorDialogController', 
+    ['$scope', '$filter', '$timeout', '$location', 'EnumService', 'OperatorService', 
+    function ($scope, $filter, $timeout, $location, EnumService, OperatorService) {
 
+    // 命名空间
+    $scope.operatordialog = {};
+
+    // 表格展示
+    $scope.operatordialog.data = null;
+    OperatorService.queryAll().then(function(operators) {
+        $scope.operatordialog.data = operators;
+    });
+
+    $scope.operatordialog.execute = function() {
+        var selecteds = [];
+        $($scope.operatordialog.data).each(function(i, operator) {
+            if (operator.selected) {
+                selecteds.push(operator);
+            }
+        });
+        $scope.operatordialog.hide();
+        if ($scope.operatordialog.handler instanceof Function) {
+            $scope.operatordialog.handler(selecteds);
+        }
+    };
+
+    $scope.operatordialog.hide = function(opts) {
+      $('#ecgOperatorsDialog').modal('hide');
+    };
+
+    $scope.operatordialog.show = function(opts) {
+      var opts = opts || {};
+      $scope.operatordialog.handler = opts.handler;
+      $('#ecgOperatorsDialog').modal('show');
+    };
+
+}])
+.directive("ecgOperatorDialog", [ '$location', function($location) {
+    return {
+        restrict : 'A',
+        replace : false,
+        template : operatorDialogTemp,
+        controller : "OperatorDialogController",
+        link : function($scope, $element, $attrs) {
+        }
+    };
+}])
 
 });
