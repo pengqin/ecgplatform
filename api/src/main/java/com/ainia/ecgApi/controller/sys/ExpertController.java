@@ -73,7 +73,6 @@ public class ExpertController extends BaseController<Expert, Long> {
 		Expert expert = expertService.get(id);
 		expert.addOperator(operatorService.get(operId));
 		expertService.update(expert);
-		System.out.println("==========11");
 		return new ResponseEntity(HttpStatus.CREATED);
 	}
 
