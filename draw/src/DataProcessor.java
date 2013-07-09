@@ -12,11 +12,11 @@ import model.DataRecord;
  * 
  */
 public class DataProcessor {
-	private static final int BREATHING_TYPE = 0x21;
-	private static final int ECG1_TYPE = 0x22;
-	private static final int ECG2_TYPE = 0x23;
-	private static final int ECG3_TYPE = 0x24;
-	private static final int OTHERS_TYPE = 0x25;
+	private static final int BREATHING_TYPE = 0x21;    //呼吸类型，这个版本有可能被去掉，但解析代码要保留
+	private static final int ECG1_TYPE = 0x22;  //心电1类型
+	private static final int ECG2_TYPE = 0x23;  //心电2类型
+	private static final int ECG3_TYPE = 0x24;  //心电3类型
+	private static final int OTHERS_TYPE = 0x25;  //数值 类型
 
 	private float[] ecg; // all ecg data in one package
 	private int ecgLength = 0; // ecg data length
@@ -37,7 +37,7 @@ public class DataProcessor {
 		outputECGChart();
 	}
 
-	private void splitData(byte[] data, int len) {
+	private void splitData(byte[] data, int len) {   //解析帧头 ，所有类型数据帧头都以0xAA 0xAA 0xAA 三个字结开头的 
 		int i = 0;
 		while (i < len) {
 			if ((data[i] & 0xff) == 0xaa && (data[i + 1] & 0xff) == 0xaa
@@ -54,9 +54,9 @@ public class DataProcessor {
 
 		for (Map.Entry<Integer, DataRecord> entry : _records.entrySet()) {
 			DataRecord record = entry.getValue();
-			if (record.breathing != null && record.ecg1 != null
+			if (record.breathing != null && record.ecg1 != null   //应该改为ecg1，ecg2，ecg3 都不能为NULL，新版本去掉呼吸帧
 					&& record.ecg2 != null && record.ecg3 != null) {
-				for (int i = 0; i < record.ecg1.length; i += 4) {
+				for (int i = 0; i < record.ecg1.length; i += 4) {   //这部分不对：应该是ecg1，ecg2，ecg3 要分别存，分别画图，不能叠加在ecg一个数组中。
 					ecg[ecgLength++] = bytes4ToFloat(record.ecg1, i);
 				}
 				for (int i = 0; i < record.ecg2.length; i += 4) {
@@ -79,14 +79,14 @@ public class DataProcessor {
 		int serialNumber = data[start + 3];
 		int type = data[start + 4];
 		int sectionLen = 0;
-		switch (type & 0xff) {
+		switch (type & 0xff) {  //ecg1，ecg2，ecg3，breath 每帧时45字节，5字节帧头，40字节数据，4字节浮点值，共10个数据
 		case BREATHING_TYPE:
 		case ECG1_TYPE:
 		case ECG2_TYPE:
 		case ECG3_TYPE:
 			sectionLen = 40;
 			break;
-		case OTHERS_TYPE:
+		case OTHERS_TYPE:   //数值帧，是30字节，5字节帧头，40字节数据
 			sectionLen = 25;
 			break;
 		}
@@ -138,7 +138,7 @@ public class DataProcessor {
 		return floats;
 	}*/
 
-	private static float bytes4ToFloat(byte[] b, int index) {
+	private static float bytes4ToFloat(byte[] b, int index) {  //16进制浮点值转换，此处代码可能转的有问题。
 		int l;
 		l = b[index + 3];
 		l &= 0xff;

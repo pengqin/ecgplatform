@@ -386,14 +386,6 @@ define(function(require, exports) {
             });
         });
 
-        it("the expert should be removed", function(done) {
-            ExpertService.remove(expert.id).then(function() {
-                done();
-            }, function() {
-                throw new Error('the expert can\'t be removed');
-            });
-        });
-
         // Operator
         it("the OperatorService should be defined", function() {
             expect(OperatorService).not.to.be(undefined);
@@ -549,6 +541,92 @@ define(function(require, exports) {
             });
         });
 
+        // 测试专家和接线员直接能绑定关系
+        it("the expert should be linked with the operator", function(done) {
+            expect(expert).not.to.be(undefined);
+            expect(operator).not.to.be(undefined);
+            ExpertService.linkOperator(expert, operator).then(function(flag) {
+                if (flag) {
+                    done();
+                } else {
+                    throw new Error('the expert can\'t be linked again');
+                }
+            }, function() {
+                throw new Error('the expert can\'t be linked again with server errors');
+            });
+        });
+
+        it("one link should be retrieved by expert ", function(done) {
+            expect(expert).not.to.be(undefined);
+            expect(operator).not.to.be(undefined);
+            ExpertService.getOperators(expert).then(function(operators) {
+                if (operators && operators.length == 1) {
+                    done();
+                } else {
+                    throw new Error('the links can\'t be retrieved by expert');
+                }
+            }, function() {
+                throw new Error('the links can\'t be retrieved by expert');
+            });
+        });
+
+        it("the link should be removed from expert", function(done) {
+            expect(expert).not.to.be(undefined);
+            expect(operator).not.to.be(undefined);
+            ExpertService.unlinkOperator(expert, operator).then(function(flag) {
+                done();
+            }, function() {
+                throw new Error('the expert can\'t be unlinked with server errors');
+            });
+        });
+
+        it("the expert should be linked with the operator", function(done) {
+            expect(expert).not.to.be(undefined);
+            expect(operator).not.to.be(undefined);
+            ExpertService.linkOperator(expert, operator).then(function(flag) {
+                if (flag) {
+                    done();
+                } else {
+                    throw new Error('the expert can\'t be linked again');
+                }
+            }, function() {
+                throw new Error('the expert can\'t be linked again with server errors');
+            });
+        });
+
+        it("one link should be retrieved by operator ", function(done) {
+            expect(expert).not.to.be(undefined);
+            expect(operator).not.to.be(undefined);
+            OperatorService.getExperts(operator).then(function(operators) {
+                if (operators && operators.length == 1) {
+                    done();
+                } else {
+                    throw new Error('the expert can\'t be linked again');
+                }
+            }, function() {
+                throw new Error('the expert can\'t be linked again with server errors');
+            });
+        });
+
+        it("the expert should be unlinked with the operator", function(done) {
+            expect(expert).not.to.be(undefined);
+            expect(operator).not.to.be(undefined);
+            OperatorService.unlinkExpert(expert, operator).then(function() {
+                done();
+            }, function() {
+                throw new Error('the expert can\'t be unlinked again with server errors');
+            });
+        });
+
+        // 用于测试的expert和operator都可以被删除
+        it("the expert should be removed", function(done) {
+            ExpertService.remove(expert.id).then(function() {
+                done();
+            }, function() {
+                throw new Error('the expert can\'t be removed');
+            });
+        });
+
         it("the operator should be removed", function(done) {
             OperatorService.remove(operator.id).then(function() {
                 done();
@@ -556,6 +634,7 @@ define(function(require, exports) {
                 throw new Error('the operator can\'t be removed');
             });
         });
+
     };
 
 });

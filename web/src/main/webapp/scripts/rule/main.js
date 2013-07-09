@@ -25,7 +25,7 @@ angular.module('ecgRule', ['ecgRuleService', 'ecgReplyConfigService', 'ecgRuleMo
         template: editTemp,
         controller: 'RuleEditController'
     })
-    .when('/rule/:code/replyconfig', {
+    .when('/rule/:id/replyconfig', {
         template: replyconfigTemp,
         controller: 'ReplyConfigController'
     });
