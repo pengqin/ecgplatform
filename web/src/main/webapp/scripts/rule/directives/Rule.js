@@ -281,7 +281,7 @@ angular.module('ecgRuleModules', [])
                 if (len === count) {
                     $scope.dialog.hideStandby();
                     $scope.message.success("创建初始化检测区间成功!");
-                    window.location.reload();
+                    refreshRules();
                 }
             }, function() {
                 $scope.dialog.hideStandby();
@@ -465,7 +465,7 @@ angular.module('ecgRuleModules', [])
             });
             return;
         }
-        if ($scope.replyconfig.rules.length === 1) {
+        if ($scope.replyconfig.rules.length === 3) {
             $scope.dialog.alert({
                 text: '至少保留一个区间!'
             });
