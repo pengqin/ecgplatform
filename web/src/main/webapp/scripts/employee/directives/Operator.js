@@ -235,7 +235,7 @@ angular.module('ecgOperator', [])
     function ($scope, $routeParams, $timeout, $location, EnumService, OperatorService) {
     $scope.operator.operators = OperatorService.getExperts($routeParams.id);
 
-    $scope.operator.updateExperts = function() {
+    $scope.operator.removeExperts = function() {
         $scope.dialog.showStandby();
         /* TODO: */
         // OperatorService.update($scope.operator.updateobj);

@@ -235,16 +235,66 @@ angular.module('ecgExpert', [])
 // 配置接线员
 .controller('ExpertOperatorsController', ['$scope', '$routeParams', '$timeout', '$location', 'EnumService', 'ExpertService',
     function ($scope, $routeParams, $timeout, $location, EnumService, ExpertService) {
-    $scope.expert.operators = ExpertService.getOperators($routeParams.id);
+    $scope.expert.operators = 
+    [{"id":4,"name":"接线员","username":"operator","status":"INLINE","enabled":true,"dismissed":false,"gender":1,"expire":null,"birthday":"1983-06-04","idCard":"430203198602031218","mobile":"13028339212","createdDate":"2012-06-04 01:00:00","lastUpdated":"2012-06-04 01:00:00","roles":"operator","company":null,"title":null,"version":1,"superAdmin":false},
+    {"id":5,"name":"接线员","username":"operator","status":"INLINE","enabled":true,"dismissed":false,"gender":1,"expire":null,"birthday":"1983-06-04","idCard":"430203198602031218","mobile":"13028339212","createdDate":"2012-06-04 01:00:00","lastUpdated":"2012-06-04 01:00:00","roles":"operator","company":null,"title":null,"version":1,"superAdmin":false}];
 
-    $scope.expert.updateOperators = function() {
+    function refreshLinks() {
+        return;
+        ExpertService.getOperators($routeParams.id).then(function(operators) {
+            $scope.expert.operators = operators;
+        }, function() {
+            $scope.message.error("加载接线员数据失败!");
+        });
+    }
+    refreshLinks();
+
+    $scope.expert.check = function(operator) {
+        if (operator.removed === true) {
+            operator.removed = false;
+            return;
+        } else {
+            operator.removed = true;
+        }
+    };
+
+    $scope.expert.removeOperators = function() {
+        
+        var removes = [], operators = $scope.expert.operators, len = 0, count = 0;
+
+        
+
+        $(operators).each(function(i, operator) {
+            if (operator.removed) {
+                removes.push(operator);
+            }
+        });
+        
+        if (removes.length == 0) {
+            $scope.dialog.alert({
+                text: '请选择需要删除的绑定!'
+            });
+            return;
+        };
+
+        len = removes.length;
+
         $scope.dialog.showStandby();
-        /* TODO: */
-        // ExpertService.update($scope.expert.updateobj);
-        $timeout(function() {
-            $scope.dialog.hideStandby();
-            $scope.message.success("配置接线员成功!");
-        }, 2000);
+        $(removes).each(function(i, remove) {
+            ExpertService.unlinkOperator($routeParams.id, remove)
+            .then(function() {
+                count++;
+                if (count == len) {
+                    $scope.dialog.hideStandby();
+                    $scope.message.error("成功删除绑定！");
+                    refreshLinks();
+                }
+            }, function() {
+                count++;
+                $scope.dialog.hideStandby();
+                $scope.message.error("无法删除该绑定，用户名为：" + remove.name);
+            });
+        });
     };
 }])
 .directive("ecgExpertOperators", [ '$location', function($location) {

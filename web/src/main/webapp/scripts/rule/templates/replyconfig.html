@@ -8,7 +8,7 @@
 		<button class="btn" type="button"
 				ng-click="replyconfig.confirmDeleteRule()"
 				ng-show="replyconfig.editable"
-				ng-disabled="replyconfig.selectedRule == null || replyconfig.selectedRule.level == 'outside'">
+				ng-disabled="replyconfig.selectedRule == null || replyconfig.selectedRule.level == 'outside' || replyconfig.rules.length == 3">
 			<i class="icon-remove"></i>删除区间
 		</button>
 		<a href="javascript:window.history.go(-1)" class="btn"><i class="icon-list"></i>返回</a>

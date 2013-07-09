@@ -87,8 +87,7 @@ angular.module('ecgOperatorService', [])
                 return $http({
                     method: 'POST',
                     headers:{'Content-Type':'application/x-www-form-urlencoded'},
-                    data: $.param({expertId: expert.id}),
-                    url: uri + '/' + operator.id + '/expert'
+                    url: uri + '/' + operator.id + '/expert/' + expert.id
                 }).then(function(res) {
                     if (res.status === 201) {
                         return true;
@@ -105,11 +104,16 @@ angular.module('ecgOperatorService', [])
                     url: uri + '/' + operator.id + '/expert' + expert.id
                 });
             },
-            getExperts: function(id) {
+            getExperts: function(operator) {
+                var id = operator.id || operator;
                 return $http({
                     method: 'GET',
                     headers:{'Content-Type':'application/x-www-form-urlencoded'},
-                    url: uri + '/' + expert.id + '/expert'
+                    url: uri + '/' + id + '/expert'
+                }).then(function(res) {
+                    return res.data;
+                }, function() {
+                    return null;
                 });
             }
         };
