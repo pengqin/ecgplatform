@@ -570,7 +570,7 @@ define(function(require, exports) {
             });
         });
 
-        it("the link should be removed from expert", function(done) {
+        it("the expert should be unlinked from the expert", function(done) {
             expect(expert).not.to.be(undefined);
             expect(operator).not.to.be(undefined);
             ExpertService.unlinkOperator(expert, operator).then(function(flag) {
