@@ -49,12 +49,12 @@ angular.module('ecgUserModules', [])
                 .then(function() {
                     $scope.dialog.hideStandby();
                     $scope.user.selectedItem = null;
-                    $scope.popup.success("删除成功!");
+                    $scope.message.success("删除成功!");
                     // 刷新
                     refreshGrid();
                 }, function() {
                     $scope.dialog.hideStandby();
-                    $scope.popup.error("无法删除该数据,可能是您的权限不足,请联系管理员!");
+                    $scope.message.error("无法删除该数据,可能是您的权限不足,请联系管理员!");
                 });
             }
         });
@@ -77,12 +77,12 @@ angular.module('ecgUserModules', [])
                 .then(function() {
                     $scope.dialog.hideStandby();
                     $scope.user.selectedItem = null;
-                    $scope.popup.success("删除成功!");
+                    $scope.message.success("删除成功!");
                     // 刷新
                     refreshGrid();
                 }, function() {
                     $scope.dialog.hideStandby();
-                    $scope.popup.error("无法删除该数据,可能是您的权限不足,请联系管理员!");
+                    $scope.message.error("无法删除该数据,可能是您的权限不足,请联系管理员!");
                 });
             }
         });
@@ -106,7 +106,6 @@ angular.module('ecgUserModules', [])
     $scope.user = {};
     $scope.user.newobj = UserService.getPlainObject();
     $scope.user.genders = EnumService.getGenders();
-    $scope.user.dismissedStates = EnumService.getDismissedStates();
 
     $('#user-birthday').datetimepicker({
         format: "yyyy-MM-dd",
@@ -120,36 +119,35 @@ angular.module('ecgUserModules', [])
 
     $scope.user.isUnique = true;
     $scope.user.checkUnique = function() {
-        /*
-        ProfileService.get($scope.user.newobj.username).then(function(user) {
-            if (user) { 
+        UserService.findAllByMobile($scope.user.newobj.mobile).then(function(users) {
+            if (users.length > 0) { 
                 $scope.user.isUnique = false;
-                $scope.popup.warn("用户" + $scope.user.newobj.username + "已存在!");
+                $scope.message.warn("手机号码" + $scope.user.newobj.mobile + "已存在!");
             } else {
                 $scope.user.isUnique = true;
             }
         }, function() {
             $scope.user.isUnique = true;
-            $scope.popup.warn("查询用户是否唯一时出错!");
-        });*/
+            $scope.message.warn("查询用户是否唯一时出错!");
+        });
     };
 
     $scope.user.create = function() {
         $scope.dialog.showStandby();
         $scope.user.newobj.birthday = $('#user-birthday input').val();
-        $scope.user.newobj.password = $scope.user.newobj.username;
+        $scope.user.newobj.password = $scope.user.newobj.mobile;
         UserService.create($scope.user.newobj)
         .then(function(result) {
             $scope.dialog.hideStandby();
             if (result) {
-                $scope.popup.success("新增成功!");
+                $scope.message.success("新增用户成功!");
                 $location.path("/user");
             } else {
-                $scope.popup.error("新增失败!");
+                $scope.message.error("新增用户失败!");
             }
         }, function() {
             $scope.dialog.hideStandby();
-            $scope.popup.error("服务器异常,新增失败!");
+            $scope.message.error("服务器异常,新增失败!");
         });;
     };
 }])
@@ -165,11 +163,16 @@ angular.module('ecgUserModules', [])
 .controller('UserEditController', ['$scope', '$routeParams', '$timeout', '$location', 'EnumService', 'UserService',
     function ($scope, $routeParams, $timeout, $location, EnumService, UserService) {
     $scope.user.updateobj = null; //UserService.get($routeParams.id);
-    UserService.get($routeParams.id).then(function(user) {
-        $scope.user.updateobj = user;
-    });
+
+    // 初始化界面,并获得最新version
+    function refresh() {
+        UserService.get($routeParams.id).then(function(user) {
+            $scope.user.updateobj = user;
+        });
+    };
+    refresh();
+
     $scope.user.genders = EnumService.getGenders();
-    $scope.user.dismissedStates = EnumService.getDismissedStates();
 
     $('#user-birthday').datetimepicker({
         format: "yyyy-MM-dd",
@@ -189,29 +192,36 @@ angular.module('ecgUserModules', [])
         UserService.update($scope.user.updateobj)
         .then(function(result) {
             $scope.dialog.hideStandby();
-            $scope.popup.success("编辑成功!");
+            $scope.message.success("编辑用户成功!");
+            refresh();
         }, function() {
             $scope.dialog.hideStandby();
-            $scope.popup.error("编辑失败!");
+            $scope.message.error("编辑用户失败!");
         });;
     };
 
     $scope.user.resetPassword = function() {
-        $scope.dialog.showStandby();
-        $scope.user.updateobj.password = $scope.user.updateobj.username;
-        UserService.update($scope.user.updateobj)
-        .then(function(result) {
-            $scope.dialog.hideStandby();
-            $scope.popup.success("重置密码成功!");
-        }, function() {
-            $scope.dialog.hideStandby();
-            $scope.popup.error("重置密码失败!");
-        });;
+        $scope.dialog.confirm({
+            text: "重置后登录密码将与手机号码一致，确定继续?",
+            handler: function() {
+                $scope.dialog.showStandby();
+                $scope.user.updateobj.password = $scope.user.updateobj.mobile;
+                UserService.update($scope.user.updateobj)
+                .then(function(result) {
+                    $scope.dialog.hideStandby();
+                    $scope.message.success("重置密码成功!");
+                    refresh();
+                }, function() {
+                    $scope.dialog.hideStandby();
+                    $scope.message.error("重置密码失败!");
+                });
+            }
+        });
     };
 }])
 .directive("ecgUserEdit", [ '$location', function($location) {
     return {
-        restrict : 'E',
+        restrict : 'A',
         replace : false,
         template : userEditTemp,
         controller : "UserEditController",

@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.Version;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -38,15 +39,14 @@ public class User implements Domain {
 	private String  name;
 	private String  username;
 	private String  password;
-	private int gender;
 	private String  type;
 	private Date birthday;
 	private String address;
 	private Float  stature;
 	private Float  weight;
-	private String fnPlace;
+	private String idCard;
+	private int gender;
 	private String city;
-	private String tel;
 	private String emContact1;
 	@Column(name="em_contact1_tel")
 	private String emContact1Tel;
@@ -58,7 +58,6 @@ public class User implements Domain {
 	private Date   createdDate;
 	private Date   lastUpdated;
 	private String remark;
-	private String mobileNum;
 	private Boolean isFree;
 	private Integer version;
 	
@@ -74,8 +73,12 @@ public class User implements Domain {
 	public void onUpdate() {
 		this.lastUpdated = new Date();
 	}
-
-
+	
+	@Transient
+	public String getMobilePrefix () {
+		return mobile == null?null : mobile.substring(7);
+	}
+	
 	public Long getId() {
 		return id;
 	}
@@ -116,7 +119,7 @@ public class User implements Domain {
 		this.password = password;
 	}
 
-	public int isGender() {
+	public int getGender() {
 		return gender;
 	}
 
@@ -131,7 +134,7 @@ public class User implements Domain {
 	public void setType(String type) {
 		this.type = type;
 	}
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd" ,  timezone = "GMT+08:00")
 	public Date getBirthday() {
 		return birthday;
 	}
@@ -164,28 +167,12 @@ public class User implements Domain {
 		this.weight = weight;
 	}
 
-	public String getFnPlace() {
-		return fnPlace;
-	}
-
-	public void setFnPlace(String fnPlace) {
-		this.fnPlace = fnPlace;
-	}
-
 	public String getCity() {
 		return city;
 	}
 
 	public void setCity(String city) {
 		this.city = city;
-	}
-
-	public String getTel() {
-		return tel;
-	}
-
-	public void setTel(String tel) {
-		this.tel = tel;
 	}
 
 	public String getEmContact1() {
@@ -235,7 +222,7 @@ public class User implements Domain {
 	public void setAnamnesis(String anamnesis) {
 		this.anamnesis = anamnesis;
 	}
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss"  , timezone = "GMT+08:00")
 	public Date getCreatedDate() {
 		return createdDate;
 	}
@@ -243,7 +230,7 @@ public class User implements Domain {
 	public void setCreatedDate(Date createdDate) {
 		this.createdDate = createdDate;
 	}
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss" ,  timezone = "GMT+08:00")
 	public Date getLastUpdated() {
 		return lastUpdated;
 	}
@@ -259,15 +246,6 @@ public class User implements Domain {
 	public void setRemark(String remark) {
 		this.remark = remark;
 	}
-
-	public String getMobileNum() {
-		return mobileNum;
-	}
-
-	public void setMobileNum(String mobileNum) {
-		this.mobileNum = mobileNum;
-	}
-
 	public Boolean getIsFree() {
 		return isFree;
 	}
@@ -283,7 +261,12 @@ public class User implements Domain {
 	public void setVersion(Integer version) {
 		this.version = version;
 	}
-
+	public String getIdCard() {
+		return idCard;
+	}
+	public void setIdCard(String idCard) {
+		this.idCard = idCard;
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;

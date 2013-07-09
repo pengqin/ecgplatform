@@ -88,33 +88,37 @@ define(function(require, exports) {
             expect(ChiefService.getPlainObject).not.to.be(undefined);
         });
 
+        it("the chief should not be created without username and name", function(done) {
+            var invalid = ChiefService.getPlainObject();
+            ChiefService.create(invalid).then(function(flag) {
+                if (flag) {
+                    throw new Error('the chief can be created');
+                } else {
+                    done();
+                }
+            });
+        });
+
+        it("the chief should not be created without password", function(done) {
+            var invalid = ChiefService.getPlainObject();
+            invalid.name = 'test' + (new Date()).getTime();
+            invalid.username = 'test' + (new Date()).getTime();
+            invalid.password = '';
+ 
+            ChiefService.create(invalid).then(function(flag) {
+                if (flag) {
+                    throw new Error('the chief can be created');
+                } else {
+                    done();
+                }
+            });
+        });
+
         var chief = ChiefService.getPlainObject();
 
-        it("the chief should not be created without username and name", function(done) {
-            ChiefService.create(chief).then(function(flag) {
-                if (flag) {
-                    throw new Error('the chief can be created');
-                } else {
-                    done();
-                }
-            });
-        });
-
-        it("the chief should not be created when username and name but with blank password", function(done) {
+        it("the chief should be created when username, name and password are set", function(done) {
             chief.name = 'test' + (new Date()).getTime();
             chief.username = 'test' + (new Date()).getTime();
-            chief.password = '';
- 
-            ChiefService.create(chief).then(function(flag) {
-                if (flag) {
-                    throw new Error('the chief can be created');
-                } else {
-                    done();
-                }
-            });
-        });
-
-        it("the chief should be created when username, name and password are set", function(done) {
             chief.password = chief.name;
  
             ChiefService.create(chief).then(function(flag) {
@@ -122,77 +126,6 @@ define(function(require, exports) {
                     done();
                 } else {
                     throw new Error('the chief can\'t be created');
-                }
-            });
-        });
-
-        it("the chief id should be retrieved by ProfileService", function(done) {
-            chief.password = 'password' + (new Date()).getTime();
- 
-            ProfileService.get(chief.username).then(function(employee) {
-                if (employee) {
-                    expect(employee.id).not.to.be(undefined);
-                    chief.id = employee.id;
-                    done();
-                } else {
-                    throw new Error('the chief id can\'t be created');
-                }
-            });
-        });
-
-        it("the chief could be updated", function(done) {
-            ChiefService.get(chief.id).then(function(pesistedChief) {
-                if (pesistedChief) {
-                    expect(pesistedChief.id).to.be(chief.id);
-                    expect(pesistedChief.username).to.be(chief.username);
-                    expect(pesistedChief.name).to.be(chief.name);
-                    expect(pesistedChief.status).to.be(chief.status);
-                    expect(pesistedChief.title).to.be(chief.title);
-                    expect(pesistedChief.mobile).to.be(chief.mobile);
-                    expect(pesistedChief.company).to.be(chief.company);
-                    expect(pesistedChief.enabled).to.be(chief.enabled);
-                    expect(pesistedChief.dismissed).to.be(chief.dismissed);
-                    expect(pesistedChief.roles).to.be(chief.roles);
-                    done();
-                } else {
-                    throw new Error('the chief can\'t be retieved by id');
-                }
-            });
-        });
-
-        it("the chief should be updated", function(done) {
-            chief.status = 'ONLINE';
-            chief.gender = 0;
-            chief.birthday = '1983-01-11';
-            chief.idCard = '440803198801122455';
-            chief.title= '主任1';
-            chief.mobile= '13800000000';
-            chief.company = 'chief company';
-            chief.enabled = false;
-            chief.dismissed = true;
-            ChiefService.update(chief).then(function() {
-                done();
-            }, function() {
-                throw new Error('the chief can\'t be updated.');
-            });
-        });
-
-        it("the chief should be updated as expectation", function(done) {
-            ChiefService.get(chief.id).then(function(pesistedChief) {
-                if (pesistedChief) {
-                    expect(pesistedChief.id).to.be(chief.id);
-                    expect(pesistedChief.username).to.be(chief.username);
-                    expect(pesistedChief.name).to.be(chief.name);
-                    expect(pesistedChief.status).to.be(chief.status);
-                    expect(pesistedChief.title).to.be(chief.title);
-                    expect(pesistedChief.mobile).to.be(chief.mobile);
-                    expect(pesistedChief.company).to.be(chief.company);
-                    expect(pesistedChief.enabled).to.be(chief.enabled);
-                    expect(pesistedChief.dismissed).to.be(chief.dismissed);
-                    expect(pesistedChief.roles).to.be(chief.roles);
-                    done();
-                } else {
-                    throw new Error('the chief can\'t be retieved by id');
                 }
             });
         });
@@ -210,6 +143,57 @@ define(function(require, exports) {
                 done();
             }, function() {
                 throw new Error('the chief can\'t login in');
+            });
+        });
+
+        it("the chief id should be retrieved by ProfileService", function(done) {
+            ProfileService.get(chief.username).then(function(employee) {
+                if (employee) {
+                    expect(employee.id).not.to.be(undefined);
+                    chief.id = employee.id;
+                    done();
+                } else {
+                    throw new Error('the chief id can\'t be created');
+                }
+            });
+        });
+
+        it("the chief should be updated as expectation", function(done) {
+            ChiefService.get(chief.id).then(function(chief) {
+                chief.status = 'ONLINE';
+                chief.gender = 0;
+                chief.birthday = '1983-01-21';
+                chief.idCard = '440803198801122455';
+                chief.title= '主任1';
+                chief.mobile= '13800000000';
+                chief.company = 'chief company';
+                chief.enabled = false;
+                chief.dismissed = true;
+                delete chief.version;
+                ChiefService.update(chief).then(function() {
+                    ChiefService.get(chief.id).then(function(pesistedChief) {
+                        if (pesistedChief) {
+                            expect(pesistedChief.id).to.be(chief.id);
+                            expect(pesistedChief.username).to.be(chief.username);
+                            expect(pesistedChief.name).to.be(chief.name);
+                            expect(pesistedChief.status).to.be(chief.status);
+                            expect(pesistedChief.title).to.be(chief.title);
+                            expect(pesistedChief.mobile).to.be(chief.mobile);
+                            expect(pesistedChief.birthday).to.be(chief.birthday);
+                            expect(pesistedChief.company).to.be(chief.company);
+                            expect(pesistedChief.enabled).to.be(chief.enabled);
+                            expect(pesistedChief.dismissed).to.be(chief.dismissed);
+                            expect(pesistedChief.roles).to.be(chief.roles);
+                            done();
+                        } else {
+                            throw new Error('the chief can\'t be retieved again');
+                        }
+                    });
+                }, function() {
+                    throw new Error('the chief can\'t be updated by id');
+                });
+            }, function() {
+                throw new Error('the chief can\'t be retrieved by id');
             });
         });
 
@@ -264,37 +248,41 @@ define(function(require, exports) {
         });
 
         it("the getPlainObject method of ExpertService should be defined", function() {
-            console.info(ExpertService.getPlainObject);
             expect(ExpertService.getPlainObject).not.to.be(undefined);
+        });
+
+
+        it("the expert should not be created without username and name", function(done) {
+            var invalid = ExpertService.getPlainObject();
+            ExpertService.create(invalid).then(function(flag) {
+                if (flag) {
+                    throw new Error('the expert can be created');
+                } else {
+                    done();
+                }
+            });
+        });
+
+        it("the expert should not be created without password", function(done) {
+            var invalid = ExpertService.getPlainObject();
+            invalid.name = 'test' + (new Date()).getTime();
+            invalid.username = 'test' + (new Date()).getTime();
+            invalid.password = '';
+ 
+            ExpertService.create(invalid).then(function(flag) {
+                if (flag) {
+                    throw new Error('the expert can be created');
+                } else {
+                    done();
+                }
+            });
         });
 
         var expert = ExpertService.getPlainObject();
 
-        it("the expert should not be created without username and name", function(done) {
-            ExpertService.create(expert).then(function(flag) {
-                if (flag) {
-                    throw new Error('the expert can be created');
-                } else {
-                    done();
-                }
-            });
-        });
-
-        it("the expert should not be created when username and name but with blank password", function(done) {
+        it("the expert should be created when username, name and password are set", function(done) {
             expert.name = 'test' + (new Date()).getTime();
             expert.username = 'test' + (new Date()).getTime();
-            expert.password = '';
- 
-            ExpertService.create(expert).then(function(flag) {
-                if (flag) {
-                    throw new Error('the expert can be created');
-                } else {
-                    done();
-                }
-            });
-        });
-
-        it("the expert should be created when username, name and password are set", function(done) {
             expert.password = expert.name;
  
             ExpertService.create(expert).then(function(flag) {
@@ -302,77 +290,6 @@ define(function(require, exports) {
                     done();
                 } else {
                     throw new Error('the expert can\'t be created');
-                }
-            });
-        });
-
-        it("the expert id should be retrieved by ProfileService", function(done) {
-            expert.password = 'password' + (new Date()).getTime();
- 
-            ProfileService.get(expert.username).then(function(employee) {
-                if (employee) {
-                    expect(employee.id).not.to.be(undefined);
-                    expert.id = employee.id;
-                    done();
-                } else {
-                    throw new Error('the expert id can\'t be created');
-                }
-            });
-        });
-
-        it("the expert could be updated", function(done) {
-            ExpertService.get(expert.id).then(function(pesistedExpert) {
-                if (pesistedExpert) {
-                    expect(pesistedExpert.id).to.be(expert.id);
-                    expect(pesistedExpert.username).to.be(expert.username);
-                    expect(pesistedExpert.name).to.be(expert.name);
-                    expect(pesistedExpert.status).to.be(expert.status);
-                    expect(pesistedExpert.title).to.be(expert.title);
-                    expect(pesistedExpert.mobile).to.be(expert.mobile);
-                    expect(pesistedExpert.company).to.be(expert.company);
-                    expect(pesistedExpert.enabled).to.be(expert.enabled);
-                    expect(pesistedExpert.dismissed).to.be(expert.dismissed);
-                    expect(pesistedExpert.roles).to.be(expert.roles);
-                    done();
-                } else {
-                    throw new Error('the expert can\'t be retieved by id');
-                }
-            });
-        });
-
-        it("the expert should be updated", function(done) {
-            expert.status = 'ONLINE';
-            expert.gender = 0;
-            expert.birthday = '1983-01-11';
-            expert.idCard = '440803198801122455';
-            expert.title= '主任1';
-            expert.mobile= '13800000000';
-            expert.company = 'expert company';
-            expert.enabled = false;
-            expert.dismissed = true;
-            ExpertService.update(expert).then(function() {
-                done();
-            }, function() {
-                throw new Error('the expert can\'t be updated.');
-            });
-        });
-
-        it("the expert should be updated as expectation", function(done) {
-            ExpertService.get(expert.id).then(function(pesistedExpert) {
-                if (pesistedExpert) {
-                    expect(pesistedExpert.id).to.be(expert.id);
-                    expect(pesistedExpert.username).to.be(expert.username);
-                    expect(pesistedExpert.name).to.be(expert.name);
-                    expect(pesistedExpert.status).to.be(expert.status);
-                    expect(pesistedExpert.title).to.be(expert.title);
-                    expect(pesistedExpert.mobile).to.be(expert.mobile);
-                    expect(pesistedExpert.company).to.be(expert.company);
-                    expect(pesistedExpert.enabled).to.be(expert.enabled);
-                    expect(pesistedExpert.dismissed).to.be(expert.dismissed);
-                    expect(pesistedExpert.roles).to.be(expert.roles);
-                    done();
-                } else {
-                    throw new Error('the expert can\'t be retieved by id');
                 }
             });
         });
@@ -390,6 +307,57 @@ define(function(require, exports) {
                 done();
             }, function() {
                 throw new Error('the expert can\'t login in');
+            });
+        });
+
+        it("the expert id should be retrieved by ProfileService", function(done) {
+            ProfileService.get(expert.username).then(function(employee) {
+                if (employee) {
+                    expect(employee.id).not.to.be(undefined);
+                    expert.id = employee.id;
+                    done();
+                } else {
+                    throw new Error('the expert id can\'t be created');
+                }
+            });
+        });
+
+        it("the expert should be updated as expectation", function(done) {
+            ExpertService.get(expert.id).then(function(expert) {
+                expert.status = 'ONLINE';
+                expert.gender = 0;
+                expert.birthday = '1983-01-21';
+                expert.idCard = '440803198801122455';
+                expert.title= '主任1';
+                expert.mobile= '13800000000';
+                expert.company = 'expert company';
+                expert.enabled = false;
+                expert.dismissed = true;
+                delete expert.version;
+                ExpertService.update(expert).then(function() {
+                    ExpertService.get(expert.id).then(function(pesistedExpert) {
+                        if (pesistedExpert) {
+                            expect(pesistedExpert.id).to.be(expert.id);
+                            expect(pesistedExpert.username).to.be(expert.username);
+                            expect(pesistedExpert.name).to.be(expert.name);
+                            expect(pesistedExpert.status).to.be(expert.status);
+                            expect(pesistedExpert.title).to.be(expert.title);
+                            expect(pesistedExpert.mobile).to.be(expert.mobile);
+                            expect(pesistedExpert.birthday).to.be(expert.birthday);
+                            expect(pesistedExpert.company).to.be(expert.company);
+                            expect(pesistedExpert.enabled).to.be(expert.enabled);
+                            expect(pesistedExpert.dismissed).to.be(expert.dismissed);
+                            expect(pesistedExpert.roles).to.be(expert.roles);
+                            done();
+                        } else {
+                            throw new Error('the expert can\'t be retieved again');
+                        }
+                    });
+                }, function() {
+                    throw new Error('the expert can\'t be updated by id');
+                });
+            }, function() {
+                throw new Error('the expert can\'t be retrieved by id');
             });
         });
 
@@ -444,37 +412,40 @@ define(function(require, exports) {
         });
 
         it("the getPlainObject method of OperatorService should be defined", function() {
-            console.info(OperatorService.getPlainObject);
             expect(OperatorService.getPlainObject).not.to.be(undefined);
+        });
+
+        it("the operator should not be created without username and name", function(done) {
+            var invalid = OperatorService.getPlainObject();
+            OperatorService.create(invalid).then(function(flag) {
+                if (flag) {
+                    throw new Error('the operator can be created');
+                } else {
+                    done();
+                }
+            });
+        });
+
+        it("the operator should not be created without password", function(done) {
+            var invalid = OperatorService.getPlainObject();
+            invalid.name = 'test' + (new Date()).getTime();
+            invalid.username = 'test' + (new Date()).getTime();
+            invalid.password = '';
+ 
+            OperatorService.create(invalid).then(function(flag) {
+                if (flag) {
+                    throw new Error('the operator can be created');
+                } else {
+                    done();
+                }
+            });
         });
 
         var operator = OperatorService.getPlainObject();
 
-        it("the operator should not be created without username and name", function(done) {
-            OperatorService.create(operator).then(function(flag) {
-                if (flag) {
-                    throw new Error('the operator can be created');
-                } else {
-                    done();
-                }
-            });
-        });
-
-        it("the operator should not be created when username and name but with blank password", function(done) {
+        it("the operator should be created when username, name and password are set", function(done) {
             operator.name = 'test' + (new Date()).getTime();
             operator.username = 'test' + (new Date()).getTime();
-            operator.password = '';
- 
-            OperatorService.create(operator).then(function(flag) {
-                if (flag) {
-                    throw new Error('the operator can be created');
-                } else {
-                    done();
-                }
-            });
-        });
-
-        it("the operator should be created when username, name and password are set", function(done) {
             operator.password = operator.name;
  
             OperatorService.create(operator).then(function(flag) {
@@ -482,77 +453,6 @@ define(function(require, exports) {
                     done();
                 } else {
                     throw new Error('the operator can\'t be created');
-                }
-            });
-        });
-
-        it("the operator id should be retrieved by ProfileService", function(done) {
-            operator.password = 'password' + (new Date()).getTime();
- 
-            ProfileService.get(operator.username).then(function(employee) {
-                if (employee) {
-                    expect(employee.id).not.to.be(undefined);
-                    operator.id = employee.id;
-                    done();
-                } else {
-                    throw new Error('the operator id can\'t be created');
-                }
-            });
-        });
-
-        it("the operator could be updated", function(done) {
-            OperatorService.get(operator.id).then(function(pesistedOperator) {
-                if (pesistedOperator) {
-                    expect(pesistedOperator.id).to.be(operator.id);
-                    expect(pesistedOperator.username).to.be(operator.username);
-                    expect(pesistedOperator.name).to.be(operator.name);
-                    expect(pesistedOperator.status).to.be(operator.status);
-                    expect(pesistedOperator.title).to.be(operator.title);
-                    expect(pesistedOperator.mobile).to.be(operator.mobile);
-                    expect(pesistedOperator.company).to.be(operator.company);
-                    expect(pesistedOperator.enabled).to.be(operator.enabled);
-                    expect(pesistedOperator.dismissed).to.be(operator.dismissed);
-                    expect(pesistedOperator.roles).to.be(operator.roles);
-                    done();
-                } else {
-                    throw new Error('the operator can\'t be retieved by id');
-                }
-            });
-        });
-
-        it("the operator should be updated", function(done) {
-            operator.status = 'ONLINE';
-            operator.gender = 0;
-            operator.birthday = '1983-01-11';
-            operator.idCard = '440803198801122455';
-            operator.title= '主任1';
-            operator.mobile= '13800000000';
-            operator.company = 'operator company';
-            operator.enabled = false;
-            operator.dismissed = true;
-            OperatorService.update(operator).then(function() {
-                done();
-            }, function() {
-                throw new Error('the operator can\'t be updated.');
-            });
-        });
-
-        it("the operator should be updated as expectation", function(done) {
-            OperatorService.get(operator.id).then(function(pesistedOperator) {
-                if (pesistedOperator) {
-                    expect(pesistedOperator.id).to.be(operator.id);
-                    expect(pesistedOperator.username).to.be(operator.username);
-                    expect(pesistedOperator.name).to.be(operator.name);
-                    expect(pesistedOperator.status).to.be(operator.status);
-                    expect(pesistedOperator.title).to.be(operator.title);
-                    expect(pesistedOperator.mobile).to.be(operator.mobile);
-                    expect(pesistedOperator.company).to.be(operator.company);
-                    expect(pesistedOperator.enabled).to.be(operator.enabled);
-                    expect(pesistedOperator.dismissed).to.be(operator.dismissed);
-                    expect(pesistedOperator.roles).to.be(operator.roles);
-                    done();
-                } else {
-                    throw new Error('the operator can\'t be retieved by id');
                 }
             });
         });
@@ -570,6 +470,57 @@ define(function(require, exports) {
                 done();
             }, function() {
                 throw new Error('the operator can\'t login in');
+            });
+        });
+
+        it("the operator id should be retrieved by ProfileService", function(done) {
+            ProfileService.get(operator.username).then(function(employee) {
+                if (employee) {
+                    expect(employee.id).not.to.be(undefined);
+                    operator.id = employee.id;
+                    done();
+                } else {
+                    throw new Error('the operator id can\'t be created');
+                }
+            });
+        });
+
+        it("the operator should be updated as expectation", function(done) {
+            OperatorService.get(operator.id).then(function(operator) {
+                operator.status = 'ONLINE';
+                operator.gender = 0;
+                operator.birthday = '1983-01-21';
+                operator.idCard = '440803198801122455';
+                operator.title= '主任1';
+                operator.mobile= '13800000000';
+                operator.company = 'operator company';
+                operator.enabled = false;
+                operator.dismissed = true;
+                delete operator.version;
+                OperatorService.update(operator).then(function() {
+                    OperatorService.get(operator.id).then(function(pesistedOperator) {
+                        if (pesistedOperator) {
+                            expect(pesistedOperator.id).to.be(operator.id);
+                            expect(pesistedOperator.username).to.be(operator.username);
+                            expect(pesistedOperator.name).to.be(operator.name);
+                            expect(pesistedOperator.status).to.be(operator.status);
+                            expect(pesistedOperator.title).to.be(operator.title);
+                            expect(pesistedOperator.mobile).to.be(operator.mobile);
+                            expect(pesistedOperator.birthday).to.be(operator.birthday);
+                            expect(pesistedOperator.company).to.be(operator.company);
+                            expect(pesistedOperator.enabled).to.be(operator.enabled);
+                            expect(pesistedOperator.dismissed).to.be(operator.dismissed);
+                            expect(pesistedOperator.roles).to.be(operator.roles);
+                            done();
+                        } else {
+                            throw new Error('the operator can\'t be retieved again');
+                        }
+                    });
+                }, function() {
+                    throw new Error('the operator can\'t be updated by id');
+                });
+            }, function() {
+                throw new Error('the operator can\'t be retrieved by id');
             });
         });
 

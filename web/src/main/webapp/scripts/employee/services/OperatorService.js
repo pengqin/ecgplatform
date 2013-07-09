@@ -3,7 +3,7 @@ define(function(require, exports) {
 
 angular.module('ecgOperatorService', [])
     .factory("OperatorService", function($rootScope, $http) {
-        var uri = "/api/operator";
+        var uri = PATH + "/api/operator";
 
         return {
             queryAll: function() {
@@ -17,7 +17,7 @@ angular.module('ecgOperatorService', [])
                         return [];    
                     }
                 }, function() {
-                    $rootScope.popup.error('服务器异常,无法获取数据');
+                    $rootScope.message.error('服务器异常,无法获取数据');
                     return [];
                 });
             },
@@ -62,7 +62,7 @@ angular.module('ecgOperatorService', [])
                 }).then(function(res) {
                     return res.data;
                 }, function() {
-                    $rootScope.popup.error('服务器异常,无法获取标识为' + id + '的数据.');
+                    $rootScope.message.error('服务器异常,无法获取标识为' + id + '的数据.');
                     return null;
                 });
             },

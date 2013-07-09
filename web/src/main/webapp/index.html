@@ -44,14 +44,17 @@
   <!--<![endif]-->
     
     <div id="loadingpage">
-    <div>正在努力加载...</div>
-    <br/>
-    <div class="progress progress-striped active">
-      <div class="bar" style="width: 100%;"></div>
-    </div>
+        <div>正在努力加载，请稍候...</div>
+        <!--[if !(IE)]><!--> 
+        <br/>
+        <div class="progress progress-striped active">
+          <div class="bar" style="width: 100%;"></div>
+        </div>
+        <!--<![endif]-->
     </div>
 
     <div ecg-header></div>
+    <div ecg-message></div>
     <div ecg-nav></div>
 
     <div class="content">
@@ -59,8 +62,6 @@
 
         <div class="container-fluid" style="margin-top:10px;">
             <div class="row-fluid">
-
-            <div ecg-popup></div>
 
             <ng-view></ng-view>
 

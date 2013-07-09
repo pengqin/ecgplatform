@@ -3,21 +3,21 @@ define(function(require, exports) {
 
 angular.module('ecgUserService', [])
     .factory("UserService", function($rootScope, $http) {
-        var uri = "/api/user";
+        var uri = PATH + "/api/user";
 
         return {
             queryAll: function() {
                 return $http({
                     method: 'GET',
                     url: uri
-                }).then(function(res) { // 构造session用户
+                }).then(function(res) {
                     if (res.data.datas && res.data.datas.length > 0) {
                         return res.data.datas;
                     } else {
                         return [];    
                     }
                 }, function() {
-                    $rootScope.popup.error('服务器异常,无法获取数据');
+                    $rootScope.message.error('服务器异常,无法获取数据');
                     return [];
                 });
             },
@@ -58,6 +58,21 @@ angular.module('ecgUserService', [])
                     return false;
                 });
             },
+            findAllByMobile: function(mobile) {
+                return $http({
+                    method: 'GET',
+                    url: uri + '?mobile=' + mobile
+                }).then(function(res) {
+                    if (res.data.datas && res.data.datas.length > 0) {
+                        return res.data.datas;
+                    } else {
+                        return [];    
+                    }
+                }, function() {
+                    $rootScope.message.error('服务器异常,无法获取数据');
+                    return [];
+                });
+            },
             get: function(id) {
                 return $http({
                     method: 'GET',
@@ -66,7 +81,7 @@ angular.module('ecgUserService', [])
                 }).then(function(res) {
                     return res.data;
                 }, function() {
-                    $rootScope.popup.error('服务器异常,无法获取标识为' + id + '的用户数据.');
+                    $rootScope.message.error('服务器异常,无法获取标识为' + id + '的用户数据.');
                     return null;
                 });
             },

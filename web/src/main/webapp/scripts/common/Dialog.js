@@ -3,7 +3,7 @@ define(function(require, exports) {
   var dialogTempalte = require("./templates/dialog.html");
 
   angular.module('ecgDialog', [])
-  .controller('DialogController', function ($scope) {
+  .controller('DialogController', ['$scope', '$timeout', function ($scope, $timeout) {
   	$scope.dialog = {};
   	$scope.dialog.OKLabel = '确定';
     $scope.dialog.shown = false;
@@ -64,20 +64,30 @@ define(function(require, exports) {
   		$scope.dialog.handler = opts.handler || function() {};
       show();
   	};
+    var showtime = 0;
   	$scope.dialog.showStandby = function(opts) {
   		var opts = opts || {};
   		$scope.dialog.state = 'standby';
   		$scope.dialog.dialogTitle = opts.title || '提示';
-  		$scope.dialog.dialogText = opts.text || '操作进行中,请等待.';
+  		$scope.dialog.dialogText = opts.text || '操作进行中,请耐心等待.';
+      showtime = (new Date()).getTime();
       show();
   	};
   	$scope.dialog.hideStandby = function() {
-  		$scope.dialog.state = 'standby';
-  		$('#ecgDialog').modal('hide');
-  		$scope.dialog.state = '';
-  		$scope.dialog.dialogText = '';
+      function hide() {
+    		$scope.dialog.state = 'standby';
+    		$scope.dialog.state = '';
+    		$scope.dialog.dialogText = '';
+        $('#ecgDialog').modal('hide');
+      }
+      var current = (new Date()).getTime();
+      if (current - showtime > 1500) {
+        hide();
+      } else {
+        $timeout(hide, 1500);
+      }
   	};
-  })
+  }])
   .directive("ecgDialog", ['$location', function ($location) {
     return {
       restrict: 'A',

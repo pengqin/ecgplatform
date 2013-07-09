@@ -28,6 +28,10 @@ i {
 	margin: auto;
 }
 
+/*消息提示*/
+#ecgMessage .alert {
+	margin: 0px;
+}
 /*菜单*/
 .sidebar-nav {
 	width: 160px;
@@ -73,9 +77,13 @@ i {
 
 /*Pane头*/
 .ecgHd {
-	margin: 15px 0px;
-	padding-bottom: 5px;
-	border-bottom: 1px dotted #666;
+	margin: 0px;
+	padding-bottom: 0px;
+	background-color: #f6f6f6;
+	line-height: 30px;
+	height: 30px;
+	color: #333;
+	padding-left: 5px;
 }
 
 /*对于pane的特殊设置*/
@@ -111,7 +119,9 @@ table tbody tr.active {
 
 /*属性表格*/
 .ecgprops {
-	width: 100%;
+	margin: auto;
+	width: 98%;
+	margin-bottom: 30px;
 }
 .ecgprops td {
 	padding-top: 10px;
@@ -127,7 +137,7 @@ table tbody tr.active {
 }
 .ecgprops .desc {
 	display: block;
-	color: #ccc;
+	color: red;
 }
 .ecgprops .prop {
 	display:inline-block;
@@ -135,6 +145,16 @@ table tbody tr.active {
 }
 .ecgprops .progress {
 	margin-bottom: 2px;
+}
+.ecgprops input {
+	margin-bottom: 0px;
+}
+.ecgprops input.ng-invalid {
+	border: 2px solid red;
+}
+.ecgprops .rulelevel {
+	cursor: pointer;
+	margin-right: 5px;
 }
 
 /* 回复设置*/
@@ -144,18 +164,32 @@ table tbody tr.active {
 .replyconfigs .bar {
 	cursor: pointer;
 	height: 50px;
-	line-height: 50px;
+	line-height: 20px;
+	padding-top: 5px;
+}
+.replyconfigs .bar-outside {
+	background-color: #333;
+	background-image: none;
 }
 /* 过滤规则 */
-.filters td {
+.rules td {
 	line-height: 47px;
 }
-.filters input {
+.rules input {
 	margin: 0px;
-	width:40px;
 	text-align:right;
 }
 
 #ecgplot img {
 	max-width: 1600px;
+}
+
+#ecgReplyDialog .label {
+	display: inline-block;
+	width: 30px;
+	text-align: right;
+}
+#ecgReplyDialog .label-outside {
+	background-image: none;
+	background-color: #333;
 }

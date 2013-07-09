@@ -49,12 +49,12 @@ angular.module('ecgChief', [])
                 .then(function() {
                     $scope.dialog.hideStandby();
                     $scope.chief.selectedItem = null;
-                    $scope.popup.success("删除成功!");
+                    $scope.message.success("删除主任成功!");
                     // 刷新
                     refreshGrid();
                 }, function() {
                     $scope.dialog.hideStandby();
-                    $scope.popup.error("无法删除该数据,可能是您的权限不足,请联系管理员!");
+                    $scope.message.error("无法删除该数据,可能是您的权限不足,请联系管理员!");
                 });
             }
         });
@@ -96,13 +96,13 @@ angular.module('ecgChief', [])
         ProfileService.get($scope.chief.newobj.username).then(function(user) {
             if (user) { 
                 $scope.chief.isUnique = false;
-                $scope.popup.warn("用户" + $scope.chief.newobj.username + "已存在!");
+                $scope.message.warn("登录名为" + $scope.chief.newobj.username + "的员工已存在!");
             } else {
                 $scope.chief.isUnique = true;
             }
         }, function() {
             $scope.chief.isUnique = true;
-            $scope.popup.warn("查询用户是否唯一时出错!");
+            $scope.message.warn("查询登录名是否唯一时出错!");
         });
     };
 
@@ -114,14 +114,14 @@ angular.module('ecgChief', [])
         .then(function(result) {
             $scope.dialog.hideStandby();
             if (result) {
-                $scope.popup.success("新增成功!");
+                $scope.message.success("新增主任成功!");
                 $location.path("/chief");
             } else {
-                $scope.popup.error("新增失败!");
+                $scope.message.error("新增主任失败!");
             }
         }, function() {
             $scope.dialog.hideStandby();
-            $scope.popup.error("服务器异常,新增失败!");
+            $scope.message.error("服务器异常,新增主任失败!");
         });;
     };
 }])
@@ -137,9 +137,17 @@ angular.module('ecgChief', [])
 .controller('ChiefEditController', ['$scope', '$routeParams', '$timeout', '$location', 'EnumService', 'ProfileService', 'ChiefService',
     function ($scope, $routeParams, $timeout, $location, EnumService, ProfileService, ChiefService) {
     $scope.chief.updateobj = null; //ChiefService.get($routeParams.id);
-    ChiefService.get($routeParams.id).then(function(chief) {
-        $scope.chief.updateobj = chief;
-    });
+
+    // 初始化界面,并获得最新version
+    function refresh() {
+        ChiefService.get($routeParams.id).then(function(chief) {
+            $scope.chief.updateobj = chief;
+        }, function() {
+            $scope.message.error("加载主任数据失败.");
+        });
+    };
+    refresh();
+
     $scope.chief.genders = EnumService.getGenders();
     $scope.chief.dismissedStates = EnumService.getDismissedStates();
 
@@ -161,10 +169,11 @@ angular.module('ecgChief', [])
         ChiefService.update($scope.chief.updateobj)
         .then(function(result) {
             $scope.dialog.hideStandby();
-            $scope.popup.success("编辑成功!");
+            $scope.message.success("编辑主任成功!");
+            refresh();
         }, function() {
             $scope.dialog.hideStandby();
-            $scope.popup.error("编辑失败!");
+            $scope.message.error("编辑主任失败!");
         });;
     };
 
@@ -176,10 +185,11 @@ angular.module('ecgChief', [])
                 ProfileService.resetPassword($scope.chief.updateobj.id)
                 .then(function(result) {
                     $scope.dialog.hideStandby();
-                    $scope.popup.success("重置密码成功!");
+                    $scope.message.success("重置密码成功!");
+                    refresh();
                 }, function() {
                     $scope.dialog.hideStandby();
-                    $scope.popup.error("重置密码失败!");
+                    $scope.message.error("重置密码失败!");
                 });
             }
         });

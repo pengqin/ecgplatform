@@ -2,17 +2,14 @@ language: java
 jdk:
   - oraclejdk7
 before_script:
-  - sudo apt-get install subversion
-  - svn -h
   - sudo apt-get install ftp
-  - ftp -h
-  - sudo apt-get install ssh
 script:
   - cd api
-  - mvn install
+  - mvn clean install
   - cd ../web
   - mvn package
   - cd target
-  - ls -al
-  - ssh-keygen -t rsa
-  - scp ~/.ssh/id_rsa.pub -P9322 web.war ainia@182.18.31.105:web.war
+  - mv ../../upload.sh ./
+  - chmod +x upload.sh
+  - mv web.war ainia.war
+  - ./upload.sh

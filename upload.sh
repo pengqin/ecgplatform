@@ -1,6 +1,5 @@
-ftp -inv 182.18.31.105 <<EOF
-user ainia ppainia
-binary
-put web.war
+ftp -inv 115.28.41.123 <<EOF
+user ainia ainia
+cd /
+put ainia.war ainia.war
 bye
-!
