@@ -193,3 +193,11 @@ table tbody tr.active {
 	background-image: none;
 	background-color: #333;
 }
+
+/* employee link*/
+.employeeLink {
+	float:left; width: 100px; margin-right: 10px;
+}
+.employeeLink input {
+	margin: 0px;
+}

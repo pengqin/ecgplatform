@@ -84,11 +84,11 @@ angular.module('ecgExpertService', [])
                 return [];
             },
             linkOperator: function(expert, operator) {
+                var id = expert.id || expert;
                 return $http({
                     method: 'POST',
                     headers:{'Content-Type':'application/x-www-form-urlencoded'},
-                    data: $.param({operatorId: operator.id}),
-                    url: uri + '/' + expert.id + '/operator'
+                    url: uri + '/' + id + '/operator/' + operator.id
                 }).then(function(res) {
                     if (res.status === 201) {
                         return true;
@@ -100,16 +100,25 @@ angular.module('ecgExpertService', [])
                 });
             },
             unlinkOperator: function(expert, operator) {
+                var id = expert.id || expert;
                 return $http({
                     method: 'DELETE',
-                    url: uri + '/' + expert.id + '/operator/' + operator.id
+                    url: uri + '/' + id + '/operator/' + operator.id
                 });
             },
-            getOperators: function(id) {
+            /**
+             * expert Object or String
+             */
+            getOperators: function(expert) {
+                var id = expert.id || expert;
                 return $http({
                     method: 'GET',
                     headers:{'Content-Type':'application/x-www-form-urlencoded'},
-                    url: uri + '/' + expert.id + '/operator'
+                    url: uri + '/' + id + '/operator'
+                }).then(function(res) {
+                    return res.data;
+                }, function() {
+                    return null;
                 });
             }
         };
