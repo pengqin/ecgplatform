@@ -107,9 +107,8 @@ angular.module('ecgExpertService', [])
             },
             getOperators: function(id) {
                 return $http({
-                    method: 'PUT',
+                    method: 'GET',
                     headers:{'Content-Type':'application/x-www-form-urlencoded'},
-                    data: $.param(expert),
                     url: uri + '/' + expert.id + '/operator'
                 });
             }
