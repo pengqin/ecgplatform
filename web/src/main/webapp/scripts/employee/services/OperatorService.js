@@ -83,8 +83,35 @@ angular.module('ecgOperatorService', [])
             getRules: function(id) {
                 return [];
             },
+            linkExpert: function(operator, expert) {
+                return $http({
+                    method: 'POST',
+                    headers:{'Content-Type':'application/x-www-form-urlencoded'},
+                    data: $.param({expertId: expert.id}),
+                    url: uri + '/' + operator.id + '/expert'
+                }).then(function(res) {
+                    if (res.status === 201) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }, function() {
+                    return false;
+                });
+            },
+            unlinkOperator: function(operator, expert) {
+                return $http({
+                    method: 'DELETE',
+                    url: uri + '/' + operator.id + '/expert' + expert.id
+                });
+            },
             getExperts: function(id) {
-                return [];
+                return $http({
+                    method: 'PUT',
+                    headers:{'Content-Type':'application/x-www-form-urlencoded'},
+                    data: $.param(expert),
+                    url: uri + '/' + expert.id + '/expert'
+                });
             }
         };
     });

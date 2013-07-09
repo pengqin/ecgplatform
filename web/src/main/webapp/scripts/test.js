@@ -41,9 +41,10 @@ angular.module('ecgTestApp', ['ecgCommon', 'ecgTask', 'ecgMonitor', 'ecgEmployee
             expect(token).not.to.be(undefined);
         });
         // 验证基础模块
-        testCommon(it, EnumService);
+        //testCommon(it, EnumService);
         // 验证员工模块
         testEmployee(it, ChiefService, ExpertService, OperatorService, ProfileService);
+        return;
         // 验证用户模块
         testUser(it, UserService);
         // 验证规则及回复模块
