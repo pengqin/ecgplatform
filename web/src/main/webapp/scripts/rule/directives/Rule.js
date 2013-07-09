@@ -1,6 +1,8 @@
 'use strict';
 define(function(require, exports) {
 
+var ruleListTemp = require("../templates/list.html");
+
 angular.module('ecgRuleModules', [])
 .controller('RuleController', ['$scope', '$timeout', '$location', 'RuleService', function ($scope, $timeout, $location, RuleService) {
     // 表格头
@@ -9,6 +11,12 @@ angular.module('ecgRuleModules', [])
     // 命名空间
     $scope.rule = {};
 
+}])
+.controller('RuleListController', ['$scope', '$timeout', '$location', 'RuleService', function ($scope, $timeout, $location, RuleService) {
+
+    if (!$scope.rule) {
+        $scope.rule = {};
+    }
     // 当前选择的item
     $scope.rule.selectedItem = null;
 
@@ -21,45 +29,16 @@ angular.module('ecgRuleModules', [])
     };
     refreshGrid();
 
-    // save
-    /*
-    $scope.rule.save = function() {
-        var length = $scope.rule.data.$$v.length, count = 0, editable = true;
-        $($scope.rule.data.$$v).each(function(i, rule) {
-            if (rule.min > rule.max) {
-                $scope.message.warn("规则:" + rule.name + '区间范围异常,无法保存。');
-                editable = false;
-            }
-        });
-
-        if (!editable) { return; }
-
-        $($scope.rule.data.$$v).each(function(i, rule) {
-            $scope.dialog.showStandby();
-            RuleService.update(rule)
-            .then(function() {  
-                $scope.dialog.hideStandby();
-                count ++;
-                if (count === length) {
-                    $scope.message.success("快速保存区间成功!");
-                    // 刷新
-                    refreshGrid();
-                }
-            }, function() {
-                $scope.dialog.hideStandby();
-                $scope.message.success("快速保存区间失败!");
-            });
-        });
-    };*/
-
     // 编辑功能
     $scope.rule.showPage = function(item) {
+        var user = $scope.session.user;
+        if (item.userId !== user.id && !user.isAdmin() && !user.isChief()) { return; }
         $location.path("rule/" + item.id);
     };
 
     // edit config
     $scope.rule.editReplyConfig = function(item) {
-        $location.path("rule/" + item.code + "/replyconfig");
+        $location.path("rule/" + item.id + "/replyconfig");
     };
 
     // 删除功能
@@ -121,6 +100,16 @@ angular.module('ecgRuleModules', [])
         }, 0);
     };
 }])
+.directive("ecgRuleList", [ '$location', function($location) {
+    return {
+        restrict : 'A',
+        replace : false,
+        template : ruleListTemp,
+        controller : "RuleListController",
+        link : function($scope, $element, $attrs) {
+        }
+    };
+}])
 .controller('RuleNewController', ['$scope', '$location', 'RuleService', function ($scope, $location, RuleService) {
     // 表格头
     $scope.subheader.title = "新增规则";
@@ -162,48 +151,11 @@ angular.module('ecgRuleModules', [])
         .then(function(result) {
             $scope.dialog.hideStandby();
             if (result) {
-                var len = 3, count = 0, newobjs = [], low, high;
-
-                $scope.rule.newobj.usage = "filter";
-
-                var low = $.extend({}, $scope.rule.newobj);
-                low.max =low.min;
-                low.min = -9999;
-                low.level = 'outside';
-                newobjs.push(low);
-
-                newobjs.push($scope.rule.newobj);
-
-                high = $.extend({}, $scope.rule.newobj);
-                high.min =high.max;
-                high.max = 9999;
-                high.level = 'outside';
-                newobjs.push(high);
-
-                $(newobjs).each(function(i, newobj) {
-                    RuleService.create(newobj)
-                    .then(function(result) {
-                        $scope.dialog.hideStandby();
-                        if (result) {
-                            count++;
-                        } else {
-                            $scope.message.error("新增初始检测区间失败!");
-                        }
-                        if (len === count) {
-                            $scope.message.success("新增规则及其初始检测区间成功!");
-                            $location.path("/rule");
-                        }
-                    }, function() {
-                        $scope.dialog.hideStandby();
-                        $scope.message.error("服务器异常,新增规则失败!");
-                    });
-                });
-
-
-                $location.path("/rule");
+                $scope.message.success("新增规则成功!");
             } else {
                 $scope.message.error("新增规则失败!");
             }
+            $location.path("/rule");
         }, function() {
             $scope.dialog.hideStandby();
             $scope.message.error("服务器异常,新增失败!");
@@ -282,54 +234,123 @@ angular.module('ecgRuleModules', [])
     // 命名空间
     $scope.replyconfig = {};
 
+    // 是否只读
+    $scope.replyconfig.editable = true;
+
     // 数据范围
     $scope.replyconfig.rules = null; 
 
     // level名称
     $scope.replyconfig.getLevelLabel = EnumService.getLevelLabel;
 
+    function initFilterRules(rule) {
+        var len = 3, count = 0, newobjs = [], low, mid, high;
+
+        delete rule.id;
+
+        rule.userId = $scope.session.user.id;
+
+        low = $.extend({}, rule);
+        low.max =low.min;
+        low.min = -9999;
+        low.usage = "filter";
+        low.level = 'outside';
+        newobjs.push(low);
+
+        mid = $.extend({}, rule);
+        mid.usage = "filter";
+        newobjs.push(mid);
+
+        high = $.extend({}, rule);
+        high.min =high.max;
+        high.max = 9999;
+        high.usage = "filter";
+        high.level = 'outside';
+        newobjs.push(high);
+
+        $scope.dialog.showStandby({text: '创建初始化检测区间，请稍候......'});
+        $(newobjs).each(function(i, newobj) {
+            RuleService.create(newobj)
+            .then(function(result) {
+                $scope.dialog.hideStandby();
+                if (result) {
+                    count++;
+                } else {
+                    $scope.message.error("创建初始化检测区间失败!");
+                }
+                if (len === count) {
+                    $scope.dialog.hideStandby();
+                    $scope.message.success("创建初始化检测区间成功!");
+                    window.location.reload();
+                }
+            }, function() {
+                $scope.dialog.hideStandby();
+                $scope.message.error("服务器异常，创建初始化检测区间失败!");
+            });
+        });
+    };
+
+    function renderFilterRules(rules) {
+        var min = 999999, max = -999999, range = 100;
+        $(rules).each(function(i, rule) {
+            if (rule.level !== 'outside') {
+                rule.min = parseFloat(rule.min);
+                rule.max = parseFloat(rule.max);
+                if (rule.min < min) {
+                    min = rule.min;
+                }
+                if (rule.max > max) {
+                    max = rule.max;
+                }
+            }
+        });
+        range = max - min;
+        $(rules).each(function(i, rule) {
+            if (rule.min === -9999 || rule.max === 9999) {
+                rule.percent = '5';
+            } else {
+                rule.percent = (rule.max - rule.min) / range * 90;
+            }
+            rule.replyconfigs = [];
+            refreshReplyConfigs(rule, i);
+        });
+
+        rules.sort(function(a, b) {
+            return a.min > b.min ? 1 : -1;
+        });
+
+        $(rules).each(function(i, rule) {
+            rule.arrayIdx = i;
+        });
+
+        $scope.replyconfig.rules = rules;
+    };
+
     function refreshRules() {
         reset();
         $scope.dialog.showStandby({text: '正在加载数据，请稍候......'});
-        RuleService.queryAll({code: $routeParams.code, usage: 'filter'})
-        .then(function(rules) {
-            $scope.dialog.hideStandby();
-            var min = 999999, max = -999999, range = 100;
-            $(rules).each(function(i, rule) {
-                if (rule.level !== 'outside') {
-                    rule.min = parseFloat(rule.min);
-                    rule.max = parseFloat(rule.max);
-                    if (rule.min < min) {
-                        min = rule.min;
-                    }
-                    if (rule.max > max) {
-                        max = rule.max;
-                    }
-                }
-            });
-            range = max - min;
-            $(rules).each(function(i, rule) {
-                if (rule.min === -9999 || rule.max === 9999) {
-                    rule.percent = '5';
+        RuleService.get($routeParams.id)
+        .then(function(rule) {
+            var user = $scope.session.user;
+            // 是否readonly
+            $scope.replyconfig.editable = rule.userId == user.id;
+            if (user.isAdmin() || user.isChief()) {
+                $scope.replyconfig.editable = true;
+            }
+            // 查询该组rule
+            RuleService.queryAll({code: rule.code, usage: 'filter'})
+            .then(function(rules) {
+                // 初始化检测区间
+                $scope.dialog.hideStandby();
+                if (rules.length === 0) {
+                    initFilterRules(rule);
                 } else {
-                    rule.percent = (rule.max - rule.min) / range * 90;
+                    renderFilterRules(rules);
                 }
-                rule.replyconfigs = [];
-                refreshReplyConfigs(rule, i);
+            }, function () {
+                $scope.dialog.hideStandby();
+                $scope.message.error("加载区间失败!");
             });
-
-            rules.sort(function(a, b) {
-                return a.min > b.min ? 1 : -1;
-            });
-
-            $(rules).each(function(i, rule) {
-                rule.arrayIdx = i;
-            });
-
-            $scope.replyconfig.rules = rules;
-        }, function () {
-            $scope.dialog.hideStandby();
-            $scope.message.error("加载区间失败!");
         });
     };
     refreshRules();
@@ -559,6 +580,7 @@ angular.module('ecgRuleModules', [])
                 flag = true;
             }
         }
+        flag = flag && $scope.replyconfig.editable;
         return flag;
     };
 
