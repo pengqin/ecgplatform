@@ -156,16 +156,16 @@ table tbody tr.active {
 }
 
 /* 回复设置*/
-.replyconfigs {
+.ruleconfigs {
 	height: 50px;
 }
-.replyconfigs .bar {
+.ruleconfigs .bar {
 	cursor: pointer;
 	height: 50px;
 	line-height: 20px;
 	padding-top: 5px;
 }
-.replyconfigs .bar-outside {
+.ruleconfigs .bar-outside {
 	background-color: #333;
 	background-image: none;
 }

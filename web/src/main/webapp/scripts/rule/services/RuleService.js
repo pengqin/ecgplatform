@@ -137,9 +137,11 @@ angular.module('ecgRuleService', [])
                     }
                 }, function() {
                     error++
-                }).then(function() {
+                })
+                .then(function() {
                     return that.create(mid);
-                }).then(function(result) {
+                })
+                .then(function(result) {
                     if (result) {
                         success++;
                     } else {
@@ -147,9 +149,20 @@ angular.module('ecgRuleService', [])
                     }
                 }, function() {
                     error++
-                }).then(function() {
+                })
+                .then(function() {
                     return that.create(high);
-                }).then(function() {
+                })
+                .then(function(result) {
+                    if (result) {
+                        success++;
+                    } else {
+                        error++
+                    }
+                }, function() {
+                    error++
+                })
+                .then(function() {
                     return {success: success, error: error};
                 });
             },
@@ -184,6 +197,45 @@ angular.module('ecgRuleService', [])
                     rule.arrayIdx = i;
                 });
                 return rules;
+            },
+            getUsers: function(rule) {
+                var id = rule.id || rule;
+                return $http({
+                    method: 'GET',
+                    url: uri + '/' + id + '/user'
+                }).then(function(res) { // 构造session用户
+                    if (res.data && res.data.length > 0) {
+                        return res.data;
+                    } else {
+                        return [];    
+                    }
+                }, function() {
+                    $rootScope.message.error('服务器异常,无法获取数据');
+                    return [];
+                });
+            },
+            linkUser: function(rule, user) {
+                var id = rule.id || rule;
+                return $http({
+                    method: 'POST',
+                    headers:{'Content-Type':'application/x-www-form-urlencoded'},
+                    url: uri + '/' + id + '/user/' + user.id
+                }).then(function(res) {
+                    if (res.status === 201) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }, function() {
+                    return false;
+                });
+            },
+            unlinkUser: function(rule, user) {
+                var id = rule.id || rule;
+                return $http({
+                    method: 'DELETE',
+                    url: uri + '/' + id + '/user/' + user.id
+                });
             }
 
         };
