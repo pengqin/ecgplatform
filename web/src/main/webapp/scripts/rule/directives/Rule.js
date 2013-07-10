@@ -25,7 +25,11 @@ angular.module('ecgRuleModules', [])
 
     // 初始化及刷新功能
     function refreshGrid() {
-        $scope.rule.data = RuleService.queryAll({usage: 'group'});
+        RuleService.queryAllGroup().then(function(rules) {
+            $scope.rule.data = rules;
+        }, function() {
+            $scope.message.error("无法加载规则数据!");
+        });
     };
     refreshGrid();
 
@@ -296,6 +300,7 @@ angular.module('ecgRuleModules', [])
             if (rule.level !== 'outside') {
                 rule.min = parseFloat(rule.min);
                 rule.max = parseFloat(rule.max);
+                console.info(rule);
                 if (rule.min < min) {
                     min = rule.min;
                 }
@@ -338,7 +343,7 @@ angular.module('ecgRuleModules', [])
                 $scope.replyconfig.editable = true;
             }
             // 查询该组rule
-            RuleService.queryAll({code: rule.code, usage: 'filter'})
+            RuleService.queryAllFiltersByGroup($routeParams.id)
             .then(function(rules) {
                 // 初始化检测区间
                 $scope.dialog.hideStandby();

@@ -61,11 +61,8 @@ define(function(require, exports) {
             });
         });
 
-        it("the getPlainObject method of RuleService should be defined", function() {
-            expect(RuleService.getPlainObject).not.to.be(undefined);
-        });
-
         it("the rule should not be created without required fields", function(done) {
+            expect(RuleService.getPlainObject).not.to.be(undefined);
             var invalid = RuleService.getPlainObject();
             RuleService.create(invalid).then(function(flag) {
                 if (flag) {

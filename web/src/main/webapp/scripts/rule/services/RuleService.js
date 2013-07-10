@@ -22,6 +22,17 @@ angular.module('ecgRuleService', [])
                     return [];
                 });
             },
+            queryAllGroup: function(params) {
+                var params = params || {};
+                params.usage = 'group';
+                return this.queryAll(params); 
+            },
+            queryAllFiltersByGroup: function(rule, params) {
+                var id = rule.id || rule, params = params || {};
+                params.groupdId = id;
+                params.usage = 'filter';
+                return this.queryAll(params);
+            },
             getPlainObject: function() {
                 return {
                     "type": 11, // 必填 数字
