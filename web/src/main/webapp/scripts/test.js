@@ -43,14 +43,13 @@ angular.module('ecgTestApp', ['ecgCommon', 'ecgTask', 'ecgMonitor', 'ecgEmployee
         // 验证基础模块
         //testCommon(it, EnumService);
         // 验证员工模块
-        testEmployee(it, ChiefService, ExpertService, OperatorService, ProfileService);
-        return;
+        //testEmployee(it, ChiefService, ExpertService, OperatorService, ProfileService);
         // 验证用户模块
-        testUser(it, UserService);
+        //testUser(it, UserService);
         // 验证规则及回复模块
         testRule(it, RuleService, ReplyConfigService);
         // 验证任务模块
-        testTask(it, ProfileService, TaskService);
+        //testTask(it, ProfileService, TaskService);
 
     });
     mocha.run();

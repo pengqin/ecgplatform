@@ -21,18 +21,50 @@ angular.module('ecgRuleModules', [])
     $scope.rule.selectedItem = null;
 
     // 规则数据
-    $scope.rule.data = null;
+    $scope.rule.rules = null;
+    $scope.rule.sysRules = null;
+    $scope.rule.customRules = null;
 
     // 初始化及刷新功能
+    function filteredRules() {
+        var sysRules = [], customRules = [], user = $scope.session.user,
+            isAdmin = user.isAdmin(), isChief = user.isChief();
+        $($scope.rule.rules).each(function(i, rule) {
+            rule.editable = false;
+
+            if (rule.employeeId === null) {
+                sysRules.push(rule);
+            } else {
+                if (isAdmin || isChief) {
+                    customRules.push(rule);
+                } else if (rule.employeeId === user.id) {
+                    customRules.push(rule);
+                }
+            }
+
+            if (isAdmin || isChief) {
+                rule.editable = true;
+            } else if (rule.employeeId === user.id) {
+                rule.editable = true;
+            }
+        });
+        $scope.rule.sysRules = sysRules;
+        $scope.rule.customRules = customRules;
+    };
+
     function refreshGrid() {
-        $scope.rule.data = RuleService.queryAll({usage: 'group'});
+        RuleService.queryAllGroup().then(function(rules) {
+            $scope.rule.rules = rules;
+            filteredRules();
+        }, function() {
+            $scope.message.error("无法加载规则数据!");
+        });
     };
     refreshGrid();
 
     // 编辑功能
     $scope.rule.showPage = function(item) {
-        var user = $scope.session.user;
-        if (item.userId !== user.id && !user.isAdmin() && !user.isChief()) { return; }
+        if (!item.editable) { return; }
         $location.path("rule/" + item.id);
     };
 
@@ -53,25 +85,10 @@ angular.module('ecgRuleModules', [])
         $scope.dialog.confirm({
             text: "请确认删除[" + selectedReplyConfig.name + "]的规则, 该操作无法恢复!",
             handler: function() {
+
                 $scope.dialog.showStandby();
 
-
-                function removeGroup() {
-                    RuleService.remove(selectedReplyConfig.id)
-                    .then(function() {
-                        $scope.dialog.hideStandby();
-                        $scope.rule.selectedItem = null;
-                        $scope.message.success("删除规则成功!");
-                        // 刷新
-                        refreshGrid();
-                    }, function() {
-                        $scope.dialog.hideStandby();
-                        $scope.message.error("无法删除该规则,可能是您的权限不足,请联系管理员!");
-                    });
-                }
-
                 var count = 0, len = 0;
-
                 RuleService.queryAll({code: selectedReplyConfig.code, usage: 'filter'})
                 .then(function(filters) {
                     len = filters.length;
@@ -79,13 +96,23 @@ angular.module('ecgRuleModules', [])
                         RuleService.remove(filter.id)
                         .then(function() {
                             count++;
-                            if (count === len) {
-                                removeGroup();
-                            }
                         }, function() {
                             $scope.dialog.hideStandby();
                             $scope.message.error("无法删除该规则下的检测区间!");
                         });
+                    });
+                })
+                .then(function() {
+                    $scope.dialog.hideStandby();
+                    RuleService.remove(selectedReplyConfig.id)
+                    .then(function() {
+                        $scope.rule.selectedItem = null;
+                        $scope.message.success("删除规则成功!");
+                        // 刷新
+                        refreshGrid();
+                    }, function() {
+                        $scope.dialog.hideStandby();
+                        $scope.message.error("无法删除该规则,可能是您的权限不足,请联系管理员!");
                     });
                 });
             }
@@ -123,19 +150,34 @@ angular.module('ecgRuleModules', [])
     // 当前选择的item
     $scope.rule.newobj = RuleService.getPlainObject();
 
-    // 测试rule唯一性
+    // session user
+    var user = null;
+    $scope.$watch("session.user" , function() {
+        user = $scope.session.user;
+        if (!user.isAdmin() && !user.isChief()) {
+            $scope.rule.newobj.employeeId = user.id;
+        }
+    });
+
+    // 测试系统级别rule唯一性
     $scope.rule.checkUnique = function() {
         if (!$scope.rule.newobj.code) { return; }
-        RuleService.queryAll({code: $scope.rule.newobj.code, usage: 'group'}).then(function(rules) {
+        if (!user.isAdmin() && !user.isChief()) { return; }
+
+        RuleService.queryAll({
+            code: $scope.rule.newobj.code,
+            usage: 'group', 
+            employeeId: null
+        }).then(function(rules) {
             if (rules.length > 0) { 
                 $scope.rule.isUnique = false;
-                $scope.message.warn("指标编码为" + $scope.rule.newobj.code + "的规则已存在!");
+                $scope.message.warn("指标编码为" + $scope.rule.newobj.code + "的系统规则已存在!");
             } else {
                 $scope.rule.isUnique = true;
             }
         }, function() {
             $scope.rule.isUnique = true;
-            $scope.message.warn("查询规则是否唯一时出错!");
+            $scope.message.warn("查询系统规则是否唯一时出错!");
         });
     };
 
@@ -170,12 +212,10 @@ angular.module('ecgRuleModules', [])
     // 命名空间
     $scope.rule = {};
 
-    // 规则是否唯一
-    $scope.rule.isUnique = true;
-
     // 当前编辑的item
     $scope.rule.updateobj = null;
-        // 初始化界面,并获得最新version
+
+    // 初始化界面,并获得最新version
     function refresh() {
         RuleService.get($routeParams.id).then(function(rule) {
             $scope.rule.updateobj = rule;
@@ -185,29 +225,8 @@ angular.module('ecgRuleModules', [])
     };
     refresh();
 
-    // 测试rule唯一性
-    $scope.rule.checkUnique = function() {
-        if (!$scope.rule.updateobj.code) { return; }
-        RuleService.queryAll({code: $scope.rule.updateobj.code, usage: 'group'}).then(function(rules) {
-            if (rules.length > 0) { 
-                $scope.rule.isUnique = false;
-                $scope.message.warn("指标编码为" + $scope.rule.updateobj.code + "的规则已存在!");
-            } else {
-                $scope.rule.isUnique = true;
-            }
-        }, function() {
-            $scope.rule.isUnique = true;
-            $scope.message.warn("查询规则是否唯一时出错!");
-        });
-    };
-
     // 创建函数
     $scope.rule.update = function() {
-        if ($scope.rule.updateobj.min > $scope.rule.updateobj.max) {
-            $scope.message.warn("区间范围异常,无法保存。");
-            return;
-        }
-        
         $scope.dialog.showStandby();
         RuleService.update($scope.rule.updateobj)
         .then(function(result) {
@@ -221,7 +240,7 @@ angular.module('ecgRuleModules', [])
         }, function() {
             $scope.dialog.hideStandby();
             $scope.message.error("服务器异常,编辑规则失败!");
-        });;
+        });
     };
 
 }])
@@ -235,8 +254,15 @@ angular.module('ecgRuleModules', [])
     $scope.replyconfig = {};
 
     // 是否只读
-    $scope.replyconfig.editable = true;
-
+    $scope.replyconfig.editable = false;
+    $scope.$watch("session.user", function() {
+        var user = $scope.session.user;
+        if (!user.isAdmin) { return; }
+        if (user.isAdmin() || user.isChief()) {
+            $scope.replyconfig.editable = true;
+        }
+    });
+    
     // 数据范围
     $scope.replyconfig.rules = null; 
 
@@ -244,21 +270,21 @@ angular.module('ecgRuleModules', [])
     $scope.replyconfig.getLevelLabel = EnumService.getLevelLabel;
 
     function initFilterRules(rule) {
-        var len = 3, count = 0, newobjs = [], low, mid, high;
+        var len = 3, count = 0, newobjs = [], groupId = rule.id, low, mid, high;
 
         delete rule.id;
-
-        rule.userId = $scope.session.user.id;
 
         low = $.extend({}, rule);
         low.max =low.min;
         low.min = -9999;
         low.usage = "filter";
         low.level = 'outside';
+        low.groupId = groupId;
         newobjs.push(low);
 
         mid = $.extend({}, rule);
         mid.usage = "filter";
+        mid.groupId = groupId;
         newobjs.push(mid);
 
         high = $.extend({}, rule);
@@ -266,6 +292,7 @@ angular.module('ecgRuleModules', [])
         high.max = 9999;
         high.usage = "filter";
         high.level = 'outside';
+        high.groupId = groupId;
         newobjs.push(high);
 
         $scope.dialog.showStandby({text: '创建初始化检测区间，请稍候......'});
@@ -331,14 +358,15 @@ angular.module('ecgRuleModules', [])
         $scope.dialog.showStandby({text: '正在加载数据，请稍候......'});
         RuleService.get($routeParams.id)
         .then(function(rule) {
+             // 是否readonly
             var user = $scope.session.user;
-            // 是否readonly
-            $scope.replyconfig.editable = rule.userId == user.id;
+            $scope.replyconfig.editable = rule.employeeId == user.id;
             if (user.isAdmin() || user.isChief()) {
                 $scope.replyconfig.editable = true;
             }
+
             // 查询该组rule
-            RuleService.queryAll({code: rule.code, usage: 'filter'})
+            RuleService.queryAllFiltersByGroup($routeParams.id)
             .then(function(rules) {
                 // 初始化检测区间
                 $scope.dialog.hideStandby();
@@ -405,11 +433,14 @@ angular.module('ecgRuleModules', [])
 
         var updateobj = null, newobj;
         $($scope.replyconfig.rules).each(function(i, rule) {
-            if (rule.min < point && point < rule.max) {
-                updateobj = rule;
-                newobj = $.extend({}, rule);
+            if (rule.min !== -9999 && rule.max !== 9999) {
+                if (rule.min < point && point < rule.max) {
+                    updateobj = rule;
+                    newobj = $.extend({}, rule);
+                }
             }
         });
+
         if (updateobj) {
             updateobj.max = point;
             newobj.min = point;
@@ -442,6 +473,7 @@ angular.module('ecgRuleModules', [])
     
     // 修改level 
     $scope.replyconfig.setLevel = function(level) {
+        if (!$scope.replyconfig.editable) { return; }
         if ($scope.replyconfig.selectedRule.level === level) { return; }
         $scope.replyconfig.selectedRule.level = level;
         $scope.dialog.showStandby();
@@ -543,6 +575,7 @@ angular.module('ecgRuleModules', [])
     function reset() {
         $scope.replyconfig.selectedReplyConfig = ReplyConfigService.getPlainObject();
     }
+
     $scope.replyconfig.reset = function() {
         refreshReplyConfigs($scope.replyconfig.selectedRule);
         reset();

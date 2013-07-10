@@ -38,11 +38,8 @@ define(function(require, exports) {
          * 接线员只能查看，不能对以上任何操作进行新增，编辑，删除。
          */
         // Rule
-        it("the ruleService should be defined", function() {
-            expect(RuleService).not.to.be(undefined);
-        });
-
         it("the rule list should be retrieved", function(done) {
+            expect(RuleService).not.to.be(undefined);
             RuleService.queryAll().then(function(rules) {
                 if (rules.length > 0) {
                     var rule = rules[0];
@@ -61,11 +58,8 @@ define(function(require, exports) {
             });
         });
 
-        it("the getPlainObject method of RuleService should be defined", function() {
-            expect(RuleService.getPlainObject).not.to.be(undefined);
-        });
-
         it("the rule should not be created without required fields", function(done) {
+            expect(RuleService.getPlainObject).not.to.be(undefined);
             var invalid = RuleService.getPlainObject();
             RuleService.create(invalid).then(function(flag) {
                 if (flag) {

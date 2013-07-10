@@ -4,6 +4,7 @@ define(function(require, exports) {
 var expertEditTemp = require("../templates/expert/edit.html");
 var expertRulesTemp = require("../templates/expert/rules.html");
 var expertOperatorsTemp = require("../templates/expert/operators.html");
+var expertDialogTemp = require("../templates/expert/expertsdialog.html");
 
 angular.module('ecgExpert', [])
 .controller('ExpertController', ['$scope', '$filter', '$timeout', '$location', 'EnumService', 'ExpertService', function ($scope, $filter, $timeout, $location, EnumService, ExpertService) {
@@ -235,12 +236,9 @@ angular.module('ecgExpert', [])
 // 配置接线员
 .controller('ExpertOperatorsController', ['$scope', '$routeParams', '$timeout', '$location', 'EnumService', 'ExpertService',
     function ($scope, $routeParams, $timeout, $location, EnumService, ExpertService) {
-    $scope.expert.operators = 
-    [{"id":4,"name":"接线员","username":"operator","status":"INLINE","enabled":true,"dismissed":false,"gender":1,"expire":null,"birthday":"1983-06-04","idCard":"430203198602031218","mobile":"13028339212","createdDate":"2012-06-04 01:00:00","lastUpdated":"2012-06-04 01:00:00","roles":"operator","company":null,"title":null,"version":1,"superAdmin":false},
-    {"id":5,"name":"接线员","username":"operator","status":"INLINE","enabled":true,"dismissed":false,"gender":1,"expire":null,"birthday":"1983-06-04","idCard":"430203198602031218","mobile":"13028339212","createdDate":"2012-06-04 01:00:00","lastUpdated":"2012-06-04 01:00:00","roles":"operator","company":null,"title":null,"version":1,"superAdmin":false}];
+    $scope.expert.operators = null;
 
     function refreshLinks() {
-        return;
         ExpertService.getOperators($routeParams.id).then(function(operators) {
             $scope.expert.operators = operators;
         }, function() {
@@ -258,11 +256,44 @@ angular.module('ecgExpert', [])
         }
     };
 
+    $scope.expert.isCheckAll = false;
+    $scope.expert.checkAll = function() {
+        $scope.expert.isCheckAll = !$scope.expert.isCheckAll;
+        $($scope.expert.operators).each(function(i, operator) {
+            operator.removed = $scope.expert.isCheckAll;
+        });
+    };
+
+    $scope.expert.addOperators = function() {
+        $scope.operatordialog.show({
+            handler: function(operators) {
+                var len = operators.length, count = 0;
+                $(operators).each(function(i, operator) {
+                    $scope.dialog.showStandby();
+                    ExpertService.linkOperator($routeParams.id, operator)
+                    .then(function(flag) {
+                        $scope.dialog.hideStandby();
+                        if (flag) {
+                            count++;
+                        } else {
+                            $scope.message.error("无法绑定接线员：" + operator.name);
+                        }
+                        if (count === len) {
+                            $scope.message.success("成功绑定！");
+                            refreshLinks();
+                        }
+                    }, function() {
+                        $scope.dialog.hideStandby();
+                        $scope.message.error("无法绑定接线员：" + operator.name);
+                    });
+                });
+            }
+        });
+    };
+    
     $scope.expert.removeOperators = function() {
         
         var removes = [], operators = $scope.expert.operators, len = 0, count = 0;
-
-        
 
         $(operators).each(function(i, operator) {
             if (operator.removed) {
@@ -279,21 +310,26 @@ angular.module('ecgExpert', [])
 
         len = removes.length;
 
-        $scope.dialog.showStandby();
-        $(removes).each(function(i, remove) {
-            ExpertService.unlinkOperator($routeParams.id, remove)
-            .then(function() {
-                count++;
-                if (count == len) {
-                    $scope.dialog.hideStandby();
-                    $scope.message.error("成功删除绑定！");
-                    refreshLinks();
-                }
-            }, function() {
-                count++;
-                $scope.dialog.hideStandby();
-                $scope.message.error("无法删除该绑定，用户名为：" + remove.name);
-            });
+        $scope.dialog.confirm({
+            text: "请确认删除这些专家与接线员绑定, 该操作无法恢复!",
+            handler: function() {
+                $scope.dialog.showStandby();
+                $(removes).each(function(i, remove) {
+                    ExpertService.unlinkOperator($routeParams.id, remove)
+                    .then(function() {
+                        count++;
+                        if (count === len) {
+                            $scope.dialog.hideStandby();
+                            $scope.message.success("成功删除绑定！");
+                            refreshLinks();
+                        }
+                    }, function() {
+                        count++;
+                        $scope.dialog.hideStandby();
+                        $scope.message.error("无法删除该绑定，用户名为：" + remove.name);
+                    });
+                });
+            }
         });
     };
 }])
@@ -303,6 +339,57 @@ angular.module('ecgExpert', [])
         replace : false,
         template : expertOperatorsTemp,
         controller : "ExpertOperatorsController",
+        link : function($scope, $element, $attrs) {
+        }
+    };
+}])
+.controller('ExpertDialogController', 
+    ['$scope', '$filter', '$timeout', '$location', 'EnumService', 'ExpertService', 
+    function ($scope, $filter, $timeout, $location, EnumService, ExpertService) {
+
+    // 命名空间
+    $scope.expertdialog = {};
+
+    // 表格展示
+    $scope.expertdialog.data = null;
+    function refreshGrid() {
+        ExpertService.queryAll().then(function(experts) {
+            $scope.expertdialog.data = experts;
+        });
+    };
+    refreshGrid();
+
+    $scope.expertdialog.execute = function() {
+        var selecteds = [];
+        $($scope.expertdialog.data).each(function(i, expert) {
+            if (expert.selected) {
+                selecteds.push(expert);
+            }
+        });
+        $scope.expertdialog.hide();
+        if ($scope.expertdialog.handler instanceof Function) {
+            $scope.expertdialog.handler(selecteds);
+        }
+    };
+
+    $scope.expertdialog.hide = function(opts) {
+      $('#ecgExpertsDialog').modal('hide');
+    };
+
+    $scope.expertdialog.show = function(opts) {
+      var opts = opts || {};
+      $scope.expertdialog.handler = opts.handler;
+      $('#ecgExpertsDialog').modal('show');
+      refreshGrid();
+    };
+
+}])
+.directive("ecgExpertDialog", [ '$location', function($location) {
+    return {
+        restrict : 'A',
+        replace : false,
+        template : expertDialogTemp,
+        controller : "ExpertDialogController",
         link : function($scope, $element, $attrs) {
         }
     };

@@ -2,12 +2,10 @@
 define(function(require, exports) {
 
     exports.testEmployee = function(it, ChiefService, ExpertService, OperatorService, ProfileService) {
+        var testexperts, testoperators;
         // profile
-        it("the ProfileService should be defined", function() {
-            expect(ProfileService).not.to.be(undefined);
-        });
-
         it("the session user's profile should be retrieved, updated and roll back.", function() {
+            expect(ProfileService).not.to.be(undefined);
             var sessionuser, username = $.cookie("AiniaOpUsername");
             ProfileService.get(username).then(function(profile) {
                 if (profile) {
@@ -68,11 +66,8 @@ define(function(require, exports) {
         });
 
         // Chief
-        it("the ChiefService should be defined", function() {
-            expect(ChiefService).not.to.be(undefined);
-        });
-
         it("the chief list should be retrieved", function(done) {
+            expect(ChiefService).not.to.be(undefined);
             ChiefService.queryAll().then(function(chiefs) {
                 if (chiefs.length > 0) {
                     done();
@@ -238,6 +233,7 @@ define(function(require, exports) {
         it("the expert list should be retrieved", function(done) {
             ExpertService.queryAll().then(function(experts) {
                 if (experts.length > 0) {
+                    testexperts = experts;
                     done();
                 } else {
                     throw new Error('the expert list can\'t be retrieved');
@@ -394,6 +390,7 @@ define(function(require, exports) {
         it("the operator list should be retrieved", function(done) {
             OperatorService.queryAll().then(function(operators) {
                 if (operators.length > 0) {
+                    testoperators = operators;
                     done();
                 } else {
                     throw new Error('the operator list can\'t be retrieved');
@@ -542,6 +539,34 @@ define(function(require, exports) {
         });
 
         // 测试专家和接线员直接能绑定关系
+        it("the test experts and test operators count should both be 3", function() {
+            expect(testoperators.length).to.be(3);
+            expect(testexperts.length).to.be(3);
+        });
+
+        it("the expert should be linked with the test operators in batch", function(done) {
+            expect(expert).not.to.be(undefined);
+            expect(testoperators.length).to.be(3);
+
+            var count = 0;
+            $(testoperators).each(function(i, operator) {
+                ExpertService.linkOperator(expert, operator).then(function(flag) {
+                    if (flag) {
+                        count++;
+                    } else {
+                        throw new Error('the expert can\'t be linked again');
+                    }
+                    if (count == 3) {
+                        done();
+                    } else {
+                        throw new Error('the expert can\'t be linked in batch');
+                    }
+                }, function() {
+                    throw new Error('the expert can\'t be linked again with server errors');
+                });
+            });
+        });
+
         it("the expert should be linked with the operator", function(done) {
             expect(expert).not.to.be(undefined);
             expect(operator).not.to.be(undefined);
@@ -556,11 +581,11 @@ define(function(require, exports) {
             });
         });
 
-        it("one link should be retrieved by expert ", function(done) {
+        it("four links should be retrieved by expert ", function(done) {
             expect(expert).not.to.be(undefined);
             expect(operator).not.to.be(undefined);
             ExpertService.getOperators(expert).then(function(operators) {
-                if (operators && operators.length == 1) {
+                if (operators && operators.length == 4) {
                     done();
                 } else {
                     throw new Error('the links can\'t be retrieved by expert');
@@ -570,7 +595,7 @@ define(function(require, exports) {
             });
         });
 
-        it("the link should be removed from expert", function(done) {
+        it("the expert should be unlinked from the expert", function(done) {
             expect(expert).not.to.be(undefined);
             expect(operator).not.to.be(undefined);
             ExpertService.unlinkOperator(expert, operator).then(function(flag) {
@@ -580,25 +605,63 @@ define(function(require, exports) {
             });
         });
 
-        it("the expert should be linked with the operator", function(done) {
+        it("three links should be retrieved by expert ", function(done) {
             expect(expert).not.to.be(undefined);
             expect(operator).not.to.be(undefined);
-            ExpertService.linkOperator(expert, operator).then(function(flag) {
-                if (flag) {
+            ExpertService.getOperators(expert).then(function(operators) {
+                if (operators && operators.length == 3) {
                     done();
                 } else {
-                    throw new Error('the expert can\'t be linked again');
+                    throw new Error('the links can\'t be retrieved by expert');
                 }
             }, function() {
-                throw new Error('the expert can\'t be linked again with server errors');
+                throw new Error('the links can\'t be retrieved by expert');
             });
         });
 
-        it("one link should be retrieved by operator ", function(done) {
+        // 接线员的操作
+        it("the operator should be linked with the test experts in batch", function(done) {
+            expect(operator).not.to.be(undefined);
+            expect(testexperts.length).to.be(3);
+
+            var count = 0;
+            $(testexperts).each(function(i, expert) {
+                OperatorService.linkExpert(operator, expert).then(function(flag) {
+                    if (flag) {
+                        count++;
+                    } else {
+                        throw new Error('the expert can\'t be linked again');
+                    }
+                    if (count == 3) {
+                        done();
+                    } else {
+                        throw new Error('the expert can\'t be linked in batch');
+                    }
+                }, function() {
+                    throw new Error('the expert can\'t be linked again with server errors');
+                });
+            });
+        });
+
+        it("the operator should be linked with the expert", function(done) {
+            expect(expert).not.to.be(undefined);
+            expect(operator).not.to.be(undefined);
+            OperatorService.linkExpert(operator, expert).then(function(flag) {
+                if (flag) {
+                    done();
+                } else {
+                    throw new Error('the operator can\'t be linked again');
+                }
+            }, function() {
+                throw new Error('the operator can\'t be linked again with server errors');
+            });
+        });
+
+        it("four link should be retrieved by operator ", function(done) {
             expect(expert).not.to.be(undefined);
             expect(operator).not.to.be(undefined);
             OperatorService.getExperts(operator).then(function(operators) {
-                if (operators && operators.length == 1) {
+                if (operators && operators.length == 4) {
                     done();
                 } else {
                     throw new Error('the expert can\'t be linked again');
@@ -611,10 +674,24 @@ define(function(require, exports) {
         it("the expert should be unlinked with the operator", function(done) {
             expect(expert).not.to.be(undefined);
             expect(operator).not.to.be(undefined);
-            OperatorService.unlinkExpert(expert, operator).then(function() {
+            OperatorService.unlinkExpert(operator, expert).then(function() {
                 done();
             }, function() {
-                throw new Error('the expert can\'t be unlinked again with server errors');
+                throw new Error('the expert can\'t be unlinked');
+            });
+        });
+
+        it("three link should be retrieved by operator ", function(done) {
+            expect(expert).not.to.be(undefined);
+            expect(operator).not.to.be(undefined);
+            OperatorService.getExperts(operator).then(function(experts) {
+                if (experts && experts.length == 3) {
+                    done();
+                } else {
+                    throw new Error('the expert can\'t be linked again');
+                }
+            }, function() {
+                throw new Error('the expert can\'t be linked again with server errors');
             });
         });
 

@@ -4,6 +4,7 @@ define(function(require, exports) {
 var operatorEditTemp = require("../templates/operator/edit.html");
 var operatorRulesTemp = require("../templates/operator/rules.html");
 var operatorExpertsTemp = require("../templates/operator/experts.html");
+var operatorDialogTemp = require("../templates/operator/operatorsdialog.html");
 
 angular.module('ecgOperator', [])
 .controller('OperatorController', ['$scope', '$filter', '$timeout', '$location', 'EnumService', 'OperatorService', function ($scope, $filter, $timeout, $location, EnumService, OperatorService) {
@@ -233,16 +234,101 @@ angular.module('ecgOperator', [])
 // 配置接线员
 .controller('OperatorExpertsController', ['$scope', '$routeParams', '$timeout', '$location', 'EnumService', 'OperatorService',
     function ($scope, $routeParams, $timeout, $location, EnumService, OperatorService) {
-    $scope.operator.operators = OperatorService.getExperts($routeParams.id);
+    $scope.operator.experts = null;
 
+    function refreshLinks() {
+        OperatorService.getExperts($routeParams.id).then(function(experts) {
+            $scope.operator.experts = experts;
+        }, function() {
+            $scope.message.error("加载接线员数据失败!");
+        });
+    }
+    refreshLinks();
+
+    $scope.operator.check = function(expert) {
+        if (expert.removed === true) {
+            expert.removed = false;
+            return;
+        } else {
+            expert.removed = true;
+        }
+    };
+
+    $scope.operator.isCheckAll = false;
+    $scope.operator.checkAll = function() {
+        $scope.operator.isCheckAll = !$scope.operator.isCheckAll;
+        $($scope.operator.experts).each(function(i, expert) {
+            expert.removed = $scope.operator.isCheckAll;
+        });
+    };
+
+    $scope.operator.addExperts = function() {
+        $scope.expertdialog.show({
+            handler: function(experts) {
+                var len = experts.length, count = 0;
+                $(experts).each(function(i, expert) {
+                    $scope.dialog.showStandby();
+                    OperatorService.linkExpert($routeParams.id, expert)
+                    .then(function(flag) {
+                        $scope.dialog.hideStandby();
+                        if (flag) {
+                            count++;
+                        } else {
+                            $scope.message.error("无法绑定专家：" + expert.name);
+                        }
+                        if (count === len) {
+                            $scope.message.success("成功绑定！");
+                            refreshLinks();
+                        }
+                    }, function() {
+                        $scope.dialog.hideStandby();
+                        $scope.message.error("无法绑定接线员：" + operator.name);
+                    });
+                });
+            }
+        });
+    };
+    
     $scope.operator.removeExperts = function() {
-        $scope.dialog.showStandby();
-        /* TODO: */
-        // OperatorService.update($scope.operator.updateobj);
-        $timeout(function() {
-            $scope.dialog.hideStandby();
-            $scope.message.success("配置专家成功!");
-        }, 2000);
+        
+        var removes = [], experts = $scope.operator.experts, len = 0, count = 0;
+
+        $(experts).each(function(i, expert) {
+            if (expert.removed) {
+                removes.push(expert);
+            }
+        });
+        
+        if (removes.length == 0) {
+            $scope.dialog.alert({
+                text: '请选择需要删除的绑定!'
+            });
+            return;
+        };
+
+        len = removes.length;
+
+        $scope.dialog.confirm({
+            text: "请确认删除这些专家与接线员绑定, 该操作无法恢复!",
+            handler: function() {
+                $scope.dialog.showStandby();
+                $(removes).each(function(i, remove) {
+                    OperatorService.unlinkExpert($routeParams.id, remove)
+                    .then(function() {
+                        count++;
+                        if (count === len) {
+                            $scope.dialog.hideStandby();
+                            $scope.message.success("成功删除绑定！");
+                            refreshLinks();
+                        }
+                    }, function() {
+                        count++;
+                        $scope.dialog.hideStandby();
+                        $scope.message.error("无法删除该绑定，用户名为：" + remove.name);
+                    });
+                });
+            }
+        });
     };
 }])
 .directive("ecgOperatorExperts", [ '$location', function($location) {
@@ -254,7 +340,57 @@ angular.module('ecgOperator', [])
         link : function($scope, $element, $attrs) {
         }
     };
-}]);
+}])
+.controller('OperatorDialogController', 
+    ['$scope', '$filter', '$timeout', '$location', 'EnumService', 'OperatorService', 
+    function ($scope, $filter, $timeout, $location, EnumService, OperatorService) {
 
+    // 命名空间
+    $scope.operatordialog = {};
+
+    // 表格展示
+    $scope.operatordialog.data = null;
+    function refreshGrid() {
+        OperatorService.queryAll().then(function(operators) {
+            $scope.operatordialog.data = operators;
+        });
+    };
+    refreshGrid();
+
+    $scope.operatordialog.execute = function() {
+        var selecteds = [];
+        $($scope.operatordialog.data).each(function(i, operator) {
+            if (operator.selected) {
+                selecteds.push(operator);
+            }
+        });
+        $scope.operatordialog.hide();
+        if ($scope.operatordialog.handler instanceof Function) {
+            $scope.operatordialog.handler(selecteds);
+        }
+    };
+
+    $scope.operatordialog.hide = function(opts) {
+      $('#ecgOperatorsDialog').modal('hide');
+    };
+
+    $scope.operatordialog.show = function(opts) {
+      var opts = opts || {};
+      $scope.operatordialog.handler = opts.handler;
+      $('#ecgOperatorsDialog').modal('show');
+      refreshGrid();
+    };
+
+}])
+.directive("ecgOperatorDialog", [ '$location', function($location) {
+    return {
+        restrict : 'A',
+        replace : false,
+        template : operatorDialogTemp,
+        controller : "OperatorDialogController",
+        link : function($scope, $element, $attrs) {
+        }
+    };
+}]);
 
 });

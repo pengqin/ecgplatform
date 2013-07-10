@@ -22,6 +22,17 @@ angular.module('ecgRuleService', [])
                     return [];
                 });
             },
+            queryAllGroup: function(params) {
+                var params = params || {};
+                params.usage = 'group';
+                return this.queryAll(params); 
+            },
+            queryAllFiltersByGroup: function(rule, params) {
+                var id = rule.id || rule, params = params || {};
+                params.groupId = id;
+                params.usage = 'filter';
+                return this.queryAll(params);
+            },
             getPlainObject: function() {
                 return {
                     "type": 11, // 必填 数字
@@ -34,11 +45,12 @@ angular.module('ecgRuleService', [])
                     "level": "success", // 可填 级别
                     "usage": "group",
                     "canReply": true,
-                    "user_id": null // 预留字段
+                    "employeeId": null, // 所有者
+                    "groupId": null // 所需规则
                 };
             },
             create: function(rule) {
-                var rule = $.extend({}, rule);
+                var rule = $.extend({}, rule || {});
                 delete rule.id;
                 delete rule.replys;
                 delete rule.replyconfigs;
