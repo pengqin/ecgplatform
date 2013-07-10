@@ -84,6 +84,7 @@
 						<!-- 压缩后保存文件后缀 -->
 						<!--nosuffix>true</nosuffix -->
 						<nosuffix>true</nosuffix>
+						<nomunge>true</nomunge>
 						<!-- 源目录，即需压缩的根目录 -->
 						<sourceDirectory>${project.build.outputDirectory}/web/scripts</sourceDirectory>
 						<!-- 压缩js和css文件 -->
