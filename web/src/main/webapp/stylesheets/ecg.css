@@ -52,9 +52,7 @@ i {
 .sidebar-nav.expert #employees-menu-link,
 .sidebar-nav.expert #employees-menu,
 .sidebar-nav.expert #users-menu-link,
-.sidebar-nav.expert #users-menu,
-.sidebar-nav.expert #rules-menu-link,
-.sidebar-nav.expert #rules-menu {
+.sidebar-nav.expert #users-menu {
 	display: none
 }
 

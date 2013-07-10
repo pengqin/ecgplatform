@@ -45,7 +45,8 @@ angular.module('ecgRuleService', [])
                     "level": "success", // 可填 级别
                     "usage": "group",
                     "canReply": true,
-                    "user_id": null // 预留字段
+                    "employeeId": null, // 所有者
+                    "groupId": null // 所需规则
                 };
             },
             create: function(rule) {

@@ -11,7 +11,7 @@
 				ng-disabled="replyconfig.selectedRule == null || replyconfig.selectedRule.level == 'outside' || replyconfig.rules.length == 3">
 			<i class="icon-remove"></i>删除区间
 		</button>
-		<a href="javascript:window.history.go(-1)" class="btn"><i class="icon-list"></i>返回</a>
+		<a href="#/rule" class="btn"><i class="icon-list"></i>返回</a>
     </div>
 </div>
 
@@ -42,13 +42,13 @@
 		<tr>
 		<td width="100px" valign="top"><label for="replyconfig-username">区间级别:</label></td>
 		<td ng-show="replyconfig.selectedRule.level != 'outside'">
-			<span class="label label-success rulelevel" ng-click="replyconfig.setLevel('success')">
+			<span class="label label-success" ng-class="{'rulelevel': replyconfig.editable}" ng-click="replyconfig.setLevel('success')">
 				<i class="icon-ok" ng-show="replyconfig.selectedRule.level == 'success'"></i>{{replyconfig.getLevelLabel('success')}}
 			</span>
-			<span class="label label-warning rulelevel" ng-click="replyconfig.setLevel('warning')">
+			<span class="label label-warning" ng-class="{'rulelevel': replyconfig.editable}" ng-click="replyconfig.setLevel('warning')">
 				<i class="icon-ok" ng-show="replyconfig.selectedRule.level == 'warning'"></i>{{replyconfig.getLevelLabel('warning')}}
 			</span>
-			<span class="label label-important rulelevel" ng-click="replyconfig.setLevel('danger')">
+			<span class="label label-important" ng-class="{'rulelevel': replyconfig.editable}" ng-click="replyconfig.setLevel('danger')">
 				<i class="icon-ok" ng-show="replyconfig.selectedRule.level == 'danger'"></i>{{replyconfig.getLevelLabel('danger')}}
 			</span>
 		</td>
