@@ -37,6 +37,9 @@ angular.module('ecgRuleConfig', [])
         .then(function(rule) {
 
             $scope.ruleconfig.rule = rule;
+
+            // 更新
+            $scope.subheader.title = "规则设置 - " + rule.name;
             
              // 是否readonly
             var user = $scope.session.user;
