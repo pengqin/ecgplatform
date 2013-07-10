@@ -2,6 +2,7 @@
 define(function(require, exports) {
 
     exports.testEmployee = function(it, ChiefService, ExpertService, OperatorService, ProfileService) {
+        var testexperts, testoperators;
         // profile
         it("the ProfileService should be defined", function() {
             expect(ProfileService).not.to.be(undefined);
@@ -238,6 +239,7 @@ define(function(require, exports) {
         it("the expert list should be retrieved", function(done) {
             ExpertService.queryAll().then(function(experts) {
                 if (experts.length > 0) {
+                    testexperts = experts;
                     done();
                 } else {
                     throw new Error('the expert list can\'t be retrieved');
@@ -394,6 +396,7 @@ define(function(require, exports) {
         it("the operator list should be retrieved", function(done) {
             OperatorService.queryAll().then(function(operators) {
                 if (operators.length > 0) {
+                    testoperators = operators;
                     done();
                 } else {
                     throw new Error('the operator list can\'t be retrieved');
@@ -542,6 +545,11 @@ define(function(require, exports) {
         });
 
         // 测试专家和接线员直接能绑定关系
+        it("the test experts and test operators count should both be 3", function() {
+            expect(testoperators.length).to.be(3);
+            expect(testexperts.length).to.be(3);
+        });
+
         it("the expert should be linked with the operator", function(done) {
             expect(expert).not.to.be(undefined);
             expect(operator).not.to.be(undefined);
