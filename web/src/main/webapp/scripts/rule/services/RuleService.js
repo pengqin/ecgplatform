@@ -103,6 +103,89 @@ angular.module('ecgRuleService', [])
                     url: uri + '/' + id
                 });
             },
+            initFilterRules: function(rule) {
+                var that = this,
+                    groupId = rule.id, low, mid, high,
+                    success = 0, error = 0;
+
+                delete rule.id;
+
+                low = $.extend({}, rule);
+                low.max =low.min;
+                low.min = -9999;
+                low.usage = "filter";
+                low.level = 'outside';
+                low.groupId = groupId;
+
+                mid = $.extend({}, rule);
+                mid.usage = "filter";
+                mid.groupId = groupId;
+
+                high = $.extend({}, rule);
+                high.min =high.max;
+                high.max = 9999;
+                high.usage = "filter";
+                high.level = 'outside';
+                high.groupId = groupId;
+
+                return this.create(low)
+                .then(function(result) {
+                    if (result) {
+                        success++;
+                    } else {
+                        error++
+                    }
+                }, function() {
+                    error++
+                }).then(function() {
+                    return that.create(mid);
+                }).then(function(result) {
+                    if (result) {
+                        success++;
+                    } else {
+                        error++
+                    }
+                }, function() {
+                    error++
+                }).then(function() {
+                    return that.create(high);
+                }).then(function() {
+                    return {success: success, error: error};
+                });
+            },
+            sortRules: function(rules) {
+                var min = 999999, max = -999999, range = 100, that = this;
+                $(rules).each(function(i, rule) {
+                    if (rule.level !== 'outside') {
+                        rule.min = parseFloat(rule.min);
+                        rule.max = parseFloat(rule.max);
+                        if (rule.min < min) {
+                            min = rule.min;
+                        }
+                        if (rule.max > max) {
+                            max = rule.max;
+                        }
+                    }
+                });
+                range = max - min;
+                $(rules).each(function(i, rule) {
+                    if (rule.min === -9999 || rule.max === 9999) {
+                        rule.percent = '5';
+                    } else {
+                        rule.percent = (rule.max - rule.min) / range * 90;
+                    }
+                });
+
+                rules.sort(function(a, b) {
+                    return a.min > b.min ? 1 : -1;
+                });
+
+                $(rules).each(function(i, rule) {
+                    rule.arrayIdx = i;
+                });
+                return rules;
+            }
+
         };
     });
 });
