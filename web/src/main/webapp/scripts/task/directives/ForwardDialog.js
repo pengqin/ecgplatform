@@ -1,5 +1,7 @@
-'use strict';
+
 define(function(require, exports) {
+  'use strict';
+    
   var dialogTempalte = require("../templates/forwarddialog.html");
 
   angular.module('ecgForwardDialog', [])

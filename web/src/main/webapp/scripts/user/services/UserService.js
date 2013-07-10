@@ -1,6 +1,7 @@
-'use strict';
 define(function(require, exports) {
 
+'use strict';
+    
 angular.module('ecgUserService', [])
     .factory("UserService", function($rootScope, $http) {
         var uri = PATH + "/api/user";

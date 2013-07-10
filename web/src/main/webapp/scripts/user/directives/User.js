@@ -1,5 +1,6 @@
-'use strict';
 define(function(require, exports) {
+    
+'use strict';
 
 var userEditTemp = require("../templates/user/edit.html");
 var usersDialogTemp = require("../templates/user/usersdialog.html");

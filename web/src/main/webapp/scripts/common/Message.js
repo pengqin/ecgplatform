@@ -85,10 +85,12 @@ angular.module('ecgMessage', [])
         $scope.message.show(message);
     };
     
+    /*
     $scope.message.success('success');
     $scope.message.info('info');
     $scope.message.error('error');
     $scope.message.warn('warn');
+    */
     
 }])
 .directive("ecgMessage", ['$location', function ($location) {

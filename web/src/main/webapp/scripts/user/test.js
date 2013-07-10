@@ -1,6 +1,8 @@
-'use strict';
+
 define(function(require, exports) {
 
+    'use strict';
+    
     exports.testUser = function(it, UserService) {
 
         // User
