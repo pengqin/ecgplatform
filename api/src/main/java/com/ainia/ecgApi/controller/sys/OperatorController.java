@@ -74,7 +74,7 @@ public class OperatorController extends BaseController<Operator, Long> {
 		}
 		operator.addExpert(expertService.get(expertId));
 		operatorService.update(operator);
-		return new ResponseEntity(HttpStatus.OK);
+		return new ResponseEntity(HttpStatus.CREATED);
 	}
 
 	/**
