@@ -257,6 +257,7 @@ angular.module('ecgRuleModules', [])
     $scope.replyconfig.editable = false;
     $scope.$watch("session.user", function() {
         var user = $scope.session.user;
+        if (!user.isAdmin) { return; }
         if (user.isAdmin() || user.isChief()) {
             $scope.replyconfig.editable = true;
         }
@@ -358,7 +359,11 @@ angular.module('ecgRuleModules', [])
         RuleService.get($routeParams.id)
         .then(function(rule) {
              // 是否readonly
-            $scope.replyconfig.editable = rule.employeeId == $scope.session.user.id;
+            var user = $scope.session.user;
+            $scope.replyconfig.editable = rule.employeeId == user.id;
+            if (user.isAdmin() || user.isChief()) {
+                $scope.replyconfig.editable = true;
+            }
 
             // 查询该组rule
             RuleService.queryAllFiltersByGroup($routeParams.id)
@@ -428,7 +433,7 @@ angular.module('ecgRuleModules', [])
 
         var updateobj = null, newobj;
         $($scope.replyconfig.rules).each(function(i, rule) {
-            if (rule.min !== -9999 || rule.max !== 9999) {
+            if (rule.min !== -9999 && rule.max !== 9999) {
                 if (rule.min < point && point < rule.max) {
                     updateobj = rule;
                     newobj = $.extend({}, rule);
