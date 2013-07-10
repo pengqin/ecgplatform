@@ -29,7 +29,7 @@ angular.module('ecgRuleService', [])
             },
             queryAllFiltersByGroup: function(rule, params) {
                 var id = rule.id || rule, params = params || {};
-                params.groupdId = id;
+                params.groupId = id;
                 params.usage = 'filter';
                 return this.queryAll(params);
             },

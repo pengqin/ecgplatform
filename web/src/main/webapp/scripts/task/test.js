@@ -31,12 +31,9 @@ define(function(require, exports) {
 
          */
         // Rule
-        it("the services should be defined", function() {
+        it("the undone task list for admin should be retrieved", function(done) {
             expect(ProfileService).not.to.be(undefined);
             expect(TaskService).not.to.be(undefined);
-        });
-
-        it("the undone task list for admin should be retrieved", function(done) {
             ProfileService.get('admin')
             .then(function(user) {
                 return user;

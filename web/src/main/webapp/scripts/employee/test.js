@@ -4,11 +4,8 @@ define(function(require, exports) {
     exports.testEmployee = function(it, ChiefService, ExpertService, OperatorService, ProfileService) {
         var testexperts, testoperators;
         // profile
-        it("the ProfileService should be defined", function() {
-            expect(ProfileService).not.to.be(undefined);
-        });
-
         it("the session user's profile should be retrieved, updated and roll back.", function() {
+            expect(ProfileService).not.to.be(undefined);
             var sessionuser, username = $.cookie("AiniaOpUsername");
             ProfileService.get(username).then(function(profile) {
                 if (profile) {
@@ -69,11 +66,8 @@ define(function(require, exports) {
         });
 
         // Chief
-        it("the ChiefService should be defined", function() {
-            expect(ChiefService).not.to.be(undefined);
-        });
-
         it("the chief list should be retrieved", function(done) {
+            expect(ChiefService).not.to.be(undefined);
             ChiefService.queryAll().then(function(chiefs) {
                 if (chiefs.length > 0) {
                     done();
