@@ -269,90 +269,6 @@ angular.module('ecgRuleModules', [])
     // level名称
     $scope.replyconfig.getLevelLabel = EnumService.getLevelLabel;
 
-    function initFilterRules(rule) {
-        var len = 3, count = 0, newobjs = [], groupId = rule.id, low, mid, high;
-
-        delete rule.id;
-
-        low = $.extend({}, rule);
-        low.max =low.min;
-        low.min = -9999;
-        low.usage = "filter";
-        low.level = 'outside';
-        low.groupId = groupId;
-        newobjs.push(low);
-
-        mid = $.extend({}, rule);
-        mid.usage = "filter";
-        mid.groupId = groupId;
-        newobjs.push(mid);
-
-        high = $.extend({}, rule);
-        high.min =high.max;
-        high.max = 9999;
-        high.usage = "filter";
-        high.level = 'outside';
-        high.groupId = groupId;
-        newobjs.push(high);
-
-        $scope.dialog.showStandby({text: '创建初始化检测区间，请稍候......'});
-        $(newobjs).each(function(i, newobj) {
-            RuleService.create(newobj)
-            .then(function(result) {
-                $scope.dialog.hideStandby();
-                if (result) {
-                    count++;
-                } else {
-                    $scope.message.error("创建初始化检测区间失败!");
-                }
-                if (len === count) {
-                    $scope.dialog.hideStandby();
-                    $scope.message.success("创建初始化检测区间成功!");
-                    refreshRules();
-                }
-            }, function() {
-                $scope.dialog.hideStandby();
-                $scope.message.error("服务器异常，创建初始化检测区间失败!");
-            });
-        });
-    };
-
-    function renderFilterRules(rules) {
-        var min = 999999, max = -999999, range = 100;
-        $(rules).each(function(i, rule) {
-            if (rule.level !== 'outside') {
-                rule.min = parseFloat(rule.min);
-                rule.max = parseFloat(rule.max);
-                if (rule.min < min) {
-                    min = rule.min;
-                }
-                if (rule.max > max) {
-                    max = rule.max;
-                }
-            }
-        });
-        range = max - min;
-        $(rules).each(function(i, rule) {
-            if (rule.min === -9999 || rule.max === 9999) {
-                rule.percent = '5';
-            } else {
-                rule.percent = (rule.max - rule.min) / range * 90;
-            }
-            rule.replyconfigs = [];
-            refreshReplyConfigs(rule, i);
-        });
-
-        rules.sort(function(a, b) {
-            return a.min > b.min ? 1 : -1;
-        });
-
-        $(rules).each(function(i, rule) {
-            rule.arrayIdx = i;
-        });
-
-        $scope.replyconfig.rules = rules;
-    };
-
     function refreshRules() {
         reset();
         $scope.dialog.showStandby({text: '正在加载数据，请稍候......'});
@@ -370,10 +286,26 @@ angular.module('ecgRuleModules', [])
             .then(function(rules) {
                 // 初始化检测区间
                 $scope.dialog.hideStandby();
+                
                 if (rules.length === 0) {
-                    initFilterRules(rule);
+                    $scope.dialog.showStandby({text: '正在创建初始化检测区间，请稍候......'});
+                    RuleService.initFilterRules(rule)
+                    .then(function(res) {
+                        $scope.dialog.hideStandby();
+                        if (res.success === 3) {
+                            $scope.message.success("创建初始化检测区间成功!");
+                        } else {
+                            $scope.message.error("创建初始化检测区间失败!");
+                        }
+                    }, function() {
+                        $scope.dialog.hideStandby();
+                    });
                 } else {
-                    renderFilterRules(rules);
+                    $scope.replyconfig.rules = RuleService.sortRules(rules);
+                    $($scope.replyconfig.rules).each(function(i, rule) {
+                        rule.replyconfigs = [];
+                        refreshReplyConfigs(rule, i);
+                    });
                 }
             }, function () {
                 $scope.dialog.hideStandby();
@@ -387,7 +319,7 @@ angular.module('ecgRuleModules', [])
     function refreshReplyConfigs(rule, i) {
         ReplyConfigService.queryAllbyRule(rule).then(function(replyconfigs) {
             rule.replyconfigs = replyconfigs;
-            if (i === 0) {
+            if (i === 1) {
                 $scope.replyconfig.selectedRule = rule;
             }
         });
