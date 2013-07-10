@@ -1,4 +1,4 @@
-<div class="row-fluid">
+<div class="row-fluid" ng-show="expert.operators && expert.operators.length != 0">
 	<div class="span12">
 		<div ng-repeat="operator in expert.operators" class="employeeLink" ng-click="expert.check(operator)">
 			<div class="alert alert-info">
@@ -6,7 +6,18 @@
         	</div>
       	</div>
     </div>
-    <p><form class="form-inline"><label class="checkbox"><input type="checkbox" ng-click="expert.checkAll()">全部选择</label></form></p>
+</div>
+<div class="row-fluid">
+	<div class="span12">
+  	    <div ng-show="expert.operators && expert.operators.length == 0">
+	    	尚未配置绑定关系
+	    </div>
+	    <div ng-show="expert.operators && expert.operators.length != 0">
+	    	<form class="form-inline">
+	    		<label class="checkbox"><input type="checkbox" ng-click="expert.checkAll()"></input>全部选择</label>
+	    	</form>
+	    </div>
+    </div>
 </div>
 <div class="row-fluid">
 	<div class="span12">

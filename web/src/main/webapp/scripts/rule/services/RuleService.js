@@ -38,7 +38,7 @@ angular.module('ecgRuleService', [])
                 };
             },
             create: function(rule) {
-                var rule = $.extend({}, rule);
+                var rule = $.extend({}, rule || {});
                 delete rule.id;
                 delete rule.replys;
                 delete rule.replyconfigs;

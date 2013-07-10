@@ -84,10 +84,11 @@ angular.module('ecgOperatorService', [])
                 return [];
             },
             linkExpert: function(operator, expert) {
+                var id = operator.id || operator;
                 return $http({
                     method: 'POST',
                     headers:{'Content-Type':'application/x-www-form-urlencoded'},
-                    url: uri + '/' + operator.id + '/expert/' + expert.id
+                    url: uri + '/' + id + '/expert/' + expert.id
                 }).then(function(res) {
                     if (res.status === 201) {
                         return true;

@@ -4,6 +4,7 @@ define(function(require, exports) {
 var expertEditTemp = require("../templates/expert/edit.html");
 var expertRulesTemp = require("../templates/expert/rules.html");
 var expertOperatorsTemp = require("../templates/expert/operators.html");
+var expertDialogTemp = require("../templates/expert/expertsdialog.html");
 
 angular.module('ecgExpert', [])
 .controller('ExpertController', ['$scope', '$filter', '$timeout', '$location', 'EnumService', 'ExpertService', function ($scope, $filter, $timeout, $location, EnumService, ExpertService) {
@@ -261,7 +262,7 @@ angular.module('ecgExpert', [])
         $($scope.expert.operators).each(function(i, operator) {
             operator.removed = $scope.expert.isCheckAll;
         });
-    }
+    };
 
     $scope.expert.addOperators = function() {
         $scope.operatordialog.show({
@@ -338,6 +339,57 @@ angular.module('ecgExpert', [])
         replace : false,
         template : expertOperatorsTemp,
         controller : "ExpertOperatorsController",
+        link : function($scope, $element, $attrs) {
+        }
+    };
+}])
+.controller('ExpertDialogController', 
+    ['$scope', '$filter', '$timeout', '$location', 'EnumService', 'ExpertService', 
+    function ($scope, $filter, $timeout, $location, EnumService, ExpertService) {
+
+    // 命名空间
+    $scope.expertdialog = {};
+
+    // 表格展示
+    $scope.expertdialog.data = null;
+    function refreshGrid() {
+        ExpertService.queryAll().then(function(experts) {
+            $scope.expertdialog.data = experts;
+        });
+    };
+    refreshGrid();
+
+    $scope.expertdialog.execute = function() {
+        var selecteds = [];
+        $($scope.expertdialog.data).each(function(i, expert) {
+            if (expert.selected) {
+                selecteds.push(expert);
+            }
+        });
+        $scope.expertdialog.hide();
+        if ($scope.expertdialog.handler instanceof Function) {
+            $scope.expertdialog.handler(selecteds);
+        }
+    };
+
+    $scope.expertdialog.hide = function(opts) {
+      $('#ecgExpertsDialog').modal('hide');
+    };
+
+    $scope.expertdialog.show = function(opts) {
+      var opts = opts || {};
+      $scope.expertdialog.handler = opts.handler;
+      $('#ecgExpertsDialog').modal('show');
+      refreshGrid();
+    };
+
+}])
+.directive("ecgExpertDialog", [ '$location', function($location) {
+    return {
+        restrict : 'A',
+        replace : false,
+        template : expertDialogTemp,
+        controller : "ExpertDialogController",
         link : function($scope, $element, $attrs) {
         }
     };
