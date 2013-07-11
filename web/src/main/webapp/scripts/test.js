@@ -17,32 +17,24 @@ var testTask = require("./task/test").testTask;
 // GOABAL VAL
 window.PATH = window.location.pathname.slice(0, window.location.pathname.lastIndexOf("/"));
 
+var httpProvider;
 // 定义模块
 angular.module('ecgTestApp', ['ecgCommon', 'ecgTask', 'ecgMonitor', 'ecgEmployee', 'ecgUser', 'ecgRule', 'ecgTask'])
 .config(['$httpProvider', '$routeProvider', function ($httpProvider, $routeProvider) {
     var token = $.cookie('AiniaOpAuthToken');
         // header头带认证参数
      $httpProvider.defaults.headers.common['Authorization'] = token;
+     httpProvider = $httpProvider;
 }])
-.run([        '$rootScope', '$http','EnumService',
+.run([        '$rootScope', '$http', 'EnumService',
               'ChiefService', 'ExpertService', 'OperatorService', 'ProfileService',
               'UserService', 'RuleService', 'ReplyConfigService',
               'TaskService',
-      function($rootScope,   $http,  EnumService,
+      function($rootScope,   $http, EnumService,
                ChiefService,   ExpertService,   OperatorService ,  ProfileService,
                UserService, RuleService, ReplyConfigService,
                TaskService) {
-    
-    // 判断某个case是否run
-    function runCase(word) {
-        var href = window.location.href;
-        if (href.indexOf("cases") < 0) {
-            return true;
-        } else if (href.indexOf(word) > 0){
-            return true;
-        }
-        return false;
-    }
+
     // 判断是否登录成功
     var token = $.cookie("AiniaOpAuthToken");
     describe("App REST Test", function() {
@@ -51,15 +43,19 @@ angular.module('ecgTestApp', ['ecgCommon', 'ecgTask', 'ecgMonitor', 'ecgEmployee
             expect(token).not.to.be(undefined);
         });
         // 验证基础模块
-        runCase('common') ? testCommon(it, EnumService) : null;
+        testCommon(it, EnumService);
         // 验证员工模块
-        runCase('employee') ? testEmployee(it, ChiefService, ExpertService, OperatorService, ProfileService) : null;
+        testEmployee(it, ChiefService, ExpertService, OperatorService, ProfileService);
         // 验证用户模块
-        runCase('user') ? testUser(it, UserService) : null;
+        testUser(it, UserService);
         // 验证规则及回复模块
-        runCase('rule') ? testRule(it, RuleService, ReplyConfigService) : null;
+        testRule(
+          {it: it}, 
+          {httpProvider: httpProvider}, 
+          {RuleService: RuleService, ReplyConfigService: ReplyConfigService, UserService: UserService}
+        );
         // 验证任务模块
-        runCase('task') ? testTask(it, ProfileService, TaskService) : null;
+        testTask(it, ProfileService, TaskService);
     });
     mocha.run();
 }]);

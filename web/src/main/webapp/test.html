@@ -9,12 +9,23 @@
   <body > 
 
     <div id="tests" style="font-size: 12px;margin: 10px 50px;">
-    <input type="checkbox" value="common" checked>Common
-    <input type="checkbox" value="employee" checked>Employee
-    <input type="checkbox" value="user" checked >User
-    <input type="checkbox" value="rule" checked>Rule
-    <input type="checkbox" value="task" checked >Task
-    <button type="button">运行</button>
+        <p class="cases">
+        <input type="checkbox" value="ccommon" checked>Common
+        <input type="checkbox" value="cemployee" checked>Employee
+        <input type="checkbox" value="cuser" checked >User
+        <input type="checkbox" value="crule" checked>Rule
+        <input type="checkbox" value="ctask" checked >Task
+        </p>
+        <p class="roles">
+        <input type="checkbox" value="radmin" checked>Admin
+        <input type="checkbox" value="rchief" checked>Chief
+        <input type="checkbox" value="rexpert" checked >Expert
+        <input type="checkbox" value="roperator" checked>Operator
+        <input type="checkbox" value="ruser" checked >User
+        </p>
+        <button class="selectAllCases" type="button">Select/Unselect all cases</button>
+        <button class="selectAllRoles" type="button">Select/Unselect all roles</button>
+        <button class="runCases" type="button">Run</button>
     </div>
 
     <div id="mocha">    
@@ -37,16 +48,91 @@
         data-main="./scripts/test.js"></script>
 
     <script>
-        $("#tests button").click(function() {
-            var cases = [];
-            $("#tests input").each(function(i, input) {
+        // 判断某个case是否run
+        window['runCase'] = function(runCase) {
+            var href = window.location.href;
+            if (href.indexOf("cases") < 0) {
+                return true;
+            } else if (href.indexOf('c'+ runCase) > 0) {
+                return true;
+            }
+            return false;
+        }
+
+        // 判断某个case是否run
+        window['runCaseAs'] = function(role) {
+            var href = window.location.href;
+            if (href.indexOf("roles") < 0) {
+                return true;
+            } else if (href.indexOf('r' + role) > 0){
+                return true;
+            }
+            return false;
+        }
+
+        // 重新运行测试用例
+        var selectAllCases = selectAllRoles = true;
+        
+        $("#tests button.selectAllCases").click(function() {
+            selectAllCases = !selectAllCases;
+            $("#tests .cases input").each(function(i, input) {
+                if (selectAllCases) {
+                    $(input).attr("checked", "checked");
+                } else {
+                    $(input).removeAttr("checked")
+                }
+            });
+        });
+        
+        $("#tests button.selectAllRoles").click(function() {
+            selectAllRoles = !selectAllRoles;
+            $("#tests .roles input").each(function(i, input) {
+                if (selectAllRoles) {
+                    $(input).attr("checked", "checked");
+                } else {
+                    $(input).removeAttr("checked")
+                }
+            });
+        });
+
+        $("#tests button.runCases").click(function() {
+            var cases = [], roles = [];
+            $("#tests .cases input").each(function(i, input) {
                 if ($(input).attr("checked")) {
                     cases.push($(input).val());
                 }
             });
-            window.location.href = "test.html#cases=" + cases.join(",");
+            $("#tests .roles input").each(function(i, input) {
+                if ($(input).attr("checked")) {
+                    roles.push($(input).val());
+                }
+            });
+            window.location.href = "test.html#cases=" + cases.join(",") + "&roles=" + roles.join(",");
             window.location.reload();
         });
+
+        // 根据href设置input当前状态
+        $(function() {
+            var href = window.location.href;
+
+            function setCheckBox(input) {
+                if (href.indexOf($(input).val()) > 0) {
+                  $(input).attr("checked", "checked");      
+                } else {
+                    $(input).removeAttr("checked");
+                }
+            }
+            if (href.indexOf("cases") >= 0) {
+                $("#tests .cases input").each(function(i, input) {
+                    setCheckBox(input);
+                });
+            } 
+            if (href.indexOf("roles") >= 0){
+                $("#tests .roles input").each(function(i, input) {
+                    setCheckBox(input);
+                });
+            }
+        })
     </script>
   </body>
 </html>

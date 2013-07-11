@@ -4,7 +4,9 @@ define(function(require, exports) {
     'use strict';
     
     exports.testUser = function(it, UserService) {
-
+        if (!runCase('user')) {
+            return;
+        }
         // User
         it("the user list should be retrieved", function(done) {
             expect(UserService).not.to.be(undefined);

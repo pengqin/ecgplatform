@@ -3,7 +3,10 @@ define(function(require, exports) {
     'use strict';
     
     exports.testTask = function(it, ProfileService, TaskService) {
-
+        if (!runCase('task')) {
+            return;
+        }
+        
         /**
          * 测试用例场景设计
 

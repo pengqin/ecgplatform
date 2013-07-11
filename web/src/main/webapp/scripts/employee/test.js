@@ -2,6 +2,10 @@
 define(function(require, exports) {
 
     exports.testEmployee = function(it, ChiefService, ExpertService, OperatorService, ProfileService) {
+        if (!runCase('employee')) {
+            return;
+        }
+        
         var testexperts, testoperators;
         // profile
         it("the session user's profile should be retrieved, updated and roll back.", function() {

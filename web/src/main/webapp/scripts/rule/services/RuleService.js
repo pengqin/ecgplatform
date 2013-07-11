@@ -103,11 +103,12 @@ angular.module('ecgRuleService', [])
                     url: uri + '/' + id
                 });
             },
-            initFilterRules: function(rule) {
+            initFilterRules: function(inRule) {
                 var that = this,
-                    groupId = rule.id, low, mid, high,
-                    success = 0, error = 0;
+                    groupId = inRule.id, low, mid, high,
+                    success = 0, error = 0, rule;
 
+                rule = $.extend({}, inRule);
                 delete rule.id;
 
                 low = $.extend({}, rule);
