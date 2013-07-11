@@ -14,8 +14,21 @@ angular.module('ecgUserModules', [])
     $scope.user = {};
 
     // 表格展示
-    $scope.user.data = UserService.queryAll();
-    $scope.user.filteredData = $scope.user.data;
+    $scope.user.data = null;
+    $scope.user.filteredData = null;
+    // 刷新功能
+    function refreshGrid() {
+        $scope.dialog.showLoading();
+        UserService.queryAll().then(function(users) {
+            $scope.dialog.hideStandby();
+            $scope.user.data = users;
+            $scope.user.filteredData = $scope.user.data;
+        }, function() {
+            $scope.dialog.hideStandby();
+            $scope.message.error("无法加载用户数据!");
+        });
+    }
+    refreshGrid();
 
     // 显示label
     $scope.user.getGenderLabel = function(user) {
@@ -27,12 +40,6 @@ angular.module('ecgUserModules', [])
 
     // 当前选中数据
     $scope.user.selectedItem = null;
-
-    // 刷新功能
-    function refreshGrid() {
-        $scope.user.data = UserService.queryAll();
-        $scope.user.filteredData = $scope.user.data;
-    }
 
     // 禁用功能
     $scope.user.confirmDisable = function() {
@@ -168,8 +175,13 @@ angular.module('ecgUserModules', [])
 
     // 初始化界面,并获得最新version
     function refresh() {
+        $scope.dialog.showLoading();
         UserService.get($routeParams.id).then(function(user) {
+            $scope.dialog.hideStandby();
             $scope.user.updateobj = user;
+        }, function() {
+            $scope.dialog.hideStandby();
+            $scope.message.error("加载用户数据失败!");
         });
     };
     refresh();

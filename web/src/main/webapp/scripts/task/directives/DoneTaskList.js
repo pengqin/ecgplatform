@@ -35,18 +35,23 @@ function($scope, EnumService, ProfileService, TaskService) {
     function refreshGrid() {
         var username = $.cookie("AiniaOpUsername");
 
+        $scope.dialog.showLoading();
         ProfileService.get(username)
         .then(function(user) {
+            $scope.dialog.hideStandby();
             return user;
         }, function() {
+            $scope.dialog.hideStandby();
             return null;
         })
         .then(function(user) {
             if (user) {
+                $scope.dialog.showLoading();
                 TaskService.queryAllTaskByEmployee(
                     user, 
                     {status: 'done'}
                 ).then(function(tasks) {
+                    $scope.dialog.hideStandby();
                     $scope.done.data = tasks;
                 });
             } else {

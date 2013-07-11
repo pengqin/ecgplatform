@@ -32,9 +32,10 @@ angular.module('ecgRuleConfig', [])
 
     function refreshRules() {
         reset();
-        $scope.dialog.showStandby({text: '正在加载数据，请稍候......'});
+        $scope.dialog.showLoading();
         RuleService.get($routeParams.id)
         .then(function(rule) {
+            $scope.dialog.hideStandby();
 
             $scope.ruleconfig.rule = rule;
 
@@ -49,6 +50,7 @@ angular.module('ecgRuleConfig', [])
             }
 
             // 查询该组rule
+            $scope.dialog.showLoading();
             RuleService.queryAllFiltersByGroup($routeParams.id)
             .then(function(rules) {
                 // 初始化检测区间
