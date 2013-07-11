@@ -3,33 +3,76 @@ define(function(require, exports) {
 'use strict';
     
 require("./services/TaskService");
-require("./directives/UndoneTaskList");
-require("./directives/UndoneTaskView");
-require("./directives/UserCard");
-require("./directives/ExaminationView");
-require("./directives/Plot");
-require("./directives/ReplyDialog");
-require("./directives/ForwardDialog");
-require("./directives/DoneTaskList");
-require("./directives/DoneTaskView");
-require("./directives/ExaminationReply");
 
-var undoneTemp = require("./templates/undone.html");
-var doneTemp = require("./templates/done.html");
+require("./directives/TaskView");
+require("./directives/ReplyForm");
 
-angular.module('ecgTask', ['ecgTaskService', 'ecgUndoneTaskList', 'ecgUndoneTaskView', 'ecgReplyDialog', 'ecgForwardDialog', 'ecgDoneTaskList', 'ecgDoneTaskView', 'ecgExaminationReply'])
-.controller('UndoneTaskController', ['$scope', 'TaskService', function ($scope, TaskService) {
-    $scope.undone = {};
+var todoTemp = require("./templates/todo.html");
+var taskTemp = require("./templates/list.html");
+
+angular.module('ecgTask', ['ecgTaskService', 'ecgTaskView', 'ecgReplyForm'])
+.controller('TodoTaskController', ['$scope', 'ProfileService', 'TaskService', function ($scope, ProfileService, TaskService) {
     $scope.subheader.title = "待办工作";
 
+    // 基本变量
+    $scope.todo = {};    
+    $scope.todo.tasks = null;
+    $scope.todo.current = null;
+    $scope.todo.replyform = 'top';
+
+    // 加载未完成任务
+    function refreshGrid() {
+        var username = $.cookie("AiniaOpUsername");
+
+        $scope.dialog.showLoading();
+        ProfileService.get(username)
+        .then(function(user) {
+            $scope.dialog.hideStandby();
+            return user;
+        }, function() {
+            $scope.dialog.hideStandby();
+            return null;
+        })
+        .then(function(user) {
+            if (user) {
+                $scope.dialog.showLoading();
+                TaskService.queryAllTaskByEmployee(
+                    user, 
+                    {status: 'todo'}
+                ).then(function(tasks) {
+                    $scope.dialog.hideStandby();
+                    $scope.todo.tasks = tasks;
+                    selectTask();
+                });
+            } else {
+                $scope.message.error("无法加载用户数据");
+            }
+        });
+    };
+    refreshGrid();
+ 
+    // 将第一个作为当前选中view
+    function selectTask() {
+        if ($scope.todo.tasks.length == 0) { return; }
+        $scope.todo.current = $scope.todo.tasks[0];
+    };
+
+    // 展开/收缩窗口
+    $scope.todo.reply = function(position) {
+        if ($scope.todo.replyform == position) {
+            $scope.todo.replyform = 'hidden';
+        } else {
+            $scope.todo.replyform = position;
+        }
+    };
     // 回复
-    $scope.undone.reply = function() {
-        $scope.replydialog.show({examination: $scope.undone.selected.examination, handler: function(replys) {
+    $scope.todo.submitreply = function() {
+        $scope.replydialog.show({examination: $scope.todo.selected.examination, handler: function(replys) {
             var len = replys.length, count = 0;
             $scope.replydialog.hide();
             $scope.dialog.showStandby();
             $(replys).each(function(i, reply) {
-                TaskService.reply($scope.undone.selected.examination, reply)
+                TaskService.reply($scope.todo.selected.examination, reply)
                 .then(function(flag) {
                     $scope.dialog.hideStandby();
                     if (flag) {
@@ -39,9 +82,9 @@ angular.module('ecgTask', ['ecgTaskService', 'ecgUndoneTaskList', 'ecgUndoneTask
                     }
                     if (count === len) {
                         $scope.message.success("该检测请求已处理完毕，如需查询，请点击菜单已办工作!");
-                        $scope.undone.selected = null;
+                        $scope.todo.selected = null;
                         // 刷新
-                        $scope.undone.refreshGrid();
+                        $scope.todo.refreshGrid();
                     }
                 }, function() {
                     $scope.dialog.hideStandby();
@@ -52,37 +95,90 @@ angular.module('ecgTask', ['ecgTaskService', 'ecgUndoneTaskList', 'ecgUndoneTask
     };
 
     // 转发
-    $scope.undone.forward = function() {
-        TaskService.forward($scope.undone.selected)
+    $scope.todo.forward = function() {
+        TaskService.forward($scope.todo.selected)
         .then(function(flag) {
             $scope.dialog.hideStandby();
             if (flag) {
                 $scope.message.success("该检测请求已转交给专家处理!");
-                $scope.undone.selected = null;
+                $scope.todo.selected = null;
             } else {
                 $scope.message.error("无法转交该任务，请联系管理员!");
             }
             // 刷新
-            $scope.undone.refreshGrid();
+            $scope.todo.refreshGrid();
         }, function() {
             $scope.dialog.hideStandby();
             $scope.message.error("无法转交该任务，请联系管理员!");
         });
     };
 }])
-.controller('DoneTaskController', ['$scope', function ($scope) {
-    $scope.done = {};
-    $scope.subheader.title = "已办工作";
+.controller('TaskController', ['$scope', 'EnumService', 'ProfileService', 'TaskService', function ($scope, EnumService, ProfileService, TaskService) {
+    $scope.subheader.title = "工作清单";
+
+    $scope.task = {};
+    $scope.task.data = null;
+    $scope.task.selected = null;
+
+    // level名称
+    $scope.task.getLevelLabel = EnumService.getLevelLabel;
+    // level名称
+    $scope.task.getWorkStatusLabel = EnumService.getWorkStatusLabel;
+
+    $scope.task.translateLevel = function(level) {
+        switch(level) {
+        case 'danger':
+            return 'important';
+        break;
+        case 'success':
+            return 'success';
+        break;
+        case 'warning':
+            return 'warning';
+        break;
+        case 'outside':
+            return 'inverse';
+        break;
+        }
+    };
+
+    function refreshGrid() {
+        var username = $.cookie("AiniaOpUsername");
+
+        $scope.dialog.showLoading();
+        ProfileService.get(username)
+        .then(function(user) {
+            $scope.dialog.hideStandby();
+            return user;
+        }, function() {
+            $scope.dialog.hideStandby();
+            return null;
+        })
+        .then(function(user) {
+            if (user) {
+                $scope.dialog.showLoading();
+                TaskService.queryAllTaskByEmployee(user).then(function(tasks) {
+                    $scope.dialog.hideStandby();
+                    $scope.task.data = tasks;
+                });
+            } else {
+                $scope.message.error("无法加载用户数据");
+            }
+        });
+    };
+    refreshGrid();
+
+    $scope.task.refreshGrid = refreshGrid;
 }])
 .config(['$routeProvider', function ($routeProvider) {
     $routeProvider
-    .when('/undone', {
-        template: undoneTemp,
-        controller: 'UndoneTaskController'
+    .when('/todo', {
+        template: todoTemp,
+        controller: 'TodoTaskController'
     })
-    .when('/done', {
-        template: doneTemp,
-        controller: 'DoneTaskController'
+    .when('/task', {
+        template: taskTemp,
+        controller: 'TaskController'
     });
 }]);
 
