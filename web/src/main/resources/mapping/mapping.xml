@@ -4,7 +4,9 @@
       xsi:schemaLocation="http://dozer.sourceforge.net http://dozer.sourceforge.net/schema/beanmapping.xsd">
 
 
-<mapping map-null="false" map-empty-string="false">
+<mapping >
+  <class-a  map-null="false" map-empty-string="false">java.lang.Object</class-a>
+  <class-b  map-null="false" map-empty-string="false">java.lang.Object</class-b>    
 </mapping>
 
 </mappings>
