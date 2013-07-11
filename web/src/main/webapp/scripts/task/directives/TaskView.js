@@ -103,18 +103,18 @@ define(function(require, exports) {
         });
 
         // 监听已完成
-        $scope.$watch('todo.current',function() {
+        $scope.$watch('task.selected',function() {
             $scope.examinationview.readonly = true;
 
-            if (!$scope.todo) { return; }
-            if(!$scope.todo.current) { return; }
-            if($scope.todo.current.examination) { return; }
+            if (!$scope.task) { return; }
+            if(!$scope.task.selected) { return; }
+            if($scope.task.selected.examination) { return; }
 
             $scope.examinationview.examination = null;
-            TaskService.getExamination($scope.todo.current.examinationId)
+            TaskService.getExamination($scope.task.selected.examinationId)
             .then(function(examination) {
                 $scope.examinationview.examination = examination;
-                $scope.todo.current.examination = examination;
+                $scope.task.selected.examination = examination;
             });
         });
     }])

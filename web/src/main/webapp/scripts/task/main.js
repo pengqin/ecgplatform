@@ -18,7 +18,7 @@ angular.module('ecgTask', ['ecgTaskService', 'ecgTaskView', 'ecgReplyForm'])
     $scope.todo = {};    
     $scope.todo.tasks = null;
     $scope.todo.current = null;
-    $scope.todo.replyform = 'top';
+    $scope.todo.replyform = 'hidden';
 
     // 加载未完成任务
     function refreshGrid() {
@@ -38,7 +38,7 @@ angular.module('ecgTask', ['ecgTaskService', 'ecgTaskView', 'ecgReplyForm'])
                 $scope.dialog.showLoading();
                 TaskService.queryAllTaskByEmployee(
                     user, 
-                    {status: 'todo'}
+                    {status: 'undone'}
                 ).then(function(tasks) {
                     $scope.dialog.hideStandby();
                     $scope.todo.tasks = tasks;
@@ -66,37 +66,34 @@ angular.module('ecgTask', ['ecgTaskService', 'ecgTaskView', 'ecgReplyForm'])
         }
     };
     // 回复
-    $scope.todo.submitreply = function() {
-        $scope.replydialog.show({examination: $scope.todo.selected.examination, handler: function(replys) {
-            var len = replys.length, count = 0;
-            $scope.replydialog.hide();
-            $scope.dialog.showStandby();
-            $(replys).each(function(i, reply) {
-                TaskService.reply($scope.todo.selected.examination, reply)
-                .then(function(flag) {
-                    $scope.dialog.hideStandby();
-                    if (flag) {
-                        count++;
-                    } else {
-                        $scope.message.error("无法处理该条记录，请联系管理员!");
-                    }
-                    if (count === len) {
-                        $scope.message.success("该检测请求已处理完毕，如需查询，请点击菜单已办工作!");
-                        $scope.todo.selected = null;
-                        // 刷新
-                        $scope.todo.refreshGrid();
-                    }
-                }, function() {
-                    $scope.dialog.hideStandby();
+    $scope.todo.submitReplies = function() {
+        var len = $scope.replyform.replys.length, count = 0;
+        $scope.dialog.showStandby();
+        $($scope.replyform.replys).each(function(i, reply) {
+            TaskService.reply($scope.todo.current.examination, reply)
+            .then(function(flag) {
+                $scope.dialog.hideStandby();
+                if (flag) {
+                    count++;
+                } else {
                     $scope.message.error("无法处理该条记录，请联系管理员!");
-                });
+                }
+                if (count === len) {
+                    $scope.message.success("该检测请求已处理完毕，如需查询，请点击菜单已办工作!");
+                    $scope.todo.current = null;
+                    // 刷新
+                    //window.location.reload();
+                }
+            }, function() {
+                $scope.dialog.hideStandby();
+                $scope.message.error("无法处理该条记录，请联系管理员!");
             });
-        }});
+        });
     };
 
     // 转发
     $scope.todo.forward = function() {
-        TaskService.forward($scope.todo.selected)
+        TaskService.forward($scope.todo.current)
         .then(function(flag) {
             $scope.dialog.hideStandby();
             if (flag) {

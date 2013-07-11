@@ -86,31 +86,6 @@ define(function(require, exports) {
       $scope.replyform.mannual = false;
     };
 
-    $scope.replyform.submitReplies = function () {
-        var len = $scope.replyform.replys.length, count = 0;
-        $scope.dialog.showStandby();
-        $($scope.replyform.replys).each(function(i, reply) {
-            TaskService.reply($scope.todo.current.examination, reply)
-            .then(function(flag) {
-                $scope.dialog.hideStandby();
-                if (flag) {
-                    count++;
-                } else {
-                    $scope.message.error("无法处理该条记录，请联系管理员!");
-                }
-                if (count === len) {
-                    $scope.message.success("该检测请求已处理完毕，如需查询，请点击菜单已办工作!");
-                    $scope.todo.current = null;
-                    // 刷新
-                    window.location.reload();
-                }
-            }, function() {
-                $scope.dialog.hideStandby();
-                $scope.message.error("无法处理该条记录，请联系管理员!");
-            });
-        });
-    }
-
   }])
   .directive("ecgReplyForm", ['$location', function ($location) {
     return {
