@@ -7,6 +7,7 @@ define(function(require, exports) {
   	$scope.dialog = {};
   	$scope.dialog.OKLabel = '确定';
     $scope.dialog.shown = false;
+    $scope.dialog.loading = "数据加载中，请耐心等待......";
 
 	  $scope.dialog.showHeader = function() {
   		return true;
@@ -73,6 +74,9 @@ define(function(require, exports) {
       showtime = (new Date()).getTime();
       show();
   	};
+    $scope.dialog.showLoading = function() {
+      $scope.dialog.showStandby({text: $scope.dialog.loading});
+    };
   	$scope.dialog.hideStandby = function() {
       function hide() {
     		$scope.dialog.state = 'standby';

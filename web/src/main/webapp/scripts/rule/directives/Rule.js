@@ -53,7 +53,9 @@ angular.module('ecgRuleBaseDirectives', [])
     };
 
     function refreshGrid() {
+        $scope.dialog.showLoading();
         RuleService.queryAllGroup().then(function(rules) {
+            $scope.dialog.hideStandby();
             $scope.rule.rules = rules;
             filteredRules();
         }, function() {
