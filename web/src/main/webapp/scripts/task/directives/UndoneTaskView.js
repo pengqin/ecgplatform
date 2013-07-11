@@ -1,5 +1,7 @@
-'use strict';
+
 define(function(require, exports) {
+
+    'use strict';
 
     var template = require("../templates/undonetaskview.html");
 

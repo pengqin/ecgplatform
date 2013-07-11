@@ -1,6 +1,7 @@
-'use strict';
 define(function(require, exports) {
 
+'use strict';
+    
 require("./services/TaskService");
 require("./directives/UndoneTaskList");
 require("./directives/UndoneTaskView");

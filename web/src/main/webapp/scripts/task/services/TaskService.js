@@ -1,5 +1,6 @@
-'use strict';
 define(function(require, exports) {
+
+'use strict';
 
 angular.module('ecgTaskService', [])
     .factory("TaskService", ['$rootScope', '$http', function($rootScope, $http) {

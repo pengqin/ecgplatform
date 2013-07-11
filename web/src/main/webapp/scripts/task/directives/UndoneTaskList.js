@@ -1,6 +1,8 @@
-'use strict';
+
 define(function(require, exports) {
 
+'use strict';
+    
 var template = require("../templates/undonetasklist.html");
 
 angular.module('ecgUndoneTaskList', [])

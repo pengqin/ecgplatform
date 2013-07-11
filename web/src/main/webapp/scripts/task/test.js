@@ -1,7 +1,7 @@
-'use strict';
-'use strict';
 define(function(require, exports) {
 
+    'use strict';
+    
     exports.testTask = function(it, ProfileService, TaskService) {
 
         /**

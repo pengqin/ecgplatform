@@ -1,7 +1,9 @@
-'use strict';
 define(function(require, exports) {
+    
+'use strict';
 
 var userEditTemp = require("../templates/user/edit.html");
+var usersDialogTemp = require("../templates/user/usersdialog.html");
 
 angular.module('ecgUserModules', [])
 .controller('UserController', ['$scope', '$filter', '$timeout', '$location', 'EnumService', 'UserService', function ($scope, $filter, $timeout, $location, EnumService, UserService) {
@@ -225,6 +227,57 @@ angular.module('ecgUserModules', [])
         replace : false,
         template : userEditTemp,
         controller : "UserEditController",
+        link : function($scope, $element, $attrs) {
+        }
+    };
+}])
+.controller('UserDialogController', 
+    ['$scope', '$filter', '$timeout', '$location', 'EnumService', 'UserService', 
+    function ($scope, $filter, $timeout, $location, EnumService, UserService) {
+
+    // 命名空间
+    $scope.userdialog = {};
+
+    // 表格展示
+    $scope.userdialog.data = null;
+    function refreshGrid() {
+        UserService.queryAll().then(function(users) {
+            $scope.userdialog.data = users;
+        });
+    };
+    refreshGrid();
+
+    $scope.userdialog.execute = function() {
+        var selecteds = [];
+        $($scope.userdialog.data).each(function(i, expert) {
+            if (expert.selected) {
+                selecteds.push(expert);
+            }
+        });
+        $scope.userdialog.hide();
+        if ($scope.userdialog.handler instanceof Function) {
+            $scope.userdialog.handler(selecteds);
+        }
+    };
+
+    $scope.userdialog.hide = function(opts) {
+      $('#ecgUsersDialog').modal('hide');
+    };
+
+    $scope.userdialog.show = function(opts) {
+      var opts = opts || {};
+      $scope.userdialog.handler = opts.handler;
+      $('#ecgUsersDialog').modal('show');
+      refreshGrid();
+    };
+
+}])
+.directive("ecgUserDialog", [ '$location', function($location) {
+    return {
+        restrict : 'A',
+        replace : false,
+        template : usersDialogTemp,
+        controller : "UserDialogController",
         link : function($scope, $element, $attrs) {
         }
     };
