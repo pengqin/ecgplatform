@@ -102,10 +102,11 @@ angular.module('ecgTaskService', [])
                     return false;
                 });
             },
-            getReplyByExamination: function(examinationId) {
+            getReplyByExamination: function(examination) {
+                var id = examination.id || examination;
                 return $http({
                     method: 'GET',
-                    url: PATH + '/api/examination/' + examinationId + '/reply'
+                    url: PATH + '/api/examination/' + id + '/reply'
                 }).then(function(res) {
                     if (res.data && res.data.length > 0) {
                         return res.data;

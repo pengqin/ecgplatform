@@ -38,10 +38,6 @@ angular.module('ecgTestApp', ['ecgCommon', 'ecgTask', 'ecgMonitor', 'ecgEmployee
     // 判断是否登录成功
     var token = $.cookie("AiniaOpAuthToken");
     describe("App REST Test", function() {
-        // 基础验证
-        it("the token from cookie should be defined", function() {
-            expect(token).not.to.be(undefined);
-        });
         // 验证基础模块
         testCommon(it, EnumService);
         // 验证员工模块
@@ -55,7 +51,11 @@ angular.module('ecgTestApp', ['ecgCommon', 'ecgTask', 'ecgMonitor', 'ecgEmployee
           {RuleService: RuleService, ReplyConfigService: ReplyConfigService, UserService: UserService}
         );
         // 验证任务模块
-        testTask(it, ProfileService, TaskService);
+        testTask(
+          {it: it}, 
+          {httpProvider: httpProvider},
+          {ProfileService: ProfileService, TaskService: TaskService}
+        );
     });
     mocha.run();
 }]);

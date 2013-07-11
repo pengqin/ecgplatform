@@ -8,8 +8,6 @@ define(function(require, exports) {
         if (!runCase('rule')) {
             return;
         }
-        var it = mocha.it;
-        var httpProvider = angluarjs.httpProvider;
 
         mocha.user = {username: TESTCONFIGS.admin.username, password: TESTCONFIGS.admin.password};
         runCaseAs('admin') ? testAsAdminOrChiefOrExpert(mocha, angluarjs, services) : null;
@@ -21,6 +19,7 @@ define(function(require, exports) {
         runCaseAs('expert') ? testAsAdminOrChiefOrExpert(mocha, angluarjs, services) : null;
 
         /*
+         * TODO:
          * 专家不可以编辑系统级别的rule
          * 专家不可以新增系统级别的rule下的检测区间
          * 专家不可以删除系统级别rule下的检测区间
