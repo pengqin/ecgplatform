@@ -29,6 +29,10 @@ i {
 }
 
 /*消息提示*/
+#ecgMessage .pull-right {
+	cursor: pointer;
+	margin-right: 5px;
+}
 #ecgMessage .alert {
 	margin: 0px;
 }

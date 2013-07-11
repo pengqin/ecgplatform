@@ -1,7 +1,8 @@
-'use strict';
 define(function(require, exports) {
   var dialogTempalte = require("../templates/replydialog.html");
 
+  'use strict';
+  
   angular.module('ecgReplyDialog', [])
   .controller('ReplyDialogController', 
   ['$scope', 'EnumService', 'TaskService', 'RuleService', 'ReplyConfigService',
