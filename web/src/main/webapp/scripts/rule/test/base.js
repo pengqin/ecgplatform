@@ -140,6 +140,66 @@ define(function(require, exports) {
             });
         });
 
+        // 获取测试用户的信息
+        var user;
+        it("the user should be retrieved", function(done) {
+            expect(UserService).not.to.be(undefined);
+
+            UserService.queryAll({mobile: TESTCONFIGS.user.mobile})
+            .then(function(users) {
+                expect(users).not.to.be(undefined);
+                expect(users.length).to.be(1);
+                user = users[0];
+                done();
+            }, function() {
+                throw new Error('the replyconfig can\'t be removed');
+            });
+        });
+
+        // 绑定用户
+        it("the users should be linked to the specific rule", function(done) {
+            expect(RuleService).not.to.be(undefined);
+
+            RuleService.linkUser(rule, user)
+            .then(function(flag) {
+                if (flag) {
+                    done();
+                } else {
+                    throw new Error('the users should be linked to the specific rule');
+                }
+                done();
+            }, function() {
+                throw new Error('the users should be linked to the specific rule');
+            });
+        });
+
+        // 绑定的用户数应该为1
+        it("one link should be retrieved by the specific rule", function(done) {
+            expect(RuleService).not.to.be(undefined);
+
+            RuleService.getUsers(rule)
+            .then(function(users) {
+                expect(users).not.to.be(undefined);
+                expect(users.length).to.be(1);
+                expect(users[0].id).to.be(user.id);
+                done();
+            }, function() {
+                throw new Error('the users should be linked to the specific rule');
+            });
+        });
+
+        // 解除用户绑定
+        it("the users should be unlinked to the specific rule", function(done) {
+            expect(RuleService).not.to.be(undefined);
+
+            RuleService.unlinkUser(rule, user)
+            .then(function() {
+                done();
+            }, function() {
+                throw new Error('the users should be linked to the specific rule');
+            });
+        });
+        
         // 初始化检测区间
         it("the filter rule should be created", function(done) {
             RuleService.initFilterRules(rule).then(function(res) {
@@ -261,66 +321,6 @@ define(function(require, exports) {
                 done();
             }, function() {
                 throw new Error('the replyconfig can\'t be removed');
-            });
-        });
-
-        // 获取测试用户的信息
-        var user;
-        it("the user should be retrieved", function(done) {
-            expect(UserService).not.to.be(undefined);
-
-            UserService.queryAll({mobile: TESTCONFIGS.user.mobile})
-            .then(function(users) {
-                expect(users).not.to.be(undefined);
-                expect(users.length).to.be(1);
-                user = users[0];
-                done();
-            }, function() {
-                throw new Error('the replyconfig can\'t be removed');
-            });
-        });
-
-        // 绑定用户
-        it("the users should be linked to the specific rule", function(done) {
-            expect(RuleService).not.to.be(undefined);
-
-            RuleService.linkUser(filterRule, user)
-            .then(function(flag) {
-                if (flag) {
-                    done();
-                } else {
-                    throw new Error('the users should be linked to the specific rule');
-                }
-                done();
-            }, function() {
-                throw new Error('the users should be linked to the specific rule');
-            });
-        });
-
-        // 绑定的用户数应该为1
-        it("one link should be retrieved by the specific rule", function(done) {
-            expect(RuleService).not.to.be(undefined);
-
-            RuleService.getUsers(filterRule)
-            .then(function(users) {
-                expect(users).not.to.be(undefined);
-                expect(users.length).to.be(1);
-                expect(users[0].id).to.be(user.id);
-                done();
-            }, function() {
-                throw new Error('the users should be linked to the specific rule');
-            });
-        });
-
-        // 解除用户绑定
-        it("the users should be unlinked to the specific rule", function(done) {
-            expect(RuleService).not.to.be(undefined);
-
-            RuleService.unlinkUser(filterRule, user)
-            .then(function() {
-                done();
-            }, function() {
-                throw new Error('the users should be linked to the specific rule');
             });
         });
 
