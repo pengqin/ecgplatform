@@ -81,6 +81,8 @@ angular.module('ecgTask', ['ecgTaskService', 'ecgTaskView', 'ecgReplyForm'])
                 if (count === len) {
                     $scope.message.success("该检测请求已处理完毕，如需查询，请点击菜单已办工作!");
                     $scope.todo.current = null;
+                    $scope.todo.tasks.splice(0, 1);
+                    selectTask();
                     // 刷新
                     //window.location.reload();
                 }
