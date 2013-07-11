@@ -33,6 +33,17 @@ angular.module('ecgTestApp', ['ecgCommon', 'ecgTask', 'ecgMonitor', 'ecgEmployee
                ChiefService,   ExpertService,   OperatorService ,  ProfileService,
                UserService, RuleService, ReplyConfigService,
                TaskService) {
+    
+    // 判断某个case是否run
+    function runCase(word) {
+        var href = window.location.href;
+        if (href.indexOf("cases") < 0) {
+            return true;
+        } else if (href.indexOf(word) > 0){
+            return true;
+        }
+        return false;
+    }
     // 判断是否登录成功
     var token = $.cookie("AiniaOpAuthToken");
     describe("App REST Test", function() {
@@ -41,16 +52,15 @@ angular.module('ecgTestApp', ['ecgCommon', 'ecgTask', 'ecgMonitor', 'ecgEmployee
             expect(token).not.to.be(undefined);
         });
         // 验证基础模块
-        //testCommon(it, EnumService);
+        runCase('common') ? testCommon(it, EnumService) : null;
         // 验证员工模块
-        //testEmployee(it, ChiefService, ExpertService, OperatorService, ProfileService);
+        runCase('employee') ? testEmployee(it, ChiefService, ExpertService, OperatorService, ProfileService) : null;
         // 验证用户模块
-        //testUser(it, UserService);
+        runCase('user') ? testUser(it, UserService) : null;
         // 验证规则及回复模块
-        testRule(it, RuleService, ReplyConfigService);
+        runCase('rule') ? testRule(it, RuleService, ReplyConfigService) : null;
         // 验证任务模块
-        //testTask(it, ProfileService, TaskService);
-
+        runCase('task') ? testTask(it, ProfileService, TaskService) : null;
     });
     mocha.run();
 }]);
