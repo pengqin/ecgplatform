@@ -44,7 +44,7 @@ define(function(require, exports) {
             });
         });
 
-        var task;
+        var task, anothertask;
         it("the undone task list should be retrieved", function(done) {
             TaskService.queryAllTaskByEmployee(
                 user, 
@@ -52,7 +52,9 @@ define(function(require, exports) {
             ).then(function(tasks) {
                 expect(tasks).not.to.be(null);
                 expect(tasks.length).not.to.be(0);
+                expect(tasks.length).not.to.be(1);
                 task = tasks[0];
+                anothertask = tasks[1];
                 env.undone = tasks.length;
                 expect(task.userId).not.to.be(null);
                 expect(task.examinationId).not.to.be(null);
@@ -71,7 +73,7 @@ define(function(require, exports) {
             });
         });
 
-        var examination;
+        var examination, anotherexamination;
         it("the examination of a specific undone task should be retrieved", function(done) {
             expect(task).not.to.be(undefined);
             TaskService.getExamination(task.id)
@@ -83,14 +85,30 @@ define(function(require, exports) {
             });
         });
 
-        // 并行的插入2条回复
-        it("two replies of the examination be created", function(done) {
+        it("the other examination of a specific undone task should be retrieved", function(done) {
+            expect(anothertask).not.to.be(undefined);
+            TaskService.getExamination(anothertask.id)
+            .then(function(pesistedExamination) {
+                expect(pesistedExamination).not.to.be(undefined);
+                expect(pesistedExamination).not.to.be(null);
+                anotherexamination = pesistedExamination;
+                done();
+            });
+        });
+
+        // 并行的插入5条和3条回复
+        var replys;
+        it("five replies of the examination be created", function(done) {
             expect(task).not.to.be(undefined);
             expect(examination).not.to.be(undefined);
 
-            var replys = [], len = 0, count = 0;
+            var len = 0, count = 0;
+            replys = []
             replys.push({result: "结果1", content: "建议1"});
             replys.push({result: "结果2", content: "建议2"});
+            replys.push({result: "结果3", content: "建议3"});
+            replys.push({result: "结果4", content: "建议4"});
+            replys.push({result: "结果5", content: "建议5"});
             len = replys.length;
 
             $(replys).each(function(i, reply) {
@@ -108,27 +126,68 @@ define(function(require, exports) {
             });
         });
 
-        it("two replies of the examination be retrieved", function(done) {
+        it("fiv replies of the examination be retrieved", function(done) {
             expect(task).not.to.be(undefined);
             expect(examination).not.to.be(undefined);
+            expect(replys).not.to.be(undefined);
 
             TaskService.getReplyByExamination(examination)
-            .then(function(replies) {
-                console.info(replies);
-                expect(replies).not.to.be(undefined);
-                expect(replies).not.to.be(null);
-                expect(replies.length).to.be(2);
+            .then(function(pesistedReplies) {
+                expect(pesistedReplies).not.to.be(undefined);
+                expect(pesistedReplies).not.to.be(null);
+                expect(pesistedReplies.length).to.be(replys.length);
                 done();
             });
         });
 
-        it("the undone task total should be decreased with 1", function(done) {
+        var secreplies = [];
+        it("threee replies of the other examination be created", function(done) {
+            expect(anothertask).not.to.be(undefined);
+            expect(anotherexamination).not.to.be(undefined);
+
+            var len = 0, count = 0;
+            secreplies = []
+            secreplies.push({result: "另外结果1", content: "建议1"});
+            secreplies.push({result: "另外结果2", content: "建议2"});
+            secreplies.push({result: "另外结果3", content: "建议3"});
+            len = secreplies.length;
+
+            $(secreplies).each(function(i, reply) {
+                TaskService.reply(anotherexamination, reply)
+                .then(function(flag) {
+                    if (flag) {
+                        count++;
+                    }
+                    if (count === len) {
+                        done();
+                    }
+                }, function() {
+                    throw new Error("failed to create a reply for a specific examination.");
+                });
+            });
+        });
+
+        it("three replies of the other examination be retrieved", function(done) {
+            expect(anothertask).not.to.be(undefined);
+            expect(anotherexamination).not.to.be(undefined);
+            expect(secreplies).not.to.be(undefined);
+
+            TaskService.getReplyByExamination(anotherexamination)
+            .then(function(pesistedReplies) {
+                expect(pesistedReplies).not.to.be(undefined);
+                expect(pesistedReplies).not.to.be(null);
+                expect(pesistedReplies.length).to.be(secreplies.length);
+                done();
+            });
+        });
+
+        it("the undone task total should be decreased with 2", function(done) {
             TaskService.queryAllTaskByEmployee(
                 user, 
                 {status: 'undone'}
             ).then(function(tasks) {
                 expect(tasks).not.to.be(null);
-                expect(tasks.length).to.be(env.undone - 1);
+                expect(tasks.length).to.be(env.undone - 2);
                 env.undone -= 1;
                 done();
             });
@@ -140,7 +199,7 @@ define(function(require, exports) {
                 {status: 'done'}
             ).then(function(tasks) {
                 expect(tasks).not.to.be(null);
-                expect(tasks.length).to.be(env.done + 1);
+                expect(tasks.length).to.be(env.done + 2);
                 env.done = tasks.length;
                 done();
             });

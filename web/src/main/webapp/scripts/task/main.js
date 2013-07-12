@@ -65,6 +65,14 @@ angular.module('ecgTask', ['ecgTaskService', 'ecgTaskView', 'ecgReplyForm'])
             $scope.todo.replyform = position;
         }
     };
+
+    function finish() {
+        $scope.todo.current = null;
+        $scope.todo.tasks.splice(0, 1);
+        $scope.todo.replyform = 'hidden';
+        selectTask();
+    }
+
     // 回复
     $scope.todo.submitReplies = function() {
         var len = $scope.replyform.replys.length, count = 0;
@@ -79,12 +87,8 @@ angular.module('ecgTask', ['ecgTaskService', 'ecgTaskView', 'ecgReplyForm'])
                     $scope.message.error("无法处理该条记录，请联系管理员!");
                 }
                 if (count === len) {
-                    $scope.message.success("该检测请求已处理完毕，如需查询，请点击菜单已办工作!");
-                    $scope.todo.current = null;
-                    $scope.todo.tasks.splice(0, 1);
-                    selectTask();
-                    // 刷新
-                    //window.location.reload();
+                    $scope.message.success("标识为 " + $scope.todo.current.id+ " 的检测请求已处理完毕!");
+                    finish();
                 }
             }, function() {
                 $scope.dialog.hideStandby();
@@ -100,15 +104,15 @@ angular.module('ecgTask', ['ecgTaskService', 'ecgTaskView', 'ecgReplyForm'])
             $scope.dialog.hideStandby();
             if (flag) {
                 $scope.message.success("该检测请求已转交给专家处理!");
-                $scope.todo.selected = null;
+                finish();
             } else {
-                $scope.message.error("无法转交该任务，请联系管理员!");
+                $scope.message.error("无法转交该任务，可能尚未配置相应专家，请联系管理员!");
             }
             // 刷新
             $scope.todo.refreshGrid();
         }, function() {
             $scope.dialog.hideStandby();
-            $scope.message.error("无法转交该任务，请联系管理员!");
+            $scope.message.error("无法转交该任务，可能尚未配置相应专家，请联系管理员!");
         });
     };
 }])

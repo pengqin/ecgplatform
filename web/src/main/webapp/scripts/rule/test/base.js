@@ -58,7 +58,7 @@ define(function(require, exports) {
             expect(token).not.to.be(undefined);
             expect(RuleService).not.to.be(undefined);
             RuleService.queryAllGroup().then(function(rules) {
-                expect(rules.length).to.be(3);
+                expect(rules.length).not.to.be(0);
                 var rule = rules[0];
                 expect(rule.type).not.to.be(undefined);
                 expect(rule.code).not.to.be(undefined);
@@ -103,6 +103,8 @@ define(function(require, exports) {
                 } else {
                     throw new Error('the rule can\'t be created');
                 }
+            }, function() {
+                throw new Error('the rule can\'t be created');
             });
         });
         
@@ -118,25 +120,23 @@ define(function(require, exports) {
             });
         });
 
+
         // 能更新
         it("the rule should be updated as expectation", function(done) {
-            RuleService.get(rule.id).then(function(rule) {
-                rule.name = " updated";
-                rule.remark += " updated";;
-                delete rule.version;
-                RuleService.update(rule).then(function() {
-                    RuleService.get(rule.id).then(function(pesistedRule) {
-                        expect(pesistedRule).not.to.be(undefined);
-                        expect(pesistedRule.id).to.be(rule.id);
-                        expect(pesistedRule.name).to.be(rule.name);
-                        expect(pesistedRule.remark).to.be(rule.remark);
-                        done();
-                    });
+            rule.name = " updated";
+            rule.remark += " updated";;
+            RuleService.update(rule).then(function() {
+                RuleService.get(rule.id).then(function(pesistedRule) {
+                    expect(pesistedRule).not.to.be(undefined);
+                    expect(pesistedRule.id).to.be(rule.id);
+                    expect(pesistedRule.name).to.be(rule.name);
+                    expect(pesistedRule.remark).to.be(rule.remark);
+                    done();
                 }, function() {
-                    throw new Error('the rule can\'t be updated by id');
+                    throw new Error('the rule can\'t be retrieved');
                 });
             }, function() {
-                throw new Error('the rule can\'t be retrieved by id');
+                throw new Error('the rule can\'t be updated by id');
             });
         });
 
@@ -158,7 +158,7 @@ define(function(require, exports) {
 
         // 绑定用户
         it("the users should be linked to the specific rule", function(done) {
-            expect(RuleService).not.to.be(undefined);
+            expect(user).not.to.be(undefined);
 
             RuleService.linkUser(rule, user)
             .then(function(flag) {
@@ -167,7 +167,6 @@ define(function(require, exports) {
                 } else {
                     throw new Error('the users should be linked to the specific rule');
                 }
-                done();
             }, function() {
                 throw new Error('the users should be linked to the specific rule');
             });
@@ -176,9 +175,12 @@ define(function(require, exports) {
         // 绑定的用户数应该为1
         it("one link should be retrieved by the specific rule", function(done) {
             expect(RuleService).not.to.be(undefined);
+            expect(rule).not.to.be(undefined);
+            expect(user).not.to.be(undefined);
 
             RuleService.getUsers(rule)
             .then(function(users) {
+                
                 expect(users).not.to.be(undefined);
                 expect(users.length).to.be(1);
                 expect(users[0].id).to.be(user.id);
@@ -227,9 +229,9 @@ define(function(require, exports) {
 
         // 不能创建非法数据
         it("the replyconfig for a specific filter rule should not be created without required fields", function(done) {
-            expect(filterRule).not.to.be(undefined);
             expect(ReplyConfigService).not.to.be(undefined);
             expect(ReplyConfigService.getPlainObject).not.to.be(undefined);
+            expect(filterRule).not.to.be(undefined);
             
             var invalid = ReplyConfigService.getPlainObject();
 
@@ -323,7 +325,6 @@ define(function(require, exports) {
                 throw new Error('the replyconfig can\'t be removed');
             });
         });
-
 
         // 删除rule
         it("the rule should be removed", function(done) {

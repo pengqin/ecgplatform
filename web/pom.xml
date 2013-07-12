@@ -63,7 +63,6 @@
 					</configuration>
 				</plugin>
 
-				<!-- 
 				<plugin>
 					<groupId>net.alchim31.maven</groupId>
 					<artifactId>yuicompressor-maven-plugin</artifactId>
@@ -98,7 +97,6 @@
 						<outputDirectory>${project.build.outputDirectory}/web/scripts</outputDirectory>
 					</configuration>
 				</plugin>
-				-->
 
 	            <!-- http://matychen.iteye.com/blog/1477350 -->
 				<plugin>
