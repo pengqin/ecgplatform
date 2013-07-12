@@ -102,6 +102,20 @@ angular.module('ecgTaskService', [])
                     return false;
                 });
             },
+            complete: function(task) {
+                return $http({
+                    method: 'PUT',
+                    headers:{'Content-Type':'application/x-www-form-urlencoded'},
+                    data: $.param({
+                        status: 'completed'
+                    }),
+                    url: PATH + '/api/task/' + task.id
+                }).then(function(res) {
+                    return true;
+                }, function() {
+                    return false;
+                });
+            },
             getReplyByExamination: function(examination) {
                 var id = examination.id || examination;
                 return $http({

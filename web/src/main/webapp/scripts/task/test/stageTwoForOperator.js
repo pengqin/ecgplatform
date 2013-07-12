@@ -40,7 +40,7 @@ define(function(require, exports) {
                 user = persistedUser;
                 done();
             }, function() {
-                return null
+                throw new Error('failed to retrieved the profile');
             });
         });
 
@@ -178,6 +178,48 @@ define(function(require, exports) {
                 expect(pesistedReplies).not.to.be(null);
                 expect(pesistedReplies.length).to.be(secreplies.length);
                 done();
+            });
+        });
+
+        it("the undone task total should be the same after replies is posted", function(done) {
+            TaskService.queryAllTaskByEmployee(
+                user, 
+                {status: 'undone'}
+            ).then(function(tasks) {
+                expect(tasks).not.to.be(null);
+                expect(tasks.length).to.be(env.undone);
+                env.undone -= 1;
+                done();
+            });
+        });
+
+        it("the done task total should be the same after replies is posted", function(done) {
+            TaskService.queryAllTaskByEmployee(
+                user, 
+                {status: 'done'}
+            ).then(function(tasks) {
+                expect(tasks).not.to.be(null);
+                expect(tasks.length).to.be(env.done);
+                env.done = tasks.length;
+                done();
+            });
+        });
+
+        it("the task can be marked as completed", function(done) {
+            TaskService.complete(task)
+            .then(function() {
+                done();
+            }, function() {
+                throw new Error("the task can\' t be marked as completed.");
+            });
+        });
+
+        it("the another task can be marked as completed too", function(done) {
+            TaskService.complete(anothertask)
+            .then(function() {
+                done();
+            }, function() {
+                throw new Error("the task can\' t be marked as completed.");
             });
         });
 
