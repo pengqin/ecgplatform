@@ -83,11 +83,6 @@ angular.module('ecgReplyForm', [])
         });
     };
 
-    // 回复
-    $scope.replyform.submitReplies = function() {
-
-    };
-
     // 转发
     $scope.replyform.forward = function() {
         $scope.dialog.showStandby();
