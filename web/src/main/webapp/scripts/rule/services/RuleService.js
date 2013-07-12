@@ -204,14 +204,14 @@ angular.module('ecgRuleService', [])
                 return $http({
                     method: 'GET',
                     url: uri + '/' + id + '/user'
-                }).then(function(res) { // 构造session用户
+                }).then(function(res) {
                     if (res.data && res.data.length > 0) {
                         return res.data;
                     } else {
                         return [];    
                     }
                 }, function() {
-                    $rootScope.message.error('服务器异常,无法获取数据');
+                    //$rootScope.message.error('服务器异常,无法获取数据');
                     return [];
                 });
             },

@@ -13,6 +13,7 @@ define(function(require, exports) {
     .controller('TaskViewController', ['$scope', 'TaskService',
     function($scope, TaskService) {
         $scope.taskview = {};
+        $scope.taskview.id = '';
     }])
     .directive("ecgTaskView", [ '$location', function($location) {
         return {
@@ -31,6 +32,9 @@ define(function(require, exports) {
        $scope.$watch("todo.current", function() {
            if (!$scope.todo) { return; }
            if (!$scope.todo.current) { return; }
+
+           $scope.taskview.id = $scope.todo.current.id;
+
            if (!$scope.todo.current.user) {
                $scope.usercard.user = null;
                UserService.get($scope.todo.current.userId)
@@ -49,6 +53,9 @@ define(function(require, exports) {
        $scope.$watch("task.selected", function() {
            if (!$scope.task) { return; }
            if (!$scope.task.selected) { return; }
+
+           $scope.taskview.id = $scope.task.selected.id;
+           
            if (!$scope.task.selected.user) {
                $scope.usercard.user = null;
                UserService.get($scope.task.selected.userId)
