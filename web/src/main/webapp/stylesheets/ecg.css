@@ -45,12 +45,12 @@ i {
 	padding-right: 0px;
 }
 /*对主任不可见的菜单*/
-.sidebar-nav.chief .undone,
-.sidebar-nav.chief .done,
+.sidebar-nav.chief .todo,
 .sidebar-nav.chief .chief {
 	display: none
 }
 /*对专家不可见的菜单*/
+.sidebar-nav.expert .task,
 .sidebar-nav.expert .duplicated,
 .sidebar-nav.expert .overview,
 .sidebar-nav.expert #employees-menu-link,
@@ -62,6 +62,7 @@ i {
 
 /*对接线员不可见的菜单*/
 .sidebar-nav.operator .overview,
+.sidebar-nav.operator .task,
 .sidebar-nav.operator #employees-menu-link,
 .sidebar-nav.operator #employees-menu,
 .sidebar-nav.operator #users-menu-link,

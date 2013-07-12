@@ -1,0 +1,27 @@
+<div class="row-fluid">
+    <div class="block span4">
+    <a class="block-heading">请求列表<!--span class="label label-warning">3条异常</span><span class="label label-warning">2条人工异常</span--></a>
+    <div class="block-body block-body-grid collapse in">
+        <!-- 当前区间的回复 -->
+        <table class="table table-hover">
+        <thead>
+            <tr>
+            <th width="20%">客户</th>
+            <th>健康状态</th>
+            <th>处理状态</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="item in task.data" ng-click="task.selected = item">
+                <td nowrap>{{item.userName}}</td>
+                <td nowrap><span class="label label-{{task.translateLevel(item.level)}}">{{task.getLevelLabel(item.level)}}</span></td>
+                <td nowrap>{{task.getWorkStatusLabel(item.status)}}</td>
+            </tr>
+        </tbody>
+        </table>
+    </div>
+    </div>
+    <div class="block span8">
+        <div ecg-task-view></div>
+    </div>
+</div>

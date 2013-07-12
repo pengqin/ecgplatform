@@ -1,0 +1,46 @@
+<div class="row-fluid" ng-show="todo.tasks && todo.tasks.length > 0">
+	<div class="span12 buttons">
+		<button class="btn" type="button"
+				ng-click="todo.reply('top')" ng-disabled="todo.current == null || todo.current.examination == null">
+			<i class="icon-edit"></i>回复
+		</button>
+		<button class="btn" type="button"
+				ng-show="!session.user.isExpert()"
+				ng-click="todo.forward()" ng-disabled="todo.current == null || todo.current.examination == null">
+			<i class="icon-share-alt"></i>设置为异常数据
+		</button>
+    </div>
+</div>
+<div class="row-fluid" ng-show="todo.tasks && todo.tasks.length > 0 && todo.replyform == 'top'">
+    <div class="block span12">
+        <div ecg-reply-form></div>
+    </div>
+</div>
+<div class="row-fluid" ng-show="todo.tasks && todo.tasks.length > 0">
+    <div class="block span12">
+        <div ecg-task-view></div>
+    </div>
+</div>
+<div class="row-fluid" ng-show="todo.tasks && todo.tasks.length == 0">
+    <div class="span12">
+        没有可处理的检测请求
+    </div>
+</div>
+<div class="row-fluid" ng-show="todo.tasks && todo.tasks.length > 0 && todo.replyform == 'bottom'">
+    <div class="block span12">
+        <div ecg-reply-form></div>
+    </div>
+</div>
+<div class="row-fluid" ng-show="todo.tasks && todo.tasks.length > 0">
+    <div class="span12 buttons">
+        <button class="btn" type="button"
+                ng-click="todo.reply('bottom')" ng-disabled="todo.current == null || todo.current.examination == null">
+            <i class="icon-edit"></i>回复
+        </button>
+        <button class="btn" type="button"
+                ng-show="!session.user.isExpert()"
+                ng-click="todo.forward()" ng-disabled="todo.current == null || todo.current.examination == null">
+            <i class="icon-share-alt"></i>设置为异常数据
+        </button>
+    </div>
+</div>

@@ -59,6 +59,7 @@ angular.module('ecgRuleBaseDirectives', [])
             $scope.rule.rules = rules;
             filteredRules();
         }, function() {
+            $scope.dialog.hideStandby();
             $scope.message.error("无法加载规则数据!");
         });
     };
@@ -219,9 +220,12 @@ angular.module('ecgRuleBaseDirectives', [])
 
     // 初始化界面,并获得最新version
     function refresh() {
+        $scope.dialog.showLoading();
         RuleService.get($routeParams.id).then(function(rule) {
+            $scope.dialog.hideStandby();
             $scope.rule.updateobj = rule;
         }, function() {
+            $scope.dialog.hideStandby();
             $scope.message.error("加载规则数据失败.");
         });
     };
