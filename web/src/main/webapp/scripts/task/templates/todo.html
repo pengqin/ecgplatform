@@ -1,13 +1,8 @@
-<div class="row-fluid" ng-show="todo.tasks && todo.tasks.length > 0">
+<div class="row-fluid" ng-show="todo.tasks && todo.tasks.length > 0 && todo.replyform != 'top' && todo.replyform != 'bottom'">
 	<div class="span12 buttons">
 		<button class="btn" type="button"
 				ng-click="todo.reply('top')" ng-disabled="todo.current == null || todo.current.examination == null">
-			<i class="icon-edit"></i>回复
-		</button>
-		<button class="btn" type="button"
-				ng-show="!session.user.isExpert()"
-				ng-click="todo.forward()" ng-disabled="todo.current == null || todo.current.examination == null">
-			<i class="icon-share-alt"></i>设置为异常数据
+			<i class="icon-edit"></i>回复...
 		</button>
     </div>
 </div>
@@ -31,16 +26,12 @@
         <div ecg-reply-form></div>
     </div>
 </div>
-<div class="row-fluid" ng-show="todo.tasks && todo.tasks.length > 0">
+<div class="row-fluid" ng-show="todo.tasks && todo.tasks.length > 0 && todo.replyform != 'top' && todo.replyform != 'bottom'">
     <div class="span12 buttons">
         <button class="btn" type="button"
                 ng-click="todo.reply('bottom')" ng-disabled="todo.current == null || todo.current.examination == null">
-            <i class="icon-edit"></i>回复
-        </button>
-        <button class="btn" type="button"
-                ng-show="!session.user.isExpert()"
-                ng-click="todo.forward()" ng-disabled="todo.current == null || todo.current.examination == null">
-            <i class="icon-share-alt"></i>设置为异常数据
+            <i class="icon-edit"></i>回复...
         </button>
     </div>
 </div>
+<div ecg-reply-dialog></div>

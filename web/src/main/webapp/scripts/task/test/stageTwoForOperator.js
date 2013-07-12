@@ -126,7 +126,7 @@ define(function(require, exports) {
             });
         });
 
-        it("fiv replies of the examination be retrieved", function(done) {
+        it("five replies of the examination be retrieved", function(done) {
             expect(task).not.to.be(undefined);
             expect(examination).not.to.be(undefined);
             expect(replys).not.to.be(undefined);
@@ -140,7 +140,7 @@ define(function(require, exports) {
             });
         });
 
-        var secreplies = [];
+        var secreplies;
         it("threee replies of the other examination be created", function(done) {
             expect(anothertask).not.to.be(undefined);
             expect(anotherexamination).not.to.be(undefined);

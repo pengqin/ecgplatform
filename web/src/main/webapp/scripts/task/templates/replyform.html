@@ -1,91 +1,51 @@
 <a class="block-heading" data-toggle="collapse">填写回复</a>
 <div  class="block-body collapse in">
 
-    <!-- 当前回复 -->
-    <table class="table table-hover" ng-show="replyform.replys.length > 0">
+<!-- 当前回复 -->
+<table class="table table-hover" ng-show="replyform.replys.length > 0">
     <thead>
-      <tr>
-      <th >回复</th>
-      <th width="15%">操作</th>
-      </tr>
+        <tr>
+        <th >回复</th>
+        <th width="15%">操作</th>
+        </tr>
     </thead>
     <tbody>
-      <tr ng-repeat="reply in replyform.replys">
+        <tr ng-repeat="reply in replyform.replys">
         <td>
-        <p style="width:500px; word-wrap: break-word;">
-          <strong>检测结果：</strong> {{reply.result}} <br/><strong>检测建议：</strong> {{reply.content}}
-        </p>
+            <p style="width:500px; word-wrap: break-word;"><strong>检测结果：</strong> {{reply.result}} <br/><strong>检测建议：</strong> {{reply.content}}</p>
         </td>
         <td>
-          <button class="btn btn-small btn-danger" type="button" ng-click="replyform.remove($index)">删除</button>
+            <button class="btn btn-small btn-danger" type="button" ng-click="replyform.remove($index)">删除</button>
         </td>
-      </tr>
+        </tr>
     </tbody>
-    </table>
+</table>
 
-    <!-- 人工回复 -->
-    <a href="javascript:void(0)" ng-click="replyform.mannual = !replyform.mannual" ng-show="replyform.replys.length > 0">
-    	&nbsp;&nbsp;
-    	<span ng-show="!replyform.mannual">展开人工回复界面</span>
-    	<span ng-show="replyform.mannual" ng-click="replyform.cancel()">收起</span>
-    </a>
-    <form name="saveReplyForm" ng-show="replyform.replys.length == 0 || replyform.mannual">
-        <table class="ecgprops">
-
-        <tr>
-        <td width="100px" valign="top"><label for="replyform-result">结果:</label></td>
-        </tr>
-
-        <tr>
-        <td>
-          <input ng-model="replyform.reply.result" class="input-xlarge" id="replyform-result" required placeholder="请输入结果,最多10个汉字。"></input>
-          <span class="required">*</span>
-        </tr>
-
-        <tr>
-        <td valign="top"><label for="replyform-content">回复内容:</label></td>
-        </tr>
-
-        <tr>
-        <td>
-          <textarea rows="3" ng-model="replyform.reply.content"
-           class="input-xlarge" id="replyform-content" required placeholder="请输入回复内容" style="width:450px;"></textarea>
-          <span class="required">*</span>
-        </td>
-        </tr>
-
-        <tr>
-        <td>
-          <button class="btn" type="button"
-            ng-class="{'btn-primary': saveReplyForm.$valid}" 
-            ng-click="replyform.addManual()"
-            ng-disabled="!saveReplyForm.$valid">
-          <i class="icon-save"></i>增加
-          </button>
-          <button class="btn" type="button" ng-click="replyform.cancelManual()">
-          <i class="icon-remove"></i>取消
-          </button>
-        </td>
-        </tr>
-
-        </table>
-	</form>
-
-	<br/>
-	<br/>
-
-	<div class="pull-right">
-      <button class="btn" type="button"
+<div class="pull-right" style="clear:both; margin: 10px 0px;">
+    <button class="btn btn-primary" type="button"
+        ng-click="replyform.addManual()">
+        <i class="icon-edit"></i>增加人工回复
+    </button>
+    <button class="btn btn-primary" type="button"
+        ng-show="!session.user.isExpert()"
+        ng-click="replyform.forward()" ng-disabled="todo.current == null || todo.current.examination == null">
+        <i class="icon-share"></i>转交专家处理
+    </button>
+    <button class="btn" type="button"
         ng-class="{'btn-primary': replyform.replys && replyform.replys.length > 0}" 
-        ng-click="todo.submitReplies()"
+        ng-click="replyform.complete()"
         ng-disabled="!replyform.replys || replyform.replys.length == 0">
-      <i class="icon-save"></i>提交回复
-      </button>
-      <button class="btn" type="button" ng-click="todo.replyform = 'hidden'">
-      <i class="icon-remove"></i>取消回复
-      </button>
-	</div>
+        <i class="icon-check"></i>回复用户
+</button>
+</div>
 
-	<br/>
-	<br/>
+<div class="pull-right" style="clear:both; margin: 10px 0px;">
+    <button class="btn" type="button" ng-click="replyform.reset()">
+        <i class="icon-repeat"></i>重置
+    </button>
+    <button class="btn" type="button" ng-click="todo.replyform = 'hidden'">
+        <i class="icon-remove"></i>取消
+    </button>
+</div>
+<br/>
 </div>
