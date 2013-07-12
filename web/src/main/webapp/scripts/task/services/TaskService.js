@@ -3,7 +3,7 @@ define(function(require, exports) {
 'use strict';
 
 angular.module('ecgTaskService', [])
-    .factory("TaskService", ['$rootScope', '$http', function($rootScope, $http) {
+    .factory("TaskService", ['$rootScope', '$http', '$q', function($rootScope, $http, $q) {
         return {
             queryAllTaskByEmployee: function(user, opts) {
                 var opts = opts || {}, url, params = '?';
@@ -86,6 +86,24 @@ angular.module('ecgTaskService', [])
                 }, function() {
                     $rootScope.message.error('服务器异常,无法获取数据');
                     return [];
+                });
+            },
+            replyInBatch: function(examination, replies) {
+                var posts = [], len = 0, count = 0, that = this;
+                $(replies).each(function(i, reply) {
+                    if (!reply.id) {
+                        posts.push(that.reply(examination, reply));
+                    }
+                });
+
+                return $q.all(posts).then(function(responses) {
+                    var allsuccess = true;
+                    $(responses).each(function(i, result){
+                        if (!result) {
+                            allsuccess = false;
+                        }
+                    });
+                    return allsuccess;
                 });
             },
             forward: function(task) {

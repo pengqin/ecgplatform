@@ -1,0 +1,48 @@
+<div id="ecgReplyDialog" class="modal hide" style="width:650px;" tabindex="-1" role="dialog" aria-labelledby="ecgModalLabel" aria-hidden="true">
+    <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3>增加人工回复</h3>
+</div>
+<div class="modal-body">
+    <form name="addManualReplyForm">
+        <table class="ecgprops">
+
+        <tr>
+        <td width="100px" valign="top"><label for="replydialog-result">结果:</label></td>
+        </tr>
+
+        <tr>
+        <td>
+        <input ng-model="replydialog.reply.result" class="input-xlarge" id="replydialog-result" required placeholder="请输入结果,最多10个汉字。"></input>
+        <span class="required">*</span>
+        </tr>
+
+        <tr>
+        <td valign="top"><label for="replydialog-content">回复内容:</label></td>
+        </tr>
+
+        <tr>
+        <td>
+        <textarea rows="3" ng-model="replydialog.reply.content"
+        class="input-xlarge" id="replydialog-content" required placeholder="请输入回复内容" style="width:450px;"></textarea>
+        <span class="required">*</span>
+        </td>
+        </tr>
+
+        </table>
+    </form>
+</div>
+
+<div class="modal-footer">
+    <button class="btn" type="button"
+        ng-class="{'btn-primary': addManualReplyForm.$valid}" 
+        ng-click="replydialog.execute()"
+        ng-disabled="!addManualReplyForm.$valid">
+        <i class="icon-ok"></i>增加
+    </button>
+    <button class="btn" data-dismiss="modal" aria-hidden="true">
+        <i class="icon-remove"></i>关闭
+    </button>
+</div>
+
+</div>
