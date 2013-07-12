@@ -15,6 +15,10 @@
     TESTCONFIGS.expert.username = "expert";
     TESTCONFIGS.expert.password = "passw0rd";
 
+    TESTCONFIGS.expert1 = {};
+    TESTCONFIGS.expert1.username = "expert1";
+    TESTCONFIGS.expert1.password = "passw0rd";
+
     TESTCONFIGS.operator = {};
     TESTCONFIGS.operator.username = "operator";
     TESTCONFIGS.operator.password = "passw0rd";
