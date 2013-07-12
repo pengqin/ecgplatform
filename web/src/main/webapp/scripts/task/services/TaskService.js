@@ -16,7 +16,13 @@ angular.module('ecgTaskService', [])
                 }
 
                 if (opts.status === 'undone') {
-                    params += 'status:ne=completed';
+                    if (user.roles === 'operator') {
+                        params += 'status=pending';
+                    } else if (user.roles === 'expert') {
+                        params += 'status=proceeding'
+                    } else {
+                        params += 'status:ne=completed';
+                    }
                 } else if (opts.status === 'done') {
                     params += 'status=completed';
                 }
