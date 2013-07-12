@@ -16,7 +16,7 @@ angular.module('ecgTaskService', [])
                 }
 
                 if (opts.status === 'undone') {
-                    params += 'status=pending&status=proceeding';
+                    params += 'status:ne=completed';
                 } else if (opts.status === 'done') {
                     params += 'status=completed';
                 }
