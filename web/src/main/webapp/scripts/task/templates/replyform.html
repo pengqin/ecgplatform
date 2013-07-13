@@ -37,9 +37,9 @@
         <i class="icon-share"></i>转交专家处理
     </button>
     <button class="btn" type="button"
-        ng-class="{'btn-primary': replyform.replys && replyform.replys.length > 0}" 
+        ng-class="{'btn-primary': replyform.canReply}" 
         ng-click="replyform.complete()"
-        ng-disabled="!replyform.replys || replyform.replys.length == 0">
+        ng-disabled="!replyform.canReply">
         <i class="icon-check"></i>回复用户
 </button>
 </div>
