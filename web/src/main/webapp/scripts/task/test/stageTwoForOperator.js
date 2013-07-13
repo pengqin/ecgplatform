@@ -188,7 +188,6 @@ define(function(require, exports) {
             ).then(function(tasks) {
                 expect(tasks).not.to.be(null);
                 expect(tasks.length).to.be(env.undone);
-                env.undone -= 1;
                 done();
             });
         });
@@ -200,7 +199,6 @@ define(function(require, exports) {
             ).then(function(tasks) {
                 expect(tasks).not.to.be(null);
                 expect(tasks.length).to.be(env.done);
-                env.done = tasks.length;
                 done();
             });
         });
@@ -230,7 +228,7 @@ define(function(require, exports) {
             ).then(function(tasks) {
                 expect(tasks).not.to.be(null);
                 expect(tasks.length).to.be(env.undone - 2);
-                env.undone -= 1;
+                env.undone -= 2;
                 done();
             });
         });
