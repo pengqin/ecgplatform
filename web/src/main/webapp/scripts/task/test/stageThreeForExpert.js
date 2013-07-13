@@ -55,6 +55,34 @@ define(function(require, exports) {
                 expect(task.userId).not.to.be(null);
                 expect(task.examinationId).not.to.be(null);
                 done();
+            }, function() {
+                throw new Error('failed to retrieved the undone task list.');
+            });
+        });
+
+        var examination;
+        it("the examination for expert should be retrieved", function(done) {
+            expect(task).not.to.be(undefined);
+            TaskService.getExamination(task.examinationId)
+            .then(function(pesistedExamination) {
+                expect(examination).not.to.be(null);
+                examination = pesistedExamination;
+                done();
+            }, function() {
+                throw new Error('failed to retrieved the examination');
+            });
+        });
+
+        var replys;
+        it("the replys of the examination for the expert should be greater than 0", function(done) {
+            expect(examination).not.to.be(undefined);
+            TaskService.getReplyByExamination(examination)
+            .then(function(replys) {
+                expect(replys).not.to.be(undefined);
+                expect(replys).not.to.be(0);
+                done();
+            }, function() {
+                throw new Error('failed to retrieved the replys');
             });
         });
     };
