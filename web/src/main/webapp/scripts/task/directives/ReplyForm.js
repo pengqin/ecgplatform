@@ -21,17 +21,11 @@ angular.module('ecgReplyForm', [])
     $scope.replyform.getWorkStatusLabel = EnumService.getWorkStatusLabel;
 
     $scope.replyform.reset = function() {
-        $scope.replyform.replys = [];
-        loadRules();
-    };
-
-    // 删除已选回复
-    $scope.replyform.remove = function(idx) {
-        var reply = $scope.replyform.replys[idx];
-        if (reply && reply.rule) {
-            reply.rule.used = false;
+        if ($scope.todo.current.status == 'pending') {
+            loadRules();
+        } else {
+            loadReplies();
         }
-        $scope.replyform.replys.splice(idx, 1);
     };
 
     // 加载预设回复
@@ -87,13 +81,47 @@ angular.module('ecgReplyForm', [])
         });
     };
 
+    // 加载接线员的评价
+    function loadReplies() {
+      TaskService.getReplyByExamination($scope.todo.current.examinationId)
+      .then(function(replys) {
+          $scope.replyform.replys = replys;
+      });
+    };
+
     // 监听未完成
     $scope.$watch("todo.current.examination", function() {
         if (!$scope.todo) { return; }
         if (!$scope.todo.current) { return; }
         if (!$scope.todo.current.examination) { return; }
-        loadRules();
+        $scope.replyform.reset();
     });
+
+    // 删除已选回复
+    $scope.replyform.remove = function(idx) {
+        var reply = $scope.replyform.replys[idx];
+        if (reply && reply.rule) {
+            reply.rule.used = false;
+        }
+        if (reply.id) {
+            reply.removed = true;
+        } else {
+            $scope.replyform.replys.splice(idx, 1);
+        }
+        
+    };
+
+    // 编辑回复
+    $scope.replyform.edit = function(reply) {
+        $scope.replydialog.show({
+            reply: reply,
+            handler: function(reply) {
+                if (reply.reason) {
+                   reply.reason += "专家修改";
+                }
+            }
+        });
+    };
 
     // 弹出人工回复窗口
     $scope.replyform.addManual = function() {
@@ -176,25 +204,33 @@ angular.module('ecgReplyForm', [])
     $scope.replydialog = {};
 
     // 表格展示
-    $scope.replydialog.reply = TaskService.getPlainReply();
+    $scope.replydialog.reply = null;
 
+    function reset() {
+        $scope.replydialog.reply = TaskService.getPlainReply();
+    };
+    reset();
 
     $scope.replydialog.execute = function() {
         var selecteds = [];
-        $scope.replydialog.hide();
         if ($scope.replydialog.handler instanceof Function) {
             $scope.replydialog.handler($scope.replydialog.reply);
         }
+        $scope.replydialog.hide();
     };
 
     $scope.replydialog.hide = function(opts) {
-      $('#ecgReplyDialog').modal('hide');
+        reset();
+        $('#ecgReplyDialog').modal('hide');
     };
 
     $scope.replydialog.show = function(opts) {
-      var opts = opts || {};
-      $scope.replydialog.handler = opts.handler;
-      $('#ecgReplyDialog').modal('show');
+        var opts = opts || {};
+        if (opts.reply) {
+            $scope.replydialog.reply = opts.reply;
+        }
+        $scope.replydialog.handler = opts.handler;
+        $('#ecgReplyDialog').modal('show');
     };
 
 }])

@@ -59,9 +59,9 @@ angular.module('ecgTaskService', [])
             },
             getPlainReply: function() {
                 return {
-                    title: "标题",
                     result: "",
-                    content: ""
+                    content: "",
+                    reason: "reasone"
                 };
             },
             reply: function(examination, reply) {
@@ -87,16 +87,27 @@ angular.module('ecgTaskService', [])
                         return false;
                     });
                 } else {
-                    promise = $http({
-                        method: 'PUT',
-                        headers:{'Content-Type':'application/x-www-form-urlencoded'},
-                        data: $.param(newreply),
-                        url: PATH + '/api/reply/' + reply.id
-                    }).then(function(res) {
-                        return true;
-                    }, function() {
-                        return false;
-                    });
+                    if (reply.removed) {
+                        promise = $http({
+                            method: 'DELETE',
+                            url: PATH + '/api/reply/' + reply.id
+                        }).then(function(res) {
+                            return true;
+                        }, function() {
+                            return false;
+                        });
+                    } else {
+                        promise = $http({
+                            method: 'PUT',
+                            headers:{'Content-Type':'application/x-www-form-urlencoded'},
+                            data: $.param(newreply),
+                            url: PATH + '/api/reply/' + reply.id
+                        }).then(function(res) {
+                            return true;
+                        }, function() {
+                            return false;
+                        });
+                    }
                 }
                 return promise;
             },

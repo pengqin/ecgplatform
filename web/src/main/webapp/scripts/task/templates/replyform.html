@@ -10,7 +10,7 @@
         </tr>
     </thead>
     <tbody>
-        <tr ng-repeat="reply in replyform.replys">
+        <tr ng-repeat="reply in replyform.replys" ng-show="!reply.removed">
         <td>
             <p style="width:600px; word-wrap: break-word;">
                 <strong>检测结果：</strong> {{reply.result}} <br/>
@@ -19,6 +19,7 @@
             </p>
         </td>
         <td>
+            <button class="btn btn-small" type="button" ng-click="replyform.edit(reply)">编辑</button>
             <button class="btn btn-small btn-danger" type="button" ng-click="replyform.remove($index)">删除</button>
         </td>
         </tr>
