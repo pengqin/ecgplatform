@@ -16,8 +16,8 @@ angular.module('ecgCommon', ["angular-table", "ecgNav", "ecgHeader", "ecgMessage
         'outside': '数据异常'
     };
     var workstatus = {
-        'pending': '等待处理',
-        'proceeding': '处理中',
+        'pending': '等待接线员处理',
+        'proceeding': '等待专家处理',
         'completed': '已处理'
     };
     var codes = {
