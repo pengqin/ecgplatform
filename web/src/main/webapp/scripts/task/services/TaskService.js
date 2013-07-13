@@ -27,6 +27,10 @@ angular.module('ecgTaskService', [])
                     params += 'status=completed';
                 }
 
+                if (opts.id) {
+                    params += '&id=' + opts.id;
+                }
+
                 return $http({
                     method: 'GET',
                     url: PATH + url + params
