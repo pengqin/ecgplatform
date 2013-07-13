@@ -82,8 +82,9 @@ angular.module('ecgTask', ['ecgTaskService', 'ecgTaskView', 'ecgReplyForm'])
         if ($routeParams.id) {
             $location.path("todo");
         } else {
+            var len = $scope.todo.tasks.length;
             $scope.todo.current = null;
-            $scope.todo.tasks.splice(0, 1);
+            $scope.todo.tasks.splice(len - 1, 1);
             $scope.todo.replyform = 'hidden';
             if ($scope.todo.tasks.length > 0) {
                 selectTask();
@@ -100,19 +101,15 @@ angular.module('ecgTask', ['ecgTaskService', 'ecgTaskView', 'ecgReplyForm'])
         } else {
             var len = $scope.todo.tasks.length;
             
-            if (len == 2) {
-                $scope.message.warn("这是最后一条。");
+            if (len == 1) {
+                refreshGrid();
+                return;
             }
 
             $scope.todo.current = null;
             $scope.todo.tasks.splice(len - 1, 1);
             $scope.todo.replyform = 'hidden';
-            
-            if (len == 1) {
-                refreshGrid();
-            } else {
-                selectTask();
-            }
+            selectTask();
         }
     };
 }])
