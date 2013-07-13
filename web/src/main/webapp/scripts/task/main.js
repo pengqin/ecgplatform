@@ -18,7 +18,7 @@ angular.module('ecgTask', ['ecgTaskService', 'ecgTaskView', 'ecgReplyForm'])
     $scope.todo = {};    
     $scope.todo.tasks = null;
     $scope.todo.current = null;
-    $scope.todo.replyform = 'top';
+    $scope.todo.replyform = 'hidden';
 
     // 加载未完成任务
     function refreshGrid() {
