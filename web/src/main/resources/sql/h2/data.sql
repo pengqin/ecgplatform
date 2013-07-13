@@ -104,6 +104,9 @@ values (14, '标题' ,  '需要检查呼吸的个性建议' , '需要检查呼�
 insert into health_rule_reply (id , title , content , result , rule_id, created_date, last_updated, version)
 values (15, '标题' , '呼吸异常的个性建议' ,'呼吸异常' ,  18, '2012-06-04 01:00:00', '2012-06-04 01:00:00' , 1);
 
+insert into health_rule_user (rule_id, user_id) values
+(13, 1);
+
 -- health_examination start
 insert into health_examination (id , user_id , test_item , user_name , user_type , level , blood_pressure_low,blood_pressure_high,heart_rhythm , breath,body_temp,pulserate,heart_data,latitude,altitude,temp,humidity,pressure,charge_type,heart_features,algorithm_version,created_date,version) 
 values (1,1,'PHONE', '测试用户1','VIP','success',80,120,60,60,37.5,60,'',0.0,200,37.6,null,null,'YEAR',null,null,'2013-07-04 01:00:00',1);
@@ -133,29 +136,29 @@ values (12,2,'PHONE', '测试用户2','VIP','danger',80,120,10,10,37.5,60,'',0.0
 -- health_examination end
 -- task start
 insert into task (id , type ,examination_id , status,expert_id,operator_id,auto , created_date , completed_date,version)
-values (1,'examinationTask' , 1 ,'pending',null,8,0,'2013-07-04 01:00:00',null,1);
+values (1,'examinationTask' , 1 ,'pending',null,8,0,'2013-07-01 01:00:00',null,1);
 insert into task (id , type ,examination_id , status,expert_id,operator_id,auto , created_date , completed_date,version)
-values (2,'examinationTask' , 2 ,'pending',null,8,0,'2013-07-04 01:00:00',null,1);
+values (2,'examinationTask' , 2 ,'pending',null,8,0,'2013-07-02 01:00:00',null,1);
 insert into task (id , type ,examination_id , status,expert_id,operator_id,auto , created_date , completed_date,version)
-values (3,'examinationTask' , 3 ,'pending',null,8,0,'2013-07-04 01:00:00',null,1);
+values (3,'examinationTask' , 3 ,'pending',null,8,0,'2013-07-03 01:00:00',null,1);
 insert into task (id , type ,examination_id , status,expert_id,operator_id,auto , created_date , completed_date,version)
 values (4,'examinationTask' , 4 ,'pending',null,8,0,'2013-07-04 01:00:00',null,1);
 insert into task (id , type ,examination_id , status,expert_id,operator_id,auto , created_date , completed_date,version)
-values (5,'examinationTask' , 5 ,'pending',null,8,0,'2013-07-04 01:00:00',null,1);
+values (5,'examinationTask' , 5 ,'pending',null,8,0,'2013-07-05 01:00:00',null,1);
 insert into task (id , type ,examination_id , status,expert_id,operator_id,auto , created_date , completed_date,version)
-values (6,'examinationTask' , 6 ,'pending',null,8,0,'2013-07-04 01:00:00',null,1);
+values (6,'examinationTask' , 6 ,'pending',null,8,0,'2013-07-06 01:00:00',null,1);
 
 insert into task (id , type ,examination_id , status,expert_id,operator_id,auto , created_date , completed_date,version)
-values (7,'examinationTask' , 7 ,'pending',null,9,0,'2013-07-04 01:00:00',null,1);
+values (7,'examinationTask' , 7 ,'pending',null,9,0,'2013-07-07 01:00:00',null,1);
 insert into task (id , type ,examination_id , status,expert_id,operator_id,auto , created_date , completed_date,version)
-values (8,'examinationTask' , 8 ,'pending',null,9,0,'2013-07-04 01:00:00',null,1);
+values (8,'examinationTask' , 8 ,'pending',null,9,0,'2013-07-08 01:00:00',null,1);
 insert into task (id , type ,examination_id , status,expert_id,operator_id,auto , created_date , completed_date,version)
-values (9,'examinationTask' , 9 ,'pending',null,9,0,'2013-07-04 01:00:00',null,1);
+values (9,'examinationTask' , 9 ,'pending',null,9,0,'2013-07-09 01:00:00',null,1);
 insert into task (id , type ,examination_id , status,expert_id,operator_id,auto , created_date , completed_date,version)
-values (10,'examinationTask' , 10 ,'pending',null,9,0,'2013-07-04 01:00:00',null,1);
+values (10,'examinationTask' , 10 ,'pending',null,9,0,'2013-07-10 01:00:00',null,1);
 insert into task (id , type ,examination_id , status,expert_id,operator_id,auto , created_date , completed_date,version)
-values (11,'examinationTask' , 11 ,'pending',null,9,0,'2013-07-04 01:00:00',null,1);
+values (11,'examinationTask' , 11 ,'pending',null,9,0,'2013-07-11 01:00:00',null,1);
 insert into task (id , type ,examination_id , status,expert_id,operator_id,auto , created_date , completed_date,version)
-values (12,'examinationTask' , 12 ,'pending',null,9,0,'2013-07-04 01:00:00',null,1);
+values (12,'examinationTask' , 12 ,'pending',null,9,0,'2013-07-12 01:00:00',null,1);
 -- task end
 commit;

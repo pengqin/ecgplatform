@@ -70,7 +70,6 @@ angular.module('ecgTask', ['ecgTaskService', 'ecgTaskView', 'ecgReplyForm'])
 
     // 展开/收缩窗口
     $scope.todo.reply = function(position) {
-        console.info(position);
         if ($scope.todo.replyform == position) {
             $scope.todo.replyform = 'hidden';
         } else {
@@ -83,8 +82,9 @@ angular.module('ecgTask', ['ecgTaskService', 'ecgTaskView', 'ecgReplyForm'])
         if ($routeParams.id) {
             $location.path("todo");
         } else {
+            var len = $scope.todo.tasks.length;
             $scope.todo.current = null;
-            $scope.todo.tasks.splice(0, 1);
+            $scope.todo.tasks.splice(len - 1, 1);
             $scope.todo.replyform = 'hidden';
             if ($scope.todo.tasks.length > 0) {
                 selectTask();
@@ -101,21 +101,15 @@ angular.module('ecgTask', ['ecgTaskService', 'ecgTaskView', 'ecgReplyForm'])
         } else {
             var len = $scope.todo.tasks.length;
             
-            if (len == 2) {
-                $scope.message.warn("这是最后一条。");
+            if (len == 1) {
+                refreshGrid();
+                return;
             }
 
             $scope.todo.current = null;
             $scope.todo.tasks.splice(len - 1, 1);
             $scope.todo.replyform = 'hidden';
-            
-            if (len == 1) {
-                refreshGrid();
-            } else {
-                selectTask();
-            }
-            
-            
+            selectTask();
         }
     };
 }])
@@ -131,22 +125,7 @@ angular.module('ecgTask', ['ecgTaskService', 'ecgTaskView', 'ecgReplyForm'])
     // level名称
     $scope.task.getWorkStatusLabel = EnumService.getWorkStatusLabel;
 
-    $scope.task.translateLevel = function(level) {
-        switch(level) {
-        case 'danger':
-            return 'important';
-        break;
-        case 'success':
-            return 'success';
-        break;
-        case 'warning':
-            return 'warning';
-        break;
-        case 'outside':
-            return 'inverse';
-        break;
-        }
-    };
+    $scope.task.translateLevel = EnumService.translateLevel;
 
     function refreshGrid() {
         var username = $.cookie("AiniaOpUsername");

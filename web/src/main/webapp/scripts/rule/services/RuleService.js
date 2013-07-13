@@ -33,6 +33,22 @@ angular.module('ecgRuleService', [])
                 params.usage = 'filter';
                 return this.queryAll(params);
             },
+            queryAllGroupByUser: function(user) {
+                var id = user.id || user;
+                return $http({
+                    method: 'GET',
+                    url: PATH + "/api/user/" + id + "/rule"
+                }).then(function(res) { // 构造session用户
+                    if (res.data && res.data.length > 0) {
+                        return res.data;
+                    } else {
+                        return [];    
+                    }
+                }, function() {
+                    $rootScope.message.error('服务器异常,无法获取数据');
+                    return [];
+                });
+            },
             getPlainObject: function() {
                 return {
                     "type": 11, // 必填 数字

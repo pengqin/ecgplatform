@@ -10,10 +10,28 @@ define(function(require, exports) {
     var replyTemplate = require("../templates/examinationreply.html");
 
     angular.module('ecgTaskView', [])
-    .controller('TaskViewController', ['$scope', 'TaskService',
-    function($scope, TaskService) {
+    .controller('TaskViewController', ['$scope', 'EnumService',
+    function($scope, EnumService) {
         $scope.taskview = {};
         $scope.taskview.id = '';
+        $scope.taskview.getLevelLabel = EnumService.getLevelLabel;
+        $scope.taskview.translateLevel = EnumService.translateLevel;
+
+        // 监听未完成
+       $scope.$watch("todo.current", function() {
+           if (!$scope.todo) { return; }
+           if (!$scope.todo.current) { return; }
+
+           $scope.taskview.level = $scope.todo.current.level;
+       });
+
+       // 监听已完成
+       $scope.$watch("task.selected", function() {
+           if (!$scope.task) { return; }
+           if (!$scope.task.selected) { return; }
+
+           $scope.taskview.level = $scope.task.selected.level;
+       });
     }])
     .directive("ecgTaskView", [ '$location', function($location) {
         return {

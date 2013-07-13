@@ -199,7 +199,7 @@ table tbody tr.active {
 
 /* employee link*/
 .employeeLink {
-	float:left; width: 100px; margin-right: 10px;
+	float:left; width: 120px; margin-right: 10px;
 }
 .employeeLink input {
 	margin: 0px;
