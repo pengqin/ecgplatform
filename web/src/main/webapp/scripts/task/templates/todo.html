@@ -6,7 +6,7 @@
 			<i class="icon-edit"></i>回复...
 		</button>
         <button class="btn" type="button"
-                ng-show="todo.current && todo.tasks.length > 1"
+                ng-show="todo.current && todo.tasks.length > 0"
                 ng-click="todo.ignore()">
             <i class="icon-share-alt"></i>跳过
         </button>
@@ -41,7 +41,7 @@
             <i class="icon-edit"></i>回复...
         </button>
         <button class="btn" type="button"
-                ng-show="todo.current && todo.tasks.length > 1"
+                ng-show="todo.current && todo.tasks.length > 0"
                 ng-click="todo.ignore()">
             <i class="icon-share-alt"></i>跳过
         </button>
