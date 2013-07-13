@@ -6,19 +6,22 @@ var formTemplate = require("../templates/replyform.html");
 var dialogTemplate = require("../templates/replydialog.html");
 
 angular.module('ecgReplyForm', [])
-.controller('ReplyFormController',  ['$scope', 'EnumService', 'TaskService', 'RuleService', 'ReplyConfigService',
-    function ($scope, EnumService, TaskService, RuleService, ReplyConfigService) {
+.controller('ReplyFormController',  ['$scope', '$q', 'EnumService', 'TaskService', 'RuleService', 'ReplyConfigService',
+    function ($scope, $q, EnumService, TaskService, RuleService, ReplyConfigService) {
     
     if ($scope.replyform) { return; }
     $scope.replyform = {};
 
     // 预设变量
     $scope.replyform.replys = [];
-    $scope.replyform.rules = [];
+
+    // level名称
+    $scope.replyform.translateLevel = EnumService.translateLevel;
+    // status名称
+    $scope.replyform.getWorkStatusLabel = EnumService.getWorkStatusLabel;
 
     $scope.replyform.reset = function() {
         $scope.replyform.replys = [];
-        $scope.replyform.rules = [];
         loadRules();
     };
 
@@ -34,35 +37,53 @@ angular.module('ecgReplyForm', [])
     // 加载预设回复
     function loadRules() {
         var codes = EnumService.getCodes(),
-            examination = $scope.todo.current.examination;
+            examination = $scope.todo.current.examination,
+            rules = {};
 
         $scope.replyform.replys = [];
-        RuleService.queryAll({usage: 'filter'}).then(function(rules) {
-        $(rules).each(function(i, rule) {
-            var val = parseFloat(examination[codes[rule.code].col]),
-                min = parseFloat(rule.min),
-                max = parseFloat(rule.max);
-            if (codes[rule.code] && min <= val && val < max) {
-                if (!$scope.replyform.rules) {
-                  $scope.replyform.rules = [];
+        $q.all([RuleService.queryAllGroup(), RuleService.queryAllGroupByUser($scope.todo.current.userId)])
+        .then(function(results) {
+            var querys = [];
+            $(results[0]).each(function(i, rule) {
+                if (!rule.employeeId) {
+                    rules[rule.code] = rule;
+                    rule.customed = false;
                 }
-                rule.val = val;
-                ReplyConfigService.queryAllbyRule(rule)
-                .then(function(replyconfigs) {
-                    if (replyconfigs.length > 0) {
-                        rule.replyconfig = replyconfigs[0];
-                        $scope.replyform.rules.push(rule);
-                        $scope.replyform.replys.push({
-                            result: rule.replyconfig.result,
-                            title: rule.replyconfig.title,
-                            content: rule.replyconfig.content
+            });
+            $(results[1]).each(function(i, rule) {
+                rules[rule.code] = rule;
+                rule.customed = true;
+            });
+            for (var prop in rules) {
+                querys.push(RuleService.queryAllFiltersByGroup(rules[prop]));
+            }
+            return $q.all(querys);
+        })
+        .then(function(results) {
+            $(results).each(function(i, filters) {
+                $(filters).each(function(i, filter) {
+                    var val = parseFloat(examination[codes[filter.code].col]),
+                        min = parseFloat(filter.min),
+                        max = parseFloat(filter.max);
+                    if (codes[filter.code] && min <= val && val < max) {
+                        // 实际值
+                        rules[filter.code].val = val;
+                        rules[filter.code].level = filter.level;
+                        // 回复
+                        ReplyConfigService.queryAllbyRule(filter)
+                        .then(function(replyconfigs) {
+                            if (replyconfigs.length > 0) {
+                                replyconfigs[0].level = filter.level;
+                                replyconfigs[0].reason = rules[filter.code].customed ? '根据专家规则判断；' : '根据系统规则判断：';
+                                replyconfigs[0].reason += codes[filter.code].label + '的测量值为，在区间[' + min + ',' + max + ')之间，';
+                                replyconfigs[0].reason += '属于【' +  EnumService.getLevelLabel(filter.level) + '】。';
+                                delete replyconfigs[0].id;
+                                $scope.replyform.replys.push(replyconfigs[0]);
+                            }
                         });
                     }
                 });
-            }
             });
-        }, function() {
-            scope.replyform.rules = null;
         });
     };
 
@@ -78,6 +99,7 @@ angular.module('ecgReplyForm', [])
     $scope.replyform.addManual = function() {
         $scope.replydialog.show({
             handler: function(reply) {
+                reply.reason = "人工回复";
                 $scope.replyform.replys.push(reply);
             }
         });

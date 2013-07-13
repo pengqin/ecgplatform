@@ -104,6 +104,9 @@ values (14, '标题' ,  '需要检查呼吸的个性建议' , '需要检查呼�
 insert into health_rule_reply (id , title , content , result , rule_id, created_date, last_updated, version)
 values (15, '标题' , '呼吸异常的个性建议' ,'呼吸异常' ,  18, '2012-06-04 01:00:00', '2012-06-04 01:00:00' , 1);
 
+insert into health_rule_user (rule_id, user_id) values
+(13, 1);
+
 -- health_examination start
 insert into health_examination (id , user_id , test_item , user_name , user_type , level , blood_pressure_low,blood_pressure_high,heart_rhythm , breath,body_temp,pulserate,heart_data,latitude,altitude,temp,humidity,pressure,charge_type,heart_features,algorithm_version,created_date,version) 
 values (1,1,'PHONE', '测试用户1','VIP','success',80,120,60,60,37.5,60,'',0.0,200,37.6,null,null,'YEAR',null,null,'2013-07-04 01:00:00',1);

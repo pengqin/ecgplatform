@@ -41,6 +41,22 @@ angular.module('ecgCommon', ["angular-table", "ecgNav", "ecgHeader", "ecgMessage
         getLevelLabel: function(level) {
             return levels[level] || '未知级别';
         },
+        translateLevel : function(level) {
+            switch(level) {
+            case 'danger':
+                return 'important';
+            break;
+            case 'success':
+                return 'success';
+            break;
+            case 'warning':
+                return 'warning';
+            break;
+            case 'outside':
+                return 'inverse';
+            break;
+            }
+        },
         getWorkStatusLabel: function(status) {
             return workstatus[status] || '未知状态';
         },

@@ -18,7 +18,7 @@ angular.module('ecgTask', ['ecgTaskService', 'ecgTaskView', 'ecgReplyForm'])
     $scope.todo = {};    
     $scope.todo.tasks = null;
     $scope.todo.current = null;
-    $scope.todo.replyform = 'hidden';
+    $scope.todo.replyform = 'top';
 
     // 加载未完成任务
     function refreshGrid() {
@@ -70,7 +70,6 @@ angular.module('ecgTask', ['ecgTaskService', 'ecgTaskView', 'ecgReplyForm'])
 
     // 展开/收缩窗口
     $scope.todo.reply = function(position) {
-        console.info(position);
         if ($scope.todo.replyform == position) {
             $scope.todo.replyform = 'hidden';
         } else {
@@ -114,8 +113,6 @@ angular.module('ecgTask', ['ecgTaskService', 'ecgTaskView', 'ecgReplyForm'])
             } else {
                 selectTask();
             }
-            
-            
         }
     };
 }])
@@ -131,22 +128,7 @@ angular.module('ecgTask', ['ecgTaskService', 'ecgTaskView', 'ecgReplyForm'])
     // level名称
     $scope.task.getWorkStatusLabel = EnumService.getWorkStatusLabel;
 
-    $scope.task.translateLevel = function(level) {
-        switch(level) {
-        case 'danger':
-            return 'important';
-        break;
-        case 'success':
-            return 'success';
-        break;
-        case 'warning':
-            return 'warning';
-        break;
-        case 'outside':
-            return 'inverse';
-        break;
-        }
-    };
+    $scope.task.translateLevel = EnumService.translateLevel;
 
     function refreshGrid() {
         var username = $.cookie("AiniaOpUsername");
