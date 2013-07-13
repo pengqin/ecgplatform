@@ -65,23 +65,40 @@ angular.module('ecgTaskService', [])
                 };
             },
             reply: function(examination, reply) {
-                var newreply = this.getPlainReply();
-                    newreply.result = reply.result;
-                    newreply.content = reply.content;
-                return $http({
-                    method: 'POST',
-                    headers:{'Content-Type':'application/x-www-form-urlencoded'},
-                    data: $.param(newreply),
-                    url: PATH + '/api/examination/' + examination.id + '/reply'
-                }).then(function(res) {
-                    if (res.status === 201) {
-                        return true;
-                    } else {
+                var newreply = this.getPlainReply(), promise;
+
+                newreply.result = reply.result;
+                newreply.content = reply.content;
+                newreply.reason = reply.reason;
+
+                if (!reply.id) {
+                    promise = $http({
+                        method: 'POST',
+                        headers:{'Content-Type':'application/x-www-form-urlencoded'},
+                        data: $.param(newreply),
+                        url: PATH + '/api/examination/' + examination.id + '/reply'
+                    }).then(function(res) {
+                        if (res.status === 201) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }, function() {
                         return false;
-                    }
-                }, function() {
-                    return false;
-                });
+                    });
+                } else {
+                    promise = $http({
+                        method: 'PUT',
+                        headers:{'Content-Type':'application/x-www-form-urlencoded'},
+                        data: $.param(newreply),
+                        url: PATH + '/api/reply/' + reply.id
+                    }).then(function(res) {
+                        return true;
+                    }, function() {
+                        return false;
+                    });
+                }
+                return promise;
             },
             queryExpertsByOperators: function(user) {
                 return $http({
@@ -101,9 +118,7 @@ angular.module('ecgTaskService', [])
             replyInBatch: function(examination, replies) {
                 var posts = [], len = 0, count = 0, that = this;
                 $(replies).each(function(i, reply) {
-                    if (!reply.id) {
-                        posts.push(that.reply(examination, reply));
-                    }
+                    posts.push(that.reply(examination, reply));
                 });
 
                 return $q.all(posts).then(function(responses) {
