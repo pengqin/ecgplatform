@@ -18,7 +18,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="item in task.data" ng-click="task.selected = item">
+            <tr ng-repeat="item in task.data" ng-click="task.selected = item" ng-class="{'active': task.selected == item}">
                 <td nowrap>{{item.id}}</td>
                 <td nowrap>{{item.userName}}</td>
                 <td nowrap><span class="label label-{{task.translateLevel(item.level)}}">{{task.getLevelLabel(item.level)}}</span></td>
@@ -31,7 +31,10 @@
         </table>
     </div>
     </div>
-    <div class="block span8">
+    <div class="block span8" ng-show="task.selected">
         <div ecg-task-view></div>
+    </div>
+    <div class="block span8 block-without-border" ng-show="!task.selected">
+        请选择任意一条纪录
     </div>
 </div>

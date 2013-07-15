@@ -39,7 +39,7 @@ angular.module('ecgCommon', ["angular-table", "ecgNav", "ecgHeader", "ecgMessage
             return !dismissed ? '在职' : '离职';
         },
         getLevelLabel: function(level) {
-            return levels[level] || '未知级别';
+            return levels[level] || '未知';
         },
         translateLevel : function(level) {
             switch(level) {
