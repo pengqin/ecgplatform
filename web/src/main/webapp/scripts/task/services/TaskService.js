@@ -61,7 +61,7 @@ angular.module('ecgTaskService', [])
                 return {
                     result: "",
                     content: "",
-                    reason: "reasone"
+                    reason: "reason"
                 };
             },
             reply: function(examination, reply) {

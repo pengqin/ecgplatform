@@ -21,6 +21,7 @@ angular.module('ecgReplyForm', [])
     $scope.replyform.getWorkStatusLabel = EnumService.getWorkStatusLabel;
 
     $scope.replyform.reset = function() {
+        $scope.replyform.canReply = true;
         if ($scope.todo.current.status == 'pending') {
             loadRules();
         } else {
@@ -108,7 +109,7 @@ angular.module('ecgReplyForm', [])
         } else {
             $scope.replyform.replys.splice(idx, 1);
         }
-        
+        $scope.replyform.canReply = checkIfCanReply();
     };
 
     // 编辑回复
@@ -161,7 +162,29 @@ angular.module('ecgReplyForm', [])
     };
 
     // 设置完成
+    $scope.replyform.canReply = false;
+
+    function checkIfCanReply() {
+        var removes = 0, len = $scope.replyform.replys.length;
+        $($scope.replyform.replys).each(function(i, reply) {
+            if (reply.removed) {
+                removes++;
+            }
+        });
+        if (len === 0 || len === removes) {
+            return false;
+        }
+        return true;
+    };
+
     $scope.replyform.complete = function() {
+        if (!checkIfCanReply()) {
+            $scope.dialog.alert({
+                text: '没有回复内容!'
+            });
+            return;
+        }
+
         $scope.dialog.showStandby();
         TaskService.replyInBatch($scope.todo.current.examination, $scope.replyform.replys)
         .then(function(flag) {

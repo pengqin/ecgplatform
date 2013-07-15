@@ -112,6 +112,8 @@ public class HealthExaminationController extends BaseController<HealthExaminatio
      * ResponseEntity
      * @throws IOException 
      */
+	@RequestMapping(value = "upload" , method = RequestMethod.POST)
+	@ResponseBody
     public ResponseEntity upload( @RequestParam("file") MultipartFile file) throws IOException {
     	
     	healthExaminationService.upload(file.getBytes());
