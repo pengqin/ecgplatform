@@ -209,7 +209,7 @@ define(function(require, exports) {
             expect(expert).not.to.be(undefined);
             expect(operator).not.to.be(undefined);
             OperatorService.getExperts(operator).then(function(links) {
-                expect(operators.length + 1).to.be(links.length);
+                expect(experts.length + 1).to.be(links.length);
                 done();
             }, function() {
                 throw new Error('the expert can\'t be linked again with server errors');
@@ -230,7 +230,7 @@ define(function(require, exports) {
             expect(expert).not.to.be(undefined);
             expect(operator).not.to.be(undefined);
             OperatorService.getExperts(operator).then(function(links) {
-                expect(operators.length).to.be(links.length);
+                expect(experts.length).to.be(links.length);
                 done();
             }, function() {
                 throw new Error('the expert can\'t be linked again with server errors');
