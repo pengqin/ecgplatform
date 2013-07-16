@@ -40,7 +40,7 @@ define(function(require, exports) {
                 user = persistedUser;
                 done();
             }, function() {
-                return null
+                return null;
             });
         });
 

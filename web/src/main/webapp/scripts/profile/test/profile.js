@@ -33,14 +33,14 @@ define(function(require, exports) {
         });
 
         // profile
-        var sessionuser;
-        it("the session user's profile should be retrieved.", function(done) {
+        var sessionemployee;
+        it("the session employee's profile should be retrieved.", function(done) {
             expect(ProfileService).not.to.be(undefined);
             ProfileService.get(user.username).then(function(profile) {
                 if (profile) {
                     // retrieved
                     expect(profile).not.to.be(undefined);
-                    sessionuser = profile;
+                    sessionemployee = profile;
                     done();
                 } else {
                     throw new Error('the profile can\'t be retrieved');
@@ -48,12 +48,12 @@ define(function(require, exports) {
             });
         });
 
-        it("the session user's profile should be updated.", function(done) {
+        it("the session employee's profile should be updated.", function(done) {
             expect(ProfileService).not.to.be(undefined);
-            expect(sessionuser).not.to.be(undefined);
-            sessionuser.gender = 0;
+            expect(sessionemployee).not.to.be(undefined);
+            sessionemployee.gender = 0;
             // updated
-            ProfileService.update(sessionuser).then(function() {
+            ProfileService.update(sessionemployee).then(function() {
                 done();
             }, function() {
                 throw new Error('the profile can\'t be updated');
@@ -61,19 +61,19 @@ define(function(require, exports) {
         });
 
         
-        it("the session user's password should be updated", function(done) {
-            expect(sessionuser).not.to.be(undefined);
+        it("the session employee's password should be updated", function(done) {
+            expect(sessionemployee).not.to.be(undefined);
             // updated
-            ProfileService.updatePassword(sessionuser.id, user.password, user.password + 'updated')
+            ProfileService.updatePassword(sessionemployee.id, user.password, user.password + 'updated')
             .then(function() {
                 done();
             }, function() {
-                throw new Error('the session user\'s password can\'t be updated');
+                throw new Error('the session employee\'s password can\'t be updated');
             });
         });
 
-        it("the session user's password should be useful", function(done) {
-            expect(sessionuser).not.to.be(undefined);
+        it("the session employee's password should be useful", function(done) {
+            expect(sessionemployee).not.to.be(undefined);
             $.ajax({
                 url: '/api/auth',
                 data: {
@@ -87,19 +87,19 @@ define(function(require, exports) {
                 expect(res.token).not.to.be(undefined);
                 done();
             }, function() {
-                throw new Error('the session user can\'t login in with new password.');
+                throw new Error('the session employee can\'t login in with new password.');
             });
         });
 
         
-        it("the session user's password should be rollback", function(done) {
-            expect(sessionuser).not.to.be(undefined);
+        it("the session employee's password should be rollback", function(done) {
+            expect(sessionemployee).not.to.be(undefined);
             // updated
-            ProfileService.updatePassword(sessionuser.id, user.password + 'updated', user.password)
+            ProfileService.updatePassword(sessionemployee.id, user.password + 'updated', user.password)
             .then(function() {
                 done();
             }, function() {
-                throw new Error('the session user\'s password can\'t be rollback');
+                throw new Error('the session employee\'s password can\'t be rollback');
             });
         });
 

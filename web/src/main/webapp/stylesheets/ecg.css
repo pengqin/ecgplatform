@@ -88,7 +88,7 @@ i {
 .sidebar-nav.user #rules-menu {
 	display: none
 }
-.sidebar-nav.user .my-examination {
+.sidebar-nav.user #my-examination {
 	display: block;
 }
 

@@ -55,6 +55,7 @@ angular.module('ecgApp', ['ecgCommon', 'ecgTask', 'ecgMonitor', 'ecgEmployee', '
         if (msg) { alert(msg); }
         window.location.href = "login.html";
     };
+    window.logout = logout;
 
     // 加载完成, 显示工作界面
     function inited() {

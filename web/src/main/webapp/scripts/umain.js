@@ -40,16 +40,15 @@ angular.module('ecgApp', ['ecgCommon', 'ecgTask', 'ecgUser', 'ecgProfile'])
             }
         })
         .otherwise({
-            redirectTo: '/welcome'
+            redirectTo: '/task'
         });
 }])
-.run(['$rootScope', '$http', 'UserService', function($rootScope, $http, UserService) {
+.run(['$rootScope', '$http', '$location', 'UserService', function($rootScope, $http, $location, UserService) {
     // 设置全局变量
     $rootScope.PATH = PATH;
 
     // 公用函数:退出系统
     function logout(msg) {
-        return;
         if (msg) { alert(msg); }
         window.location.href = "ulogin.html";
     };
@@ -80,6 +79,7 @@ angular.module('ecgApp', ['ecgCommon', 'ecgTask', 'ecgUser', 'ecgProfile'])
             };
             $rootScope.session.user = user;
             $.cookie("AiniaSelfUserId", user.id, { expires: 1, path: '/' });
+            $location.path("/task");
         } else {
             logout('无法获取您登录名为' + username +'的用户信息。请与管理员联系!');
         }

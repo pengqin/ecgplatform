@@ -11,7 +11,8 @@ define(function(require, exports) {
             httpProvider = angluarjs.httpProvider,
             ChiefService = services.ChiefService,
             ExpertService = services.ExpertService,
-            OperatorService = services.OperatorService;
+            OperatorService = services.OperatorService,
+            ProfileService = services.ProfileService;
         
         // 登录
         var token
@@ -38,12 +39,8 @@ define(function(require, exports) {
         it("the expert list should be retrieved", function(done) {
             expect(ExpertService).not.to.be(undefined);
             ExpertService.queryAll().then(function(experts) {
-                if (experts.length > 0) {
-                    testexperts = experts;
-                    done();
-                } else {
-                    throw new Error('the expert list can\'t be retrieved');
-                }
+                expect(experts.length).not.to.be(0);
+                done();
             }, function() {
                 throw new Error('the expert list can\'t be retrieved');
             });
