@@ -31,6 +31,19 @@ define(function(require, exports) {
             });
         });
 
+        it("the user should retrieved his own info.", function(done) {
+            UserService.findAllByMobile(username)
+            .then(function(users) {
+                if (users && users.length == 1) {
+                    done();
+                } else {
+                    throw new Error('failed to retrieved');
+                }
+            }, function() {
+                throw new Error('failed to retrieved');
+            });
+        });
+
     };
 
 });
