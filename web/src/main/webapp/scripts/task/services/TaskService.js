@@ -127,7 +127,7 @@ angular.module('ecgTaskService', [])
                 });
             },
             replyInBatch: function(examination, replies) {
-                var posts = [], len = 0, count = 0, that = this;
+                var posts = [], that = this;
                 $(replies).each(function(i, reply) {
                     posts.push(that.reply(examination, reply));
                 });

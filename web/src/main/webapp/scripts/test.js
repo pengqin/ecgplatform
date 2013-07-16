@@ -48,7 +48,11 @@ angular.module('ecgTestApp', ['ecgCommon', 'ecgTask', 'ecgMonitor', 'ecgEmployee
           {ChiefService: ChiefService, ExpertService: ExpertService, OperatorService: OperatorService, ProfileService: ProfileService}
         );
         // 验证用户模块
-        testUser(it, UserService);
+        testUser(
+          {it: it}, 
+          {httpProvider: httpProvider}, 
+          {UserService: UserService}
+        );
         // 验证规则及回复模块
         testRule(
           {it: it}, 
@@ -65,24 +69,7 @@ angular.module('ecgTestApp', ['ecgCommon', 'ecgTask', 'ecgMonitor', 'ecgEmployee
     mocha.run();
 }]);
 
-// 尝试登陆
-$.ajax({
-    url: PATH + '/api/auth',
-    data: {
-        'username': TESTCONFIGS.username,
-        'password': TESTCONFIGS.password
-    },
-    type: 'POST',
-    dataType: 'json'
-}).then(function(res) {
-    // 保存token
-    $.cookie("AiniaOpUsername", TESTCONFIGS.username);
-    $.cookie('AiniaOpAuthToken', res.token, { expires: 1, path: '/' });
-    // 构造测试环境
-    angular.bootstrap(document, ["ecgTestApp"]);
-}, function() {
-    console.warn('用户名或密码不对,请重新尝试!');
-});
+angular.bootstrap(document, ["ecgTestApp"]);
 
 
 });
