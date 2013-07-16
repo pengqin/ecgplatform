@@ -60,7 +60,7 @@ define(function(require, exports) {
             });
         });
 
-        /*
+        
         it("the session user's password should be updated", function(done) {
             expect(sessionuser).not.to.be(undefined);
             // updated
@@ -101,7 +101,7 @@ define(function(require, exports) {
             }, function() {
                 throw new Error('the session user\'s password can\'t be rollback');
             });
-        });*/
+        });
 
 
     };
