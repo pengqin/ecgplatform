@@ -49,7 +49,6 @@ angular.module('ecgApp', ['ecgCommon', 'ecgTask', 'ecgUser', 'ecgProfile'])
 
     // 公用函数:退出系统
     function logout(msg) {
-        return;
         if (msg) { alert(msg); }
         window.location.href = "ulogin.html";
     };
