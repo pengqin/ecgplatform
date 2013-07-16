@@ -5,8 +5,6 @@ define(function(require, exports) {
 
         var it = mocha.it,
             user = mocha.user,
-            operator = mocha.operator,
-            expert = mocha.expert,
             httpProvider = angluarjs.httpProvider,
             ProfileService = services.ProfileService,
             OperatorService = services.OperatorService;
@@ -47,10 +45,10 @@ define(function(require, exports) {
 
         var operator, expert;
         it("the operator should be retrieved", function(done) {
-            ProfileService.get(operator.username)
+            ProfileService.get(mocha.operator.username)
             .then(function(persistedUser) {
                 expect(persistedUser).not.to.be(null);
-                expect(persistedUser.username).to.be(operator.username);
+                expect(persistedUser.username).to.be(mocha.eoperator.username);
                 operator = persistedUser;
                 done();
             }, function() {
@@ -59,10 +57,10 @@ define(function(require, exports) {
         });
 
         it("the expert should be retrieved", function(done) {
-            ProfileService.get(expert.username)
+            ProfileService.get(mocha.expert.username)
             .then(function(persistedUser) {
                 expect(persistedUser).not.to.be(null);
-                expect(persistedUser.username).to.be(expert.username);
+                expect(persistedUser.username).to.be(mocha.expert.username);
                 expert = persistedUser;
                 done();
             }, function() {

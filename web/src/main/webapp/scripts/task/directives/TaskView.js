@@ -114,7 +114,7 @@ define(function(require, exports) {
             if (!$scope.todo) { return; }
             if(!$scope.todo.current) { return; }
             if($scope.todo.current.examination) { 
-                $scope.examinationview.examination = $scope.todo.current.examination
+                $scope.examinationview.examination = $scope.todo.current.examination;
                 return; 
             }
 

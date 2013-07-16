@@ -91,7 +91,7 @@ angular.module('ecgRuleBaseDirectives', [])
 
                 $scope.dialog.showStandby();
 
-                var count = 0, len = 0;
+                var count = 0;
                 RuleService.queryAll({code: selectedReplyConfig.code, usage: 'filter'})
                 .then(function(filters) {
                     len = filters.length;

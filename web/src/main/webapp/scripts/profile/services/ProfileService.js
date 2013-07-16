@@ -28,7 +28,6 @@ angular.module('ecgProfileService', [])
 
         return {
             get: function(username) {
-                var username = username;
                 return $http({
                     method: 'GET',
                     cache: false,
