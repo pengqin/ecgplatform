@@ -44,6 +44,9 @@ i {
 	padding-left: 5px;
 	padding-right: 0px;
 }
+.sidebar-nav #my-examination {
+	display: none;
+}
 /*对主任不可见的菜单*/
 .sidebar-nav.chief .todo,
 .sidebar-nav.chief .chief {
@@ -70,6 +73,23 @@ i {
 .sidebar-nav.operator #rules-menu-link,
 .sidebar-nav.operator #rules-menu {
 	display: none
+}
+
+/*对接线员不可见的菜单*/
+.sidebar-nav.user .overview,
+.sidebar-nav.user #dashboard-menu-link,
+.sidebar-nav.user #dashboard-menu,
+.sidebar-nav.user .task,
+.sidebar-nav.user #employees-menu-link,
+.sidebar-nav.user #employees-menu,
+.sidebar-nav.user #users-menu-link,
+.sidebar-nav.user #users-menu,
+.sidebar-nav.user #rules-menu-link,
+.sidebar-nav.user #rules-menu {
+	display: none
+}
+.sidebar-nav.user .my-examination {
+	display: block;
 }
 
 /*内容区*/

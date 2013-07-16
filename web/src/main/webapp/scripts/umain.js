@@ -1,23 +1,21 @@
-define(function(require) {
 'use strict';
+define(function(require) {
     
 require("./common/main");
 require("./task/main");
-require("./monitor/main");
-require("./employee/main");
 require("./user/main");
-require("./rule/main");
+require("./profile/main");
 
-var welcomeTemp = require("./common/templates/welcome.html");
-var helpTemp = require("./common/templates/help.html");
-var faqTemp = require("./common/templates/faq.html");
+var welcomeTemp = require("./user/templates/welcome.html");
+var helpTemp = require("./user/templates/help.html");
+var faqTemp = require("./user/templates/faq.html");
 
 // GOABAL VAL
 window.PATH = window.location.pathname.slice(0, window.location.pathname.lastIndexOf("/"));
     
-angular.module('ecgApp', ['ecgCommon', 'ecgTask', 'ecgUser'])
+angular.module('ecgApp', ['ecgCommon', 'ecgTask', 'ecgUser', 'ecgProfile'])
 .config(['$httpProvider', '$routeProvider', function ($httpProvider, $routeProvider) {
-        var token = $.cookie('AiniaOpAuthToken');
+        var token = $.cookie('AiniaSelfAuthToken');
         // header头带认证参数
          $httpProvider.defaults.headers.common['Authorization'] = token;
     
@@ -26,7 +24,7 @@ angular.module('ecgApp', ['ecgCommon', 'ecgTask', 'ecgUser'])
         .when('/welcome', {
             template: welcomeTemp,
             controller: function($scope) {
-                $scope.subheader.title = "系统首页";
+                $scope.subheader.title = "个人中心";
             }
         })
         .when('/help', {
@@ -51,9 +49,11 @@ angular.module('ecgApp', ['ecgCommon', 'ecgTask', 'ecgUser'])
 
     // 公用函数:退出系统
     function logout(msg) {
+        return;
         if (msg) { alert(msg); }
         window.location.href = "ulogin.html";
     };
+    window.logout = logout;
 
     // 加载完成, 显示工作界面
     function inited() {
@@ -62,7 +62,7 @@ angular.module('ecgApp', ['ecgCommon', 'ecgTask', 'ecgUser'])
     }
 
     // 判断是否登录
-    var username = $.cookie("AiniaOpUsername");
+    var username = $.cookie("AiniaSelfUsername");
     if (!username) {
         logout('请先登录!');
         return;
@@ -74,8 +74,12 @@ angular.module('ecgApp', ['ecgCommon', 'ecgTask', 'ecgUser'])
     .then(function(users) {
         if (users && users.length == 1) {
             var user = users[0];
+            user.roles = "user";
+            user.isAdmin =  user.isChief = user.isExpert = user.isOperator = function() {
+                return false;
+            };
             $rootScope.session.user = user;
-            $.cookie("AiniaOpUserId", user.id, { expires: 1, path: '/' });
+            $.cookie("AiniaSelfUserId", user.id, { expires: 1, path: '/' });
         } else {
             logout('无法获取您登录名为' + username +'的用户信息。请与管理员联系!');
         }

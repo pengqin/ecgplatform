@@ -2,7 +2,7 @@
 define(function(require, exports) {
 
     exports.test = function(mocha, angluarjs, services) {
-        if (!runCase('employee')) {
+        if (!runCase('profile')) {
             return;
         }
 
