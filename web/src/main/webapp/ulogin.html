@@ -74,7 +74,7 @@
                 alert('请输入用户名或者密码');
                 return;
             }
-            $.cookie('AiniaOpUsername', encodeURI(username), { expires: 7, path: '/' });
+            $.cookie('AiniaSelfUsername', encodeURI(username), { expires: 7, path: '/' });
 
             $('#loginBtn').hide();
             $('#loading').show();
@@ -87,7 +87,7 @@
                 type: 'POST',
                 dataType: 'json'
             }).then(function(res) {
-                $.cookie('AiniaOpAuthToken', encodeURI(res.token), { expires: 1, path: '/' });
+                $.cookie('AiniaSelfAuthToken', encodeURI(res.token), { expires: 1, path: '/' });
                 window.location.href = "uindex.html";
             }, function() {
                 alert('用户名或密码不对,请重新尝试!');
@@ -104,7 +104,7 @@
             login();
         });
         // restore the cookie
-        $("#username").val($.cookie('AiniaOpUsername') || '');
+        $("#username").val($.cookie('AiniaSelfUsername') || '');
     });
     </script>
     <!--[if lte IE  6]>

@@ -4,7 +4,7 @@ define(function(require, exports) {
 var profileEditTemp = require("../templates/profile/edit.html");
 var profilePasswordTemp = require("../templates/profile/password.html");
 
-angular.module('ecgProfile', [])
+angular.module('ecgProfileDirectives', [])
 .controller('ProfileController', ['$scope', '$routeParams', '$timeout', '$location', 'EnumService', 'ProfileService',
     function ($scope, $routeParams, $timeout, $location, EnumService, ProfileService) {
     $scope.subheader.title = "个人设置";
