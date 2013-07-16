@@ -9,7 +9,7 @@ angular.module('ecgProfileService', [])
         function initUser(props) {
             var user = $.extend({}, props || {roles: ''});
             user.isEmployee = function() {
-                return this.isAdmin() || this.isChief() || this.isExpert() || this.isOperator();
+                return user.isAdmin() || user.isChief() || user.isExpert() || user.isOperator();
             };
             user.isAdmin = function() {
                 return this.roles.indexOf('admin') >= 0;

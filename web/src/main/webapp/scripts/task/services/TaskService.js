@@ -45,6 +45,24 @@ angular.module('ecgTaskService', [])
                     return [];
                 });
             },
+            queryAllTaskByUser: function(user, opts) {
+                var opts = opts || {}, url, params = '?';
+
+                url = "/api/task";
+
+                return $http({
+                    method: 'GET',
+                    url: PATH + url + params
+                }).then(function(res) {
+                    if (res.data.datas && res.data.datas.length > 0) {
+                        return res.data.datas;
+                    } else {
+                        return [];    
+                    }
+                }, function() {
+                    return [];
+                });
+            },
             getExamination: function(id) {
                 return $http({
                     method: 'GET',
