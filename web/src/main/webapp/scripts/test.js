@@ -45,7 +45,7 @@ angular.module('ecgTestApp', ['ecgCommon', 'ecgTask', 'ecgMonitor', 'ecgEmployee
         testProfile(
             {it: it}, 
             {httpProvider: httpProvider}, 
-            {ProfileService: ProfileService}
+            {ProfileService: ProfileService, UserService: UserService}
           );
         // 验证员工模块
         //testEmployee(it, ChiefService, ExpertService, OperatorService, ProfileService);

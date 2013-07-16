@@ -9,7 +9,8 @@ define(function(require, exports) {
         var it = mocha.it,
             user = mocha.user,
             httpProvider = angluarjs.httpProvider,
-            ProfileService = services.ProfileService;
+            ProfileService = services.ProfileService,
+            UserService = services.UserService;
 
         var token;
         // 登录
@@ -34,6 +35,15 @@ define(function(require, exports) {
 
         // profile
         var sessionuser;
+        it("the user should retrieved his own info.", function(done) {
+            UserService.findAllByMobile(user.username)
+            .then(function(users) {
+                expect(users.length).to.be(1);
+                done();
+            }, function() {
+                throw new Error('failed to retrieved');
+            });
+        });
 
 
     };
