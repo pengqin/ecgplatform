@@ -141,6 +141,7 @@ create table health_reply(
     reason varchar(100),
     result varchar(100),
     content varchar(1000),
+    level varchar(30),
     employee_id bigint,
     examination_id bigint,
     created_date timestamp,
