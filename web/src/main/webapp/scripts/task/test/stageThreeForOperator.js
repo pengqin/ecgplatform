@@ -80,8 +80,8 @@ define(function(require, exports) {
 
             var len = 0, count = 0;
             replys = []
-            replys.push({result: "结果4", content: "建议4"});
-            replys.push({result: "结果5", content: "建议5"});
+            replys.push({result: "结果4", content: "建议4", reason: "reason4"});
+            replys.push({result: "结果5", content: "建议5", reason: "reason5"});
             len = replys.length;
 
             $(replys).each(function(i, reply) {

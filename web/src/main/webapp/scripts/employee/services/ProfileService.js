@@ -45,6 +45,7 @@ angular.module('ecgProfileService', [])
                 delete data.isChief;
                 delete data.isExpert;
                 delete data.isOperator;
+                delete data.version;
                 return $http({
                     method: 'PUT',
                     headers:{'Content-Type':'application/x-www-form-urlencoded'},

@@ -2,7 +2,7 @@
 define(function(require, exports) {
 
 angular.module('ecgExpertService', [])
-    .factory("ExpertService", function($rootScope, $http) {
+    .factory("ExpertService", function($rootScope, $http, $q) {
         var uri = PATH + "/api/expert";
 
         return {
@@ -82,6 +82,22 @@ angular.module('ecgExpertService', [])
             },
             getRules: function(id) {
                 return [];
+            },
+            linkOperators: function(expert, operators) {
+                var posts = [], that = this;
+                $(operators).each(function(i, operator) {
+                    posts.push(that.linkOperator(expert, operator));
+                });
+
+                return $q.all(posts).then(function(responses) {
+                    var allsuccess = true;
+                    $(responses).each(function(i, result){
+                        if (!result) {
+                            allsuccess = false;
+                        }
+                    });
+                    return allsuccess;
+                });
             },
             linkOperator: function(expert, operator) {
                 var id = expert.id || expert;
