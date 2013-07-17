@@ -12,29 +12,43 @@ define(function(require, exports) {
         }
 
         // 主任模块功能
-        mocha.user = {username: TESTCONFIGS.admin.username, password: TESTCONFIGS.admin.password};
-        runCaseAs('admin') ? testChiefAsAdmin(mocha, angluarjs, services) : null;
+        runCaseAs('admin') ? testChiefAsAdmin({
+            it: mocha.it,
+            user: {username: TESTCONFIGS.admin.username, password: TESTCONFIGS.admin.password}
+        }, angluarjs, services) : null;
 
         // 专家模块
-        mocha.user = {username: TESTCONFIGS.admin.username, password: TESTCONFIGS.admin.password};
-        runCaseAs('admin') ? testExpertAsAdminOrChief(mocha, angluarjs, services) : null;
+        runCaseAs('admin') ? testExpertAsAdminOrChief({
+            it: mocha.it,
+            user: {username: TESTCONFIGS.admin.username, password: TESTCONFIGS.admin.password}
+        }, angluarjs, services) : null;
 
-        mocha.user = {username: TESTCONFIGS.chief.username, password: TESTCONFIGS.chief.password};
-        runCaseAs('chief') ? testExpertAsAdminOrChief(mocha, angluarjs, services) : null;
+        runCaseAs('chief') ? testExpertAsAdminOrChief({
+            it: mocha.it,
+            user: {username: TESTCONFIGS.chief.username, password: TESTCONFIGS.chief.password}
+        }, angluarjs, services) : null;
 
         // 接线员模块
-        mocha.user = {username: TESTCONFIGS.admin.username, password: TESTCONFIGS.admin.password};
-        runCaseAs('admin') ? testOperatorAsAdminOrChief(mocha, angluarjs, services) : null;
+        runCaseAs('admin') ? testOperatorAsAdminOrChief({
+            it: mocha.it,
+            user: {username: TESTCONFIGS.admin.username, password: TESTCONFIGS.admin.password}
+        }, angluarjs, services) : null;
 
-        mocha.user = {username: TESTCONFIGS.chief.username, password: TESTCONFIGS.chief.password};
-        runCaseAs('chief') ? testOperatorAsAdminOrChief(mocha, angluarjs, services) : null;
+        runCaseAs('chief') ? testOperatorAsAdminOrChief({
+            it: mocha.it,
+            user: {username: TESTCONFIGS.chief.username, password: TESTCONFIGS.chief.password}
+        }, angluarjs, services) : null;
 
         // 专家和接线员绑定功能
-        mocha.user = {username: TESTCONFIGS.admin.username, password: TESTCONFIGS.admin.password};
-        runCaseAs('admin') ? testLinkAsAdminOrChief(mocha, angluarjs, services) : null;
+        runCaseAs('admin') ? testLinkAsAdminOrChief({
+            it: mocha.it,
+            user: {username: TESTCONFIGS.admin.username, password: TESTCONFIGS.admin.password}
+        }, angluarjs, services) : null;
 
-        mocha.user = {username: TESTCONFIGS.chief.username, password: TESTCONFIGS.chief.password};
-        runCaseAs('chief') ? testLinkAsAdminOrChief(mocha, angluarjs, services) : null;
+        runCaseAs('chief') ? testLinkAsAdminOrChief({
+            it: mocha.it,
+            user: {username: TESTCONFIGS.chief.username, password: TESTCONFIGS.chief.password}
+        }, angluarjs, services) : null;
     };
 
 });

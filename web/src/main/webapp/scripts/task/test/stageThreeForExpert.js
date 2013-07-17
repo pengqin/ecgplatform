@@ -12,7 +12,7 @@ define(function(require, exports) {
         var token = null;
 
         // 登录
-        it("the expert should authenciated in task test module.", function(done) {
+        it("stage 3 for expert:the expert should authenciated in task test module.", function(done) {
             $.ajax({
                 url: PATH + '/api/auth',
                 data: {
@@ -31,7 +31,7 @@ define(function(require, exports) {
             });
         });
 
-        it("the profile of the expert should be retrieved", function(done) {
+        it("stage 3 for expert:the profile of the expert should be retrieved", function(done) {
             ProfileService.get(user.username)
             .then(function(persistedUser) {
                 expect(persistedUser).not.to.be(null);
@@ -44,7 +44,7 @@ define(function(require, exports) {
         });
 
         var task;
-        it("the undone task list for expert should be retrieved", function(done) {
+        it("stage 3 for expert:the undone task list for expert should be retrieved", function(done) {
             TaskService.queryAllTaskByEmployee(
                 user, 
                 {status: 'undone'}
@@ -61,7 +61,7 @@ define(function(require, exports) {
         });
 
         var examination;
-        it("the examination for expert should be retrieved", function(done) {
+        it("stage 3 for expert:the examination for expert should be retrieved", function(done) {
             expect(task).not.to.be(undefined);
             TaskService.getExamination(task.examinationId)
             .then(function(pesistedExamination) {
@@ -74,7 +74,7 @@ define(function(require, exports) {
         });
 
         var replys;
-        it("the replys of the examination for the expert should be greater than 0", function(done) {
+        it("stage 3 for expert:the replys of the examination for the expert should be greater than 0", function(done) {
             expect(examination).not.to.be(undefined);
             TaskService.getReplyByExamination(examination)
             .then(function(replys) {

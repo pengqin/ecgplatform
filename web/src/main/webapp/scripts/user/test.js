@@ -8,8 +8,10 @@ define(function(require, exports) {
             return;
         }
 
-        mocha.user = {username: TESTCONFIGS.admin.username, password: TESTCONFIGS.admin.password};
-        runCaseAs('admin') ? testBaseAsAdminOrChief(mocha, angluarjs, services) : null;
+        runCaseAs('admin') ? testBaseAsAdminOrChief({
+        	it: mocha.it,
+        	user: {username: TESTCONFIGS.admin.username, password: TESTCONFIGS.admin.password}
+        }, angluarjs, services) : null;
     };
 
 });

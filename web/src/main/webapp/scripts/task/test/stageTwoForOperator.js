@@ -13,7 +13,7 @@ define(function(require, exports) {
         var token = null;
 
         // 登录
-        it("the user should authenciated in task test module.", function(done) {
+        it("stage 2:the user should authenciated in task test module.", function(done) {
             $.ajax({
                 url: PATH + '/api/auth',
                 data: {
@@ -32,7 +32,7 @@ define(function(require, exports) {
             });
         });
 
-        it("the profile of the user should be retrieved", function(done) {
+        it("stage 2:the profile of the user should be retrieved", function(done) {
             ProfileService.get(user.username)
             .then(function(persistedUser) {
                 expect(persistedUser).not.to.be(null);
@@ -45,7 +45,7 @@ define(function(require, exports) {
         });
 
         var task, anothertask;
-        it("the undone task list should be retrieved", function(done) {
+        it("stage 2:the undone task list should be retrieved", function(done) {
             TaskService.queryAllTaskByEmployee(
                 user, 
                 {status: 'undone'}
@@ -62,7 +62,7 @@ define(function(require, exports) {
             });
         });
 
-        it("the done task list should be retrieved", function(done) {
+        it("stage 2:the done task list should be retrieved", function(done) {
             TaskService.queryAllTaskByEmployee(
                 user, 
                 {status: 'done'}
@@ -74,7 +74,7 @@ define(function(require, exports) {
         });
 
         var examination, anotherexamination;
-        it("the examination of a specific undone task should be retrieved", function(done) {
+        it("stage 2:the examination of a specific undone task should be retrieved", function(done) {
             expect(task).not.to.be(undefined);
             TaskService.getExamination(task.id)
             .then(function(pesistedExamination) {
@@ -85,7 +85,7 @@ define(function(require, exports) {
             });
         });
 
-        it("the other examination of a specific undone task should be retrieved", function(done) {
+        it("stage 2:the other examination of a specific undone task should be retrieved", function(done) {
             expect(anothertask).not.to.be(undefined);
             TaskService.getExamination(anothertask.id)
             .then(function(pesistedExamination) {
@@ -98,7 +98,7 @@ define(function(require, exports) {
 
         // 并行的插入5条和3条回复
         var replys;
-        it("five replies of the examination be created", function(done) {
+        it("stage 2:five replies of the examination be created", function(done) {
             expect(task).not.to.be(undefined);
             expect(examination).not.to.be(undefined);
 
@@ -126,7 +126,7 @@ define(function(require, exports) {
             });
         });
 
-        it("five replies of the examination be retrieved", function(done) {
+        it("stage 2:five replies of the examination be retrieved", function(done) {
             expect(task).not.to.be(undefined);
             expect(examination).not.to.be(undefined);
             expect(replys).not.to.be(undefined);
@@ -141,7 +141,7 @@ define(function(require, exports) {
         });
 
         var secreplies;
-        it("threee replies of the other examination be created", function(done) {
+        it("stage 2:threee replies of the other examination be created", function(done) {
             expect(anothertask).not.to.be(undefined);
             expect(anotherexamination).not.to.be(undefined);
 
@@ -167,7 +167,7 @@ define(function(require, exports) {
             });
         });
 
-        it("three replies of the other examination be retrieved", function(done) {
+        it("stage 2:three replies of the other examination be retrieved", function(done) {
             expect(anothertask).not.to.be(undefined);
             expect(anotherexamination).not.to.be(undefined);
             expect(secreplies).not.to.be(undefined);
@@ -181,7 +181,7 @@ define(function(require, exports) {
             });
         });
 
-        it("the undone task total should be the same after replies is posted", function(done) {
+        it("stage 2:the undone task total should be the same after replies is posted", function(done) {
             TaskService.queryAllTaskByEmployee(
                 user, 
                 {status: 'undone'}
@@ -192,7 +192,7 @@ define(function(require, exports) {
             });
         });
 
-        it("the done task total should be the same after replies is posted", function(done) {
+        it("stage 2:the done task total should be the same after replies is posted", function(done) {
             TaskService.queryAllTaskByEmployee(
                 user, 
                 {status: 'done'}
@@ -203,7 +203,7 @@ define(function(require, exports) {
             });
         });
 
-        it("the task can be marked as completed", function(done) {
+        it("stage 2:the task can be marked as completed", function(done) {
             TaskService.complete(task)
             .then(function() {
                 done();
@@ -212,7 +212,7 @@ define(function(require, exports) {
             });
         });
 
-        it("the another task can be marked as completed too", function(done) {
+        it("stage 2:the another task can be marked as completed too", function(done) {
             TaskService.complete(anothertask)
             .then(function() {
                 done();
@@ -221,7 +221,7 @@ define(function(require, exports) {
             });
         });
 
-        it("the undone task total should be decreased with 2", function(done) {
+        it("stage 2:the undone task total should be decreased with 2", function(done) {
             TaskService.queryAllTaskByEmployee(
                 user, 
                 {status: 'undone'}
@@ -233,7 +233,7 @@ define(function(require, exports) {
             });
         });
 
-        it("the done task total should be increased with 1", function(done) {
+        it("stage 2:the done task total should be increased with 1", function(done) {
             TaskService.queryAllTaskByEmployee(
                 user, 
                 {status: 'done'}
