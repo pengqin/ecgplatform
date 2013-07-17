@@ -104,11 +104,11 @@ define(function(require, exports) {
 
             var len = 0, count = 0;
             replys = []
-            replys.push({result: "结果1", content: "建议1", reason: "reason1"});
-            replys.push({result: "结果2", content: "建议2", reason: "reason2"});
-            replys.push({result: "结果3", content: "建议3", reason: "reason3"});
-            replys.push({result: "结果4", content: "建议4", reason: "reason4"});
-            replys.push({result: "结果5", content: "建议5", reason: "reason5"});
+            replys.push({result: "结果1", content: "建议1", reason: "reason1", level: "success"});
+            replys.push({result: "结果2", content: "建议2", reason: "reason2", level: "success"});
+            replys.push({result: "结果3", content: "建议3", reason: "reason3", level: "success"});
+            replys.push({result: "结果4", content: "建议4", reason: "reason4", level: "success"});
+            replys.push({result: "结果5", content: "建议5", reason: "reason5", level: "success"});
             len = replys.length;
 
             $(replys).each(function(i, reply) {
@@ -147,9 +147,9 @@ define(function(require, exports) {
 
             var len = 0, count = 0;
             secreplies = []
-            secreplies.push({result: "另外结果1", content: "建议1", reason: "reason1"});
-            secreplies.push({result: "另外结果2", content: "建议2", reason: "reason2"});
-            secreplies.push({result: "另外结果3", content: "建议3", reason: "reason3"});
+            secreplies.push({result: "另外结果1", content: "建议1", reason: "reason1", level: "success"});
+            secreplies.push({result: "另外结果2", content: "建议2", reason: "reason2", level: "success"});
+            secreplies.push({result: "另外结果3", content: "建议3", reason: "reason3", level: "success"});
             len = secreplies.length;
 
             $(secreplies).each(function(i, reply) {
