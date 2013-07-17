@@ -105,14 +105,15 @@ public class DataProcessor {
 		return start + 5 + sectionLen - 1;
 	}
 
-	private void copyBytes(byte[] section, byte[] data, int start,int length) {
+	private void copyBytes(byte[] section, byte[] data, int start,int length) {	
 		
 		System.out.println("length:"+ length);
 		System.out.println("section[].length:"+ section.length);
 		System.out.println("data[].length:"+ data.length);
-		
 		for (int i = 0; i < length; i++) {
-			section[i] = data[i + start];
+			if((i + start) < data.length){
+				section[i] = data[i + start];
+			}
 		}
 	}
 
