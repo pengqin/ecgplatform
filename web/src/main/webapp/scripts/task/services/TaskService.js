@@ -80,7 +80,7 @@ angular.module('ecgTaskService', [])
                     result: "",
                     content: "",
                     reason: "reason",
-                    level: "info"
+                    level: "success"
                 };
             },
             reply: function(examination, reply) {

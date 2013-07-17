@@ -162,6 +162,6 @@ insert into task (id , type ,examination_id , status,expert_id,operator_id,auto 
 values (12,'examinationTask' , 12 ,'pending',null,9,0,'2013-07-12 01:00:00',null,1);
 -- task end
 -- system_config start
-insert into system_config (id , type , key , value ) values (1 , 'basic' , 'upload.rootPath' , 'd:/upload');
+insert into system_config (id , type , key , value ) values (1 , 'basic' , 'upload.rootPath' , 'c:/upload');
 -- system_config end
 commit;
