@@ -9,6 +9,7 @@ angular.module('ecgTaskService', [])
                 var opts = opts || {}, url, params = '?';
 
                 url = "/api/task";
+                
                 if (user.roles === 'operator') {
                     url = "/api/operator/" + user.id + '/task';
                 } else if (user.roles === 'expert') {
@@ -25,6 +26,8 @@ angular.module('ecgTaskService', [])
                     }
                 } else if (opts.status === 'done') {
                     params += 'status=completed';
+                } else if (opts.status){
+                    params += 'status=' + opts.status;
                 }
 
                 if (opts.id) {
