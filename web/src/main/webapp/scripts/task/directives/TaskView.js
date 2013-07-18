@@ -155,7 +155,21 @@ define(function(require, exports) {
     }])
     .controller('PlotController', ['$scope',
     function($scope) {
+        $scope.examinationplot = {};
+        $scope.examinationplot.examinationId = null;
+        // 监听未完成
+        $scope.$watch('todo.current',function() {
+            if (!$scope.todo) { return; }
+            if(!$scope.todo.current) { return; }
+            $scope.examinationplot.examinationId = $scope.todo.current.examinationId;
+        });
 
+        // 监听已完成
+        $scope.$watch('task.selected',function() {
+            if (!$scope.task) { return; }
+            if(!$scope.task.selected) { return; }
+            $scope.examinationplot.examinationId = $scope.task.selected.examinationId;
+        });
     }])
    .directive("ecgPlot", [ '$location', function($location) {
        return {
