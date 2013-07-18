@@ -4,7 +4,7 @@ var headerTemplate = require("./templates/header.html");
 var subheaderTemplate = require("./templates/subheader.html");
 
 angular.module('ecgHeader', [])
-.controller('HeaderController', ['$scope', 'EnumService', 'ProfileService', function ($scope, EnumService, ProfileService) {
+.controller('HeaderController', ['$scope', '$timeout', 'EnumService', 'ProfileService', function ($scope, $timeout, EnumService, ProfileService) {
     $scope.logout = function() {
         window.logout();
     };
@@ -25,6 +25,9 @@ angular.module('ecgHeader', [])
                 }
             });
         }
+
+        // heartbeat
+        $scope.header.heartbeat();
     });
 
     $scope.header.setStatus = function(status) {
@@ -35,7 +38,7 @@ angular.module('ecgHeader', [])
         ProfileService.update($scope.session.user).then(function(result) {
             $scope.dialog.hideStandby();
             $scope.message.success("更改工作状态成功!");
-            setTimeout(function() {
+            $timeout(function() {
                 if ($scope.header.status === 'OFFLINE') {
                     $scope.dialog.confirm({
                         text: "您是否要退出系统!",
@@ -50,6 +53,16 @@ angular.module('ecgHeader', [])
             $scope.message.error("更改工作状态失败!");
         });
     };
+
+    $scope.header.heartbeat = function() {
+        ProfileService.update($scope.session.user).then(function(result) {
+        }, function() {
+            $scope.message.error("服务端接受心跳信号异常!");
+        });
+        $timeout(function() {
+            $scope.header.heartbeat();
+        }, 1000 * 60 * 15);
+    }
 }])
 .controller('SubHeaderController', function ($scope) {
     $scope.subheader = {title: "请选择菜单"};
