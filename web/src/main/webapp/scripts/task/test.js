@@ -97,7 +97,25 @@ define(function(require, exports) {
             expert: {username: TESTCONFIGS.expert1.username, password: TESTCONFIGS.expert1.password}
         }, angluarjs, services);
 
-        // 接线员1 forward，专家1发现有新任务并处理，接线员1 forwar，专家2发现有新任务并处理
+        // 接线员2 连续forward,专家1和专家2分别发现新任务并处理
+        testStageThreeForOperator({
+            it: it,
+            user: {username: TESTCONFIGS.operator1.username, password: TESTCONFIGS.operator1.password}
+        }, angluarjs, services);
+        testStageThreeForOperator({
+            it: it,
+            user: {username: TESTCONFIGS.operator1.username, password: TESTCONFIGS.operator1.password}
+        }, angluarjs, services);
+        testStageThreeForExpert({
+            it: it,
+            user: {username: TESTCONFIGS.expert.username, password: TESTCONFIGS.expert.password}
+        }, angluarjs, services);
+        testStageThreeForExpert({
+            it: it,
+            user: {username: TESTCONFIGS.expert1.username, password: TESTCONFIGS.expert1.password}
+        }, angluarjs, services);
+
+        // 接线员1 forward，专家1发现有新任务并处理，接线员1继续forward，专家2发现有新任务并处理
         testStageThreeForOperator({
             it: it,
             user: {username: TESTCONFIGS.operator.username, password: TESTCONFIGS.operator.password}
@@ -116,23 +134,6 @@ define(function(require, exports) {
             user: {username: TESTCONFIGS.expert1.username, password: TESTCONFIGS.expert1.password}
         }, angluarjs, services);
         
-        // 接线员2 连续forward,专家1和专家2分别发现新任务并处理
-        testStageThreeForOperator({
-            it: it,
-            user: {username: TESTCONFIGS.operator1.username, password: TESTCONFIGS.operator1.password}
-        }, angluarjs, services);
-        testStageThreeForOperator({
-            it: it,
-            user: {username: TESTCONFIGS.operator1.username, password: TESTCONFIGS.operator1.password}
-        }, angluarjs, services);
-        testStageThreeForExpert({
-            it: it,
-            user: {username: TESTCONFIGS.expert.username, password: TESTCONFIGS.expert.password}
-        }, angluarjs, services);
-        testStageThreeForExpert({
-            it: it,
-            user: {username: TESTCONFIGS.expert1.username, password: TESTCONFIGS.expert1.password}
-        }, angluarjs, services);
         // 场景3结束
 
         it("the runtime should be updated as expectation", function() {

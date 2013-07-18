@@ -5,14 +5,14 @@
 			<td width="100px"><span class="prop">{{expert.name}}</span></td>
 			<td >
 			<div class="progress">
-			  <div class="bar bar-success" style="width: {{expert.percent}}%;"></div>
+			  <div class="bar bar-success" ng-style="{width: expert.percent + '%'}"></div>
 			</div>
 			</td>
 			<td width="30px;" style="padding-left:20px;">
 				<span class="label label-success prop pull-right">{{expert.completed}}</span>
 			</td>
 			<td width="30px;">
-				<span class="label prop pull-right">{{expert.proceeding}}</span>
+				<span class="label label-warning prop pull-right">{{expert.proceeding}}</span>
 			</td>
 		</tr>
 	</table>

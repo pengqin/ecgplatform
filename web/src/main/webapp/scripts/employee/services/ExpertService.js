@@ -6,10 +6,10 @@ angular.module('ecgExpertService', [])
         var uri = PATH + "/api/expert";
 
         return {
-            queryAll: function() {
+            queryAll: function(params) {
                 return $http({
                     method: 'GET',
-                    url: uri
+                    url: uri + '?' + $.param(params || {})
                 }).then(function(res) {
                     if (res.data.datas && res.data.datas.length > 0) {
                         return res.data.datas;

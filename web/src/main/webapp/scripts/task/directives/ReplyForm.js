@@ -13,7 +13,7 @@ angular.module('ecgReplyForm', [])
     $scope.replyform = {};
 
     // 预设变量
-    $scope.replyform.replys = [];
+    $scope.replyform.replys = null;
 
     // level名称
     $scope.replyform.translateLevel = EnumService.translateLevel;
@@ -35,9 +35,9 @@ angular.module('ecgReplyForm', [])
             examination = $scope.todo.current.examination,
             rules = {};
 
-        $scope.replyform.replys = [];
         $q.all([RuleService.queryAllGroup(), RuleService.queryAllGroupByUser($scope.todo.current.userId)])
         .then(function(results) {
+            $scope.replyform.replys = [];
             var querys = [];
             $(results[0]).each(function(i, rule) {
                 if (!rule.employeeId) {

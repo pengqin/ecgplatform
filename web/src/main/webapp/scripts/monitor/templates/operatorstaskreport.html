@@ -5,14 +5,14 @@
 			<td width="100px"><span class="prop">{{operator.name}}</span></td>
 			<td >
 			<div class="progress">
-			  <div class="bar bar-success" style="width: {{operator.percent}}%;"></div>
+			  <div class="bar bar-success" ng-style="{width: operator.percent + '%'}"></div>
 			</div>
 			</td>
 			<td width="30px;" style="padding-left:20px;">
 				<span class="label label-success prop pull-right">{{operator.completed}}</span>
 			</td>
 			<td width="30px;">
-				<span class="label prop pull-right">{{operator.pending}}</span>
+				<span class="label label-warning prop pull-right">{{operator.pending}}</span>
 			</td>
 		</tr>
 	</table>

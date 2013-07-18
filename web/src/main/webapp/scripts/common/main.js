@@ -25,6 +25,12 @@ angular.module('ecgCommon', ["angular-table", "ecgNav", "ecgHeader", "ecgMessage
         '4': {col: "bloodOxygen", label: "血氧饱和度"},
         '5': {col: "breath", label: "呼吸"}
     };
+    var employeestatus = [
+        {key: 'ONLINE', label: "正在上班"},
+        {key: 'AWAY', label: "暂离"},
+        {key: 'OFFLINEING', label: "准备下班"},
+        {key: 'OFFLINE', label: "下班"}
+    ];
     return {
         getGenders: function() {
             return [{label: '男', value: 1}, {label: '女', value: 0}];
@@ -62,6 +68,18 @@ angular.module('ecgCommon', ["angular-table", "ecgNav", "ecgHeader", "ecgMessage
         },
         getCodes: function() {
             return codes;
+        },
+        getEmployeeStatus: function() {
+            return employeestatus;
+        },
+        getEmployeeStatusLabel: function(status) {
+            var label;
+            $(employeestatus).each(function(i, estatus) {
+                if (estatus.key === status) {
+                    label = estatus.label;
+                }
+            });
+            return label;
         }
     };
 });
