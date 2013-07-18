@@ -2,7 +2,11 @@
 <div  class="block-body collapse in">
 
 <!-- 当前回复 -->
-<table class="table table-hover" ng-show="replyform.replys.length > 0">
+<div ng-show="!replyform.replys" style="clear:both; margin: 10px 0px;">
+    正在加载回复数据......
+</div>
+
+<table class="table table-hover" ng-show="replyform.replys && replyform.replys.length > 0">
     <thead>
         <tr>
         <th >回复</th>
@@ -26,7 +30,7 @@
     </tbody>
 </table>
 
-<div class="pull-right" style="clear:both; margin: 10px 0px;">
+<div class="pull-right" style="clear:both; margin: 10px 0px;" ng-show="replyform.replys != null">
     <button class="btn" type="button"
         ng-click="replyform.addManual()">
         <i class="icon-edit"></i>增加人工回复
@@ -44,7 +48,7 @@
 </button>
 </div>
 
-<div class="pull-right" style="clear:both; margin: 10px 0px;">
+<div class="pull-right" style="clear:both; margin: 10px 0px;" ng-show="replyform.replys != null">
     <button class="btn" type="button" ng-click="replyform.reset()">
         <i class="icon-repeat"></i>重置
     </button>
