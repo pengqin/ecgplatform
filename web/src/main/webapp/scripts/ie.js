@@ -9,5 +9,4 @@ document.createElement('at-pagination');
 
 /* ecg custom element definition */
 // monitor module
-document.createElement('ecg-employee-status-report');
 document.createElement('ecg-task-process-report');
