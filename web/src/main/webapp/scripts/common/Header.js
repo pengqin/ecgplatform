@@ -19,7 +19,7 @@ angular.module('ecgHeader', [])
         $scope.header.status = $scope.session.user.status;
         if ($scope.header.status === 'OFFLINE') {
             $scope.dialog.confirm({
-                text: "您是否要切换到正在工作的状态!",
+                text: "您是否要切换到【正在工作】的状态!",
                 handler: function() {
                     $scope.header.setStatus('ONLINE');
                 }
