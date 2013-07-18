@@ -69,8 +69,6 @@ define(function(require, exports) {
         });
 
         it("stage 3 for admin and chief:the operator and the expert should be linked", function(done) {
-            console.info(operator);
-            console.info(expert);
             OperatorService.linkExpert(operator, expert)
             .then(function() {
                 done();

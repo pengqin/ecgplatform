@@ -73,16 +73,75 @@ define(function(require, exports) {
             });
         });
 
-        var replys;
+        var replys, before;
+
         it("stage 3 for expert:the replys of the examination for the expert should be greater than 0", function(done) {
             expect(examination).not.to.be(undefined);
             TaskService.getReplyByExamination(examination)
-            .then(function(replys) {
-                expect(replys).not.to.be(undefined);
-                expect(replys).not.to.be(0);
+            .then(function(lastest) {
+                expect(lastest).not.to.be(undefined);
+                expect(lastest.length).not.to.be(0);
+                expect(lastest.length).not.to.be(1);
+                replys = lastest;
+                before = lastest.length;
                 done();
             }, function() {
                 throw new Error('failed to retrieved the replys');
+            });
+        });
+        
+        it("stage 3 for expert: expert can remove, update and create the reply", function(done) {
+
+            expect(examination).not.to.be(undefined);
+            expect(replys.length).not.to.be(0);
+            expect(replys.length).not.to.be(1);
+
+            replys[0].removed = true;
+
+            replys[1].result += 'updated';
+            replys[1].reason += 'updated';
+
+            replys.push({result: "专家建议结果test", content: "专家建议内容", reason: "原因", level: "专家建议级别"})
+
+            TaskService.replyInBatch(examination, replys)
+            .then(function(flag) {
+                expect(flag).to.be(true);
+                done();
+            }, function() {
+                throw new Error('failed to updated the replys by expert.');
+            });
+        });
+
+        it("stage 3 for expert: the replys are updated as expectation", function(done) {
+            var found = false;
+            expect(examination).not.to.be(undefined);
+            TaskService.getReplyByExamination(examination)
+            .then(function(lastest) {
+                expect(lastest).not.to.be(undefined);
+                expect(lastest.length).to.be(before);
+                $(lastest).each(function(i, reply) {
+                    if (reply.result === "专家建议结果test") {
+                        found = true;
+                    }
+                });
+                expect(found).to.be(true);
+                done();
+            }, function() {
+                throw new Error('failed to retrieved the replys');
+            });
+        });
+
+        it("stage 3 for expert: the expert can set it completed", function(done) {
+            expect(examination).not.to.be(undefined);
+            TaskService.complete(task)
+            .then(function(flag) {
+                if (flag) {
+                    done();
+                } else {
+                    throw new Error('failed to set it completed.');
+                }
+            }, function() {
+                throw new Error('failed to set it completed.');
             });
         });
     };
