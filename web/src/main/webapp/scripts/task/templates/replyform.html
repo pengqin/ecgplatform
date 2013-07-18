@@ -13,9 +13,9 @@
         <tr ng-repeat="reply in replyform.replys" ng-show="!reply.removed">
         <td>
             <p style="width:600px; word-wrap: break-word;">
-                <strong>检测结果：</strong> {{reply.result}} <br/>
+                <strong>检测结果：</strong> <span class="label label-{{replyform.translateLevel(reply.level)}}">{{reply.result}} </span><br/>
                 <strong>检测建议：</strong> {{reply.content}} <br/>
-                <strong>判断依据：</strong> <span class="label label-{{replyform.translateLevel(reply.level)}}">{{reply.reason}}</span>
+                <strong>判断依据：</strong> {{reply.reason}}
             </p>
         </td>
         <td>
@@ -32,7 +32,7 @@
         <i class="icon-edit"></i>增加人工回复
     </button>
     <button class="btn btn-primary" type="button"
-        ng-show="!session.user.isExpert()"
+        ng-show="!session.user.isExpert() && todo.current.expertId == null"
         ng-click="replyform.forward()" ng-disabled="todo.current == null || todo.current.examination == null">
         <i class="icon-share"></i>转交专家处理
     </button>

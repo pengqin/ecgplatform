@@ -167,10 +167,11 @@ define(function(require, exports) {
            }
        };
    } ])
-  .controller('ExaminationReplyController', ['$scope', 'TaskService', function($scope, TaskService) {
+  .controller('ExaminationReplyController', ['$scope', 'EnumService', 'TaskService', function($scope, EnumService, TaskService) {
       $scope.examinationreply = {};
       $scope.examinationreply.replys = null;
       
+      $scope.examinationreply.translateLevel = EnumService.translateLevel;
       // 监听已完成
       $scope.$watch('todo.current',function() {
           if (!$scope.todo) { return; }
