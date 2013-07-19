@@ -16,6 +16,7 @@ angular.module('ecgHeader', [])
 
     $scope.$watch("session.user", function() {
         if (!$scope.session.user.id) { return; }
+        if (!$scope.session.user.isEmployee) { return; };
         $scope.header.status = $scope.session.user.status;
         if ($scope.header.status === 'OFFLINE') {
             $scope.dialog.confirm({

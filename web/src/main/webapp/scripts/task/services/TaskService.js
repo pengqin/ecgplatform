@@ -49,9 +49,14 @@ angular.module('ecgTaskService', [])
                 });
             },
             queryAllTaskByUser: function(user, opts) {
-                var opts = opts || {}, url, params = '?';
+                var opts = opts || {}, url, params = '?', id;
 
+                id = user.id || user;
+
+                //url = "/api/user/" + id + "/task";
                 url = "/api/task";
+
+                //params += "userId=" + id;
 
                 return $http({
                     method: 'GET',

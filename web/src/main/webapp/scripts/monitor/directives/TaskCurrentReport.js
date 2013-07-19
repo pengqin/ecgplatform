@@ -8,7 +8,7 @@ define(function(require, exports) {
     function($scope, TaskService) {
         if (!$scope.overview) { $scope.overview = {}; }
 
-        $scope.overview.currentreport = {pending: 0, proceeding: 0, completed: 0};
+        $scope.overview.currentreport = {pending: '-', proceeding: '-', completed: '-'};
 
         $(['pending', 'proceeding', 'completed']).each(function(i, status) {
             TaskService.queryAllTaskByEmployee({}, {status: status})
