@@ -97,6 +97,7 @@ angular.module('ecgTaskService', [])
                 newreply.result = reply.result;
                 newreply.content = reply.content;
                 newreply.reason = reply.reason;
+                newreply.level = reply.level;
 
                 if (!reply.id) {
                     promise = $http({
