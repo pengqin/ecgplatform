@@ -53,6 +53,7 @@ angular.module('ecgApp', ['ecgCommon', 'ecgTask', 'ecgMonitor', 'ecgEmployee', '
     // 公用函数:退出系统
     function logout(msg) {
         if (msg) { alert(msg); }
+        $.cookie("AiniaOpAuthToken", '');
         window.location.href = "login.html";
     };
     window.logout = logout;
@@ -64,8 +65,10 @@ angular.module('ecgApp', ['ecgCommon', 'ecgTask', 'ecgMonitor', 'ecgEmployee', '
     }
 
     // 判断是否登录
-    var username = $.cookie("AiniaOpUsername");
-    if (!username) {
+    var username = $.cookie("AiniaOpUsername"),
+        token = $.cookie("AiniaOpAuthToken");
+    
+    if (!token) {
         logout('请先登录!');
         return;
     }
