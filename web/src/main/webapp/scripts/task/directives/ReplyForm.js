@@ -228,6 +228,7 @@ angular.module('ecgReplyForm', [])
 
     // 表格展示
     $scope.replydialog.reply = null;
+    $scope.replydialog.getLevelLabel = EnumService.getLevelLabel;
 
     function reset() {
         $scope.replydialog.reply = TaskService.getPlainReply();

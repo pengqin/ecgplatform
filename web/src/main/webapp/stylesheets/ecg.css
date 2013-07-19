@@ -207,16 +207,6 @@ table tbody tr.active {
 	max-width: 1600px;
 }
 
-#ecgReplyDialog .label {
-	display: inline-block;
-	width: 30px;
-	text-align: right;
-}
-#ecgReplyDialog .label-outside {
-	background-image: none;
-	background-color: #333;
-}
-
 /* employee link*/
 .employeeLink {
 	float:left; width: 120px; margin-right: 10px;
