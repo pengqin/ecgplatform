@@ -18,7 +18,7 @@ import com.ainia.ecgApi.service.sys.SystemConfigService;
  * @version 0.1
  */
 @Controller
-@RequestMapping("/systemConfig")
+@RequestMapping("/api/systemConfig")
 public class SystemConfigController extends BaseController<SystemConfig , Long> {
 
     @Autowired
