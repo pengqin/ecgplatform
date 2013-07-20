@@ -16,6 +16,7 @@ import com.ainia.ecgApi.core.crud.BaseController;
 import com.ainia.ecgApi.core.crud.BaseService;
 import com.ainia.ecgApi.core.crud.Page;
 import com.ainia.ecgApi.core.crud.Query;
+import com.ainia.ecgApi.core.crud.Query.OrderType;
 import com.ainia.ecgApi.domain.sys.Expert;
 import com.ainia.ecgApi.domain.sys.Operator;
 import com.ainia.ecgApi.domain.task.Task;
@@ -51,8 +52,12 @@ public class ExpertController extends BaseController<Expert, Long> {
 	@RequestMapping(value = "{id}/operator" , method = RequestMethod.GET ,
 										produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public Set<Operator> getOperators(@PathVariable("id") Long id) {
-		return expertService.get(id).getOperators();
+	public ResponseEntity<Set<Operator>> getOperators(@PathVariable("id") Long id) {
+		Expert expert = expertService.get(id);
+		if (expert == null) {
+			return new ResponseEntity(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<Set<Operator>>(expert.getOperators() , HttpStatus.OK);
 	}
 	
 	/**
@@ -69,7 +74,7 @@ public class ExpertController extends BaseController<Expert, Long> {
 		Expert expert = expertService.get(id);
 		expert.addOperator(operatorService.get(operId));
 		expertService.update(expert);
-		return new ResponseEntity(HttpStatus.OK);
+		return new ResponseEntity(HttpStatus.CREATED);
 	}
 
 	/**
@@ -102,7 +107,8 @@ public class ExpertController extends BaseController<Expert, Long> {
 	@RequestMapping(value = "{id}/task" , method = RequestMethod.GET ,produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<Page<Task>> findTask(@PathVariable("id") Long expertId , Query<Task> query) {
-		query.eq(Task.EXPERT_ID , expertId);
+		query.eq(Task.EXPERT_ID , expertId)
+			 .addOrder(Task.CREATED_DATE , OrderType.desc);
 		long total = taskService.count(query);
 		query.getPage().setTotal(total);
 		query.getPage().setDatas(taskService.findAll(query));

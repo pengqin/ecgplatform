@@ -4,6 +4,7 @@ define(function(require, exports) {
 var expertEditTemp = require("../templates/expert/edit.html");
 var expertRulesTemp = require("../templates/expert/rules.html");
 var expertOperatorsTemp = require("../templates/expert/operators.html");
+var expertDialogTemp = require("../templates/expert/expertsdialog.html");
 
 angular.module('ecgExpert', [])
 .controller('ExpertController', ['$scope', '$filter', '$timeout', '$location', 'EnumService', 'ExpertService', function ($scope, $filter, $timeout, $location, EnumService, ExpertService) {
@@ -14,8 +15,21 @@ angular.module('ecgExpert', [])
     $scope.expert = {};
 
     // 表格展示
-    $scope.expert.data = ExpertService.queryAll();
-    $scope.expert.filteredData = $scope.expert.data;
+    $scope.expert.data = null;
+    $scope.expert.filteredData = null;
+    // 刷新功能
+    function refreshGrid() {
+        $scope.dialog.showLoading();
+        ExpertService.queryAll().then(function(experts) {
+            $scope.dialog.hideStandby();
+            $scope.expert.data = experts;
+            $scope.expert.filteredData = $scope.expert.data;
+        }, function() {
+            $scope.dialog.hideStandby();
+            $scope.message.error("无法加载专家数据!");
+        });
+    }
+    refreshGrid();
 
     // 显示label
     $scope.expert.getGenderLabel = function(expert) {
@@ -27,12 +41,6 @@ angular.module('ecgExpert', [])
 
     // 当前选中数据
     $scope.expert.selectedItem = null;
-
-    // 刷新功能
-    function refreshGrid() {
-        $scope.expert.data = ExpertService.queryAll();
-        $scope.expert.filteredData = $scope.expert.data;
-    }
 
     // 删除功能
     $scope.expert.confirmDelete = function() {
@@ -144,8 +152,13 @@ angular.module('ecgExpert', [])
 
     // 初始化界面,并获得最新version
     function refresh() {
+        $scope.dialog.showLoading();
         ExpertService.get($routeParams.id).then(function(expert) {
+            $scope.dialog.hideStandby();
             $scope.expert.updateobj = expert;
+        }, function() {
+            $scope.dialog.hideStandby();
+            $scope.message.error("加载专家数据失败!");
         });
     };
     refresh();
@@ -235,16 +248,101 @@ angular.module('ecgExpert', [])
 // 配置接线员
 .controller('ExpertOperatorsController', ['$scope', '$routeParams', '$timeout', '$location', 'EnumService', 'ExpertService',
     function ($scope, $routeParams, $timeout, $location, EnumService, ExpertService) {
-    $scope.expert.operators = ExpertService.getOperators($routeParams.id);
+    $scope.expert.operators = null;
 
-    $scope.expert.updateOperators = function() {
-        $scope.dialog.showStandby();
-        /* TODO: */
-        // ExpertService.update($scope.expert.updateobj);
-        $timeout(function() {
-            $scope.dialog.hideStandby();
-            $scope.message.success("配置接线员成功!");
-        }, 2000);
+    function refreshLinks() {
+        ExpertService.getOperators($routeParams.id).then(function(operators) {
+            $scope.expert.operators = operators;
+        }, function() {
+            $scope.message.error("加载接线员数据失败!");
+        });
+    }
+    refreshLinks();
+
+    $scope.expert.check = function(operator) {
+        if (operator.removed === true) {
+            operator.removed = false;
+            return;
+        } else {
+            operator.removed = true;
+        }
+    };
+
+    $scope.expert.isCheckAll = false;
+    $scope.expert.checkAll = function() {
+        $scope.expert.isCheckAll = !$scope.expert.isCheckAll;
+        $($scope.expert.operators).each(function(i, operator) {
+            operator.removed = $scope.expert.isCheckAll;
+        });
+    };
+
+    $scope.expert.addOperators = function() {
+        $scope.operatordialog.show({
+            handler: function(operators) {
+                var len = operators.length, count = 0;
+                $(operators).each(function(i, operator) {
+                    $scope.dialog.showStandby();
+                    ExpertService.linkOperator($routeParams.id, operator)
+                    .then(function(flag) {
+                        $scope.dialog.hideStandby();
+                        if (flag) {
+                            count++;
+                        } else {
+                            $scope.message.error("无法绑定接线员：" + operator.name);
+                        }
+                        if (count === len) {
+                            $scope.message.success("成功绑定！");
+                            refreshLinks();
+                        }
+                    }, function() {
+                        $scope.dialog.hideStandby();
+                        $scope.message.error("无法绑定接线员：" + operator.name);
+                    });
+                });
+            }
+        });
+    };
+    
+    $scope.expert.removeOperators = function() {
+        
+        var removes = [], operators = $scope.expert.operators, len = 0, count = 0;
+
+        $(operators).each(function(i, operator) {
+            if (operator.removed) {
+                removes.push(operator);
+            }
+        });
+        
+        if (removes.length == 0) {
+            $scope.dialog.alert({
+                text: '请选择需要删除的绑定!'
+            });
+            return;
+        };
+
+        len = removes.length;
+
+        $scope.dialog.confirm({
+            text: "请确认删除这些专家与接线员绑定, 该操作无法恢复!",
+            handler: function() {
+                $scope.dialog.showStandby();
+                $(removes).each(function(i, remove) {
+                    ExpertService.unlinkOperator($routeParams.id, remove)
+                    .then(function() {
+                        count++;
+                        if (count === len) {
+                            $scope.dialog.hideStandby();
+                            $scope.message.success("成功删除绑定！");
+                            refreshLinks();
+                        }
+                    }, function() {
+                        count++;
+                        $scope.dialog.hideStandby();
+                        $scope.message.error("无法删除该绑定，用户名为：" + remove.name);
+                    });
+                });
+            }
+        });
     };
 }])
 .directive("ecgExpertOperators", [ '$location', function($location) {
@@ -253,6 +351,57 @@ angular.module('ecgExpert', [])
         replace : false,
         template : expertOperatorsTemp,
         controller : "ExpertOperatorsController",
+        link : function($scope, $element, $attrs) {
+        }
+    };
+}])
+.controller('ExpertDialogController', 
+    ['$scope', '$filter', '$timeout', '$location', 'EnumService', 'ExpertService', 
+    function ($scope, $filter, $timeout, $location, EnumService, ExpertService) {
+
+    // 命名空间
+    $scope.expertdialog = {};
+
+    // 表格展示
+    $scope.expertdialog.data = null;
+    function refreshGrid() {
+        ExpertService.queryAll().then(function(experts) {
+            $scope.expertdialog.data = experts;
+        });
+    };
+    refreshGrid();
+
+    $scope.expertdialog.execute = function() {
+        var selecteds = [];
+        $($scope.expertdialog.data).each(function(i, expert) {
+            if (expert.selected) {
+                selecteds.push(expert);
+            }
+        });
+        $scope.expertdialog.hide();
+        if ($scope.expertdialog.handler instanceof Function) {
+            $scope.expertdialog.handler(selecteds);
+        }
+    };
+
+    $scope.expertdialog.hide = function(opts) {
+      $('#ecgExpertsDialog').modal('hide');
+    };
+
+    $scope.expertdialog.show = function(opts) {
+      var opts = opts || {};
+      $scope.expertdialog.handler = opts.handler;
+      $('#ecgExpertsDialog').modal('show');
+      refreshGrid();
+    };
+
+}])
+.directive("ecgExpertDialog", [ '$location', function($location) {
+    return {
+        restrict : 'A',
+        replace : false,
+        template : expertDialogTemp,
+        controller : "ExpertDialogController",
         link : function($scope, $element, $attrs) {
         }
     };
