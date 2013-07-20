@@ -208,9 +208,11 @@ table tbody tr.active {
 
 /* ecg plot */
 .plot-c {
-	width: 100%; min-width: 500px; height: 300px;overflow:auto;
+	width: 100%; min-width: 500px; height: 320px;
+	overflow:auto;
 	margin: 10px 0px;
 }
-.plot-c .plot {
-	width:1600px;height:300px;max-wdith:1600px !important;
+.plot-c img {
+	width:1600px;height:300px;
+	max-width:1600px !important
 }

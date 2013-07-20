@@ -57,6 +57,7 @@ angular.module('ecgApp', ['ecgCommon', 'ecgTask', 'ecgUser', 'ecgProfile'])
     // 加载完成, 显示工作界面
     function inited() {
         $(document.body).removeClass("noscroll");
+        $.cookie("AiniaSelfAuthToken", '', { path: '/' });
         $("#loadingpage").hide();
     }
 
