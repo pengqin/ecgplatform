@@ -107,7 +107,7 @@ i {
 
 /*按钮区域*/
 .buttons {
-	margin-top: 10px;
+	margin: 10px 0px;
 }
 .buttons input { margin: 0px; }
 
@@ -189,7 +189,7 @@ table tbody tr.active {
 
 /* employee link*/
 .employeeLink {
-	float:left; width: 120px; margin-right: 10px;
+	float: left; margin: 0px; margin-right: 10px; display: inline-block;
 }
 .employeeLink input {
 	margin: 0px;

@@ -911,7 +911,7 @@ legend{border-bottom:none;color:#080808;}
 .form-actions{border-top:none;background-color:#eeeeee;}
 .dropdown-menu{-webkit-border-radius:0;-moz-border-radius:0;border-radius:0;}
 .alert{-webkit-border-radius:0;-moz-border-radius:0;border-radius:0;text-shadow:none;}.alert-heading,.alert h1,.alert h2,.alert h3,.alert h4,.alert h5,.alert h6{color:#ffffff;}
-.label{min-width:80px;min-height:80px;-webkit-border-radius:0;-moz-border-radius:0;border-radius:0;font-weight:300;text-shadow:none;}.label-success{background-color:#3fb618;}
+.label{-webkit-border-radius:0;-moz-border-radius:0;border-radius:0;font-weight:300;text-shadow:none;}.label-success{background-color:#3fb618;}
 .label-important{background-color:#ff0039;}
 .label-info{background-color:#9954bb;}
 .label-inverse{background-color:#000000;}
@@ -923,11 +923,6 @@ legend{border-bottom:none;color:#080808;}
 .well{border:none;-webkit-border-radius:0;-moz-border-radius:0;border-radius:0;-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;}
 [class^="icon-"],[class*=" icon-"]{margin:0 2px;vertical-align:-2px;}
 a.thumbnail{background-color:#dfdfdf;}a.thumbnail:hover{background-color:#bbbbbb;border-color:transparent;}
-.progress{height:6px;-webkit-border-radius:0;-moz-border-radius:0;border-radius:0;-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;background-color:#eeeeee;background-image:none;}.progress .bar{background-color:#007fff;background-image:none;}
-.progress-info{background-color:#9954bb;}
-.progress-success{background-color:#3fb618;}
-.progress-warning{background-color:#ff7518;}
-.progress-danger{background-color:#ff0039;}
 .modal{-webkit-border-radius:0;-moz-border-radius:0;border-radius:0;}.modal-header{border-bottom:none;}
 .modal-footer{border-top:none;background-color:transparent;}
 .popover{-webkit-border-radius:0;-moz-border-radius:0;border-radius:0;color:#ffffff;}.popover-title{border-bottom:none;color:#ffffff;}
