@@ -11,7 +11,10 @@
 <tr>
 <td><label>健康状态:</label></td>
 <td>
-<span class="prop">{{examinationview.getLevelLabel(examinationview.examination.level)}}
+<span class="prop">
+	<span class="label label-{{examinationview.translateLevel(examinationview.examination.level)}}">
+		{{examinationview.getLevelLabel(examinationview.examination.level)}}
+	</span>
 </td>
 <td><label>处理状态:</label></td>
 <td><span class="prop">{{examinationview.getWorkStatusLabel(todo.current.status || task.selected.status)}}</span></td>
