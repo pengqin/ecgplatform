@@ -57,6 +57,7 @@ i {
 /*对专家不可见的菜单*/
 .navbar.expert .duplicated,
 .navbar.expert .overview,
+.navbar.expert #users-menu,
 .navbar.expert #employees-menu {
 	display: none
 }
@@ -64,6 +65,7 @@ i {
 /*对接线员不可见的菜单*/
 .navbar.operator .overview,
 .navbar.operator #employees-menu,
+.navbar.operator #users-menu,
 .navbar.operator #rules-menu {
 	display: none
 }
@@ -72,6 +74,7 @@ i {
 .navbar.user .overview,
 .navbar.user #dashboard-menu,
 .navbar.user .task,
+.navbar.user #users-menu,
 .navbar.user #employees-menu,
 .navbar.user #rules-menu {
 	display: none

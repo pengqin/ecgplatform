@@ -139,6 +139,9 @@ angular.module('ecgTask', ['ecgTaskService', 'ecgTaskView', 'ecgReplyForm'])
 
     $scope.$watch("session.user", function() {
         if (!$scope.session.user.id) { return; }
+        if (!$scope.session.user.isEmployee) {
+            $scope.subheader.title = "体检记录";
+        }
         refreshGrid();
     });
 
