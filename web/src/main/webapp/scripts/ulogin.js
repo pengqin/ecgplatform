@@ -38,4 +38,6 @@ $(function() {
     });
     // restore the cookie
     $("#username").val($.cookie('AiniaSelfUsername') || '');
+
+    $("#ecgSlider").carousel();
 });

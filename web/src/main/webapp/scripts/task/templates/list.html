@@ -1,5 +1,5 @@
 <div class="row-fluid">
-    <div class="block span5">
+    <div class="block span5" ng-show="task.data && task.data.length > 0">
         <div class="block-body block-body-grid collapse in">
             <!-- 当前区间的回复 -->
             <table class="table table-hover">
@@ -27,10 +27,13 @@
             </table>
         </div>
     </div>
-    <div class="block span7" ng-show="task.selected">
+    <div class="block span7" ng-show="task.data && task.data.length > 0 && task.selected">
         <div ecg-task-view></div>
     </div>
-    <div class="block span7 block-without-border" ng-show="!task.selected">
+    <div class="block span7 block-without-border" ng-show="task.data && task.data.length > 0 && !task.selected">
         请选择任意一条纪录
+    </div>
+    <div class="block span5" ng-show="task.data == null || task.data.length == 0">
+        没有您的体检记录，如需帮助，请联系客服。
     </div>
 </div>

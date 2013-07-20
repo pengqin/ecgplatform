@@ -53,10 +53,7 @@ angular.module('ecgTaskService', [])
 
                 id = user.id || user;
 
-                //url = "/api/user/" + id + "/task";
-                url = "/api/task";
-
-                //params += "userId=" + id;
+                url = "/api/user/" + id + "/task";
 
                 return $http({
                     method: 'GET',
