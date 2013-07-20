@@ -160,6 +160,7 @@ define(function(require, exports) {
         $scope.$watch('todo.current',function() {
             if (!$scope.todo) { return; }
             if(!$scope.todo.current) { return; }
+            $scope.examinationplot.userId = $scope.todo.current.userId;
             $scope.examinationplot.examinationId = $scope.todo.current.examinationId;
         });
 
@@ -167,6 +168,7 @@ define(function(require, exports) {
         $scope.$watch('task.selected',function() {
             if (!$scope.task) { return; }
             if(!$scope.task.selected) { return; }
+            $scope.examinationplot.userId = $scope.task.selected.userId;
             $scope.examinationplot.examinationId = $scope.task.selected.examinationId;
         });
     }])
