@@ -10,6 +10,9 @@ i {
 .noscroll {
 	overflow: hidden;
 }
+.msging {
+	margin-top: 43px;
+}
 
 /*应用加载界面*/
 #loadingpage {
@@ -28,6 +31,11 @@ i {
 #workstatus .btn-link { padding: 0px 5px; }
 
 /*消息提示*/
+#ecgMessage {
+	position: fixed;
+	top: 0px;
+	left: 0px;
+}
 #ecgMessage .pull-right {
 	cursor: pointer;
 	margin-right: 5px;
