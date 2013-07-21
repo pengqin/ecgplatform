@@ -43,7 +43,7 @@ angular.module('ecgApp', ['ecgCommon', 'ecgTask', 'ecgMonitor', 'ecgEmployee', '
             }
         })
         .otherwise({
-            redirectTo: '/welcome'
+            redirectTo: '/todo'
         });
 }])
 .run(['$rootScope', '$http', 'ProfileService', function($rootScope, $http, ProfileService) {
