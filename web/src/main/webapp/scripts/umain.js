@@ -82,7 +82,6 @@ angular.module('ecgApp', ['ecgCommon', 'ecgTask', 'ecgUser', 'ecgProfile'])
             };
             $rootScope.session.user = user;
             $.cookie("AiniaSelfUserId", user.id, { expires: 1, path: '/' });
-            $location.path("/examination");
         } else {
             logout('无法获取您登录名为' + username +'的用户信息。请与管理员联系!');
         }

@@ -1,5 +1,5 @@
 <div class="row-fluid">
-    <div class="block span12" ng-show="task.data && task.data.length > 0 && task.selected == null">
+    <div class="span12" ng-show="task.data && task.data.length > 0 && task.selected == null">
         <div class="block-body block-body-grid collapse in">
             <!-- 当前区间的回复 -->
             <table class="table table-hover">
@@ -12,7 +12,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="item in task.data" ng-click="task.selected = item" ng-class="{'active': task.selected == item}">
+                <tr ng-repeat="item in task.data" ng-click="task.view(item)">
                     <td nowrap>{{item.id}}</td>
                     <td nowrap>{{item.createdDate}}</td>
                     <td nowrap><span class="label label-{{task.translateLevel(item.level)}}">{{task.getLevelLabel(item.level)}}</span></td>
@@ -24,12 +24,12 @@
             </table>
         </div>
     </div>
-    <div class="block span12" ng-show="task.data && task.data.length > 0 && task.selected">
-        <button class="btn btn-primary" type="button" ng-click="task.selected = null">返回</button>
+    <div class="span12" ng-show="task.selected">
+        <a href="#/examination" class="btn btn-primary">返回</a>
         <div ecg-task-view style="margin-top: 10px;"></div>
-        <button class="btn btn-primary" type="button" ng-click="task.selected = null">返回</button>
+        <a href="#/examination" class="btn btn-primary">返回</a>
     </div>
-    <div class="block span12" ng-show="task.data == null || task.data.length == 0">
+    <div class="span12" ng-show="task.data == null || task.data.length == 0">
         没有您的体检记录，如需帮助，请联系客服。
     </div>
 </div>

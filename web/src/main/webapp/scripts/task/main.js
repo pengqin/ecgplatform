@@ -159,7 +159,8 @@ angular.module('ecgTask', ['ecgTaskService', 'ecgTaskView', 'ecgReplyForm'])
       }
   };
 }])
-.controller('ExaminationController', ['$scope', 'EnumService', 'ProfileService', 'TaskService', function ($scope, EnumService, ProfileService, TaskService) {
+.controller('ExaminationController', ['$scope', '$routeParams', '$location', 'EnumService', 'ProfileService', 'TaskService',
+    function ($scope, $routeParams, $location, EnumService, ProfileService, TaskService) {
     $scope.subheader.title = "体检记录";
 
     $scope.task = {};
@@ -173,6 +174,10 @@ angular.module('ecgTask', ['ecgTaskService', 'ecgTaskView', 'ecgReplyForm'])
 
     $scope.task.translateLevel = EnumService.translateLevel;
 
+    $scope.task.view = function(item) {
+        $location.path("examination/" + item.id);
+    };
+
     function refreshGrid() {
         var user = $scope.session.user;
         
@@ -185,17 +190,28 @@ angular.module('ecgTask', ['ecgTaskService', 'ecgTaskView', 'ecgReplyForm'])
 
     $scope.$watch("session.user", function() {
         if (!$scope.session.user.id) { return; }
-        if (!$scope.session.user.isEmployee) {
-            $scope.subheader.title = "体检记录";
+        if ($scope.session.user.isEmployee) { return; }
+        if ($routeParams.id) {
+            $scope.dialog.showLoading();
+            TaskService.get($routeParams.id).then(function(obj) {
+                $scope.dialog.hideStandby();
+                if (obj) {
+                    $scope.task.data = [obj];
+                    $scope.task.selected = obj;
+                }
+            });
+        } else {
+            refreshGrid();
         }
-        refreshGrid();
     });
-
-    $scope.task.refreshGrid = refreshGrid;
 }])
 .config(['$routeProvider', function ($routeProvider) {
 $routeProvider
 .when('/examination', {
+    template: examinationTemp,
+    controller: 'ExaminationController'
+})
+.when('/examination/:id', {
     template: examinationTemp,
     controller: 'ExaminationController'
 })
