@@ -47,6 +47,8 @@
 	
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
 	
+	<mvc:resources mapping="/lib/**" location="/lib/"/>
+	
     <mvc:interceptors>  
 	  <mvc:interceptor>  
 	    <mvc:mapping path="/**" />  
