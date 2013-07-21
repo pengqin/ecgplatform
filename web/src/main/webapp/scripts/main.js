@@ -53,7 +53,7 @@ angular.module('ecgApp', ['ecgCommon', 'ecgTask', 'ecgMonitor', 'ecgEmployee', '
     // 公用函数:退出系统
     function logout(msg) {
         if (msg) { alert(msg); }
-        $.cookie("AiniaOpAuthToken", '');
+        $.cookie("AiniaOpAuthToken", '', { path: '/' });
         window.location.href = "login.html";
     };
     window.logout = logout;
