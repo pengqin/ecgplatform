@@ -1,0 +1,35 @@
+<div class="row-fluid">
+    <div class="span12" ng-show="task.data && task.data.length > 0 && task.selected == null">
+        <div class="block-body block-body-grid collapse in">
+            <!-- 当前区间的回复 -->
+            <table class="table table-hover">
+            <thead>
+                <tr>
+                <th>ID</th>
+                <th>体检时间</th>
+                <th>健康状态</th>
+                <th>处理状态</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in task.data" ng-click="task.view(item)">
+                    <td nowrap>{{item.id}}</td>
+                    <td nowrap>{{item.createdDate}}</td>
+                    <td nowrap><span class="label label-{{task.translateLevel(item.level)}}">{{task.getLevelLabel(item.level)}}</span></td>
+                    <td nowrap>
+                        <span>{{task.getWorkStatusLabel(item.status)}}</span>
+                    </td>
+                </tr>
+            </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="span12" ng-show="task.selected">
+        <a href="#/examination" class="btn btn-primary">返回</a>
+        <div ecg-task-view style="margin-top: 10px;"></div>
+        <a href="#/examination" class="btn btn-primary">返回</a>
+    </div>
+    <div class="span12" ng-show="task.data == null || task.data.length == 0">
+        没有您的体检记录，如需帮助，请联系客服。
+    </div>
+</div>

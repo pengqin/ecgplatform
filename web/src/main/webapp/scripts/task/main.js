@@ -9,6 +9,7 @@ require("./directives/ReplyForm");
 var todoTemp = require("./templates/todo.html");
 var todobarTemplate = require("./templates/todobar.html");
 var taskTemp = require("./templates/list.html");
+var examinationTemp = require("./templates/examination.html");
 
 angular.module('ecgTask', ['ecgTaskService', 'ecgTaskView', 'ecgReplyForm'])
 .controller('TodoTaskController',
@@ -121,20 +122,13 @@ angular.module('ecgTask', ['ecgTaskService', 'ecgTaskView', 'ecgReplyForm'])
     $scope.task.translateLevel = EnumService.translateLevel;
 
     function refreshGrid() {
-        var user = $scope.session.user, isEmployee = user.isEmployee;
-        if (isEmployee && isEmployee()) {
-            $scope.dialog.showLoading();
-            TaskService.queryAllTaskByEmployee(user).then(function(tasks) {
-                $scope.dialog.hideStandby();
-                $scope.task.data = tasks;
-            });
-        } else {
-            $scope.dialog.showLoading();
-            TaskService.queryAllTaskByUser(user).then(function(tasks) {
-                $scope.dialog.hideStandby();
-                $scope.task.data = tasks;
-            });
-        }
+        var user = $scope.session.user;
+        
+        $scope.dialog.showLoading();
+        TaskService.queryAllTaskByEmployee(user).then(function(tasks) {
+            $scope.dialog.hideStandby();
+            $scope.task.data = tasks;
+        });
     }
 
     $scope.$watch("session.user", function() {
@@ -165,8 +159,62 @@ angular.module('ecgTask', ['ecgTaskService', 'ecgTaskView', 'ecgReplyForm'])
       }
   };
 }])
+.controller('ExaminationController', ['$scope', '$routeParams', '$location', 'EnumService', 'ProfileService', 'TaskService',
+    function ($scope, $routeParams, $location, EnumService, ProfileService, TaskService) {
+    $scope.subheader.title = "体检记录";
+
+    $scope.task = {};
+    $scope.task.data = null;
+    $scope.task.selected = null;
+
+    // level名称
+    $scope.task.getLevelLabel = EnumService.getLevelLabel;
+    // level名称
+    $scope.task.getWorkStatusLabel = EnumService.getWorkStatusLabel;
+
+    $scope.task.translateLevel = EnumService.translateLevel;
+
+    $scope.task.view = function(item) {
+        $location.path("examination/" + item.id);
+    };
+
+    function refreshGrid() {
+        var user = $scope.session.user;
+        
+        $scope.dialog.showLoading();
+        TaskService.queryAllTaskByUser(user).then(function(tasks) {
+            $scope.dialog.hideStandby();
+            $scope.task.data = tasks;
+        });
+    }
+
+    $scope.$watch("session.user", function() {
+        if (!$scope.session.user.id) { return; }
+        if ($scope.session.user.isEmployee) { return; }
+        if ($routeParams.id) {
+            $scope.dialog.showLoading();
+            TaskService.get($routeParams.id).then(function(obj) {
+                $scope.dialog.hideStandby();
+                if (obj) {
+                    $scope.task.data = [obj];
+                    $scope.task.selected = obj;
+                }
+            });
+        } else {
+            refreshGrid();
+        }
+    });
+}])
 .config(['$routeProvider', function ($routeProvider) {
 $routeProvider
+.when('/examination', {
+    template: examinationTemp,
+    controller: 'ExaminationController'
+})
+.when('/examination/:id', {
+    template: examinationTemp,
+    controller: 'ExaminationController'
+})
 .when('/todo', {
     template: todoTemp,
     controller: 'TodoTaskController'

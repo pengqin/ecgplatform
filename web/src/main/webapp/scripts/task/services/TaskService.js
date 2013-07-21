@@ -44,7 +44,6 @@ angular.module('ecgTaskService', [])
                         return [];    
                     }
                 }, function() {
-                    $rootScope.message.error('服务器异常,无法获取数据');
                     return [];
                 });
             },
@@ -66,6 +65,17 @@ angular.module('ecgTaskService', [])
                     }
                 }, function() {
                     return [];
+                });
+            },
+            get: function(id) {
+                return $http({
+                    method: 'GET',
+                    cache: false,
+                    url: PATH + '/api/task/' + id
+                }).then(function(res) {
+                    return res.data;
+                }, function() {
+                    return null;
                 });
             },
             getExamination: function(id) {
