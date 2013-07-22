@@ -14,16 +14,16 @@ import java.util.List;
 public class AuthUserImpl implements AuthUser {
 
 	private Long id;
-	private String usernmame;
+	private String username;
 	private String type;
 	private String[] roles;
 	
 	
 	
-	public AuthUserImpl(Long id, String usernmame, String type , String...roles) {
+	public AuthUserImpl(Long id, String username, String type , String...roles) {
 		super();
 		this.id = id;
-		this.usernmame = usernmame;
+		this.username = username;
 		this.type = type;
 		this.roles = roles;
 	}
@@ -33,11 +33,7 @@ public class AuthUserImpl implements AuthUser {
 	}
 
 	public String getUsername() {
-		return usernmame;
-	}
-
-	public String getUsernmame() {
-		return usernmame;
+		return username;
 	}
 
 	public String getType() {
@@ -54,7 +50,7 @@ public class AuthUserImpl implements AuthUser {
 
 	@Override
 	public String toString() {
-		return "AuthUserImpl [id=" + id + ", usernmame=" + usernmame
+		return "AuthUserImpl [id=" + id + ", username=" + username
 				+ ", type=" + type + ", roles=" + Arrays.toString(roles) + "]";
 	}
 
