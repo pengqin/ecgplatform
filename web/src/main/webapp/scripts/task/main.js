@@ -82,6 +82,7 @@ angular.module('ecgTask', ['ecgTaskService', 'ecgTaskView', 'ecgReplyForm'])
             $scope.todo.replyform = 'hidden';
             if ($scope.todo.tasks.length > 0) {
                 selectTask();
+                $scope.subheader.title = "待办工作(共" + $scope.todo.tasks.length + "条)";
             } else {
                 refreshGrid();
             }
