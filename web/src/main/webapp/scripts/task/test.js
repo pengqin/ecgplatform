@@ -6,6 +6,7 @@ define(function(require, exports) {
     var testStageThreeForAdminAndChief= require("./test/stageThreeForAdminAndChief").test;
     var testStageThreeForOperator= require("./test/stageThreeForOperator").test;
     var testStageThreeForExpert= require("./test/stageThreeForExpert").test;
+    var testDeleteAsEmployee= require("./test/delete").test;
     
     exports.testTask = function(mocha, angluarjs, services) {
         if (!runCase('task')) {
@@ -41,6 +42,7 @@ define(function(require, exports) {
         /**
          * 场景1,管理员、主任都可以查询未完成任务的信息,并将当前的环境信息保存
          */
+         /*
         testStageOneForAdminAndChief({
             it: it,
             user: {username: TESTCONFIGS.admin.username, password: TESTCONFIGS.admin.password}
@@ -55,6 +57,7 @@ define(function(require, exports) {
         /**
          * 场景2,接线员自己回复，并将更改当前环境
          */
+         /*
         testStageTwoForOperator({
             it: it,
             user: {username: TESTCONFIGS.operator.username, password: TESTCONFIGS.operator.password}
@@ -69,6 +72,7 @@ define(function(require, exports) {
          * 场景3
          * 主任配置接线员和专家的多对多关系，接线员发送回复并转交专家，专家回复
          */
+         /*
         testStageThreeForAdminAndChief({
             it: it,
             user: {username: TESTCONFIGS.chief.username, password: TESTCONFIGS.chief.password},
@@ -97,6 +101,7 @@ define(function(require, exports) {
             expert: {username: TESTCONFIGS.expert1.username, password: TESTCONFIGS.expert1.password}
         }, angluarjs, services);
 
+        /*
         // 接线员2 连续forward,专家1和专家2分别发现新任务并处理
         testStageThreeForOperator({
             it: it,
@@ -132,8 +137,7 @@ define(function(require, exports) {
         testStageThreeForExpert({
             it: it,
             user: {username: TESTCONFIGS.expert1.username, password: TESTCONFIGS.expert1.password}
-        }, angluarjs, services);
-        
+        }, angluarjs, services);*/
         // 场景3结束
 
         it("the runtime should be updated as expectation", function() {
@@ -143,6 +147,28 @@ define(function(require, exports) {
             console.info(operator1Runtime);
             expect(adminRuntime.undone).to.be(chiefRuntime.undone);
         });
+
+        // 最终场景
+        testDeleteAsEmployee({
+            it: it,
+            user: {username: TESTCONFIGS.admin.username, password: TESTCONFIGS.admin.password}
+        }, angluarjs, services, adminRuntime, true);
+
+        testDeleteAsEmployee({
+            it: it,
+            user: {username: TESTCONFIGS.chief.username, password: TESTCONFIGS.chief.password}
+        }, angluarjs, services, adminRuntime, true);
+
+        testDeleteAsEmployee({
+            it: it,
+            user: {username: TESTCONFIGS.expert.username, password: TESTCONFIGS.expert.password}
+        }, angluarjs, services, adminRuntime, false);
+
+        testDeleteAsEmployee({
+            it: it,
+            user: {username: TESTCONFIGS.operator.username, password: TESTCONFIGS.operator.password}
+        }, angluarjs, services, adminRuntime, false);
+
     };
 
 });

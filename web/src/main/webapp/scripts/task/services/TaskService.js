@@ -220,6 +220,18 @@ angular.module('ecgTaskService', [])
                     $rootScope.message.error('服务器异常,无法获取数据');
                     return [];
                 });
+            },
+            remove: function(task) {
+                return $http({
+                    method: 'DELETE',
+                    url: PATH + '/api/user/' + task.userId + '/task/' + task.id
+                });
+            },
+            removeUserTasks: function(task) {
+                return $http({
+                    method: 'DELETE',
+                    url: PATH + '/api/user/' + task.userId + '/task'
+                });
             }
         };
     }]);
