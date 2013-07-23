@@ -49,8 +49,10 @@ define(function(require, exports) {
         });
 
         var task;
-        it("the task should be retrieved again.", function(done) {
+        it("the task should be retrieved.", function(done) {
             expect(TaskService).not.to.be(undefined);
+            // to get a task
+            sessionemployee.roles = "admin";
             TaskService.queryAllTaskByEmployee(sessionemployee).then(function(tasks) {
                 expect(tasks).not.to.be(undefined);
                 expect(tasks.length).not.to.be(0);
@@ -96,17 +98,6 @@ define(function(require, exports) {
                     throw new Error('the task can not be deleted');
                 });
             });
-
-            it("all task should be deleted by admin/chief.", function(done) {
-                expect(TaskService).not.to.be(undefined);
-                expect(task).not.to.be(undefined);
-                TaskService.removeUserTasks(task).then(function() {
-                    done();
-                }, function() {
-                    throw new Error('all task can not be deleted');
-                });
-            });
-
         } else {
             it("the task should not be deleted by non admin/chief.", function(done) {
                 expect(TaskService).not.to.be(undefined);

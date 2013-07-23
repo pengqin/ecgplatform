@@ -7,6 +7,7 @@ define(function(require, exports) {
     var testStageThreeForOperator= require("./test/stageThreeForOperator").test;
     var testStageThreeForExpert= require("./test/stageThreeForExpert").test;
     var testDeleteAsEmployee= require("./test/delete").test;
+    var testDeleteAllAsEmployee = require("./test/deleteAll").test;
     
     exports.testTask = function(mocha, angluarjs, services) {
         if (!runCase('task')) {
@@ -149,15 +150,11 @@ define(function(require, exports) {
         });
 
         // 最终场景
-        testDeleteAsEmployee({
-            it: it,
-            user: {username: TESTCONFIGS.admin.username, password: TESTCONFIGS.admin.password}
-        }, angluarjs, services, adminRuntime, true);
-
-        testDeleteAsEmployee({
-            it: it,
-            user: {username: TESTCONFIGS.chief.username, password: TESTCONFIGS.chief.password}
-        }, angluarjs, services, adminRuntime, true);
+        /**
+         * 专家，接线员不能删除任何task
+         * 管理员和主任可以删除某个用户的task
+         * 管理员和主任可以删除某个用户的全部 task
+         */
 
         testDeleteAsEmployee({
             it: it,
@@ -168,6 +165,29 @@ define(function(require, exports) {
             it: it,
             user: {username: TESTCONFIGS.operator.username, password: TESTCONFIGS.operator.password}
         }, angluarjs, services, adminRuntime, false);
+
+        testDeleteAsEmployee({
+            it: it,
+            user: {username: TESTCONFIGS.admin.username, password: TESTCONFIGS.admin.password}
+        }, angluarjs, services, adminRuntime, true);
+
+        testDeleteAsEmployee({
+            it: it,
+            user: {username: TESTCONFIGS.chief.username, password: TESTCONFIGS.chief.password}
+        }, angluarjs, services, adminRuntime, true);
+
+
+        testDeleteAllAsEmployee({
+            it: it,
+            employee: {username: TESTCONFIGS.admin.username, password: TESTCONFIGS.admin.password},
+            user: {username: TESTCONFIGS.user.username, password: TESTCONFIGS.user.password}
+        }, angluarjs, services, adminRuntime, true);
+
+        testDeleteAllAsEmployee({
+            it: it,
+            employee: {username: TESTCONFIGS.chief.username, password: TESTCONFIGS.chief.password},
+            user: {username: TESTCONFIGS.user1.username, password: TESTCONFIGS.user1.password}
+        }, angluarjs, services, adminRuntime, true);
 
     };
 
