@@ -70,7 +70,7 @@ angular.module('ecgTestApp', ['ecgCommon', 'ecgTask', 'ecgMonitor', 'ecgEmployee
         testTask(
           {it: it}, 
           {httpProvider: httpProvider},
-          {ProfileService: ProfileService, TaskService: TaskService, OperatorService: OperatorService}
+          {ProfileService: ProfileService, TaskService: TaskService, OperatorService: OperatorService, UserService: UserService}
         );
     });
     mocha.run();

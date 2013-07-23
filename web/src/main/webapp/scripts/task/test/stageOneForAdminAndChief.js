@@ -1,5 +1,4 @@
 'use strict';
-'use strict';
 define(function(require, exports) {
 
     exports.test = function(mocha, angluarjs, services, env) {

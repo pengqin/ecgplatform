@@ -9,8 +9,8 @@ define(function(require, exports) {
             httpProvider = angluarjs.httpProvider,
             UserService = services.UserService;
 
-        // 登录
         var user;
+        // 注册用户
         it("the user should be created by user/apk.", function(done) {
             user = {
                 mobile: 13 + (new Date()).getTime().toString().substring(0, 9),
@@ -36,7 +36,25 @@ define(function(require, exports) {
             });
         });
 
-        it("the user should not be created by user/apk.", function(done) {
+        // 不能注册2次
+        it("the user should not be created by user/apk again.", function(done) {
+            $.ajax({
+                url: PATH + '/api/user',
+                data: {
+                    'username': user.mobile,
+                    'name': user.name,
+                    'password': user.password
+                },
+                type: 'POST'
+            }).then(function(res) {
+                throw new Error('should not created a user');
+            }, function() {
+                done();
+            });
+        });
+
+        // 不能注册2次
+        it("the user should not be created by user/apk again.", function(done) {
             $.ajax({
                 url: PATH + '/api/user',
                 data: {
@@ -69,6 +87,22 @@ define(function(require, exports) {
                 done();
             }, function() {
                 throw new Error('failed to authnenciate as a new user.');
+            });
+        });
+
+        it("the new user should not authenciated with mobile.", function(done) {
+            $.ajax({
+                url: PATH + '/api/user/auth',
+                data: {
+                    'mobile': user.mobile,
+                    'password': user.password
+                },
+                type: 'POST',
+                dataType: 'json'
+            }).then(function(res) {
+                throw new Error('failed to authnenciate with mobile.');
+            }, function() {
+                done();
             });
         });
 
@@ -274,8 +308,46 @@ define(function(require, exports) {
             });
         });
 
+        // 没有token不能删除所有个人任务
+        it("the user's task should not be deleted without token.", function(done) {
+            $.ajax({
+                url: PATH + '/api/user/' + userId + '/task',
+                type: 'DELETE'
+            }).then(function(res) {
+                done();
+            }, function() {
+                throw new Error('should not be deleted in batch.');
+            });
+        });
+
+        // 错误的token不能删除所有个人任务
+        it("the user's task should not be deleted without token.", function(done) {
+            $.ajax({
+                url: PATH + '/api/user/' + userId + '/task',
+                type: 'DELETE',
+                headers: {Authorization: 'invalid'}
+            }).then(function(res) {
+                done();
+            }, function() {
+                throw new Error('should not be deleted in batch.');
+            });
+        });
+
+        // 正确的token能删除所有个人任务,即使还没有任务
+        it("the user's task should be deleted without token.", function(done) {
+            $.ajax({
+                url: PATH + '/api/user/' + userId + '/task',
+                type: 'DELETE',
+                headers: {Authorization: token}
+            }).then(function(res) {
+                done();
+            }, function() {
+                throw new Error('should not be deleted in batch.');
+            });
+        });
+
         // 没有token不能删除
-        it("the user's password should not deleted without empty token.", function(done) {
+        it("the user should not be deleted without empty token.", function(done) {
             $.ajax({
                 url: PATH + '/api/user/' + userId,
                 type: 'DELETE'
@@ -287,7 +359,7 @@ define(function(require, exports) {
         });
 
         // 错的token不能删除
-        it("the user's password should not deleted with invalid token.", function(done) {
+        it("the user should not be deleted with invalid token.", function(done) {
             $.ajax({
                 url: PATH + '/api/user/' + userId + '/password',
                 type: 'DELETE',
@@ -300,7 +372,7 @@ define(function(require, exports) {
         });
 
         // 自己也不能删除自己
-        it("the user's password should deleted with valid token.", function(done) {
+        it("the user should not be deleted with valid token.", function(done) {
             $.ajax({
                 url: PATH + '/api/user/' + userId + '/password',
                 type: 'DELETE',
