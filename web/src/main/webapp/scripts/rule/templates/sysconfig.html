@@ -3,10 +3,10 @@
 		<form name="updateConfigForm">
 		<table class="ecgprops">
 
-		<tr>
-		<td width="150px" valign="top"><label for="upload-path">文件存放路径:</label></td>
+		<tr ng-repeat="config in sysconfig.configs">
+		<td valign="top"><label for="upload-path">{{config.key}}:</label></td>
 		<td>
-			<input ng-model="sysconfig.config.value" class="input-xlarge" id="upload-path" required placeholder="请输入文件存放路径"></input>
+			<input ng-model="config.value" class="input-xlarge" id="upload-path" required></input>
 			<span class="required">*</span>
 			<br/>
 			<button class="btn" type="button" style="margin-top: 10px;"
