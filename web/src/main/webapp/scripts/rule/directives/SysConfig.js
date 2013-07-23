@@ -11,18 +11,14 @@ angular.module('ecgSysConfig', [])
     // 命名空间
     $scope.sysconfig = {};
 
-    // 参数对象
-    $scope.sysconfig.config = null;
+    // 系统参数
+    $scope.sysconfig.configs = null;
 
     function loadSysConfig() {
         SysConfigService.queryAll().then(function(configs) {
-            if (configs.length == 1) {
-                $scope.sysconfig.config = configs[0];
-            } else {
-                $scope.message.error("加载系统参数失败!");
-            }
+            $scope.sysconfig.configs = configs;
         }, function() {
-
+             $scope.message.error("加载系统参数失败!");
         });
     };
     loadSysConfig();
@@ -33,9 +29,13 @@ angular.module('ecgSysConfig', [])
             text: "您确定更改系统参数？",
             handler: function() {
                 $scope.dialog.showStandby();
-                SysConfigService.update($scope.sysconfig.config).then(function() {
+                SysConfigService.update($scope.sysconfig.configs).then(function(result) {
                     $scope.dialog.hideStandby();
-                    $scope.message.success("更改系统参数成功!");
+                    if (result) {
+                        $scope.message.success("更改系统参数成功!");
+                    } else {
+                        $scope.message.error("更改系统参数失败!");
+                    }
                 }, function() {
                     $scope.dialog.hideStandby();
                     $scope.message.error("更改系统参数失败!");

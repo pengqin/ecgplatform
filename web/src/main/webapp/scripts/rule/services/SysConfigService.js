@@ -2,7 +2,7 @@
 define(function(require, exports) {
 
 angular.module('ecgSysConfigService', [])
-    .factory("SysConfigService", function($rootScope, $http) {
+    .factory("SysConfigService", function($rootScope, $q, $http) {
         var uri = PATH + "/api/sysconfig";
 
         return {
@@ -21,14 +21,27 @@ angular.module('ecgSysConfigService', [])
                     return [];
                 });
             },
-            update: function(config) {
-                var config = $.extend({}, config);
-                delete config.version;
-                return $http({
-                    method: 'PUT',
-                    headers:{'Content-Type':'application/x-www-form-urlencoded'},
-                    data: $.param(config),
-                    url: uri + '/' + config.id
+            update: function(configs) {
+                var puts = [];
+                $(configs).each(function(i, _config) {
+                    var config = $.extend({}, _config);
+                    delete config.version;
+                    puts.push($http({
+                        method: 'PUT',
+                        headers:{'Content-Type':'application/x-www-form-urlencoded'},
+                        data: $.param(config),
+                        url: uri + '/' + config.id
+                    }));
+                });
+
+                return $q.all(puts).then(function(responses) {
+                    var allsuccess = true;
+                    $(responses).each(function(i, result){
+                        if (!result) {
+                            allsuccess = false;
+                        }
+                    });
+                    return allsuccess;
                 });
             },
         };
