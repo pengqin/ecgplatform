@@ -261,12 +261,28 @@ define(function(require, exports) {
             $.ajax({
                 url: PATH + '/api/user/' + userId + '/password',
                 type: 'PUT',
-                data: {oldPassword: user.password, newPassword: user.password},
+                data: {oldPassword: user.password, newPassword: user.password + 'updated'},
                 headers: {Authorization: token}
             }).then(function(res) {
                 done()
             }, function() {
                 throw new Error('failed to update.');
+            });
+        });
+
+        it("the user should authenciated with new password.", function(done) {
+            $.ajax({
+                url: PATH + '/api/user/auth',
+                data: {
+                    'mobile': user.mobile,
+                    'password': user.password + 'updated'
+                },
+                type: 'POST',
+                dataType: 'json'
+            }).then(function(res) {
+                throw new Error('failed to authnenciate with mobile.');
+            }, function() {
+                done();
             });
         });
 
