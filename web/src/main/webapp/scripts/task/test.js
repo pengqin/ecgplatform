@@ -41,6 +41,7 @@ define(function(require, exports) {
             undone: 0,
             done: 0
         };
+
         /**
          * 场景1
          * 管理员、主任都可以查询未完成任务的信息,并将当前的环境信息保存
@@ -55,7 +56,7 @@ define(function(require, exports) {
             it: it,
             user: {username: TESTCONFIGS.chief.username, password: TESTCONFIGS.chief.password}
         }, angluarjs, services, chiefRuntime);
-        // 场景1 结束
+        
 
         testStageOneForUser({
             it: it,
@@ -66,11 +67,12 @@ define(function(require, exports) {
             it: it,
             user: {username: TESTCONFIGS.user1.username, password: TESTCONFIGS.user1.password}
         }, angluarjs, services, chiefRuntime);
+        // 场景1 结束
+
 
         /**
          * 场景2,接线员自己回复，并将更改当前环境
          */
-         /*
         testStageTwoForOperator({
             it: it,
             user: {username: TESTCONFIGS.operator.username, password: TESTCONFIGS.operator.password}
@@ -85,7 +87,6 @@ define(function(require, exports) {
          * 场景3
          * 主任配置接线员和专家的多对多关系，接线员发送回复并转交专家，专家回复
          */
-         /*
         testStageThreeForAdminAndChief({
             it: it,
             user: {username: TESTCONFIGS.chief.username, password: TESTCONFIGS.chief.password},
@@ -114,8 +115,8 @@ define(function(require, exports) {
             expert: {username: TESTCONFIGS.expert1.username, password: TESTCONFIGS.expert1.password}
         }, angluarjs, services);
 
-        /*
-        // 接线员2 连续forward,专家1和专家2分别发现新任务并处理
+        
+        // 接线员2 连续forward,专家和专家1分别发现新任务并处理
         testStageThreeForOperator({
             it: it,
             user: {username: TESTCONFIGS.operator1.username, password: TESTCONFIGS.operator1.password}
@@ -133,7 +134,7 @@ define(function(require, exports) {
             user: {username: TESTCONFIGS.expert1.username, password: TESTCONFIGS.expert1.password}
         }, angluarjs, services);
 
-        // 接线员1 forward，专家1发现有新任务并处理，接线员1继续forward，专家2发现有新任务并处理
+        // 接线员1 forward，专家发现有新任务并处理，接线员1继续forward，专家1发现有新任务并处理
         testStageThreeForOperator({
             it: it,
             user: {username: TESTCONFIGS.operator.username, password: TESTCONFIGS.operator.password}
@@ -143,6 +144,7 @@ define(function(require, exports) {
             user: {username: TESTCONFIGS.expert.username, password: TESTCONFIGS.expert.password}
         }, angluarjs, services);
 
+        /*
         testStageThreeForOperator({
             it: it,
             user: {username: TESTCONFIGS.operator.username, password: TESTCONFIGS.operator.password}

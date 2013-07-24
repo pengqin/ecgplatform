@@ -330,9 +330,9 @@ define(function(require, exports) {
                 url: PATH + '/api/user/' + userId + '/task',
                 type: 'DELETE'
             }).then(function(res) {
-                done();
+                throw new Error('should not be deleted without token.');
             }, function() {
-                throw new Error('should not be deleted in batch.');
+                done();
             });
         });
 
