@@ -191,13 +191,13 @@ define(function(require, exports) {
         testDeleteAllAsEmployee({
             it: it,
             employee: {username: TESTCONFIGS.admin.username, password: TESTCONFIGS.admin.password},
-            user: {username: TESTCONFIGS.user1.username, password: TESTCONFIGS.user1.password}
+            user: {username: TESTCONFIGS.user4.username, password: TESTCONFIGS.user4.password}
         }, angluarjs, services, adminRuntime, true);
 
         testDeleteAllAsEmployee({
             it: it,
             employee: {username: TESTCONFIGS.chief.username, password: TESTCONFIGS.chief.password},
-            user: {username: TESTCONFIGS.user2.username, password: TESTCONFIGS.user2.password}
+            user: {username: TESTCONFIGS.user5.username, password: TESTCONFIGS.user5.password}
         }, angluarjs, services, adminRuntime, true);
 
     };

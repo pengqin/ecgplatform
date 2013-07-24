@@ -4,6 +4,10 @@ insert into user (id, mobile , username, name, password, gender, id_card , type 
 values (2,'13922222222' ,'13922222222','测试用户2','2e8ec7d18a6e108fce3af34044c661ffa56b084f',1 ,'430203198502011218', 'SIMPLE','1983-06-04 01:00:00','地址2',1.72,72,'','','','','','','','2012-06-04 01:00:00','2012-06-04 01:00:00','',1,1);
 insert into user (id, mobile , username, name, password, gender, id_card , type ,birthday,address,stature,weight,city,em_contact1,em_contact1_tel,em_contact2,em_contact2_tel , bad_habits , anamnesis , created_date , last_updated , remark ,is_free , version)
 values (3,'13912345678' ,'13912345678','上传用户','2e8ec7d18a6e108fce3af34044c661ffa56b084f',1 ,'430203198502011218', 'SIMPLE','1983-06-04 01:00:00','地址2',1.72,72,'','','','','','','','2012-06-04 01:00:00','2012-06-04 01:00:00','',1,1);
+insert into user (id, mobile , username, name, password, gender, id_card , type ,birthday,address,stature,weight,city,em_contact1,em_contact1_tel,em_contact2,em_contact2_tel , bad_habits , anamnesis , created_date , last_updated , remark ,is_free , version)
+values (4,'13412345678' ,'13412345678','测试用户3','2e8ec7d18a6e108fce3af34044c661ffa56b084f',1 ,'430203198502011218', 'SIMPLE','1983-06-04 01:00:00','地址2',1.72,72,'','','','','','','','2012-06-04 01:00:00','2012-06-04 01:00:00','',1,1);
+insert into user (id, mobile , username, name, password, gender, id_card , type ,birthday,address,stature,weight,city,em_contact1,em_contact1_tel,em_contact2,em_contact2_tel , bad_habits , anamnesis , created_date , last_updated , remark ,is_free , version)
+values (5,'13512345678' ,'13512345678','测试用户4','2e8ec7d18a6e108fce3af34044c661ffa56b084f',1 ,'430203198502011218', 'SIMPLE','1983-06-04 01:00:00','地址2',1.72,72,'','','','','','','','2012-06-04 01:00:00','2012-06-04 01:00:00','',1,1);
 
 --employee start
 insert into employee (id ,type, name , username , password , roles , status,enabled,dismissed,gender,expire,birthday,id_card , mobile ,created_date,last_updated,version) values 
@@ -134,6 +138,11 @@ values (11, '11' , 2,'PHONE', '测试用户2','VIP','danger',80,120,10,10,37.5,6
 insert into health_examination (id , apk_id , user_id , test_item , user_name , user_type , level , blood_pressure_low,blood_pressure_high,heart_rhythm , breath,body_temp,pulserate,heart_data,latitude,altitude,temp,humidity,pressure,charge_type,heart_features,algorithm_version,created_date,version) 
 values (12, '12' , 2,'PHONE', '测试用户2','VIP','danger',80,120,10,10,37.5,60,'',0.0,200,37.6,null,null,'YEAR',null,null,'2013-07-04 01:00:00',1);
 
+insert into health_examination (id , apk_id , user_id , test_item , user_name , user_type , level , blood_pressure_low,blood_pressure_high,heart_rhythm , breath,body_temp,pulserate,heart_data,latitude,altitude,temp,humidity,pressure,charge_type,heart_features,algorithm_version,created_date,version) 
+values (13, '13' , 4,'PHONE', '测试用户4','VIP','danger',80,120,10,10,37.5,60,'',0.0,200,37.6,null,null,'YEAR',null,null,'2013-07-04 01:00:00',1);
+insert into health_examination (id , apk_id , user_id , test_item , user_name , user_type , level , blood_pressure_low,blood_pressure_high,heart_rhythm , breath,body_temp,pulserate,heart_data,latitude,altitude,temp,humidity,pressure,charge_type,heart_features,algorithm_version,created_date,version) 
+values (14, '14' , 5,'PHONE', '测试用户5','VIP','danger',80,120,10,10,37.5,60,'',0.0,200,37.6,null,null,'YEAR',null,null,'2013-07-04 01:00:00',1);
+
 -- health_examination end
 -- task start
 insert into task (id , type ,examination_id , user_id , user_name , status,expert_id,operator_id,auto , created_date , completed_date,version)
@@ -161,6 +170,11 @@ insert into task (id , type ,examination_id , user_id , user_name , status,exper
 values (11,'examinationTask' , 11 , 2 , '测试用户2' , 'pending',null,9,0,'2013-07-11 01:00:00',null,1);
 insert into task (id , type ,examination_id , user_id , user_name , status,expert_id,operator_id,auto , created_date , completed_date,version)
 values (12,'examinationTask' , 12 , 2 , '测试用户2' , 'pending',null,9,0,'2013-07-12 01:00:00',null,1);
+
+insert into task (id , type ,examination_id , user_id , user_name , status,expert_id,operator_id,auto , created_date , completed_date,version)
+values (13,'examinationTask' , 13 , 4 , '测试用户4' , 'pending',null,9,0,'2013-07-12 01:00:00',null,1);
+insert into task (id , type ,examination_id , user_id , user_name , status,expert_id,operator_id,auto , created_date , completed_date,version)
+values (14,'examinationTask' , 14 , 5 , '测试用户5' , 'pending',null,9,0,'2013-07-12 01:00:00',null,1);
 -- task end
 -- system_config start
 insert into system_config (id , type , key1 , value ) values (1 , 'basic' , 'upload.rootPath' , 'c:/upload/');

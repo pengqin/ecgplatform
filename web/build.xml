@@ -3,15 +3,20 @@
     basedir="."
     default="copy" >
 
+    <property name="web.dir" value="../web" />
 	<property name="api.dir" value="../api" />
 
 	
     <target name="clean">
+        <delete dir="${web.dir}/src/main/resources/sql/mysql" />
         <delete dir="${api.dir}/src/main/resources/sql/h2" />
     </target>
     
 	<target name="copy" depends="clean">
-		<!-- 拷贝HTML -->
+        <copy todir="${web.dir}/src/main/resources/sql/mysql">
+            <fileset dir="${basedir}/src/main/resources/sql/h2">
+            </fileset>
+        </copy>
 		<copy todir="${api.dir}/src/main/resources/sql/h2">
 			<fileset dir="${basedir}/src/main/resources/sql/h2">
 			</fileset>
