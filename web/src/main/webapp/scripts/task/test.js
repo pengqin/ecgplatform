@@ -2,12 +2,13 @@ define(function(require, exports) {
 
     'use strict';
     var testStageOneForAdminAndChief = require("./test/stageOneForAdminAndChief").test;
+    var testStageOneForUser = require("./test/stageOneForUser").test;
     var testStageTwoForOperator = require("./test/stageTwoForOperator").test;
     var testStageThreeForAdminAndChief= require("./test/stageThreeForAdminAndChief").test;
     var testStageThreeForOperator= require("./test/stageThreeForOperator").test;
     var testStageThreeForExpert= require("./test/stageThreeForExpert").test;
-    var testDeleteAsEmployee= require("./test/delete").test;
-    var testDeleteAllAsEmployee = require("./test/deleteAll").test;
+    var testDeleteAsEmployee= require("./test/deleteAsEmployee").test;
+    var testDeleteAllAsEmployee = require("./test/deleteAllAsEmployee").test;
     
     exports.testTask = function(mocha, angluarjs, services) {
         if (!runCase('task')) {
@@ -41,9 +42,10 @@ define(function(require, exports) {
             done: 0
         };
         /**
-         * 场景1,管理员、主任都可以查询未完成任务的信息,并将当前的环境信息保存
+         * 场景1
+         * 管理员、主任都可以查询未完成任务的信息,并将当前的环境信息保存
+         * 用户可以查询某个范围之内或者之外的task，并删除某个task
          */
-         /*
         testStageOneForAdminAndChief({
             it: it,
             user: {username: TESTCONFIGS.admin.username, password: TESTCONFIGS.admin.password}
@@ -53,7 +55,17 @@ define(function(require, exports) {
             it: it,
             user: {username: TESTCONFIGS.chief.username, password: TESTCONFIGS.chief.password}
         }, angluarjs, services, chiefRuntime);
-        // 场景2 结束
+        // 场景1 结束
+
+        testStageOneForUser({
+            it: it,
+            user: {username: TESTCONFIGS.user.username, password: TESTCONFIGS.user.password}
+        }, angluarjs, services, chiefRuntime);
+
+        testStageOneForUser({
+            it: it,
+            user: {username: TESTCONFIGS.user1.username, password: TESTCONFIGS.user1.password}
+        }, angluarjs, services, chiefRuntime);
 
         /**
          * 场景2,接线员自己回复，并将更改当前环境
@@ -176,17 +188,16 @@ define(function(require, exports) {
             user: {username: TESTCONFIGS.chief.username, password: TESTCONFIGS.chief.password}
         }, angluarjs, services, adminRuntime, true);
 
-
         testDeleteAllAsEmployee({
             it: it,
             employee: {username: TESTCONFIGS.admin.username, password: TESTCONFIGS.admin.password},
-            user: {username: TESTCONFIGS.user.username, password: TESTCONFIGS.user.password}
+            user: {username: TESTCONFIGS.user4.username, password: TESTCONFIGS.user4.password}
         }, angluarjs, services, adminRuntime, true);
 
         testDeleteAllAsEmployee({
             it: it,
             employee: {username: TESTCONFIGS.chief.username, password: TESTCONFIGS.chief.password},
-            user: {username: TESTCONFIGS.user1.username, password: TESTCONFIGS.user1.password}
+            user: {username: TESTCONFIGS.user5.username, password: TESTCONFIGS.user5.password}
         }, angluarjs, services, adminRuntime, true);
 
     };
