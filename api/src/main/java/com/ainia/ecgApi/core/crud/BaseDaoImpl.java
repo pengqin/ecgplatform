@@ -2,6 +2,7 @@ package com.ainia.ecgApi.core.crud;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -21,6 +22,7 @@ import javax.persistence.metamodel.Attribute.PersistentAttributeType;
 import javax.persistence.metamodel.EntityType;
 import javax.persistence.metamodel.Metamodel;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,7 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.util.ReflectionUtils;
 
 import com.ainia.ecgApi.core.bean.Domain;
+import com.ainia.ecgApi.core.crud.Condition.Type;
 import com.ainia.ecgApi.core.crud.Query.OrderType;
 import com.ainia.ecgApi.core.utils.JPAUtils;
 

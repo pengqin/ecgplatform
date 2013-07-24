@@ -114,13 +114,13 @@ values (1, '1' , 1,'PHONE', '测试用户1','VIP','success',80,120,60,60,37.5,60
 insert into health_examination (id , apk_id , user_id , test_item , user_name , user_type , level , blood_pressure_low,blood_pressure_high,heart_rhythm , breath,body_temp,pulserate,heart_data,latitude,altitude,temp,humidity,pressure,charge_type,heart_features,algorithm_version,created_date,version) 
 values (2, '2' , 1,'PHONE', '测试用户1','VIP','outside',80,120,-100,80,37.5,60,'',0.0,200,37.6,null,null,'YEAR',null,null,'2013-07-04 01:00:00',1);
 insert into health_examination (id , apk_id , user_id , test_item , user_name , user_type , level , blood_pressure_low,blood_pressure_high,heart_rhythm , breath,body_temp,pulserate,heart_data,latitude,altitude,temp,humidity,pressure,charge_type,heart_features,algorithm_version,created_date,version) 
-values (3, '3' , 2,'PHONE', '测试用户2','VIP','outside',80,120,300,40,37.5,60,'',0.0,200,37.6,null,null,'YEAR',null,null,'2013-07-04 01:00:00',1);
+values (3, '3' , 1,'PHONE', '测试用户1','VIP','outside',80,120,300,40,37.5,60,'',0.0,200,37.6,null,null,'YEAR',null,null,'2013-07-04 01:00:00',1);
 insert into health_examination (id , apk_id , user_id , test_item , user_name , user_type , level , blood_pressure_low,blood_pressure_high,heart_rhythm , breath,body_temp,pulserate,heart_data,latitude,altitude,temp,humidity,pressure,charge_type,heart_features,algorithm_version,created_date,version) 
-values (4, '4' , 2,'PHONE', '测试用户2','VIP','warning',80,120,77,90,37.5,60,'',0.0,200,37.6,null,null,'YEAR',null,null,'2013-07-04 01:00:00',1);
+values (4, '4' , 1,'PHONE', '测试用户1','VIP','warning',80,120,77,90,37.5,60,'',0.0,200,37.6,null,null,'YEAR',null,null,'2013-07-04 01:00:00',1);
 insert into health_examination (id , apk_id , user_id , test_item , user_name , user_type , level , blood_pressure_low,blood_pressure_high,heart_rhythm , breath,body_temp,pulserate,heart_data,latitude,altitude,temp,humidity,pressure,charge_type,heart_features,algorithm_version,created_date,version) 
-values (5, '5' , 2,'PHONE', '测试用户2','VIP','danger',80,120,10,10,37.5,60,'',0.0,200,37.6,null,null,'YEAR',null,null,'2013-07-04 01:00:00',1);
+values (5, '5' , 1,'PHONE', '测试用户1','VIP','danger',80,120,10,10,37.5,60,'',0.0,200,37.6,null,null,'YEAR',null,null,'2013-07-04 01:00:00',1);
 insert into health_examination (id , apk_id , user_id , test_item , user_name , user_type , level , blood_pressure_low,blood_pressure_high,heart_rhythm , breath,body_temp,pulserate,heart_data,latitude,altitude,temp,humidity,pressure,charge_type,heart_features,algorithm_version,created_date,version) 
-values (6, '6' , 2,'PHONE', '测试用户2','VIP','danger',80,120,10,10,37.5,60,'',0.0,200,37.6,null,null,'YEAR',null,null,'2013-07-04 01:00:00',1);
+values (6, '6' , 1,'PHONE', '测试用户1','VIP','danger',80,120,10,10,37.5,60,'',0.0,200,37.6,null,null,'YEAR',null,null,'2013-07-04 01:00:00',1);
 insert into health_examination (id , apk_id , user_id , test_item , user_name , user_type , level , blood_pressure_low,blood_pressure_high,heart_rhythm , breath,body_temp,pulserate,heart_data,latitude,altitude,temp,humidity,pressure,charge_type,heart_features,algorithm_version,created_date,version) 
 values (7, '7' , 2,'PHONE', '测试用户2','VIP','danger',80,120,10,10,37.5,60,'',0.0,200,37.6,null,null,'YEAR',null,null,'2013-07-04 01:00:00',1);
 insert into health_examination (id , apk_id , user_id , test_item , user_name , user_type , level , blood_pressure_low,blood_pressure_high,heart_rhythm , breath,body_temp,pulserate,heart_data,latitude,altitude,temp,humidity,pressure,charge_type,heart_features,algorithm_version,created_date,version) 
@@ -141,13 +141,13 @@ values (1,'examinationTask' , 1 , 1 , '测试用户1' , 'pending',null,8,0,'2013
 insert into task (id , type ,examination_id , user_id , user_name , status,expert_id,operator_id,auto , created_date , completed_date,version)
 values (2,'examinationTask' , 2 , 1 , '测试用户1' , 'pending',null,8,0,'2013-07-02 01:00:00',null,1);
 insert into task (id , type ,examination_id , user_id , user_name ,  status,expert_id,operator_id,auto , created_date , completed_date,version)
-values (3,'examinationTask' , 3 , 2 , '测试用户2' , 'pending',null,8,0,'2013-07-03 01:00:00',null,1);
+values (3,'examinationTask' , 3 , 1 , '测试用户1' , 'pending',null,8,0,'2013-07-03 01:00:00',null,1);
 insert into task (id , type ,examination_id , user_id , user_name , status,expert_id,operator_id,auto , created_date , completed_date,version)
-values (4,'examinationTask' , 4 , 2 , '测试用户2' , 'pending',null,8,0,'2013-07-04 01:00:00',null,1);
+values (4,'examinationTask' , 4 , 1 , '测试用户1' , 'pending',null,8,0,'2013-07-04 01:00:00',null,1);
 insert into task (id , type ,examination_id , user_id , user_name , status,expert_id,operator_id,auto , created_date , completed_date,version)
-values (5,'examinationTask' , 5 , 2 , '测试用户2' , 'pending',null,8,0,'2013-07-05 01:00:00',null,1);
+values (5,'examinationTask' , 5 , 1 , '测试用户1' , 'pending',null,8,0,'2013-07-05 01:00:00',null,1);
 insert into task (id , type ,examination_id , user_id , user_name , status,expert_id,operator_id,auto , created_date , completed_date,version)
-values (6,'examinationTask' , 6 , 2 , '测试用户2' , 'pending',null,8,0,'2013-07-06 01:00:00',null,1);
+values (6,'examinationTask' , 6 , 1 , '测试用户1' , 'pending',null,8,0,'2013-07-06 01:00:00',null,1);
 
 insert into task (id , type ,examination_id , user_id , user_name , status,expert_id,operator_id,auto , created_date , completed_date,version)
 values (7,'examinationTask' , 7 , 2 , '测试用户2'  , 'pending',null,9,0,'2013-07-07 01:00:00',null,1);

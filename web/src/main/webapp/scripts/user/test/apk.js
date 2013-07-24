@@ -107,7 +107,7 @@ define(function(require, exports) {
         });
 
         // 没有token
-        it("the user's info should not retrieved without token.", function(done) {
+        it("the user's info should not be retrieved without token.", function(done) {
             $.ajax({
                 url: PATH + '/api/user?mobile=' + user.mobile,
                 dataType: 'json'
@@ -119,7 +119,7 @@ define(function(require, exports) {
         });
 
         // 错的token
-        it("the user's info should not retrieved with empty token.", function(done) {
+        it("the user's info should not be retrieved with invalid token.", function(done) {
             $.ajax({
                 url: PATH + '/api/user?mobile=' + user.mobile,
                 dataType: 'json',
@@ -133,7 +133,7 @@ define(function(require, exports) {
 
         // 获取id
         var userId;
-        it("the user's info should not retrieved with valid token.", function(done) {
+        it("the user's info should be retrieved with valid token.", function(done) {
             $.ajax({
                 url: PATH + '/api/user?username=' + user.mobile,
                 dataType: 'json',
@@ -327,9 +327,9 @@ define(function(require, exports) {
                 type: 'DELETE',
                 headers: {Authorization: 'invalid'}
             }).then(function(res) {
-                done();
-            }, function() {
                 throw new Error('should not be deleted in batch.');
+            }, function() {
+                done();
             });
         });
 
@@ -361,7 +361,7 @@ define(function(require, exports) {
         // 错的token不能删除
         it("the user should not be deleted with invalid token.", function(done) {
             $.ajax({
-                url: PATH + '/api/user/' + userId + '/password',
+                url: PATH + '/api/user/' + userId,
                 type: 'DELETE',
                 headers: {Authorization: 'invalid'}
             }).then(function(res) {
@@ -374,7 +374,7 @@ define(function(require, exports) {
         // 自己也不能删除自己
         it("the user should not be deleted with valid token.", function(done) {
             $.ajax({
-                url: PATH + '/api/user/' + userId + '/password',
+                url: PATH + '/api/user/' + userId,
                 type: 'DELETE',
                 headers: {Authorization: token}
             }).then(function(res) {

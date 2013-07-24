@@ -37,4 +37,8 @@
     TESTCONFIGS.user1.username = "13922222222";
     TESTCONFIGS.user1.password = "passw0rd";
 
+    TESTCONFIGS.user2 = {};
+    TESTCONFIGS.user2.mobile = "13912345678";
+    TESTCONFIGS.user2.username = "13912345678";
+    TESTCONFIGS.user2.password = "passw0rd";
 })();
