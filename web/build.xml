@@ -8,14 +8,13 @@
 
 	
     <target name="clean">
-        <delete dir="${web.dir}/src/main/resources/sql/mysql" />
+        <delete dir="${web.dir}/src/main/resources/sql/mysql/data.sql" />
         <delete dir="${api.dir}/src/main/resources/sql/h2" />
     </target>
     
 	<target name="copy" depends="clean">
-        <copy todir="${web.dir}/src/main/resources/sql/mysql">
-            <fileset dir="${basedir}/src/main/resources/sql/h2">
-            </fileset>
+        <copy tofile="${web.dir}/src/main/resources/sql/mysql/data.sql" overwrite="true"
+            file="${basedir}/src/main/resources/sql/h2/data.sql">
         </copy>
 		<copy todir="${api.dir}/src/main/resources/sql/h2">
 			<fileset dir="${basedir}/src/main/resources/sql/h2">
