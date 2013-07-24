@@ -50,7 +50,7 @@ define(function(require, exports) {
         });
 
         // 获取某个id
-        var taskId, apkId;
+        var taskId, apkId, anotherApkId;
         it("the user's task should be retrieved.", function(done) {
             $.ajax({
                 url: PATH + '/api/user/' + userId + '/task',
@@ -61,17 +61,20 @@ define(function(require, exports) {
                 expect(res.datas).not.to.be(undefined);
                 expect(res.datas.length).not.to.be(0);
                 expect(res.datas.length).not.to.be(1);
+                expect(res.datas.length).not.to.be(2);
                 taskId = res.datas[0].id;
                 apkId = res.datas[0].apkId;
+                anotherApkId = res.datas[1].apkId;
                 expect(taskId).not.to.be(undefined);
                 expect(apkId).not.to.be(undefined);
+                expect(anotherApkId).not.to.be(undefined);
                 done();
             }, function() {
                 throw new Error('failed to retrieve a task id.');
             });
         });
 
-        it("the user's task should be retrieved with conditions.", function(done) {
+        it("the user's task should be retrieved with one apkId.", function(done) {
             expect(apkId).not.to.be(undefined);
             $.ajax({
                 url: PATH + '/api/user/' + userId + '/task?apkId:in=' + apkId,
@@ -88,8 +91,37 @@ define(function(require, exports) {
             });
         });
 
-        it("the user's task should not be retrieved with conditions.", function(done) {
+        it("the user's task should be retrieved with two apkIds.", function(done) {
             expect(apkId).not.to.be(undefined);
+            expect(anotherApkId).not.to.be(undefined);
+            $.ajax({
+                url: PATH + '/api/user/' + userId + '/task?apkId:in=' + apkId + ',' + anotherApkId,
+                dataType: 'json',
+                headers: {Authorization: token}
+            }).then(function(res) {
+                expect(res).not.to.be(undefined);
+                expect(res.datas).not.to.be(undefined);
+                expect(res.datas.length).to.be(2);
+                var found1 = false, found2 = false;
+                $(res.datas).each(function(i, task) {
+                    if (task.apkId === apkId) {
+                        found1 = true;
+                    }
+                    if (task.apkId === anotherApkId) {
+                        found2 = true;
+                    }
+                });
+                expect(found1).to.be(true);
+                expect(found2).to.be(true);
+                done();
+            }, function() {
+                throw new Error('failed to retrieve a task id.');
+            });
+        });
+
+        it("the user's task should not be retrieved with one apkId.", function(done) {
+            expect(apkId).not.to.be(undefined);
+            expect(anotherApkId).not.to.be(undefined);
             $.ajax({
                 url: PATH + '/api/user/' + userId + '/task?apkId:notIn=' + apkId,
                 dataType: 'json',
@@ -105,6 +137,33 @@ define(function(require, exports) {
                     }
                 });
                 expect(found).not.to.be(true);
+                done();
+            }, function() {
+                throw new Error('failed to retrieve a task id.');
+            });
+        });
+
+        it("the user's task should not be retrieved with two apkIds.", function(done) {
+            expect(apkId).not.to.be(undefined);
+            $.ajax({
+                url: PATH + '/api/user/' + userId + '/task?apkId:notIn=' + apkId + ',' + anotherApkId,
+                dataType: 'json',
+                headers: {Authorization: token}
+            }).then(function(res) {
+                expect(res).not.to.be(undefined);
+                expect(res.datas).not.to.be(undefined);
+                expect(res.datas.length).not.to.be(0);
+                var found1= false, found2 = false;
+                $(res.datas).each(function(i, task) {
+                    if (task.apkId === apkId) {
+                        found1 = true;
+                    }
+                    if (task.apkId === apkId) {
+                        found1 = true;
+                    }
+                });
+                expect(found1).not.to.be(true);
+                expect(found2).not.to.be(true);
                 done();
             }, function() {
                 throw new Error('failed to retrieve a task id.');
