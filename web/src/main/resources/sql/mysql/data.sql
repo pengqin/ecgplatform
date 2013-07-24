@@ -145,36 +145,36 @@ values (14, '14' , 5,'PHONE', '测试用户5','VIP','danger',80,120,10,10,37.5,6
 
 -- health_examination end
 -- task start
-insert into task (id , type ,examination_id , user_id , user_name , status,expert_id,operator_id,auto , created_date , completed_date,version)
-values (1,'examinationTask' , 1 , 1 , '测试用户1' , 'pending',null,8,0,'2013-07-01 01:00:00',null,1);
-insert into task (id , type ,examination_id , user_id , user_name , status,expert_id,operator_id,auto , created_date , completed_date,version)
-values (2,'examinationTask' , 2 , 1 , '测试用户1' , 'pending',null,8,0,'2013-07-02 01:00:00',null,1);
-insert into task (id , type ,examination_id , user_id , user_name ,  status,expert_id,operator_id,auto , created_date , completed_date,version)
-values (3,'examinationTask' , 3 , 1 , '测试用户1' , 'pending',null,8,0,'2013-07-03 01:00:00',null,1);
-insert into task (id , type ,examination_id , user_id , user_name , status,expert_id,operator_id,auto , created_date , completed_date,version)
-values (4,'examinationTask' , 4 , 1 , '测试用户1' , 'pending',null,8,0,'2013-07-04 01:00:00',null,1);
-insert into task (id , type ,examination_id , user_id , user_name , status,expert_id,operator_id,auto , created_date , completed_date,version)
-values (5,'examinationTask' , 5 , 1 , '测试用户1' , 'pending',null,8,0,'2013-07-05 01:00:00',null,1);
-insert into task (id , type ,examination_id , user_id , user_name , status,expert_id,operator_id,auto , created_date , completed_date,version)
-values (6,'examinationTask' , 6 , 1 , '测试用户1' , 'pending',null,8,0,'2013-07-06 01:00:00',null,1);
+insert into task (id , type ,examination_id , user_id , apk_id , user_name , status,expert_id,operator_id,auto , created_date , completed_date,version)
+values (1,'examinationTask' , 1 , 1 , '1' , '测试用户1' , 'pending',null,8,0,'2013-07-01 01:00:00',null,1);
+insert into task (id , type ,examination_id , user_id , apk_id , user_name , status,expert_id,operator_id,auto , created_date , completed_date,version)
+values (2,'examinationTask' , 2 , 1 , '2' , '测试用户1' , 'pending',null,8,0,'2013-07-02 01:00:00',null,1);
+insert into task (id , type ,examination_id , user_id , apk_id ,user_name ,  status,expert_id,operator_id,auto , created_date , completed_date,version)
+values (3,'examinationTask' , 3 , 1 , '3' , '测试用户1' , 'pending',null,8,0,'2013-07-03 01:00:00',null,1);
+insert into task (id , type ,examination_id , user_id , apk_id ,user_name , status,expert_id,operator_id,auto , created_date , completed_date,version)
+values (4,'examinationTask' , 4 , 1 , '4' , '测试用户1' , 'pending',null,8,0,'2013-07-04 01:00:00',null,1);
+insert into task (id , type ,examination_id , user_id , apk_id ,user_name , status,expert_id,operator_id,auto , created_date , completed_date,version)
+values (5,'examinationTask' , 5 , 1 , '5' , '测试用户1' , 'pending',null,8,0,'2013-07-05 01:00:00',null,1);
+insert into task (id , type ,examination_id , user_id , apk_id ,user_name , status,expert_id,operator_id,auto , created_date , completed_date,version)
+values (6,'examinationTask' , 6 , 1 , '6' , '测试用户1' , 'pending',null,8,0,'2013-07-06 01:00:00',null,1);
 
-insert into task (id , type ,examination_id , user_id , user_name , status,expert_id,operator_id,auto , created_date , completed_date,version)
-values (7,'examinationTask' , 7 , 2 , '测试用户2'  , 'pending',null,9,0,'2013-07-07 01:00:00',null,1);
-insert into task (id , type ,examination_id , user_id , user_name , status,expert_id,operator_id,auto , created_date , completed_date,version)
-values (8,'examinationTask' , 8 , 2 , '测试用户2', 'pending',null,9,0,'2013-07-08 01:00:00',null,1);
-insert into task (id , type ,examination_id , user_id , user_name ,  status,expert_id,operator_id,auto , created_date , completed_date,version)
-values (9,'examinationTask' , 9 , 2 , '测试用户2' , 'pending',null,9,0,'2013-07-09 01:00:00',null,1);
-insert into task (id , type ,examination_id , user_id , user_name , status,expert_id,operator_id,auto , created_date , completed_date,version)
-values (10,'examinationTask' , 10 , 2 , '测试用户2' , 'pending',null,9,0,'2013-07-10 01:00:00',null,1);
-insert into task (id , type ,examination_id , user_id , user_name , status,expert_id,operator_id,auto , created_date , completed_date,version)
-values (11,'examinationTask' , 11 , 2 , '测试用户2' , 'pending',null,9,0,'2013-07-11 01:00:00',null,1);
-insert into task (id , type ,examination_id , user_id , user_name , status,expert_id,operator_id,auto , created_date , completed_date,version)
-values (12,'examinationTask' , 12 , 2 , '测试用户2' , 'pending',null,9,0,'2013-07-12 01:00:00',null,1);
+insert into task (id , type ,examination_id , user_id , apk_id ,user_name , status,expert_id,operator_id,auto , created_date , completed_date,version)
+values (7,'examinationTask' , 7 , 2 , '7' , '测试用户2'  , 'pending',null,9,0,'2013-07-07 01:00:00',null,1);
+insert into task (id , type ,examination_id , user_id , apk_id ,user_name , status,expert_id,operator_id,auto , created_date , completed_date,version)
+values (8,'examinationTask' , 8 , 2 , '8' , '测试用户2', 'pending',null,9,0,'2013-07-08 01:00:00',null,1);
+insert into task (id , type ,examination_id , user_id , apk_id ,user_name ,  status,expert_id,operator_id,auto , created_date , completed_date,version)
+values (9,'examinationTask' , 9 , 2 , '9' , '测试用户2' , 'pending',null,9,0,'2013-07-09 01:00:00',null,1);
+insert into task (id , type ,examination_id , user_id , apk_id ,user_name , status,expert_id,operator_id,auto , created_date , completed_date,version)
+values (10,'examinationTask' , 10 , 2 , '10' , '测试用户2' , 'pending',null,9,0,'2013-07-10 01:00:00',null,1);
+insert into task (id , type ,examination_id , user_id , apk_id ,user_name , status,expert_id,operator_id,auto , created_date , completed_date,version)
+values (11,'examinationTask' , 11 , 2 , '11' , '测试用户2' , 'pending',null,9,0,'2013-07-11 01:00:00',null,1);
+insert into task (id , type ,examination_id , user_id , apk_id ,user_name , status,expert_id,operator_id,auto , created_date , completed_date,version)
+values (12,'examinationTask' , 12 , 2 , '12' , '测试用户2' , 'pending',null,9,0,'2013-07-12 01:00:00',null,1);
 
-insert into task (id , type ,examination_id , user_id , user_name , status,expert_id,operator_id,auto , created_date , completed_date,version)
-values (13,'examinationTask' , 13 , 4 , '测试用户4' , 'pending',null,9,0,'2013-07-12 01:00:00',null,1);
-insert into task (id , type ,examination_id , user_id , user_name , status,expert_id,operator_id,auto , created_date , completed_date,version)
-values (14,'examinationTask' , 14 , 5 , '测试用户5' , 'pending',null,9,0,'2013-07-12 01:00:00',null,1);
+insert into task (id , type ,examination_id , user_id , apk_id ,user_name , status,expert_id,operator_id,auto , created_date , completed_date,version)
+values (13,'examinationTask' , 13 , 4 , '13' , '测试用户4' , 'pending',null,9,0,'2013-07-12 01:00:00',null,1);
+insert into task (id , type ,examination_id , user_id , apk_id ,user_name , status,expert_id,operator_id,auto , created_date , completed_date,version)
+values (14,'examinationTask' , 14 , 5 , '14' , '测试用户5' , 'pending',null,9,0,'2013-07-12 01:00:00',null,1);
 -- task end
 -- system_config start
 insert into system_config (id , type , config_key , value ) values (1 , 'basic' , 'upload.rootPath' , 'c:/upload/');
