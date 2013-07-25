@@ -63,6 +63,8 @@ public class AuthenticateServiceImpl implements AuthenticateService {
 		if (token.indexOf(TOKEN_SPLAT) == -1) {
 			throw new ServiceException("exception.token.invalid");
 		}
+		log.debug("=======================================");
+		log.debug("token is " + token);
 		String[] value = token.split(TOKEN_SPLAT);
 		String username = value[0];
 		String userType = value[1];
