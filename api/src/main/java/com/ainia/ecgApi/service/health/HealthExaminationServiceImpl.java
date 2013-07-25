@@ -184,8 +184,8 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 					
 					examination.setBodyTemp(hi.temperature);
 					examination.setHeartRhythm(hi.heartrate);
-					examination.setBloodPressureLow(hi.sbp);
-					examination.setBloodPressureHigh(hi.dbp);
+					examination.setBloodPressureLow(hi.dbp);
+					examination.setBloodPressureHigh(hi.sbp);
 					examination.setPulserate(hi.pulserate);
 					examination.setBloodOxygen(hi.oxygen);
 					

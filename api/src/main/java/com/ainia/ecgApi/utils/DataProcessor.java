@@ -214,6 +214,13 @@ public class DataProcessor {
 		hi.dbp = data[i + 30];
 		hi.ptt = data[i + 31];
 
+		StringBuffer sb = new StringBuffer();
+		for(int idx=0; idx < data.length; idx++) {
+			sb.append(data[idx] + ' ');
+		}
+		System.out.println("++++++++++++++++++++++++++++ health info data");
+		System.out.println(sb.toString());
+		
 		return start + SECTION_LENGTH;
 	}
 
