@@ -10,7 +10,7 @@ create table user (
 	roles varchar(100),
     gender int,
 	type varchar(10),
-	birthday timestamp,
+	birthday datetime,
 	address varchar(255),
 	stature double,
 	weight  double,
@@ -21,8 +21,8 @@ create table user (
 	em_contact2_tel varchar(20),
 	bad_habits varchar(30),
 	anamnesis varchar(30),
-	created_date timestamp,
-	last_updated timestamp,
+	created_date datetime,
+	last_updated datetime,
 	remark varchar(255),
 	title varchar(20),
 	is_free int,
@@ -43,14 +43,14 @@ create table employee (
     enabled int not null,
     dismissed int not null,
     gender int not null,
-    expire timestamp,
-    birthday timestamp,
+    expire datetime,
+    birthday datetime,
     id_card varchar(20),
     mobile varchar(11),
     title varchar(20),
     company varchar(100),
-    created_date timestamp,
-    last_updated timestamp,
+    created_date datetime,
+    last_updated datetime,
     email varchar(64),
     version int,
     primary key(id)
@@ -78,8 +78,8 @@ create table health_rule (
     level varchar(10),
     min float,
     max float,
-    created_date timestamp,
-    last_updated timestamp,
+    created_date datetime,
+    last_updated datetime,
     remark varchar(255),
     version int,
     primary key(id)
@@ -93,8 +93,8 @@ create table health_rule_reply (
     content varchar(1000),
     result varchar(20),
     rule_id bigint ,
-    created_date timestamp,
-    last_updated timestamp,
+    created_date datetime,
+    last_updated datetime,
     version int,
     primary key(id)
 );
@@ -132,7 +132,7 @@ create table health_examination (
     charge_type varchar(30),
     heart_features varchar(30),
     algorithm_version float,
-    created_date timestamp,
+    created_date datetime,
     version int,
     primary key(id)
 );
@@ -148,8 +148,8 @@ create table health_reply(
     level varchar(30),
     employee_id bigint,
     examination_id bigint,
-    created_date timestamp,
-    last_updated timestamp,
+    created_date datetime,
+    last_updated datetime,
     version int,
     primary key(id)
 );
@@ -167,8 +167,8 @@ create table task(
     operator_id bigint,
     examination_id bigint,
     auto int,
-    created_date timestamp,
-    completed_date timestamp,
+    created_date datetime,
+    completed_date datetime,
     version int,
     primary key(id)
 );
