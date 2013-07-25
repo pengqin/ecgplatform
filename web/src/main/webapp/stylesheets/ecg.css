@@ -44,6 +44,7 @@ i {
 	margin: 0px;
 }
 /*菜单*/
+.navbar #cards-menu,
 .navbar .examination,
 .navbar .sysconfig {
 	display: none;

@@ -93,7 +93,7 @@ define(function(require, exports) {
         it("the expert should able to login in with default password", function(done) {
             expect(expert).not.to.be(undefined);
             $.ajax({
-                url: '/api/auth',
+                url: PATH + '/api/auth',
                 data: {
                     'username': expert.username,
                     'password': expert.password
@@ -173,7 +173,7 @@ define(function(require, exports) {
         it("the expert should able to login in with reset password", function(done) {
             expect(expert).not.to.be(undefined);
             $.ajax({
-                url: '/api/auth',
+                url: PATH + '/api/auth',
                 data: {
                     'username': expert.username,
                     'password': expert.username

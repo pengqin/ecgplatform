@@ -91,7 +91,7 @@ define(function(require, exports) {
 
         it("the operator should able to login in with default password", function(done) {
             $.ajax({
-                url: '/api/auth',
+                url: PATH + '/api/auth',
                 data: {
                     'username': operator.username,
                     'password': operator.password
@@ -167,7 +167,7 @@ define(function(require, exports) {
 
         it("the operator should able to login in with reset password", function(done) {
             $.ajax({
-                url: '/api/auth',
+                url: PATH + '/api/auth',
                 data: {
                     'username': operator.username,
                     'password': operator.username
