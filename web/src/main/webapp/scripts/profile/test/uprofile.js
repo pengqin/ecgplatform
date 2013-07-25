@@ -72,7 +72,7 @@ define(function(require, exports) {
         it("the session user's password should be useful", function(done) {
             expect(sessionuser).not.to.be(undefined);
             $.ajax({
-                url: '/api/user/auth',
+                url: PATH + '/api/user/auth',
                 data: {
                     'username': user.username,
                     'password': user.password + 'updated'
