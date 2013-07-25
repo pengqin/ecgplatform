@@ -170,7 +170,7 @@ define(function(require, exports) {
             });
         });
 
-        it("the user's task should not be deleted", function(done) {
+        it("the user's task should be deleted", function(done) {
             expect(taskId).not.to.be(undefined);
             $.ajax({
                 url: PATH + '/api/user/' + userId + '/task/' + taskId,

@@ -350,7 +350,7 @@ define(function(require, exports) {
         });
 
         // 正确的token能删除所有个人任务,即使还没有任务
-        it("the user's task should be deleted without token.", function(done) {
+        it("the user's task should be deleted with token.", function(done) {
             $.ajax({
                 url: PATH + '/api/user/' + userId + '/task',
                 type: 'DELETE',
