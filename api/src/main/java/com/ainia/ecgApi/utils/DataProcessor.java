@@ -216,7 +216,7 @@ public class DataProcessor {
 
 		StringBuffer sb = new StringBuffer();
 		for(int idx=0; idx < data.length; idx++) {
-			sb.append(data[idx]);
+			sb.append(data[idx] + ' ');
 		}
 		System.out.println("++++++++++++++++++++++++++++ health info data");
 		System.out.println(sb.toString());
