@@ -23,6 +23,7 @@ import com.ainia.ecgApi.domain.health.HealthRule;
 import com.ainia.ecgApi.domain.sys.SystemConfig;
 import com.ainia.ecgApi.domain.sys.User;
 import com.ainia.ecgApi.domain.task.ExaminationTask;
+import com.ainia.ecgApi.dto.health.HealthInfo;
 import com.ainia.ecgApi.service.common.UploadService;
 import com.ainia.ecgApi.service.common.UploadService.Type;
 import com.ainia.ecgApi.service.sys.SystemConfigService;
@@ -177,8 +178,17 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 					String rawPath = "user/" +  String.valueOf(authUser.getId()) + "/examination/" + examination.getId() + "/raw";
 					String rawUri = uploadService.save(Type.heart_img , rawPath , uploadData);
 					
-					
 					examination.setHeartData(rawUri);
+					
+					HealthInfo hi = processor.getHealthInfo();
+					
+					examination.setBodyTemp(hi.temperature);
+					examination.setHeartRhythm(hi.heartrate);
+					examination.setBloodPressureLow(hi.sbp);
+					examination.setBloodPressureHigh(hi.dbp);
+					examination.setPulserate(hi.pulserate);
+					examination.setBloodOxygen(hi.oxygen);
+					
 					update(examination);
 				}
 				catch(Exception e) {
