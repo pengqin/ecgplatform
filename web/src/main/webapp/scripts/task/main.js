@@ -141,6 +141,7 @@ angular.module('ecgTask', ['ecgTaskService', 'ecgTaskView', 'ecgReplyForm'])
         $scope.dialog.showLoading();
         TaskService.queryAllTaskByEmployee(user).then(function(tasks) {
             $scope.dialog.hideStandby();
+            $scope.task.selected = null;
             $scope.task.data = tasks;
         });
     }
@@ -231,6 +232,7 @@ angular.module('ecgTask', ['ecgTaskService', 'ecgTaskView', 'ecgReplyForm'])
         $scope.dialog.showLoading();
         TaskService.queryAllTaskByUser(user).then(function(tasks) {
             $scope.dialog.hideStandby();
+            $scope.task.selected = null;
             $scope.task.data = tasks;
         });
     }
@@ -280,6 +282,9 @@ angular.module('ecgTask', ['ecgTaskService', 'ecgTaskView', 'ecgReplyForm'])
             }
         });
     };
+
+    // 刷新功能
+    $scope.task.refresh = refreshGrid;
 }])
 .config(['$routeProvider', function ($routeProvider) {
 $routeProvider
