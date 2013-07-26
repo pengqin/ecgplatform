@@ -93,7 +93,15 @@ angular.module('ecgUserService', [])
                     data: $.param(user),
                     url: uri + '/' + user.id
                 });
-            },           
+            },     
+            resetPassword: function(user) {
+                return $http({
+                    method: 'PUT',
+                    headers:{'Content-Type':'application/x-www-form-urlencoded'},
+                    data: $.param({oldPassword: '', newPassword: ''}),
+                    url: uri + '/' + user.id + '/password'
+                });
+            },        
             remove: function(id) {
                 return $http({
                     method: 'DELETE',

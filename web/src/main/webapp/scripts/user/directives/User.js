@@ -219,8 +219,7 @@ angular.module('ecgUserModules', [])
             text: "重置后登录密码将与手机号码一致，确定继续?",
             handler: function() {
                 $scope.dialog.showStandby();
-                $scope.user.updateobj.password = $scope.user.updateobj.mobile;
-                UserService.update($scope.user.updateobj)
+                UserService.resetPassword($scope.user.updateobj)
                 .then(function(result) {
                     $scope.dialog.hideStandby();
                     $scope.message.success("重置密码成功!");

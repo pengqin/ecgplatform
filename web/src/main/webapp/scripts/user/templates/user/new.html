@@ -7,7 +7,7 @@
 		<tr>
 		<td width="150px" valign="top"><label for="user-mobile">手机号码:</label></td>
 		<td>
-			<input ng-model="user.newobj.mobile" class="input-xlarge" id="user-mobile" ng-pattern="/^(86)*0*13\d{9}$/"
+			<input ng-model="user.newobj.mobile" class="input-xlarge" id="user-mobile" ng-pattern="/^(86)*0*1\d{10}$/"
 				   focus required placeholder="请输入登录名" ng-change="user.checkUnique()"></input>
 			<span class="required">*</span><span class="desc">初始登录密码与手机一致</span></td>
 		</tr>
