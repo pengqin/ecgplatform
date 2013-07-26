@@ -24,6 +24,8 @@ angular.module('ecgTask', ['ecgTaskService', 'ecgTaskView', 'ecgReplyForm'])
     $scope.todo.replyform = 'hidden';
     $scope.todo.cursor = 0;
 
+    var refreshHandler;
+
     function refreshGrid(opts) {
         var user = $scope.session.user, isEmployee = user.isEmployee,
             opts = opts || {auto: false};
@@ -34,6 +36,10 @@ angular.module('ecgTask', ['ecgTaskService', 'ecgTaskView', 'ecgReplyForm'])
             $scope.todo.tasks &&
             $scope.todo.current.id !== $scope.todo.tasks[$scope.todo.tasks.length - 1].id) {
             return;
+        } else {
+            if(refreshHandler) {
+                $timeout.cancel(refreshHandler)
+            }
         }
 
         $scope.dialog.showLoading();
@@ -58,7 +64,7 @@ angular.module('ecgTask', ['ecgTaskService', 'ecgTaskView', 'ecgReplyForm'])
         });
 
         // 60秒后刷新
-        $timeout(function() {
+        refreshHandler = $timeout(function() {
             refreshGrid({auto: true});
         }, 1000 * 60);
     }
@@ -121,7 +127,8 @@ angular.module('ecgTask', ['ecgTaskService', 'ecgTaskView', 'ecgReplyForm'])
         }
     };
 }])
-.controller('TaskController', ['$scope', 'EnumService', 'ProfileService', 'TaskService', function ($scope, EnumService, ProfileService, TaskService) {
+.controller('TaskController', ['$scope', '$timeout', 'EnumService', 'ProfileService', 'TaskService',
+    function ($scope, $timeout, EnumService, ProfileService, TaskService) {
     $scope.subheader.title = "工作清单";
 
     $scope.task = {};
@@ -135,7 +142,14 @@ angular.module('ecgTask', ['ecgTaskService', 'ecgTaskView', 'ecgReplyForm'])
 
     $scope.task.translateLevel = EnumService.translateLevel;
 
-    function refreshGrid() {
+    var refreshHandler;
+
+    function refreshGrid(opts) {
+        var opts = opts || {auto: false};
+        if (!opts.auto && refreshHandler) {
+            $timeout.cancel(refreshHandler)
+        }
+
         var user = $scope.session.user;
         
         $scope.dialog.showLoading();
@@ -144,6 +158,10 @@ angular.module('ecgTask', ['ecgTaskService', 'ecgTaskView', 'ecgReplyForm'])
             $scope.task.selected = null;
             $scope.task.data = tasks;
         });
+
+        refreshHandler = $timeout(function() {
+            refreshGrid({auto: true});
+        }, 1000 * 60 * 10);
     }
 
     $scope.$watch("session.user", function() {
@@ -202,8 +220,8 @@ angular.module('ecgTask', ['ecgTaskService', 'ecgTaskView', 'ecgReplyForm'])
       }
   };
 }])
-.controller('ExaminationController', ['$scope', '$routeParams', '$location', 'EnumService', 'ProfileService', 'TaskService',
-    function ($scope, $routeParams, $location, EnumService, ProfileService, TaskService) {
+.controller('ExaminationController', ['$scope', '$timeout', '$routeParams', '$location', 'EnumService', 'ProfileService', 'TaskService',
+    function ($scope, $timeout,$routeParams, $location, EnumService, ProfileService, TaskService) {
     $scope.subheader.title = "体检记录";
 
     $scope.task = {};
@@ -226,7 +244,15 @@ angular.module('ecgTask', ['ecgTaskService', 'ecgTaskView', 'ecgReplyForm'])
         }
     };
 
+
+    var refreshHandler;
+
     function refreshGrid() {
+        var opts = opts || {auto: false};
+        if (!opts.auto && refreshHandler) {
+            $timeout.cancel(refreshHandler)
+        }
+
         var user = $scope.session.user;
         
         $scope.dialog.showLoading();
@@ -235,6 +261,10 @@ angular.module('ecgTask', ['ecgTaskService', 'ecgTaskView', 'ecgReplyForm'])
             $scope.task.selected = null;
             $scope.task.data = tasks;
         });
+
+        refreshHandler = $timeout(function() {
+            refreshGrid({auto: true});
+        }, 1000 * 60 * 5);
     }
 
     $scope.$watch("session.user", function() {
