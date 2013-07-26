@@ -50,7 +50,7 @@ define(function(require, exports) {
         });
 
         // 获取某个id
-        var taskId, apkId, anotherApkId;
+        var taskId, examinationId, apkId, anotherApkId;
         it("the user's task should be retrieved.", function(done) {
             $.ajax({
                 url: PATH + '/api/user/' + userId + '/task',
@@ -63,9 +63,11 @@ define(function(require, exports) {
                 expect(res.datas.length).not.to.be(1);
                 expect(res.datas.length).not.to.be(2);
                 taskId = res.datas[0].id;
+                examinationId = res.datas[0].examinationId;
                 apkId = res.datas[0].apkId;
                 anotherApkId = res.datas[1].apkId;
                 expect(taskId).not.to.be(undefined);
+                expect(examinationId).not.to.be(undefined);
                 expect(apkId).not.to.be(undefined);
                 expect(anotherApkId).not.to.be(undefined);
                 done();
@@ -180,6 +182,69 @@ define(function(require, exports) {
                 done();
             }, function() {
                 throw new Error('failed to deleted a task.');
+            });
+        });
+
+        it("the user's examination should be deleted either", function(done) {
+            expect(examinationId).not.to.be(undefined);
+            $.ajax({
+                url: PATH + '/api/examination/' + examinationId,
+                type: "GET",                
+                headers: {Authorization: token}
+            }).then(function(res) {
+                throw new Error('the examination should be deleted.');
+            }, function() {
+                done();
+            });
+        });
+
+        var fromDate;
+        // 如果是逆序获得task
+        it("the user's examination should be retrieved", function(done) {
+            expect(userId).not.to.be(undefined);
+            $.ajax({
+                url: PATH + '/api/user/' + userId + '/examination',
+                type: "GET",                
+                headers: {Authorization: token}
+            }).then(function(res) {
+                expect(res.datas).not.to.be(undefined);
+                expect(res.datas.length).not.to.be(0);
+                fromDate = res.datas[0].createdDate;
+                expect(fromDate).not.to.be(undefined);
+                fromDate = fromDate.substring(0, 11);
+                done();
+            }, function() {
+                throw new Error('the examination should be retrieved.');
+            });
+        });
+
+        it("the user's examination should be retrieved with condition ge", function(done) {
+            expect(userId).not.to.be(undefined);
+            $.ajax({
+                url: PATH + '/api/user/' + userId + '/examination?ge=' + fromDate,
+                type: "GET",                
+                headers: {Authorization: token}
+            }).then(function(res) {
+                expect(res.datas).not.to.be(undefined);
+                expect(res.datas.length).to.be(1);
+                done();
+            }, function() {
+                throw new Error('the examination should be retrieved with condition ge.');
+            });
+        });
+
+        it("the user's examination should not be retrieved with condition gt", function(done) {
+            expect(userId).not.to.be(undefined);
+            $.ajax({
+                url: PATH + '/api/user/' + userId + '/examination?gt=' + fromDate,
+                type: "GET",                
+                headers: {Authorization: token}
+            }).then(function(res) {
+                expect(res.datas).not.to.be(undefined);
+                expect(res.datas.length).to.be(0);
+                done();
+            }, function() {
+                throw new Error('the examination should not be retrieved with condition gt.');
             });
         });
     };
