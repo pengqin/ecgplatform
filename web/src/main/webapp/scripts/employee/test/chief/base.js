@@ -90,7 +90,7 @@ define(function(require, exports) {
 
         it("the chief should able to login in with default password", function(done) {
             $.ajax({
-                url: '/api/auth',
+                url: PATH + '/api/auth',
                 data: {
                     'username': chief.username,
                     'password': chief.password
@@ -167,7 +167,7 @@ define(function(require, exports) {
 
         it("the chief should able to login in with reset password", function(done) {
             $.ajax({
-                url: '/api/auth',
+                url: PATH + '/api/auth',
                 data: {
                     'username': chief.username,
                     'password': chief.username
