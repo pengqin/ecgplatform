@@ -13,7 +13,7 @@ define(function(require, exports) {
         // 注册用户
         it("the user should be created by user/apk.", function(done) {
             user = {
-                mobile: 13 + (new Date()).getTime().toString().substring(0, 9),
+                mobile: 18 + (new Date()).getTime().toString().substring(0, 9),
                 name: '测试用户',
                 password: 'passw0rd'
             };
@@ -38,7 +38,7 @@ define(function(require, exports) {
 
         it("the hacker should be created by user/apk.", function(done) {
             hacker = {
-                mobile: 13 + (new Date()).getTime().toString().substring(0, 9),
+                mobile: 19 + (new Date()).getTime().toString().substring(0, 9),
                 name: '黑客',
                 password: 'passw0rd'
             };
@@ -107,6 +107,7 @@ define(function(require, exports) {
                 type: 'POST',
                 dataType: 'json'
             }).then(function(res) {
+                expect(res.userId).not.to.be(undefined);
                 expect(res.token).not.to.be(undefined);
                 token = res.token;
                 done();
