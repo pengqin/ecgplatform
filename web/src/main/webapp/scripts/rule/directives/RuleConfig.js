@@ -406,7 +406,7 @@ angular.module('ecgRuleConfig', [])
                 });
             }
         });    
-    }
+    };
 
 }]);
 
