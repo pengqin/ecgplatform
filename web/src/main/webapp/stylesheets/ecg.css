@@ -81,6 +81,7 @@ i {
 	display: none
 }
 .navbar.admin .sysconfig,
+.navbar.admin #cards-menu,
 .navbar.user .examination {
 	display: block;
 }

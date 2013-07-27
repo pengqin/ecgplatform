@@ -40,13 +40,37 @@ angular.module('ecgCardDirectives', [])
         $scope.card.viewobj = {};
     };
 }])
-.controller('CardHistoryController', ['$scope', '$routeParams', '$timeout', '$location', 'EnumService', 'CardService',
-    function ($scope, $routeParams, $timeout, $location, EnumService, CardService) {
+.controller('CardHistoryController', ['$scope', '$filter', '$routeParams', '$timeout', '$location', 'EnumService', 'CardService',
+    function ($scope, $filter, $routeParams, $timeout, $location, EnumService, CardService) {
     $scope.subheader.title = "充值历史";
 
     // 命名空间
     $scope.card = {};
 
+    // 表格展示
+    $scope.card.data = null;
+    $scope.card.filteredData = null;
+
+    // 刷新功能
+    function refreshGrid() {
+        $scope.dialog.showLoading();
+        CardService.queryAll().then(function(cards) {
+            $scope.dialog.hideStandby();
+            $scope.card.data = cards;
+            $scope.card.filteredData = $scope.card.data;
+        }, function() {
+            $scope.dialog.hideStandby();
+            $scope.message.error("无法加载充值历史!");
+        });
+    }
+    refreshGrid();
+
+    // 过滤功能
+    $scope.card.queryChanged = function(query) {
+        return $scope.card.filteredData = $filter("filter")($scope.card.data, query);
+    };
+
+    $scope.card.refresh = refreshGrid;
 }])
 .controller('CardChargeController', ['$scope', '$routeParams', '$timeout', '$location', 'EnumService', 'CardService',
     function ($scope, $routeParams, $timeout, $location, EnumService, CardService) {
