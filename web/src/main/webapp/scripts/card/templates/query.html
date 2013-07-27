@@ -8,7 +8,7 @@
 		<td>
 			<input ng-model="card.viewobj.serial" class="input-xlarge" id="card-serial"
 				   focus required ng-pattern="/^[0-9]{13}$/"
-				   placeholder="请输入卡号"</input>
+				   placeholder="请输入卡号"></input>
 			<span class="required">*</span><span class="desc">请输入13位卡号</span></td>
 		</tr>
 
@@ -36,6 +36,12 @@
 		<td width="100px" valign="top"><label for="card-serial">卡号:</label></td>
 		<td>
 			{{card.viewobj.serial}}
+		</tr>
+
+		<tr>
+		<td valign="top"><label for="card-serial">导入时间:</label></td>
+		<td>
+			{{card.viewobj.createdDate}}
 		</tr>
 
 		<tr>
