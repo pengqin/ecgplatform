@@ -13,8 +13,8 @@ var examinationTemp = require("./templates/examination.html");
 
 angular.module('ecgTask', ['ecgTaskService', 'ecgTaskView', 'ecgReplyForm'])
 .controller('TodoTaskController',
-    ['$scope', '$timeout', '$routeParams', '$location', 'ProfileService', 'TaskService',
-    function ($scope, $timeout, $routeParams, $location, ProfileService, TaskService) {
+    ['$scope', '$route', '$timeout', '$routeParams', '$location', 'ProfileService', 'TaskService',
+    function ($scope, $route, $timeout, $routeParams, $location, ProfileService, TaskService) {
     $scope.subheader.title = "待办工作";
 
     // 基本变量
@@ -68,6 +68,10 @@ angular.module('ecgTask', ['ecgTaskService', 'ecgTaskView', 'ecgReplyForm'])
             refreshGrid({auto: true});
         }, 1000 * 60);
     }
+
+    $scope.$on('$routeChangeStart', function(next, current) { 
+        $timeout.cancel(refreshHandler);
+    });
 
     $scope.$watch("session.user", function() {
         if (!$scope.session.user.id) { return; }
@@ -164,6 +168,10 @@ angular.module('ecgTask', ['ecgTaskService', 'ecgTaskView', 'ecgReplyForm'])
             refreshGrid({auto: true});
         }, 1000 * 60 * 10);
     }
+
+    $scope.$on('$routeChangeStart', function(next, current) { 
+        $timeout.cancel(refreshHandler);
+    });
 
     $scope.$watch("session.user", function() {
         if (!$scope.session.user.id) { return; }
@@ -268,6 +276,10 @@ angular.module('ecgTask', ['ecgTaskService', 'ecgTaskView', 'ecgReplyForm'])
             refreshGrid({auto: true});
         }, 1000 * 60 * 5);
     }
+
+    $scope.$on('$routeChangeStart', function(next, current) { 
+        $timeout.cancel(refreshHandler);
+    });
 
     $scope.$watch("session.user", function() {
         if (!$scope.session.user.id) { return; }
