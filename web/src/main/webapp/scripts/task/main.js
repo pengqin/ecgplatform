@@ -13,8 +13,8 @@ var examinationTemp = require("./templates/examination.html");
 
 angular.module('ecgTask', ['ecgTaskService', 'ecgTaskView', 'ecgReplyForm'])
 .controller('TodoTaskController',
-    ['$scope', '$timeout', '$routeParams', '$location', 'ProfileService', 'TaskService',
-    function ($scope, $timeout, $routeParams, $location, ProfileService, TaskService) {
+    ['$scope', '$route', '$timeout', '$routeParams', '$location', 'ProfileService', 'TaskService',
+    function ($scope, $route, $timeout, $routeParams, $location, ProfileService, TaskService) {
     $scope.subheader.title = "待办工作";
 
     // 基本变量
@@ -24,11 +24,10 @@ angular.module('ecgTask', ['ecgTaskService', 'ecgTaskView', 'ecgReplyForm'])
     $scope.todo.replyform = 'hidden';
     $scope.todo.cursor = 0;
 
-    var refreshHandler;
+    var refreshHandler = null;
 
     function refreshGrid(opts) {
-        var user = $scope.session.user, isEmployee = user.isEmployee,
-            opts = opts || {auto: false};
+        var user = $scope.session.user, opts = opts || {auto: false};
 
         // 如果当前用户正在操作,不刷新
         if (opts.auto && 
@@ -38,7 +37,7 @@ angular.module('ecgTask', ['ecgTaskService', 'ecgTaskView', 'ecgReplyForm'])
             return;
         } else {
             if(refreshHandler) {
-                $timeout.cancel(refreshHandler)
+                $timeout.cancel(refreshHandler);
             }
         }
 
@@ -64,10 +63,15 @@ angular.module('ecgTask', ['ecgTaskService', 'ecgTaskView', 'ecgReplyForm'])
         });
 
         // 60秒后刷新
+        $timeout.cancel(refreshHandler);
         refreshHandler = $timeout(function() {
             refreshGrid({auto: true});
         }, 1000 * 60);
     }
+
+    $scope.$on('$routeChangeStart', function(next, current) { 
+        $timeout.cancel(refreshHandler);
+    });
 
     $scope.$watch("session.user", function() {
         if (!$scope.session.user.id) { return; }
@@ -142,12 +146,12 @@ angular.module('ecgTask', ['ecgTaskService', 'ecgTaskView', 'ecgReplyForm'])
 
     $scope.task.translateLevel = EnumService.translateLevel;
 
-    var refreshHandler;
+    var refreshHandler = null;
 
     function refreshGrid(opts) {
         var opts = opts || {auto: false};
         if (!opts.auto && refreshHandler) {
-            $timeout.cancel(refreshHandler)
+            $timeout.cancel(refreshHandler);
         }
 
         var user = $scope.session.user;
@@ -159,10 +163,15 @@ angular.module('ecgTask', ['ecgTaskService', 'ecgTaskView', 'ecgReplyForm'])
             $scope.task.data = tasks;
         });
 
+        $timeout.cancel(refreshHandler);
         refreshHandler = $timeout(function() {
             refreshGrid({auto: true});
         }, 1000 * 60 * 10);
     }
+
+    $scope.$on('$routeChangeStart', function(next, current) {
+        $timeout.cancel(refreshHandler);
+    });
 
     $scope.$watch("session.user", function() {
         if (!$scope.session.user.id) { return; }
@@ -245,12 +254,12 @@ angular.module('ecgTask', ['ecgTaskService', 'ecgTaskView', 'ecgReplyForm'])
     };
 
 
-    var refreshHandler;
+    var refreshHandler = null;
 
     function refreshGrid() {
         var opts = opts || {auto: false};
         if (!opts.auto && refreshHandler) {
-            $timeout.cancel(refreshHandler)
+            $timeout.cancel(refreshHandler);
         }
 
         var user = $scope.session.user;
@@ -262,10 +271,15 @@ angular.module('ecgTask', ['ecgTaskService', 'ecgTaskView', 'ecgReplyForm'])
             $scope.task.data = tasks;
         });
 
+        $timeout.cancel(refreshHandler);
         refreshHandler = $timeout(function() {
             refreshGrid({auto: true});
         }, 1000 * 60 * 5);
     }
+
+    $scope.$on('$routeChangeStart', function(next, current) { 
+        $timeout.cancel(refreshHandler);
+    });
 
     $scope.$watch("session.user", function() {
         if (!$scope.session.user.id) { return; }

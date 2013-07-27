@@ -212,6 +212,7 @@ define(function(require, exports) {
                 fromDate = res.datas[0].createdDate;
                 expect(fromDate).not.to.be(undefined);
                 fromDate = fromDate.substring(0, 11);
+                console.info(res.datas);
                 done();
             }, function() {
                 throw new Error('the examination should be retrieved.');
@@ -236,7 +237,7 @@ define(function(require, exports) {
         it("the user's examination should not be retrieved with condition gt", function(done) {
             expect(userId).not.to.be(undefined);
             $.ajax({
-                url: PATH + '/api/user/' + userId + '/examination?createdDate:gth=' + fromDate,
+                url: PATH + '/api/user/' + userId + '/examination?createdDate:gth=' + fromDate +' 23:59:59',
                 type: "GET",                
                 headers: {Authorization: token}
             }).then(function(res) {
