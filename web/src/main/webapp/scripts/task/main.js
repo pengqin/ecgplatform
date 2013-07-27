@@ -169,7 +169,7 @@ angular.module('ecgTask', ['ecgTaskService', 'ecgTaskView', 'ecgReplyForm'])
         }, 1000 * 60 * 10);
     }
 
-    $scope.$on('$routeChangeStart', function(next, current) { 
+    $scope.$on('$routeChangeStart', function(next, current) {
         $timeout.cancel(refreshHandler);
     });
 
