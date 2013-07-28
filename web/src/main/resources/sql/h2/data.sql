@@ -172,7 +172,7 @@ insert into task (id , type ,examination_id , user_id , apk_id ,user_name , stat
 values (12,'examinationTask' , 12 , 2 , '12' , '测试用户2' , 'pending',null,9,0,'2013-07-12 01:00:00',null,1);
 
 insert into task (id , type ,examination_id , user_id , apk_id ,user_name , status,expert_id,operator_id,auto , created_date , completed_date,version)
-values (13,'examinationTask' , 13 , 4 , '13' , '测试用户4' , 'pending',null,9,0,'2013-07-12 01:00:00',null,1);
+values (13,'examinationTask' , 13 , 4 , '13' , '测试用户4' , 'pending',null,8,0,'2013-07-12 01:00:00',null,1);
 insert into task (id , type ,examination_id , user_id , apk_id ,user_name , status,expert_id,operator_id,auto , created_date , completed_date,version)
 values (14,'examinationTask' , 14 , 5 , '14' , '测试用户5' , 'pending',null,9,0,'2013-07-12 01:00:00',null,1);
 -- task end

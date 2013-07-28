@@ -71,10 +71,10 @@ public class TaskServiceImpl extends BaseServiceImpl<Task , Long> implements Tas
 	public Task pending(Task task) {
 		List<Operator> operators = operatorService.findAllByWork(new Query());
 		Operator selectedOperator = null;
-		int selectedOperatorTask = -1;
+		int selectedOperatorTask = 99999;
 		for (Operator operator  : operators) {
 			List<Task> tasks = this.findAllByOperator(operator.getId());
-			if (selectedOperator == null || (tasks != null && tasks.size() < selectedOperatorTask)) {
+			if (tasks != null && tasks.size() < selectedOperatorTask) {
 				selectedOperator = operator;
 				selectedOperatorTask = tasks.size();
 			}
@@ -95,11 +95,10 @@ public class TaskServiceImpl extends BaseServiceImpl<Task , Long> implements Tas
 			throw new ServiceException("task.error.expert.notFound");
 		}
 		Expert selectedExpert = null;   //选中的专家
-		int  selectedExpertTask = -1;    //选中的专家所拥有的任务
+		int  selectedExpertTask = 99999;    //选中的专家所拥有的任务
 		for (Expert expert : experts) {
 			List<Task> tasks = this.findAllByExpert(expert.getId());
-			if ((selectedExpert == null || (tasks !=null && tasks.size() < selectedExpertTask))
-						&& tasks.size() < EXPERT_MAX_TASK_COUNT) {
+			if (tasks !=null && tasks.size() < selectedExpertTask) {
 				selectedExpert = expert;
 				selectedExpertTask = tasks.size();
 			}
@@ -121,14 +120,14 @@ public class TaskServiceImpl extends BaseServiceImpl<Task , Long> implements Tas
 
 	public List<Task> findAllByOperator(Long operatorId) {
 		Query<Task> query = new Query();
-		query.eq(Task.OPERATOR_ID , operatorId).isNull(Task.EXPERT_ID).eq(Task.STATUS, Status.pending);
+		query.eq(Task.OPERATOR_ID , operatorId).isNull(Task.EXPERT_ID);
 		
 		return this.findAll(query);
 	}
 
 	public List<Task> findAllByExpert(Long expertId) {
 		Query<Task> query = new Query();
-		query.eq(Task.EXPERT_ID , expertId).eq(Task.STATUS, Status.proceeding);
+		query.eq(Task.EXPERT_ID , expertId);
 		return this.findAll(query);
 	}
 
