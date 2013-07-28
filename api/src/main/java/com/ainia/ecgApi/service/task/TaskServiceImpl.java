@@ -71,7 +71,7 @@ public class TaskServiceImpl extends BaseServiceImpl<Task , Long> implements Tas
 	public Task pending(Task task) {
 		List<Operator> operators = operatorService.findAllByWork(new Query());
 		Operator selectedOperator = null;
-		int selectedOperatorTask = 99999;
+		int selectedOperatorTask = Integer.MAX_VALUE;
 		for (Operator operator  : operators) {
 			List<Task> tasks = this.findAllByOperator(operator.getId());
 			if (tasks != null && tasks.size() < selectedOperatorTask) {
@@ -95,7 +95,7 @@ public class TaskServiceImpl extends BaseServiceImpl<Task , Long> implements Tas
 			throw new ServiceException("task.error.expert.notFound");
 		}
 		Expert selectedExpert = null;   //选中的专家
-		int  selectedExpertTask = 99999;    //选中的专家所拥有的任务
+		int  selectedExpertTask = Integer.MAX_VALUE;    //选中的专家所拥有的任务
 		for (Expert expert : experts) {
 			List<Task> tasks = this.findAllByExpert(expert.getId());
 			if (tasks !=null && tasks.size() < selectedExpertTask) {
