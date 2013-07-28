@@ -67,6 +67,7 @@ define(function(require, exports) {
             it: it,
             user: {username: TESTCONFIGS.user1.username, password: TESTCONFIGS.user1.password}
         }, angluarjs, services, chiefRuntime);
+
         // 场景1 结束
 
 
@@ -144,11 +145,11 @@ define(function(require, exports) {
             user: {username: TESTCONFIGS.expert.username, password: TESTCONFIGS.expert.password}
         }, angluarjs, services);
 
-        /*
         testStageThreeForOperator({
             it: it,
             user: {username: TESTCONFIGS.operator.username, password: TESTCONFIGS.operator.password}
         }, angluarjs, services);
+        /*
         testStageThreeForExpert({
             it: it,
             user: {username: TESTCONFIGS.expert1.username, password: TESTCONFIGS.expert1.password}

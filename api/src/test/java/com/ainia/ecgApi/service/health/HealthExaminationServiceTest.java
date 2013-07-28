@@ -27,6 +27,7 @@ import com.ainia.ecgApi.core.security.AuthenticateService;
 import com.ainia.ecgApi.domain.health.HealthExamination;
 import com.ainia.ecgApi.domain.health.HealthRule.Level;
 import com.ainia.ecgApi.domain.sys.User;
+import com.ainia.ecgApi.service.health.HealthExaminationService;
 import com.ainia.ecgApi.utils.DataException;
 
 /**
@@ -114,6 +115,7 @@ public class HealthExaminationServiceTest {
         
         healthExaminationService.delete(_healthExamination);
     }
+
     @Test
     public void testUpload() throws IOException, DataException, InterruptedException {
     	when(authenticateService.getCurrentUser()).thenReturn(new AuthUserImpl(2L , "test" , "13700230001" , User.class.getSimpleName()));
@@ -131,5 +133,13 @@ public class HealthExaminationServiceTest {
     	input.close();
     	out.close();
     }
-    
+
+    @Test
+    public void testDelete() {
+        healthExaminationService.create(healthExamination);
+        
+        HealthExamination _healthExamination = healthExaminationService.update(healthExamination);
+        
+        healthExaminationService.delete(_healthExamination);
+    }
 }

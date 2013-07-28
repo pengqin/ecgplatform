@@ -212,7 +212,6 @@ define(function(require, exports) {
                 fromDate = res.datas[0].createdDate;
                 expect(fromDate).not.to.be(undefined);
                 fromDate = fromDate.substring(0, 11);
-                console.info(res.datas);
                 done();
             }, function() {
                 throw new Error('the examination should be retrieved.');
