@@ -172,12 +172,18 @@ insert into task (id , type ,examination_id , user_id , apk_id ,user_name , stat
 values (12,'examinationTask' , 12 , 2 , '12' , '测试用户2' , 'pending',null,9,0,'2013-07-12 01:00:00',null,1);
 
 insert into task (id , type ,examination_id , user_id , apk_id ,user_name , status,expert_id,operator_id,auto , created_date , completed_date,version)
-values (13,'examinationTask' , 13 , 4 , '13' , '测试用户4' , 'pending',null,9,0,'2013-07-12 01:00:00',null,1);
+values (13,'examinationTask' , 13 , 4 , '13' , '测试用户4' , 'pending',null,8,0,'2013-07-12 01:00:00',null,1);
 insert into task (id , type ,examination_id , user_id , apk_id ,user_name , status,expert_id,operator_id,auto , created_date , completed_date,version)
 values (14,'examinationTask' , 14 , 5 , '14' , '测试用户5' , 'pending',null,9,0,'2013-07-12 01:00:00',null,1);
 -- task end
 -- system_config start
-insert into system_config (id , type , config_key , value ) values (1 , 'basic' , 'upload.rootPath' , 'c:/upload/');
+insert into system_config (id , type , config_key , value ) values (1 , 'basic' , 'upload.rootPath' , '/home/ainia/upload/');
 insert into system_config (id , type , config_key , value ) values (2 , 'basic' , 'examination.reply.isAuto' , 'false');
 -- system_config end
+
+
+insert into health_examination (id , apk_id , user_id , test_item , user_name , user_type , level , blood_pressure_low,blood_pressure_high,heart_rhythm , breath,body_temp,pulserate,heart_data,latitude,altitude,temp,humidity,pressure,charge_type,heart_features,algorithm_version,created_date,version) 
+values (15, '15' , 5,'PHONE', '测试用户5','VIP','danger',80,120,10,10,37.5,60,'',0.0,200,37.6,null,null,'YEAR',null,null,'2013-07-14 01:00:00',1);
+insert into task (id , type ,examination_id , user_id , apk_id ,user_name , status,expert_id,operator_id,auto , created_date , completed_date,version)
+values (15,'examinationTask' , 14 , 5 , '14' , '测试用户5' , 'pending',null,9,0,'2013-07-12 01:00:00',null,1);
 commit;

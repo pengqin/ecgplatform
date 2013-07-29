@@ -19,9 +19,12 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import com.ainia.ecgApi.core.crud.Query;
 import com.ainia.ecgApi.core.security.AuthUserImpl;
 import com.ainia.ecgApi.core.security.AuthenticateService;
+import com.ainia.ecgApi.domain.health.HealthExamination;
+import com.ainia.ecgApi.service.health.HealthExaminationService;
 import com.ainia.ecgApi.domain.sys.User;
 import com.ainia.ecgApi.domain.task.Task;
 import com.ainia.ecgApi.domain.task.Task.Status;
+import com.ainia.ecgApi.service.task.TaskService;
 
 /**
  * <p>Task Service test</p>
@@ -40,6 +43,8 @@ public class TaskServiceTest {
 
     @Autowired
     private TaskService taskService;
+    @Autowired
+    private HealthExaminationService healthExaminationService;
     @Mock
     private AuthenticateService authenticateService;
 
@@ -108,6 +113,5 @@ public class TaskServiceTest {
     	count = taskService.count(query);
     	Assert.assertEquals(count , 0);
     }
-    
     
 }

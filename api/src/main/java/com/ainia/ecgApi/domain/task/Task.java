@@ -14,13 +14,17 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.PrePersist;
+import javax.persistence.PreRemove;
 import javax.persistence.Transient;
-import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import com.ainia.ecgApi.core.bean.Domain;
+import com.ainia.ecgApi.core.utils.ServiceUtils;
+import com.ainia.ecgApi.domain.health.HealthExamination;
+import com.ainia.ecgApi.service.health.HealthExaminationService;
+import com.ainia.ecgApi.service.task.ExaminationTaskService;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
@@ -145,6 +149,21 @@ public class Task implements Domain {
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
+	
+	@PreRemove
+	public void onDelete() {
+		ExaminationTaskService examinationTaskService = (ExaminationTaskService)ServiceUtils.getService(ExaminationTaskService.class);
+		ExaminationTask examinationTask = examinationTaskService.get(this.id);
+		
+		if (examinationTask != null) {
+			HealthExamination healthExamination = examinationTask.getExamination();
+			if (healthExamination != null) {
+				HealthExaminationService healthExaminationService = (HealthExaminationService)ServiceUtils.getService(HealthExaminationService.class);
+				healthExaminationService.delete(healthExamination);
+			}
+		}
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
