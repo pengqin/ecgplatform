@@ -212,4 +212,5 @@ table tbody tr.active {
 }
 .plot-c img {
 	height:300px;
+	max-width: none !important;
 }
