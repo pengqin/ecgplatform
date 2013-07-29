@@ -93,6 +93,8 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 			}
 		}
 		
+		// 防止被 /user/{id}/examination 注入
+		examination.setId(null);
 		examination.setUserId(authUser.getId());
 		examination.setUserName(authUser.getUsername());
 		examination.setUserType(authUser.getType());
