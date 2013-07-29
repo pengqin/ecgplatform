@@ -126,19 +126,35 @@ angular.module('ecgUserModules', [])
         $('#user-birthday').datetimepicker('show');
     };
 
-    $scope.user.isUnique = true;
+    $scope.user.isUnique = false;
+    $scope.user.isEmailUnique = false;
     $scope.user.checkUnique = function() {
-        UserService.findAllByMobile($scope.user.newobj.mobile).then(function(users) {
-            if (users.length > 0) { 
+        if ($scope.user.newobj.mobile) {
+            UserService.findAllByMobile($scope.user.newobj.mobile).then(function(users) {
+                if (users.length > 0) { 
+                    $scope.user.isUnique = false;
+                    $scope.message.warn("手机号码" + $scope.user.newobj.mobile + "已存在!");
+                } else {
+                    $scope.user.isUnique = true;
+                }
+            }, function() {
                 $scope.user.isUnique = false;
-                $scope.message.warn("手机号码" + $scope.user.newobj.mobile + "已存在!");
-            } else {
-                $scope.user.isUnique = true;
-            }
-        }, function() {
-            $scope.user.isUnique = true;
-            $scope.message.warn("查询用户是否唯一时出错!");
-        });
+                $scope.message.warn("查询用户是否唯一时出错!");
+            });
+        }
+        if ($scope.user.newobj.email) {
+            UserService.findAllByEmail($scope.user.newobj.email).then(function(users) {
+                if (users.length > 0) { 
+                    $scope.user.isEmailUnique = false;
+                    $scope.message.warn("邮箱地址" + $scope.user.newobj.email + "已存在!");
+                } else {
+                    $scope.user.isEmailUnique = true;
+                }
+            }, function() {
+                $scope.user.isEmailUnique = false;
+                $scope.message.warn("查询邮箱地址是否唯一时出错!");
+            });
+        }    
     };
 
     $scope.user.create = function() {

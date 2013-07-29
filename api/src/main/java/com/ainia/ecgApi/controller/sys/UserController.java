@@ -238,21 +238,37 @@ public class UserController extends BaseController<User , Long> {
     								@RequestParam("md5") String md5) throws IOException {
 		
 		ResponseEntity entity = new ResponseEntity(HttpStatus.OK);
-    	if (file.getBytes().length == 0) {
-    		entity =  new ResponseEntity(HttpStatus.BAD_REQUEST);
-    	}
+    	// 必须登录, 必须是用户类型, 必须是本人提交
 		AuthUser authUser = authenticateService.getCurrentUser();	
 		if (authUser == null) {
 			entity = new ResponseEntity(HttpStatus.FORBIDDEN);
-		}
-		else if (!User.class.getSimpleName().equals(authUser.getType()) || !authUser.getId().equals(id)) {
+			return entity;
+		} else if (!User.class.getSimpleName().equals(authUser.getType()) || !authUser.getId().equals(id)) {
+			log.error("the api should only invoked by the user him/herself.");
 			entity = new ResponseEntity(HttpStatus.FORBIDDEN);
+			return entity;
 		}
-		else {
-			// id不应该注入
-			examination.setId(null);
-			healthExaminationService.upload(examination , file.getBytes() , md5);
+
+		// 非测试情况文件不能为空
+		if (file == null || file.getBytes().length == 0) {
+			if (examination.getIsTest() == null || !examination.getIsTest()) {
+				log.error("the file should not be null.");
+				entity = new ResponseEntity(HttpStatus.BAD_REQUEST);
+				return entity;
+			}
 		}
+
+		// apkId不能为空
+		if (examination.getApkId() == null) {
+			log.error("the apkId should not be null.");
+			entity = new ResponseEntity(HttpStatus.BAD_REQUEST);
+			return entity;
+		}
+		
+		// id不应该注入
+		examination.setId(null);
+		healthExaminationService.upload(examination , file.getBytes() , md5);
+
     	return entity;
     }
 	

@@ -18,7 +18,7 @@ import com.ainia.ecgApi.service.charge.CardService;
  * @version 0.1
  */
 @Controller
-@RequestMapping("/card")
+@RequestMapping("/api/card")
 public class CardController extends BaseController<Card , Long> {
 
     @Autowired

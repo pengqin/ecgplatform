@@ -3,6 +3,7 @@ define(function(require, exports) {
 
     var testBaseAsAdminOrChief = require("./test/base.js").test;
     var testBaseAsAPK = require("./test/apk.js").test;
+    var testAutoReplyAsAPK = require("./test/autoreply.js").test;
 
     exports.testUser = function(mocha, angluarjs, services) {
         if (!runCase('user')) {
@@ -15,6 +16,10 @@ define(function(require, exports) {
         }, angluarjs, services) : null;
 
         runCaseAs('user') ? testBaseAsAPK({
+            it: mocha.it
+        }, angluarjs, services) : null;
+
+        runCaseAs('user') ? testAutoReplyAsAPK({
             it: mocha.it
         }, angluarjs, services) : null;
     };
