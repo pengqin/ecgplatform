@@ -196,10 +196,6 @@ table tbody tr.active {
 	text-align:right;
 }
 
-#ecgplot img {
-	max-width: 1600px;
-}
-
 /* employee link*/
 .employeeLink {
 	float: left; margin: 0px; margin-right: 10px; display: inline-block;
@@ -215,6 +211,5 @@ table tbody tr.active {
 	margin: 10px 0px;
 }
 .plot-c img {
-	width:1600px;height:300px;
-	max-width:1600px !important
+	height:300px;
 }
