@@ -249,6 +249,8 @@ public class UserController extends BaseController<User , Long> {
 			entity = new ResponseEntity(HttpStatus.FORBIDDEN);
 		}
 		else {
+			// id不应该注入
+			examination.setId(null);
 			healthExaminationService.upload(examination , file.getBytes() , md5);
 		}
     	return entity;
