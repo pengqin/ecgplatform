@@ -28,6 +28,7 @@ angular.module('ecgUserService', [])
                     "mobile": "", // 应该是 mobile 必填
                     "name": "", // 必填
                     "username": "", // 可作为别名登录，但是现在没需求 留空 手机就是唯一登录凭证
+                    "email": "",
                     "password": "",
                     "birthday": "", // 可空
                     "address": "", // 可空
@@ -64,6 +65,20 @@ angular.module('ecgUserService', [])
                 return $http({
                     method: 'GET',
                     url: uri + '?mobile=' + mobile
+                }).then(function(res) {
+                    if (res.data.datas && res.data.datas.length > 0) {
+                        return res.data.datas;
+                    } else {
+                        return [];    
+                    }
+                }, function() {
+                    return [];
+                });
+            },
+            findAllByEmail: function(email) {
+                return $http({
+                    method: 'GET',
+                    url: uri + '?email=' + email
                 }).then(function(res) {
                     if (res.data.datas && res.data.datas.length > 0) {
                         return res.data.datas;

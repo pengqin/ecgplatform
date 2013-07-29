@@ -15,9 +15,17 @@
 		<tr>
 		<td><label for="user-name">姓名:</label></td>
 		<td>
-			<input ng-model="user.newobj.name" class="input-xlarge" id="user-name" focus required placeholder="请输入姓名"></input>
+			<input ng-model="user.newobj.name" class="input-xlarge" id="user-name" required placeholder="请输入姓名"></input>
 			<span class="required">*</span>
 		</td>
+		</tr>
+
+		<tr>
+		<td width="150px" valign="top"><label for="user-email">邮箱地址:</label></td>
+		<td>
+			<input ng-model="user.newobj.email" class="input-xlarge" id="user-email" ng-pattern="/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/"
+				   required placeholder="请输入有效邮箱地址" ng-change="user.checkUnique()"></input>
+			<span class="required">*</span><span class="desc">找回密码的唯一手段</span></td>
 		</tr>
 
 		<tr>
@@ -104,7 +112,7 @@
 <div class="row-fluid">
 	<div class="span12">
 		<button class="btn" type="button"
-				ng-class="{'btn-primary': createChiefForm.$valid && user.isUnique}" 
+				ng-class="{'btn-primary': createChiefForm.$valid && user.isUnique && user.isEmailUnique}" 
 				ng-click="user.create()"
 				ng-disabled="!createChiefForm.$valid || !user.isUnique">
 			<i class="icon-save"></i>保存
