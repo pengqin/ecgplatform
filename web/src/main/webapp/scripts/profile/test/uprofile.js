@@ -49,7 +49,11 @@ define(function(require, exports) {
         it("the session user's profile should be updated.", function(done) {
             expect(ProfileService).not.to.be(undefined);
             expect(sessionuser).not.to.be(undefined);
+            sessionuser.birthday = '2013-7-24';
+            sessionuser.stature = 0.46;
             sessionuser.gender = 0;
+            sessionuser.password = null;
+            sessionuser.mobile = null;
             // updated
             ProfileService.updateUser(sessionuser).then(function() {
                 done();
