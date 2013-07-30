@@ -93,6 +93,12 @@ angular.module('ecgProfileService', [])
                     url: userUri + '/' + id + '/password'
                 });
             },
+            heartbeat: function(employee) {
+                return $http({
+                    method: 'GET',
+                    url: employeeUri + '/' + employee.id + '/live'
+                });
+            }
         };
     });
 });
