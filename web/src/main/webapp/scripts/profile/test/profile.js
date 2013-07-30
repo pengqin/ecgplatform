@@ -103,6 +103,15 @@ define(function(require, exports) {
             });
         });
 
+        it("the session employee is heartbeating", function(done) {
+            expect(sessionemployee).not.to.be(undefined);
+            ProfileService.heartbeat(sessionemployee)
+            .then(function() {
+                done();
+            }, function() {
+                throw new Error('the session employee is not heartbeating.');
+            });
+        });
 
     };
 

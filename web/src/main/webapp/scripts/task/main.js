@@ -66,7 +66,7 @@ angular.module('ecgTask', ['ecgTaskService', 'ecgTaskView', 'ecgReplyForm'])
         $timeout.cancel(refreshHandler);
         refreshHandler = $timeout(function() {
             refreshGrid({auto: true});
-        }, 1000 * 60);
+        }, 1000 * 60 * 5);
     }
 
     $scope.$on('$routeChangeStart', function(next, current) { 
@@ -274,7 +274,7 @@ angular.module('ecgTask', ['ecgTaskService', 'ecgTaskView', 'ecgReplyForm'])
         $timeout.cancel(refreshHandler);
         refreshHandler = $timeout(function() {
             refreshGrid({auto: true});
-        }, 1000 * 60 * 5);
+        }, 1000 * 60 * 10);
     }
 
     $scope.$on('$routeChangeStart', function(next, current) { 

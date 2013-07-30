@@ -156,6 +156,7 @@ define(function(require, exports) {
     function($scope) {
         $scope.examinationplot = {};
         $scope.examinationplot.examinationId = null;
+        $scope.examinationplot.zoom = 'small';
         // 监听未完成
         $scope.$watch('todo.current',function() {
             if (!$scope.todo) { return; }

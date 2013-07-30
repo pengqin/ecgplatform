@@ -69,7 +69,7 @@ public class TaskServiceImpl extends BaseServiceImpl<Task , Long> implements Tas
 	}
 
 	public Task pending(Task task) {
-		List<Operator> operators = operatorService.findAllByWork(new Query());
+		List<Operator> operators = operatorService.findAll(new Query());
 		Operator selectedOperator = null;
 		int selectedOperatorTask = Integer.MAX_VALUE;
 		for (Operator operator  : operators) {
@@ -78,6 +78,9 @@ public class TaskServiceImpl extends BaseServiceImpl<Task , Long> implements Tas
 				selectedOperator = operator;
 				selectedOperatorTask = tasks.size();
 			}
+		}
+		if (selectedOperator == null) {
+			throw new ServiceException("task.error.no.operator.is.assigned");
 		}
 		task.setOperatorId(selectedOperator.getId());
 		task.setStatus(Status.pending);

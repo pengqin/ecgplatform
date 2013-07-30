@@ -69,7 +69,7 @@ import org.jfree.data.xy.XYSeriesCollection;
 public class ECGChart {
 	
 	public static byte[] createChart(String label, float[] data, float max , int start, int length, float tickUnit) throws IOException {
-		return createChart(label, data, max , start, length  , 1600 , 300);
+		return createChart(label, data, max , start, length  , 1600 , 100);
 	}
 	/**
 	 * 

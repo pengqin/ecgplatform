@@ -72,8 +72,13 @@ public class OperatorServiceImpl extends BaseServiceImpl<Operator, Long>
 		return employeeService.patch(operators);
 	}
 	public List<Operator> findAllByWork(Query query) {
-		query.addCondition(new Condition(Condition.eq(Employee.STATUS ,  Status.ONLINE) ,
-						new Condition(Employee.STATUS ,  Type.eq , Status.ONLINE , Logic.or)));
+		/*
+		query.addCondition(
+			new Condition(
+				Condition.eq(Employee.STATUS ,  Status.ONLINE) ,
+				new Condition(Employee.STATUS ,  Type.eq , Status.ONLINE , Logic.or)
+			)
+		);*/
 		return this.findAll(query);
 	} 
 }
