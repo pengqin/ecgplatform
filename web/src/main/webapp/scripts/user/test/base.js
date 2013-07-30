@@ -78,6 +78,37 @@ define(function(require, exports) {
             });
         });
 
+        it("the user should not be created without email", function(done) {
+            var invalid = UserService.getPlainObject();
+            invalid.mobile = '13800000000';
+            invalid.name = 'user' + (new Date()).getTime();
+            invalid.password = 'passw0rd';
+ 
+            UserService.create(invalid).then(function(flag) {
+                if (flag) {
+                    throw new Error('the user can be created');
+                } else {
+                    done();
+                }
+            });
+        });
+
+        it("the user should not be created with invalid email", function(done) {
+            var invalid = UserService.getPlainObject();
+            invalid.mobile = '13800000000';
+            invalid.name = 'user' + (new Date()).getTime();
+            invalid.password = 'passw0rd';
+            invalid.email = 'notaemailaddress';
+ 
+            UserService.create(invalid).then(function(flag) {
+                if (flag) {
+                    throw new Error('the user can be created');
+                } else {
+                    done();
+                }
+            });
+        });
+
         var user;
 
         it("the user should be created when username, name and password are set", function(done) {
@@ -85,6 +116,7 @@ define(function(require, exports) {
             user.mobile = '13800000000';
             user.name = 'user' + (new Date()).getTime();
             user.password = user.mobile;
+            user.email = user.mobile + '@test.com';
  
             UserService.create(user).then(function(flag) {
                 if (flag) {
