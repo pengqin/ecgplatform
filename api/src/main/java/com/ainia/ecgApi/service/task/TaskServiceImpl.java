@@ -79,6 +79,9 @@ public class TaskServiceImpl extends BaseServiceImpl<Task , Long> implements Tas
 				selectedOperatorTask = tasks.size();
 			}
 		}
+		if (selectedOperator == null) {
+			throw new ServiceException("task.error.no.operator.is.assigned");
+		}
 		task.setOperatorId(selectedOperator.getId());
 		task.setStatus(Status.pending);
 		return super.create(task);
