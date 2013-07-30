@@ -206,13 +206,31 @@ table tbody tr.active {
 
 /* ecg plot */
 .plot-c {
-	width: 100%; min-width: 500px; height: 2200px;
+	width: 100%; min-width: 500px; height: 710px;
 	overflow:auto;
 	margin: 10px 0px;
 }
 .plot-c img {
 	clear: both;
-	height:300px;
+	height: 100px;
 	max-width: none !important;
 	display: block;
+}
+.plot-c.small {
+	height: 710px;
+}
+.plot-c.medium {
+	height: 1410px;
+}
+.plot-c.large {
+	height: 2110px;
+}
+.plot-c.small img {
+	height: 100px;
+}
+.plot-c.medium img {
+	height: 200px;
+}
+.plot-c.large img {
+	height: 300px;
 }
