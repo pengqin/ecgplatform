@@ -24,6 +24,7 @@ public class DataProcessor {
 	private float[] daolian_v;
 	private HealthInfo healthInfo;
 	private float maxDaolian = 0.0f;
+	private float maxDaolianV = 0.0f;
 
 	// Map<Integer, DataRecord> _records = new HashMap<Integer, DataRecord>();
 	List<DataRecord> _records = new ArrayList<DataRecord>();
@@ -48,14 +49,14 @@ public class DataProcessor {
 
 	private void splitData(byte[] data, int len) throws DataException {
 		int i = 0;
-		int type_temp = 0;
+		//int type_temp = 0;
 		try {
 			while (i < len) {
 				if ((data[i] & 0xff) == 0xaa && (data[i + 1] & 0xff) == 0xaa
 						&& (data[i + 2] & 0xff) == 0xaa) {
 					int sn = data[i + 3] & 0xff;
 					int type = data[i + 4];
-					type_temp = type;
+					//type_temp = type;
 					if (type != INFO_TYPE) {
 						if (sn != _sn) {
 							if (_sn == -1 || checkSN(sn, _sn)) {
@@ -133,8 +134,7 @@ public class DataProcessor {
 		daolian_v = new float[dataLength];
 
 		for (DataRecord record : _records) {
-			if (record.ecg1 != null && record.ecg2 != null
-					&& record.ecg3 != null) {
+			if (record.ecg1 != null && record.ecg2 != null && record.ecg3 != null) {
 				for (int i = 0; i < 40; i += 4) {
 					float ecg1 = bytes4ToFloat(record.ecg1, i);
 					float ecg2 = bytes4ToFloat(record.ecg2, i);
@@ -156,8 +156,13 @@ public class DataProcessor {
 					
 					float max_i_ii = Math.max(Math.abs(ecg1), Math.abs(ecg2));
 					float max = Math.max(Math.abs(max_i_ii), Math.abs(ecg1+ecg2));
+
 					if (max > maxDaolian) {
 						maxDaolian = max;
+					}
+					
+					if (Math.abs(ecg3) > maxDaolianV) {
+						maxDaolianV = Math.abs(ecg3);
 					}
 					
 					length++;
@@ -225,8 +230,7 @@ public class DataProcessor {
 		return start + SECTION_LENGTH;
 	}
 
-	private static void copyBytes(byte[] section, byte[] data, int start,
-			int length) {
+	private static void copyBytes(byte[] section, byte[] data, int start, int length) {
 		for (int i = 0; i < length; i++) {
 			section[i] = data[i + start];
 		}
@@ -288,4 +292,7 @@ public class DataProcessor {
 		return this.maxDaolian;
 	}
 
+	public float getMaxDaolianV() {
+		return this.maxDaolianV;
+	}
 }
