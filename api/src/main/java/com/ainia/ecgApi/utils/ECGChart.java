@@ -68,9 +68,8 @@ import org.jfree.data.xy.XYSeriesCollection;
  */
 public class ECGChart {
 	
-	public static byte[] createChart(float[] data, float max , int start, int length,
-							float tickUnit) throws IOException {
-		return createChart(data, max , start, length  , 1600 , 300);
+	public static byte[] createChart(String label, float[] data, float max , int start, int length, float tickUnit) throws IOException {
+		return createChart(label, data, max , start, length  , 1600 , 300);
 	}
 	/**
 	 * 
@@ -84,14 +83,13 @@ public class ECGChart {
 	 *            output path
 	 * @throws IOException
 	 */
-	public static byte[] createChart(float[] data, float max, int start, int length,
-			int chartWidth, int chartHeight) throws IOException {
+	public static byte[] createChart(String label, float[] data, float max, int start, int length, int chartWidth, int chartHeight) throws IOException {
 		final XYDataset dataset = createDataset(data, start, length);
-		final JFreeChart chart = createChart(dataset, max);
+		final JFreeChart chart = createChart(label, dataset, max);
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		try {
-			BufferedImage chartImage = chart.createBufferedImage(chartWidth,
-					chartHeight, BufferedImage.TYPE_INT_RGB, null);
+			BufferedImage chartImage = 
+				chart.createBufferedImage(chartWidth, chartHeight, BufferedImage.TYPE_INT_RGB, null);
 			ImageIO.write(chartImage, "JPEG", out);
 			return out.toByteArray();
 		} finally {
@@ -112,74 +110,84 @@ public class ECGChart {
 		return xySeriesCollection;
 	}
 	
-	private static JFreeChart createChart(final XYDataset dataset,
-			float max) {
+	private static JFreeChart createChart(String label, final XYDataset dataset, float max) {
 
 		// create the chart...
-				final JFreeChart chart = ChartFactory.createXYLineChart("", // chart
-																			// title
-						"X", // x axis label
-						"Y", // y axis label
-						dataset, // data
-						PlotOrientation.VERTICAL, true, // include legend
-						true, // tooltips
-						false // urls
-						);
+		final JFreeChart chart = ChartFactory.createXYLineChart(
+			"", // chart title
+			"X", // x axis label
+			label, // y axis label
+			dataset, // data
+			PlotOrientation.VERTICAL,
+			true, // include legend
+			true, // tooltips
+			false // urls
+		);
 
-				chart.setBackgroundPaint(Color.white);
-				chart.removeLegend();
+		chart.setBackgroundPaint(Color.white);
+		chart.setBorderVisible(false);
+		chart.removeLegend();
 
-				final XYPlot plot = chart.getXYPlot();
-				
-				plot.setBackgroundPaint(Color.white);
-				plot.setDomainGridlinePaint(Color.red);
-				plot.setDomainGridlinesVisible(false);
-				plot.setDomainMinorGridlinesVisible(false);
-				
-				plot.setRangeGridlinePaint(Color.red);
-				plot.setRangeGridlinesVisible(true);
-				plot.setRangeMinorGridlinesVisible(false);
+		final XYPlot plot = chart.getXYPlot();
+		
+		plot.setBackgroundPaint(Color.white);
+		plot.setDomainGridlinePaint(Color.red);
+		plot.setDomainGridlinesVisible(false);
+		plot.setDomainMinorGridlinesVisible(false);
+		
+		plot.setRangeGridlinePaint(Color.red);
+		plot.setRangeGridlinesVisible(true);
+		plot.setRangeMinorGridlinesVisible(false);
 
-				final XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
-				renderer.setSeriesShapesVisible(0, false);
-				renderer.setSeriesPaint(0, Color.black);
-				plot.setRenderer(renderer);
+		final XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
+		renderer.setSeriesShapesVisible(0, false);
+		renderer.setSeriesPaint(0, Color.black);
+		plot.setRenderer(renderer);
 
-				final NumberAxis domainAxis = (NumberAxis) plot.getDomainAxis();
-				domainAxis.setTickLabelsVisible(false);
-				domainAxis.setVisible(false);
-				
-				final NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
-				rangeAxis.setTickLabelsVisible(false);
-				rangeAxis.setVisible(false);
-				
-				
-				
-				double vMarkerInterval = 0.0;
-				if (max <= 4.0f) {
-					rangeAxis.setRange(-4.0, 4.0);
-					rangeAxis.setTickUnit(new NumberTickUnit(0.2));
-					vMarkerInterval = 1.0;
-				} else {
-					rangeAxis.setRange(-8.0, 8.0);
-					rangeAxis.setTickUnit(new NumberTickUnit(0.4));
-					vMarkerInterval = 2.0;
-				}
-				
-				int count = dataset.getItemCount(0);
-				for (int i = 0; i < count; i+=50) {
-					final Marker marker = new ValueMarker(i);
-					marker.setPaint(Color.red);
-			        plot.addDomainMarker(marker);
-				}
-				
-				for (int i = -4; i <=4; i++) {
-					final Marker marker = new ValueMarker(i*vMarkerInterval);
-					marker.setPaint(Color.red);
-			        plot.addRangeMarker(marker);
-				}
+		final NumberAxis domainAxis = (NumberAxis) plot.getDomainAxis();
+		domainAxis.setTickLabelsVisible(false);
+		domainAxis.setVisible(false);
+		
+		final NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
+		rangeAxis.setAutoRange(false);
+		rangeAxis.setTickLabelsVisible(false);
+		rangeAxis.setVisible(true);
+		
+		double vMarkerInterval = 0.0;
+		if (max <= 1.0f) {
+			rangeAxis.setRange(-1.0, 1.0);
+			rangeAxis.setTickUnit(new NumberTickUnit(0.2));
+			vMarkerInterval = 1.0;
+		} else if (max > 1f && max <= 2.0f) {
+			rangeAxis.setRange(-2.0, 2.0);
+			rangeAxis.setTickUnit(new NumberTickUnit(0.2));
+			vMarkerInterval = 1.0;
+		} else if (max > 2f && max <= 4.0f) {
+			rangeAxis.setRange(-4.0, 4.0);
+			rangeAxis.setTickUnit(new NumberTickUnit(0.2));
+			vMarkerInterval = 1.0;
+		} else if (max > 4f && max <= 8.0f) {
+			rangeAxis.setRange(-8.0, 8.0);
+			rangeAxis.setTickUnit(new NumberTickUnit(0.2));
+			vMarkerInterval = 2.0;
+		} else {
+			rangeAxis.setAutoRange(true);
+		}
+		
+		int count = dataset.getItemCount(0);
+		for (int i = 0; i < count; i+=50) {
+			final Marker marker = new ValueMarker(i);
+			marker.setPaint(Color.red);
+			plot.addDomainMarker(marker);
+		}
+		
+		for (int i = -4; i <=4; i++) {
+			final Marker marker = new ValueMarker(i*vMarkerInterval);
+			marker.setPaint(Color.red);
+			plot.addRangeMarker(marker);
+		}
 
-		 		return chart;
+ 		return chart;
 
 	}
 

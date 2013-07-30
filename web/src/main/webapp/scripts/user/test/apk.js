@@ -22,7 +22,8 @@ define(function(require, exports) {
                 data: {
                     'mobile': user.mobile,
                     'name': user.name,
-                    'password': user.password
+                    'password': user.password,
+                    'email': user.mobile + '@test.com'
                 },
                 type: 'POST'
             }).then(function() {
@@ -47,7 +48,8 @@ define(function(require, exports) {
                 data: {
                     'mobile': hacker.mobile,
                     'name': hacker.name,
-                    'password': hacker.password
+                    'password': hacker.password,
+                    'email': hacker.mobile + '@test.com'
                 },
                 type: 'POST'
             }).then(function() {
@@ -68,7 +70,8 @@ define(function(require, exports) {
                 data: {
                     'username': user.mobile,
                     'name': user.name,
-                    'password': user.password
+                    'password': user.password,
+                    'email': user.mobile + '@test.com'
                 },
                 type: 'POST'
             }).then(function(res) {
@@ -78,14 +81,15 @@ define(function(require, exports) {
             });
         });
 
-        // 不能注册2次
+        // 相同邮箱不能继续注册
         it("the user should not be created by user/apk again.", function(done) {
             $.ajax({
                 url: PATH + '/api/user',
                 data: {
-                    'mobile': user.mobile,
+                    'mobile': user.mobile + '1',
                     'name': user.name,
-                    'password': user.password
+                    'password': user.password,
+                    'email': user.mobile + '@test.com'
                 },
                 type: 'POST'
             }).then(function(res) {

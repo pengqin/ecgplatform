@@ -144,13 +144,16 @@ public class HealthExaminationController extends BaseController<HealthExaminatio
 	 * @return
 	 * ResponseEntity
 	 */
-	@RequestMapping(value = "{id}/statistics/avg" , method = RequestMethod.GET)
-	public ResponseEntity testStatisticsByUserAndDay(@PathVariable("id") Long id , @RequestParam(value = "start" , required = false) Date start ,
-												@RequestParam(value = "end" , required = false) Date end) {
+	@RequestMapping(value = "/avg" , method = RequestMethod.GET)
+	public ResponseEntity testStatisticsByUserAndDay(
+		@RequestParam(value = "userId" , required = true) Long userId ,
+		@RequestParam(value = "start" , required = false) Date start ,
+		@RequestParam(value = "end" , required = false) Date end
+	) {
 		if (start == null || end == null) {
 			start = new DateTime().toDate();
 			end = new DateTime().plusDays(1).toDate();
 		}
-		return new ResponseEntity( healthExaminationService.statisticsByUserAndDay(id , start, end) , HttpStatus.OK);
+		return new ResponseEntity( healthExaminationService.statisticsByUserAndDay(userId , start, end) , HttpStatus.OK);
 	}
 }
