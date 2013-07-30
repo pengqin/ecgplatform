@@ -145,7 +145,6 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 						//save the file
 				    	DataProcessor processor = new DataProcessor();
 				    	processor.process(uploadData , uploadData.length);
-				    	float maxDaolian = processor.getMaxDaolian();
 						float[] daolian = processor.getDaolian_i();
 						
 						//生成文件相对路径
@@ -158,7 +157,7 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 						
 						byte[] ecg1 = ECGChart.createChart(
 								"ECG I",
-								daolian, maxDaolian, 0,
+								daolian, processor.getMaxDaolianI(), 0,
 								daolian.length, (int)(daolian.length*0.756), (int)37.8*8);
 						uploadService.save(Type.heart_img, ecg1Path, ecg1);
 
@@ -169,7 +168,7 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 								+ "/ecg2.jpg";
 						byte[] ecg2 = ECGChart.createChart(
 								"ECG II",
-								daolian, maxDaolian, 0,
+								daolian, processor.getMaxDaolianII(), 0,
 								daolian.length, (int)(daolian.length*0.756), (int)37.8*8);
 						uploadService.save(Type.heart_img, ecg2Path, ecg2);
 
@@ -180,7 +179,7 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 								+ "/ecg3.jpg";
 						byte[] ecg3 = ECGChart.createChart(
 								"ECG III",
-								daolian, maxDaolian, 0,
+								daolian, processor.getMaxDaolianIII(), 0,
 								daolian.length, (int)(daolian.length*0.756), (int)37.8*8);
 						uploadService.save(Type.heart_img, ecg3Path, ecg3);
 
@@ -191,7 +190,7 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 								+ "/ecg4.jpg";
 						byte[] ecg4 = ECGChart.createChart(
 								"ECG aVR",
-								daolian, maxDaolian, 0,
+								daolian, processor.getMaxDaolianAVR(), 0,
 								daolian.length, (int)(daolian.length*0.756), (int)37.8*8);
 						uploadService.save(Type.heart_img, ecg4Path, ecg4);
 
@@ -202,7 +201,7 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 								+ "/ecg5.jpg";
 						byte[] ecg5 = ECGChart.createChart(
 								"ECG aVL",
-								daolian, maxDaolian, 0,
+								daolian, processor.getMaxDaolianAVL(), 0,
 								daolian.length, (int)(daolian.length*0.756), (int)37.8*8);
 						uploadService.save(Type.heart_img, ecg5Path, ecg5);
 
@@ -213,7 +212,7 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 								+ "/ecg6.jpg";
 						byte[] ecg6 = ECGChart.createChart(
 								"ECG aVF",
-								daolian, maxDaolian, 0,
+								daolian, processor.getMaxDaolianAVF(), 0,
 								daolian.length, (int)(daolian.length*0.756), (int)37.8*8);
 						uploadService.save(Type.heart_img, ecg6Path, ecg6);
 

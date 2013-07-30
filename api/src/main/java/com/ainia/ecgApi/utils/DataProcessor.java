@@ -23,7 +23,12 @@ public class DataProcessor {
 	private float[] daolian_avf;
 	private float[] daolian_v;
 	private HealthInfo healthInfo;
-	private float maxDaolian = 0.0f;
+	private float maxDaolianI = 0.0f;
+	private float maxDaolianII = 0.0f;
+	private float maxDaolianIII = 0.0f;
+	private float maxDaolianAVR = 0.0f;
+	private float maxDaolianAVL = 0.0f;
+	private float maxDaolianAVF = 0.0f;
 	private float maxDaolianV = 0.0f;
 
 	// Map<Integer, DataRecord> _records = new HashMap<Integer, DataRecord>();
@@ -154,6 +159,7 @@ public class DataProcessor {
 					daolian_avf[length] = ecg2 - ecg1 / 2;
 					daolian_v[length] = ecg3;
 					
+					/*
 					float max_i_ii = Math.max(Math.abs(ecg1), Math.abs(ecg2));
 					float max = Math.max(Math.abs(max_i_ii), Math.abs(ecg1+ecg2));
 
@@ -163,7 +169,15 @@ public class DataProcessor {
 					
 					if (Math.abs(ecg3) > maxDaolianV) {
 						maxDaolianV = Math.abs(ecg3);
-					}
+					}*/
+					
+					maxDaolianI = Math.max(maxDaolianI, Math.abs(ecg1));
+					maxDaolianII = Math.max(maxDaolianII, Math.abs(ecg2));
+					maxDaolianIII= Math.max(maxDaolianIII, Math.abs(ecg1 + ecg2));
+					maxDaolianAVR = Math.max(maxDaolianAVR, Math.abs((ecg1 + ecg2) / (-2)));
+					maxDaolianAVL = Math.max(maxDaolianAVL, Math.abs(ecg1 - ecg2 / 2));
+					maxDaolianAVF = Math.max(maxDaolianAVF, Math.abs(ecg2 - ecg1 / 2));
+					maxDaolianV = Math.max(maxDaolianV, Math.abs(ecg3));
 					
 					length++;
 				}
@@ -288,10 +302,29 @@ public class DataProcessor {
 		return this.healthInfo;
 	}
 	
-	public float getMaxDaolian() {
-		return this.maxDaolian;
+	public float getMaxDaolianI() {
+		return this.maxDaolianI;
+	}
+	
+	public float getMaxDaolianII() {
+		return this.maxDaolianII;
+	}
+	
+	public float getMaxDaolianIII() {
+		return this.maxDaolianIII;
+	}
+	
+	public float getMaxDaolianAVR() {
+		return this.maxDaolianAVR;
 	}
 
+	public float getMaxDaolianAVL() {
+		return this.maxDaolianAVL;
+	}
+
+	public float getMaxDaolianAVF() {
+		return this.maxDaolianAVF;
+	}
 	public float getMaxDaolianV() {
 		return this.maxDaolianV;
 	}
