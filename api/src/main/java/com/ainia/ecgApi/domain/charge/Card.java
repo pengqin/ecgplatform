@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.PrePersist;
 
 import com.ainia.ecgApi.core.bean.Domain;
 
@@ -30,6 +31,7 @@ public class Card implements Domain {
 	private Date createdDate;
 	private Integer createdBatch;
 	private Date expireDate;
+	private Date activedDate;
 	private Long userId;
 	private String userName;
 	private Date chargedDate;
@@ -37,6 +39,17 @@ public class Card implements Domain {
 	private Long employeeId;
 	private String employeeName;
 	
+	
+	
+	@PrePersist
+	public void onCreate() {
+		this.createdDate = new Date();
+	}
+	
+	public enum ChargeType {
+		MOBILE , 
+		WEB
+	}
 	
 	@Override
 	@Id
@@ -180,6 +193,13 @@ public class Card implements Domain {
 		this.id = id;
 	}
 
+	public Date getActivedDate() {
+		return activedDate;
+	}
+
+	public void setActivedDate(Date activedDate) {
+		this.activedDate = activedDate;
+	}
 
 	@Override
 	public int hashCode() {
@@ -188,7 +208,6 @@ public class Card implements Domain {
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
-
 
 	@Override
 	public boolean equals(Object obj) {

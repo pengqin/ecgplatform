@@ -1,7 +1,10 @@
 package com.ainia.ecgApi.service.charge;
 
+import java.util.Date;
+
 import com.ainia.ecgApi.core.crud.BaseService;
 import com.ainia.ecgApi.domain.charge.Card;
+import com.ainia.ecgApi.domain.sys.User;
 
 /**
  * <p>Card Service interface </p>
@@ -14,5 +17,12 @@ import com.ainia.ecgApi.domain.charge.Card;
  */
 public interface CardService extends BaseService<Card , Long> {
     
-
+	/**
+	 * <p>卡充值</p>
+	 * @param serial
+	 * @param activeDate
+	 * @param employeeId
+	 * void
+	 */
+	public void charge(String serial , Date activeDate , Long employeeId , User user);
 }

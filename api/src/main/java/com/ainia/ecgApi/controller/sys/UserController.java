@@ -287,6 +287,7 @@ public class UserController extends BaseController<User , Long> {
 			response.getOutputStream().write(uploadService.load(Type.heart_img , ecgPath));
 			response.getOutputStream().flush();
 		} catch (IOException e) {
+			e.printStackTrace();
 			throw new ServiceException("examination.ecgPath.notFound");
 		}
 	}
