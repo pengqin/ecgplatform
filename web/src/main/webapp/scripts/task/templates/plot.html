@@ -19,6 +19,8 @@
      ng-src="{{PATH}}/api/user/{{examinationplot.userId}}/examination/{{examinationplot.examinationId}}/ecg6.jpg" class="plot"></img>
 <img title="ECG V" ng-show="examinationplot.examinationId"
      ng-src="{{PATH}}/api/user/{{examinationplot.userId}}/examination/{{examinationplot.examinationId}}/ecg7.jpg" class="plot"></img>
+<img title="Oxygen" ng-show="examinationplot.examinationId"
+     ng-src="{{PATH}}/api/user/{{examinationplot.userId}}/examination/{{examinationplot.examinationId}}/ecg8.jpg" class="plot"></img>
 </div>
 
 <button type="button" class="btn btn-small" ng-click="examinationplot.zoom='small'"  ng-class="{'btn-primary': examinationplot.zoom == 'small'}">小</button>
