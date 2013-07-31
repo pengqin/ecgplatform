@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.PrePersist;
 
 import com.ainia.ecgApi.core.bean.Domain;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * <p>充值卡实体</p>
@@ -22,6 +23,9 @@ import com.ainia.ecgApi.core.bean.Domain;
  */
 @Entity
 public class Card implements Domain {
+	
+	public static String ACTIVED_DATE = "activedDate";
+	public static String USER_ID = "userId";
 
 	private Long id;
 	private String encodedSerial;
@@ -58,7 +62,7 @@ public class Card implements Domain {
 		return id;
 	}
 
-
+	@JsonIgnore
 	public String getEncodedSerial() {
 		return encodedSerial;
 	}
@@ -78,7 +82,7 @@ public class Card implements Domain {
 		this.serial = serial;
 	}
 
-
+	@JsonIgnore
 	public String getEncodedPassword() {
 		return encodedPassword;
 	}
@@ -88,7 +92,7 @@ public class Card implements Domain {
 		this.encodedPassword = encodedPassword;
 	}
 
-
+	
 	public int getDays() {
 		return days;
 	}

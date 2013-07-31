@@ -16,6 +16,14 @@ import com.ainia.ecgApi.domain.sys.User;
  * @version 0.1
  */
 public interface CardService extends BaseService<Card , Long> {
+	
+	/**
+	 * <p>根据卡号查询卡</p>
+	 * @param serial
+	 * @return
+	 * Card
+	 */
+	public Card findBySerial(String serial);
     
 	/**
 	 * <p>卡充值</p>
@@ -24,5 +32,5 @@ public interface CardService extends BaseService<Card , Long> {
 	 * @param employeeId
 	 * void
 	 */
-	public void charge(String serial , Date activeDate , Long employeeId , User user);
+	public void charge(String serial , String password , Date activeDate , Long employeeId , User user);
 }

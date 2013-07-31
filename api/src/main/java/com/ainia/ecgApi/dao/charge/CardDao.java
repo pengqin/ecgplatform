@@ -22,4 +22,12 @@ public interface CardDao extends JpaRepository<Card , Long>, BaseDao<Card , Long
 	 * void
 	 */
     public Card findBySerial(String serial);
+    
+    /**
+     * <p>根据加密卡号回去指定卡</p>
+     * @param serial
+     * @return
+     * Card
+     */
+    public Card findByEncodedSerial(String serial);
 }
