@@ -15,6 +15,7 @@ public class DataProcessor {
 	private static final int INFO_TYPE = 0x25; // 数值 类型
 	private static final int SECTION_LENGTH = 45;
 
+	private ArrayList <Float> oxygenVals = new ArrayList <Float> ();
 	private float[] daolian_i;
 	private float[] daolian_ii;
 	private float[] daolian_iii;
@@ -56,6 +57,7 @@ public class DataProcessor {
 		int i = 0;
 		//int type_temp = 0;
 		try {
+		
 			while (i < len) {
 				if ((data[i] & 0xff) == 0xaa && (data[i + 1] & 0xff) == 0xaa
 						&& (data[i + 2] & 0xff) == 0xaa) {
@@ -235,6 +237,7 @@ public class DataProcessor {
 		//hi.pulserate = data[i+2];
 		hi.heartrate = data[i+2];
 		hi.oxygen = data[i+3];
+		oxygenVals.add(new Float(hi.oxygen));
 		hi.oxygenChart = new byte[24];
 		copyBytes(hi.oxygenChart, data, i+4, 24);
 		//hi.heartrate = data[i+28];
@@ -269,6 +272,15 @@ public class DataProcessor {
 		l &= 0xffffff;
 		l |= ((long) b[index + 0] << 24);
 		return Float.intBitsToFloat(l);
+	}
+
+	public float[] getOxygen() {
+		float[] oxygen = new float[oxygenVals.size()];
+		int i = 0;
+		for (Float ox : oxygenVals) {
+			oxygen[i++] = ox.floatValue();
+		}
+		return oxygen;
 	}
 
 	public float[] getDaolian_i() {

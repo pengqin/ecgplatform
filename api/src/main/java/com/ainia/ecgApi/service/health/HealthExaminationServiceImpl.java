@@ -148,7 +148,6 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 						float[] daolian = processor.getDaolian_i();
 						
 						//生成文件相对路径
-						// TODO 文件后缀名固定
 						daolian = processor.getDaolian_i();
 						String ecg1Path = "user/"
 								+ String.valueOf(authUser.getId())
@@ -227,6 +226,17 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 								daolian.length, (int)(daolian.length*0.756), (int)37.8*8);
 						uploadService.save(Type.heart_img, ecg7Path, ecg7);		
 
+						float [] oxygen = processor.getOxygen();
+						String ecg8Path = "user/"
+								+ String.valueOf(authUser.getId())
+								+ "/examination/" + examination.getId()
+								+ "/ecg8.jpg";
+						byte[] ecg8 = ECGChart.createChart(
+								"Oxygen",
+								oxygen, 100f, 0,
+								oxygen.length, 1600, 300);
+						uploadService.save(Type.heart_img, ecg8Path, ecg8);	
+						
 						//存储原始文件
 						String rawPath = "user/" +  String.valueOf(authUser.getId()) + "/examination/" + examination.getId() + "/raw";
 						String rawUri = uploadService.save(Type.heart_img , rawPath , uploadData);
