@@ -1,15 +1,8 @@
 language: java
 jdk:
   - oraclejdk7
-before_script:
-  - sudo apt-get install ftp
 script:
   - cd api
   - mvn clean install
   - cd ../web
   - mvn package
-  - cd target
-  - mv ../../upload.sh ./
-  - chmod +x upload.sh
-  - mv web.war ainia.war
-  - ./upload.sh
