@@ -187,7 +187,6 @@ create table system_config (
     primary key(id)
 );
 
-
 drop table if exists card;
 
 create table card (
