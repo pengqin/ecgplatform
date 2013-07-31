@@ -5,6 +5,14 @@ html, body {
 i { 
 	padding-right: 5px;
 }
+.navbar-inner > .container {
+	width: 98%;
+	min-width: 940px;
+}
+.container {
+	width: 98%;
+	min-width: 940px;
+}
 
 /*应用加载时没有滚动条*/
 .noscroll {
@@ -217,13 +225,13 @@ table tbody tr.active {
 	display: block;
 }
 .plot-c.small {
-	height: 710px;
+	height: 750px;
 }
 .plot-c.medium {
-	height: 1410px;
+	height: 1500px;
 }
 .plot-c.large {
-	height: 2110px;
+	height: 2200px;
 }
 .plot-c.small img {
 	height: 100px;

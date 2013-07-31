@@ -179,6 +179,8 @@ values (14,'examinationTask' , 14 , 5 , '14' , '测试用户5' , 'pending',null,
 -- system_config start
 insert into system_config (id , type , config_key , value ) values (1 , 'basic' , 'upload.rootPath' , 'c:/upload/');
 insert into system_config (id , type , config_key , value ) values (2 , 'basic' , 'examination.reply.isAuto' , 'false');
+insert into system_config (id , type , config_key , value ) values (3 , 'basic' , 'employee.live.timeout' , '30');
+
 -- system_config end
 
 commit;

@@ -19,12 +19,15 @@
 </tr>
 
 <tr>
+<td><label>心率:</label></td>
+<td><span class="prop">{{examinationview.examination.heartRhythm || '-'}} 次/分钟</span></td>
+<td><label>体温:</label></td>
+<td><span class="prop">{{examinationview.examination.bodyTemp || '-'}} ℃（腋下温度）</span></td>
+</tr>
+
+<tr>
 <td valign="top"><label>血压:</label></td>
-<td valign="top"><span class="prop">
-	低压-{{examinationview.examination.bloodPressureLow || '-'}} 毫米汞柱 <br/>
-	高压-{{examinationview.examination.bloodPressureHigh || '-'}} 毫米汞柱</span></td>
-<td valign="top"><label>心率:</label></td>
-<td valign="top"><span class="prop">{{examinationview.examination.heartRhythm || '-'}} 次/分钟</span></td>
+<td valign="top" colspan="3"><span class="prop">{{examinationview.examination.bloodPressureLow || '-'}} </span> - <span class="prop">{{examinationview.examination.bloodPressureHigh || '-'}} 毫米汞柱</span></td>
 </tr>
 
 <tr>
@@ -32,13 +35,6 @@
 <td><span class="prop">{{examinationview.examination.bloodOxygen || '-'}} 百分比</span></td>
 <td><label>血糖:</label></td>
 <td><span class="prop">{{examinationview.examination.bloodSugar || '-'}}</span></td>
-</tr>
-
-<tr>
-<td><label>体温:</label></td>
-<td><span class="prop">{{examinationview.examination.bodyTemp || '-'}} ℃（腋下温度）</span></td>
-<td><label>脉率:</label></td>
-<td><span class="prop">{{examinationview.examination.pulserate || '-'}} 次/分钟</span></td>
 </tr>
 
 <tr>
