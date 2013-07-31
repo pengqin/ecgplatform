@@ -5,13 +5,20 @@
 <button type="button" class="btn btn-small" ng-click="examinationplot.zoom='large'" ng-class="{'btn-primary': examinationplot.zoom == 'large'}">大</button>
 
 <div class="plot-c {{examinationplot.zoom}}" ng-show="examinationplot.examinationId">
-<img ng-show="examinationplot.examinationId" ng-src="{{PATH}}/api/user/{{examinationplot.userId}}/examination/{{examinationplot.examinationId}}/ecg1.jpg" class="plot"></img>
-<img ng-show="examinationplot.examinationId" ng-src="{{PATH}}/api/user/{{examinationplot.userId}}/examination/{{examinationplot.examinationId}}/ecg2.jpg" class="plot"></img>
-<img ng-show="examinationplot.examinationId" ng-src="{{PATH}}/api/user/{{examinationplot.userId}}/examination/{{examinationplot.examinationId}}/ecg3.jpg" class="plot"></img>
-<img ng-show="examinationplot.examinationId" ng-src="{{PATH}}/api/user/{{examinationplot.userId}}/examination/{{examinationplot.examinationId}}/ecg4.jpg" class="plot"></img>
-<img ng-show="examinationplot.examinationId" ng-src="{{PATH}}/api/user/{{examinationplot.userId}}/examination/{{examinationplot.examinationId}}/ecg5.jpg" class="plot"></img>
-<img ng-show="examinationplot.examinationId" ng-src="{{PATH}}/api/user/{{examinationplot.userId}}/examination/{{examinationplot.examinationId}}/ecg6.jpg" class="plot"></img>
-<img ng-show="examinationplot.examinationId" ng-src="{{PATH}}/api/user/{{examinationplot.userId}}/examination/{{examinationplot.examinationId}}/ecg7.jpg" class="plot"></img>
+<img title="ECG I" ng-show="examinationplot.examinationId"
+	 ng-src="{{PATH}}/api/user/{{examinationplot.userId}}/examination/{{examinationplot.examinationId}}/ecg1.jpg" class="plot"></img>
+<img title="ECG II" ng-show="examinationplot.examinationId"
+     ng-src="{{PATH}}/api/user/{{examinationplot.userId}}/examination/{{examinationplot.examinationId}}/ecg2.jpg" class="plot"></img>
+<img title="ECG III" ng-show="examinationplot.examinationId"
+     ng-src="{{PATH}}/api/user/{{examinationplot.userId}}/examination/{{examinationplot.examinationId}}/ecg3.jpg" class="plot"></img>
+<img title="ECG aVR" ng-show="examinationplot.examinationId"
+     ng-src="{{PATH}}/api/user/{{examinationplot.userId}}/examination/{{examinationplot.examinationId}}/ecg4.jpg" class="plot"></img>
+<img title="ECG aVL" ng-show="examinationplot.examinationId"
+     ng-src="{{PATH}}/api/user/{{examinationplot.userId}}/examination/{{examinationplot.examinationId}}/ecg5.jpg" class="plot"></img>
+<img title="ECG aVF" ng-show="examinationplot.examinationId"
+     ng-src="{{PATH}}/api/user/{{examinationplot.userId}}/examination/{{examinationplot.examinationId}}/ecg6.jpg" class="plot"></img>
+<img title="ECG V" ng-show="examinationplot.examinationId"
+     ng-src="{{PATH}}/api/user/{{examinationplot.userId}}/examination/{{examinationplot.examinationId}}/ecg7.jpg" class="plot"></img>
 </div>
 
 <button type="button" class="btn btn-small" ng-click="examinationplot.zoom='small'"  ng-class="{'btn-primary': examinationplot.zoom == 'small'}">小</button>
