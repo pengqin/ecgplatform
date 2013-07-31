@@ -153,7 +153,7 @@ public class DataProcessor {
 
 					daolian_i[length] = ecg1;
 					daolian_ii[length] = ecg2;
-					daolian_iii[length] = ecg1 + ecg2;
+					daolian_iii[length] = ecg2 - ecg1;
 					daolian_avr[length] = (ecg1 + ecg2) / (-2);
 					daolian_avl[length] = ecg1 - ecg2 / 2;
 					daolian_avf[length] = ecg2 - ecg1 / 2;
