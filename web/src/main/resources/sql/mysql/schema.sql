@@ -195,7 +195,7 @@ create table card (
     serial varchar(100),
     encoded_password varchar(100),
     days int,
-    created_date date,
+    created_date datetime,
     created_batch int,
     expire_date datetime,
     user_id bigint,
