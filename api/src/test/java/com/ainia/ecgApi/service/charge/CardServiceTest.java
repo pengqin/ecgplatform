@@ -93,7 +93,6 @@ public class CardServiceTest {
         	System.out.println("=========================");
         	System.out.println("serial " + serial);
         	System.out.println("encodedSerial " + cardService.encodeString(serial , null));
-        	System.out.println("=========================");
     	}
     }
     
