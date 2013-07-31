@@ -30,7 +30,7 @@ public class UploadServiceImpl implements UploadService {
 	public static final String ROOT_PATH_KEY = "upload.rootPath";
 	
 	public String getPath(Type type , String relativePath) {
-		String rootPath     = systemConfigService.findByKey(ROOT_PATH_KEY);
+		String rootPath  = systemConfigService.findByKey(ROOT_PATH_KEY);
 		String path = rootPath + relativePath;
 		return path;
 	}
