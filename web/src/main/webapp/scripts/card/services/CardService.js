@@ -5,25 +5,6 @@ angular.module('ecgCardService', [])
     .factory("CardService", function($rootScope, $http) {
         var uri = PATH + "/api/card";
 
-        var mock = [{
-            serial: "serial1",
-            chargedDate: "2013-01-01",
-            userId: "1",
-            userName: "用户1",
-            days: "365",
-            chargeType: "phone",
-            employeeId: null,
-            employeeName: null,
-        }, {
-            serial: "serial2",
-            chargedDate: "2013-01-02",
-            userId: "2",
-            userName: "用户2",
-            days: "365",
-            chargeType: "web",
-            employeeId: 1,
-            employeeName: "管理员"
-        }];
         return {
             queryAll: function() {
                 return $http({
@@ -36,17 +17,20 @@ angular.module('ecgCardService', [])
                         return [];    
                     }
                 }, function() {
-                    return mock || [];
+                    return [];
                 });
             },
-            charge: function(card) {
-                var putobj = $.extend({}, card);
-                delete putobj.serial;
+            charge: function(employee, user, card) {
                 return $http({
-                    method: 'PUT',
+                    method: 'POST',
                     headers:{'Content-Type':'application/x-www-form-urlencoded'},
-                    data: $.param(putobj),
-                    url: uri + '/' + card.serial
+                    data: $.param({
+                        mobile: user.mobile,
+                        employeeId: employee.id,
+                        activedDate: card.activedDate,
+                        password: card.password
+                    }),
+                    url: uri + '/' + card.serial + '/charge'
                 });
             },
             get: function(card) {

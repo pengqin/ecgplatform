@@ -182,5 +182,21 @@ insert into system_config (id , type , config_key , value ) values (2 , 'basic' 
 insert into system_config (id , type , config_key , value ) values (3 , 'basic' , 'employee.live.timeout' , '30');
 
 -- system_config end
+-- card start
+insert into card (id , encoded_serial , serial , encoded_password , days , created_date , created_batch , expire_date , actived_date , user_id , user_name , charged_date , charge_type , employee_id , employee_name)
+values (1 , '147e97abe07c375d5d08c97b4868962eac60157b' , '0032153088270012' , 'fbe97e617d61fc408d9c52a078b33a802ee7e533' , 365 , '2013-07-12 01:00:00' , 1 , '2020-09-12 01:00:00' , '2012-07-12 01:00:00' , 1 , '测试用户1' , '2012-07-10 01:00:00' , 'MOBILE' , null , null);
+insert into card (id , encoded_serial , serial , encoded_password , days , created_date , created_batch , expire_date , actived_date , user_id , user_name , charged_date , charge_type , employee_id , employee_name)
+values (2 , 'e911576581a499eaa6e803fe9e7dc6b43c2a817c' , '0033178902311110' , 'fbe97e617d61fc408d9c52a078b33a802ee7e533' , 365 , '2013-07-12 01:00:00' , 1 , '2020-09-12 01:00:00'  , null , null , null , null , null , null , null);
+insert into card (id , encoded_serial , serial , encoded_password , days , created_date , created_batch , expire_date , actived_date , user_id , user_name , charged_date , charge_type , employee_id , employee_name)
+values (3 , 'b8fafc9ed296b4982923964a4e924ad982eb7b0d' , '0067890200312293' , 'fbe97e617d61fc408d9c52a078b33a802ee7e533' , 365 , '2013-07-12 01:00:00' , 1 , '2020-09-12 01:00:00'  , null , null , null , null , null ,null , null);
+insert into card (id , encoded_serial , serial , encoded_password , days , created_date , created_batch , expire_date , actived_date , user_id , user_name , charged_date , charge_type , employee_id , employee_name)
+values (4 , 'd04cd4c6888a1a0317dec6ace80a622103475324' , '1000' , 'fbe97e617d61fc408d9c52a078b33a802ee7e533' , 365 , '2013-07-12 01:00:00' , 1 , '2020-09-12 01:00:00'  , null , null , null , null , null ,null , null);
+insert into card (id , encoded_serial , serial , encoded_password , days , created_date , created_batch , expire_date , actived_date , user_id , user_name , charged_date , charge_type , employee_id , employee_name)
+values (5 , 'ae616499997485b70e338cc1e5040a84b1103821' , '1001' , 'fbe97e617d61fc408d9c52a078b33a802ee7e533' , 365 , '2013-07-12 01:00:00' , 1 , '2020-09-12 01:00:00'  , null , null , null , null , null ,null , null);
+insert into card (id , encoded_serial , serial , encoded_password , days , created_date , created_batch , expire_date , actived_date , user_id , user_name , charged_date , charge_type , employee_id , employee_name)
+values (6 , 'f5042366e271e1d54d442910c225580e749948b4' , '1002' , 'fbe97e617d61fc408d9c52a078b33a802ee7e533' , 365 , '2013-07-12 01:00:00' , 1 , '2020-09-12 01:00:00'  , null , null , null , null , null ,null , null);
+insert into card (id , encoded_serial , serial , encoded_password , days , created_date , created_batch , expire_date , actived_date , user_id , user_name , charged_date , charge_type , employee_id , employee_name)
+values (7 , 'c443e089c151a359fb3b94d07cfdf9a686fb468c' , '1003' , 'fbe97e617d61fc408d9c52a078b33a802ee7e533' , 365 , '2013-07-12 01:00:00' , 1 , '2020-09-12 01:00:00'  , null , null , null , null , null ,null , null);
 
+-- card end
 commit;

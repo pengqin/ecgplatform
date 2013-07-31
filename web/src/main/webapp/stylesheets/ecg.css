@@ -242,3 +242,8 @@ table tbody tr.active {
 .plot-c.large img {
 	height: 300px;
 }
+.oxygenPlot {
+	margin: auto;
+	width: 99%;
+	min-width: 800px;
+}

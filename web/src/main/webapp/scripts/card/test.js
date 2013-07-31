@@ -14,12 +14,13 @@ define(function(require, exports) {
         // 员工查询卡号
         runCaseAs('admin') ? testAsEmployee({
             it: mocha.it,
-            user: {username: TESTCONFIGS.admin.username, password: TESTCONFIGS.admin.password}
+            employee: {username: TESTCONFIGS.admin.username, password: TESTCONFIGS.admin.password},
+            user: {username: TESTCONFIGS.user.username, password: TESTCONFIGS.user.password, mobile: TESTCONFIGS.user.mobile},
         }, angluarjs, services) : null;
 
         runCaseAs('user') ? testAsUser({
             it: mocha.it,
-            user: {username: TESTCONFIGS.user.username, password: TESTCONFIGS.user.password}
+            user: {username: TESTCONFIGS.user.username, password: TESTCONFIGS.user.password, mobile: TESTCONFIGS.user.mobile}
         }, angluarjs, services) : null;
 
     };

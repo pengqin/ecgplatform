@@ -78,7 +78,7 @@ public class CardController  {
     	return new ResponseEntity(card , HttpStatus.OK);
     }
     /**
-     * <p>卡号重置</p>
+     * <p>卡号充值</p>
      * @param serial
      * @param password
      * @param activedDate
@@ -89,12 +89,12 @@ public class CardController  {
     @RequestMapping(value = "{serial}/charge" , method = RequestMethod.POST , produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity charge(@PathVariable("serial") String serial , @RequestParam String password,
-    								@RequestParam("activedDate") Date activedDate , @RequestParam("userId") Long userId) {
+    								@RequestParam("activedDate") Date activedDate , @RequestParam("mobile") String mobile) {
     	AuthUser authUser = authenticateService.getCurrentUser();
     	if (!authUser.isEmployee()) {
     		return new ResponseEntity(HttpStatus.FORBIDDEN);
     	}
-    	cardService.charge(serial, password ,  activedDate , authUser.getId() , userService.get(userId));
+    	cardService.charge(serial, password, activedDate , authUser.getId() , userService.findByUsername(mobile));
     	
     	return new ResponseEntity(HttpStatus.OK);
     }
