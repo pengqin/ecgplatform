@@ -281,9 +281,8 @@ public class UserController extends BaseController<User , Long> {
 	@RequestMapping(value = "{id}/examination/{examinationId}/ecg{index}" , method = RequestMethod.GET)
 	public void loadEcg(@PathVariable("id") Long id , @PathVariable("examinationId") Long examinationId , 
 										@PathVariable("index") int index, HttpServletResponse response)  {
-		HealthExamination examination = healthExaminationService.get(examinationId);
 		//TODO 文件后缀名固定
-		String ecgPath = String.valueOf(User.class.getSimpleName().toLowerCase() + "/" + examination.getUserId()) + "/examination/" + examination.getId() + "/ecg" + index + ".jpg";
+		String ecgPath = String.valueOf(User.class.getSimpleName().toLowerCase() + "/" +id) + "/examination/" + examinationId + "/ecg" + index + ".jpg";
 		try {
 			response.setContentType("image/jpeg");
 			response.getOutputStream().write(uploadService.load(Type.heart_img , ecgPath));
