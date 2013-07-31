@@ -26,12 +26,12 @@ angular.module('ecgCardDirectives', [])
             if (card) {
                 $scope.card.viewobj = card;
             } else {
-                $scope.card.viewobj = {serial: "error card", chargedDate: "some day"};
+                $scope.card.viewobj = {};
                 $scope.message.error("没有该卡号，如需帮助，请联系管理员!");
             }
         }, function() {
             $scope.dialog.hideStandby();
-            $scope.card.viewobj = {serial: "error card", chargedDate: "some day"};
+            $scope.card.viewobj = {};
             $scope.message.error("没有该卡号，如需帮助，请联系管理员!");
         });
     };
@@ -86,10 +86,11 @@ angular.module('ecgCardDirectives', [])
         language: "zh-CN",
         pickTime: false,
     }).on('changeDate', function(e) {
-        $scope.card.chargeinfo.startdate = $('#card-startdate input').val();
+        $scope.card.chargeinfo.activedDate = $('#card-startdate input').val();
         $scope.$apply();
     });
 
+    /*
     $('#card-enddate').datetimepicker({
         format: "yyyy-MM-dd",
         language: "zh-CN",
@@ -97,20 +98,20 @@ angular.module('ecgCardDirectives', [])
     }).on('changeDate', function(e) {
         $scope.card.chargeinfo.enddate = $('#card-enddate input').val();
         $scope.$apply();
-    });
+    });*/
 
     $scope.card.charge = function() {
         $scope.dialog.confirm({
             text: "您将向手机号为 " + $scope.card.chargeinfo.mobile + " 的用户充值，确定继续?",
             handler: function() {
                 $scope.dialog.showStandby();
-                CardService.charge($scope.card.chargeinfo)
+                CardService.charge($scope.session.user, {mobile: $scope.card.chargeinfo.mobile}, $scope.card.chargeinfo)
                 .then(function() {
                     $scope.dialog.hideStandby();
                     $scope.message.success("充值成功!");
                 }, function() {
                     $scope.dialog.hideStandby();
-                    $scope.message.error("充值失败，请联系管理员!");
+                    $scope.message.error("充值失败，请确认卡是否有效性或者和该用户的现有服务时间段冲突!");
                 });
             }
         });

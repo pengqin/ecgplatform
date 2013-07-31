@@ -17,9 +17,9 @@
 		<td width="100px" valign="top"><label for="card-serial">卡号:</label></td>
 		<td>
 			<input ng-model="card.chargeinfo.serial" class="input-xlarge" id="card-serial"
-				   focus required ng-pattern="/^[0-9]{13}$/"
+				   focus required 
 				   placeholder="请输入卡号"></input>
-			<span class="required">*</span><span class="desc">请输入13位卡号</span></td>
+			<span class="required">*</span><span class="desc">请输入卡号</span></td>
 		</tr>
 
 		<tr>
@@ -30,13 +30,12 @@
 		</td>
 		</tr>
 
-		<!--
 		<tr>
 		<td ><label for="card-startDate">服务开始时间:</label></td>
 		<td>
 			
 			<div id="card-startdate" class="input-append date">
-			    <input ng-model="card.chargeinfo.startdate" type="text" readonly="readonly" required placeholder="请选择服务开始时间"></input>
+			    <input ng-model="card.chargeinfo.activedDate" type="text" readonly="readonly" required placeholder="请选择服务开始时间"></input>
 			    <span class="add-on">
 			      <i data-time-icon="icon-time" data-date-icon="icon-calendar">
 			      </i>
@@ -45,6 +44,7 @@
 		</td>
 		</tr>
 
+		<!--
 		<tr>
 		<td ><label for="card-enddate">服务结束时间:</label></td>
 		<td>

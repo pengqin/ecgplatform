@@ -1,12 +1,16 @@
 package com.ainia.ecgApi.service.charge;
 
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ainia.ecgApi.core.crud.BaseDao;
 import com.ainia.ecgApi.core.crud.BaseServiceImpl;
+import com.ainia.ecgApi.core.crud.Query;
+import com.ainia.ecgApi.core.crud.Query.OrderType;
 import com.ainia.ecgApi.core.exception.ServiceException;
 import com.ainia.ecgApi.core.utils.DigestUtils;
 import com.ainia.ecgApi.core.utils.EncodeUtils;
@@ -43,25 +47,77 @@ public class CardServiceImpl extends BaseServiceImpl<Card , Long> implements Car
         return cardDao;
     }
 
+    private boolean isOnService(User user, Card usingCard, Date activedDate) {
+    	boolean flag = false;
+    	int outer = 0;
+    	
+    	Query query = new Query();
+    	query.isNotNull(Card.ACTIVED_DATE);
+    	query.isNotNull(Card.USER_ID);
+    	query.eq(Card.USER_ID , user.getId());
+    	query.addOrder(Card.ACTIVED_DATE , OrderType.desc);
+    	
+		List <Card> cards = cardDao.findAll(query);
+		if (cards != null) {
+			GregorianCalendar gc = new GregorianCalendar();
+			
+			Date newEndDate;
+			gc.setTime(activedDate);
+			gc.add(GregorianCalendar.DATE, usingCard.getDays());
+			newEndDate = gc.getTime();
+			
+			for (Card card: cards) {
+				Date endDate;
+				gc.setTime(card.getActivedDate());
+				gc.add(GregorianCalendar.DATE, card.getDays());
+				endDate = gc.getTime();
+				if (card.getActivedDate().after(newEndDate) || endDate.before(activedDate)) {
+					outer++;
+				}
+			}
+			if (outer != cards.size()) {
+				flag = true;
+			}
+		}
+    	return flag;
+    }
+
 	@Override
-	public void charge(String serial, String password ,  Date activedDate, Long employeeId , User user) {
+	public void charge(String serial, String password, Date activedDate, Long employeeId , User user) {
 		Card card = cardDao.findByEncodedSerial(this.encodeString(serial , null));
+		// 卡号是否正确
 		if (card == null) {
 			throw new ServiceException("exception.card.notFound");
+		}
+		// 是否已经激活
+		if (card.getActivedDate() != null) {
+			throw new ServiceException("exception.card.used");
+		}
+		// 是否在可用时间
+		if (card.getExpireDate().before(new Date())) {
+			throw new ServiceException("exception.card.expired");
+		}
+		// 激活时间是否正确
+		if (activedDate == null || activedDate.before(new Date())) {
+			throw new ServiceException("exception.card.invalidActiveDate");
 		}
 		//卡号密码判断
 		if (!this.checkString(card.getEncodedPassword() , password , null)) {
 			throw new ServiceException("exception.card.errorPassword");
 		}
-		if (activedDate == null || activedDate.before(new Date())) {
-			throw new ServiceException("exception.card.invalidActiveDate");
-		}
+		// 判断是否有操作员工
 		if (employeeId != null) {
 			Employee employee = employeeService.get(employeeId);
 			if (employee != null) {
 				card.setEmployeeId(employeeId);
 				card.setEmployeeName(employee.getName());
+			} else {
+				throw new ServiceException("exception.card.employee.not.found");
 			}
+		}
+		// 判断激活时间端是否已经充值
+		if (isOnService(user, card, activedDate)) {
+			throw new ServiceException("exception.card.user.still.in.service.time");
 		}
 		card.setSerial(serial);
 		card.setUserId(user.getId());

@@ -63,17 +63,17 @@ angular.module('ecgTestApp', ['ecgCommon', 'ecgTask', 'ecgMonitor', 'ecgEmployee
           {httpProvider: httpProvider}, 
           {RuleService: RuleService, ReplyConfigService: ReplyConfigService, UserService: UserService}
         );
+        // 充值模块
+        testCard(
+          {it: it}, 
+          {httpProvider: httpProvider},
+          {ProfileService: ProfileService, CardService: CardService, UserService: UserService}
+        );
         // 验证任务模块
         testTask(
           {it: it}, 
           {httpProvider: httpProvider},
           {ProfileService: ProfileService, TaskService: TaskService, OperatorService: OperatorService, UserService: UserService}
-        );
-        // 验证任务模块
-        testCard(
-          {it: it}, 
-          {httpProvider: httpProvider},
-          {ProfileService: ProfileService, CardService: CardService, UserService: UserService}
         );
     });
     mocha.run();
