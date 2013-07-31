@@ -236,8 +236,8 @@ public class UserController extends BaseController<User , Long> {
      */
 	@RequestMapping(value = "{uploadUserId}/examination" , method = RequestMethod.POST , produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-    public ResponseEntity upload(@PathVariable("uploadUserId") Long uploadUserId , @RequestParam("file") MultipartFile file , HealthExamination examination ,
-    								@RequestParam("md5") String md5) throws IOException {
+    public ResponseEntity upload(@PathVariable("uploadUserId") Long uploadUserId , @RequestParam(value = "file" , required = false) MultipartFile file , HealthExamination examination ,
+    								@RequestParam(value = "md5" , required = false) String md5) throws IOException {
 		
 		ResponseEntity entity = new ResponseEntity(HttpStatus.OK);
     	// 必须登录, 必须是用户类型, 必须是本人提交
