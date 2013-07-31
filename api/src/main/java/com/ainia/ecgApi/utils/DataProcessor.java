@@ -232,11 +232,12 @@ public class DataProcessor {
 		
 		int i = start + 5;
 		hi.temperature = data[i] + data[i+1]/100f;
-		hi.pulserate = data[i+2];
+		//hi.pulserate = data[i+2];
+		hi.heartrate = data[i+2];
 		hi.oxygen = data[i+3];
 		hi.oxygenChart = new byte[24];
 		copyBytes(hi.oxygenChart, data, i+4, 24);
-		hi.heartrate = data[i+28];
+		//hi.heartrate = data[i+28];
 		hi.sbp = data[i+29];
 		hi.dbp = data[i+30];
 		hi.ptt = data[i+31];
