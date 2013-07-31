@@ -19,17 +19,15 @@
 </tr>
 
 <tr>
-<td valign="top"><label>低压:</label></td>
-<td valign="top"><span class="prop">{{examinationview.examination.bloodPressureLow || '-'}} 毫米汞柱</span></td>
-<td valign="top"><label>高压:</label></td>
-<td valign="top"><span class="prop">{{examinationview.examination.bloodPressureHigh || '-'}} 毫米汞柱</span></td>
+<td><label>心率:</label></td>
+<td><span class="prop">{{examinationview.examination.heartRhythm || '-'}} 次/分钟</span></td>
+<td><label>体温:</label></td>
+<td><span class="prop">{{examinationview.examination.bodyTemp || '-'}} ℃（腋下温度）</span></td>
 </tr>
 
 <tr>
-<td><label>体温:</label></td>
-<td><span class="prop">{{examinationview.examination.bodyTemp || '-'}} ℃（腋下温度）</span></td>
-<td><label>心率:</label></td>
-<td><span class="prop">{{examinationview.examination.heartRhythm || '-'}} 次/分钟</span></td>
+<td valign="top"><label>血压:</label></td>
+<td valign="top" colspan="3"><span class="prop">{{examinationview.examination.bloodPressureLow || '-'}} </span> - <span class="prop">{{examinationview.examination.bloodPressureHigh || '-'}} 毫米汞柱</span></td>
 </tr>
 
 <tr>
