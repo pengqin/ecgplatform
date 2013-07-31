@@ -1,5 +1,4 @@
 'use strict';
-'use strict';
 define(function(require, exports) {
 
     var testAsAdminOrChiefOrExpert = require("./test/base.js").test;
