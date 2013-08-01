@@ -16,6 +16,7 @@ var testUser = require("./user/test").testUser;
 var testProfile = require("./profile/test").testProfile;
 var testRule = require("./rule/test").testRule;
 var testTask = require("./task/test").testTask;
+var testTaskReport = require("./task/test").testReport;
 var testCard = require("./card/test").testCard;
 
 // GOABAL VAL
@@ -75,6 +76,12 @@ angular.module('ecgTestApp', ['ecgCommon', 'ecgTask', 'ecgMonitor', 'ecgEmployee
           {httpProvider: httpProvider},
           {ProfileService: ProfileService, TaskService: TaskService, OperatorService: OperatorService, UserService: UserService}
         );
+        // 验证任务统计模块
+        testTaskReport(
+          {it: it}, 
+          {httpProvider: httpProvider},
+          {ProfileService: ProfileService, TaskService: TaskService, OperatorService: OperatorService, UserService: UserService}
+        )
     });
     mocha.run();
 }]);

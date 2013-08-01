@@ -128,8 +128,12 @@ public class HealthExaminationController extends BaseController<HealthExaminatio
 		@RequestParam(value = "start" , required = false) Date start ,
 		@RequestParam(value = "end" , required = false) Date end
 	) {
-		if (start == null || end == null) {
-			start = new DateTime().toDate();
+		// 不指定start的话，用前7天数据
+		if (start == null) {
+			start = new DateTime().minusDays(7).toDate();
+		}
+		// 不指定end,直至明天
+		if (end == null) {
 			end = new DateTime().plusDays(1).toDate();
 		}
 		return new ResponseEntity( healthExaminationService.statisticsByUserAndDay(userId , start, end) , HttpStatus.OK);
