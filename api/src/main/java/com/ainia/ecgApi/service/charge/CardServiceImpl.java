@@ -142,6 +142,9 @@ public class CardServiceImpl extends BaseServiceImpl<Card , Long> implements Car
 
 	@Override
 	public Card findBySerial(String serial) {
-		return cardDao.findBySerial(serial);
+		Card card = cardDao.findByEncodedSerial(this.encodeString(serial, null));
+		// 卡号未使用之前是不存的
+		card.setSerial(serial);
+		return card;
 	}
 }

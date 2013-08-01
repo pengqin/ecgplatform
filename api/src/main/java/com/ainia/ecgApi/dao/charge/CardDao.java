@@ -16,13 +16,6 @@ import com.ainia.ecgApi.domain.charge.Card;
  */
 public interface CardDao extends JpaRepository<Card , Long>, BaseDao<Card , Long> { 
     
-	/**
-	 * <p>根据卡号查询</p>
-	 * @param serial
-	 * void
-	 */
-    public Card findBySerial(String serial);
-    
     /**
      * <p>根据加密卡号回去指定卡</p>
      * @param serial

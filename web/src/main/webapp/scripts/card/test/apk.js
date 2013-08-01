@@ -88,7 +88,7 @@ define(function(require, exports) {
         it("the user's charged card should not retrieved without empty token.", function(done) {
             expect(userId).not.to.be(null);
             $.ajax({
-                url: PATH + '/api/user/' + userId + "/card/" + usedcard.serial,
+                url: PATH + '/api/user/' + userId + "/card",
                 dataType: 'json'
             }).then(function(res) {
                 throw new Error('should not retrieved without token.');
@@ -101,7 +101,7 @@ define(function(require, exports) {
         it("the user's charged card should not retrieved with invalid token.", function(done) {
             expect(userId).not.to.be(null);
             $.ajax({
-                url: PATH + '/api/user/' + userId + "/card/" + usedcard.serial,
+                url: PATH + '/api/user/' + userId + "/card",
                 dataType: 'json',
                 headers: {Authorization: 'invalid'}
             }).then(function(res) {
