@@ -87,7 +87,9 @@ public class CardServiceTest {
     
     @Test
     public void encodedSerial() {
-    	String[] serials = new String[]{"888888", "0032153088270012" , "0033178902311110","0067890200312293", "1000", "1001", "1002", "1003"};
+    	String[] serials = new String[]{"888888",
+    			"0032153088270012" , "0033178902311110","0067890200312293",
+    			"1000", "1001", "1002", "1003", "1004", "1005", "1006", "1007", "1008", "1009", "1010"};
     	
     	for (String serial : serials) {
         	System.out.println("=========================");
