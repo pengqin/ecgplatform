@@ -122,9 +122,9 @@ insert into health_rule_user (rule_id, user_id) values
 
 -- health_examination start
 insert into health_examination (id , apk_id ,  user_id , test_item , user_name , user_type , level , blood_pressure_low,blood_pressure_high,heart_rhythm , breath,body_temp,pulserate,heart_data,latitude,altitude,temp,humidity,pressure,charge_type,heart_features,algorithm_version,created_date,version) 
-values (1, '1' , 1,'PHONE', '测试用户1','VIP','success',80,120,60,60,37.5,60,'',0.0,200,37.6,null,null,'YEAR',null,null,'2013-07-01 01:00:00',1);
+values (1, '1' , 1,'PHONE', '测试用户1','VIP','success',80,120,60,60,37.5,60,'',0.0,200,37.6,null,null,'YEAR',null,null,'2012-12-01 01:00:00',1);
 insert into health_examination (id , apk_id , user_id , test_item , user_name , user_type , level , blood_pressure_low,blood_pressure_high,heart_rhythm , breath,body_temp,pulserate,heart_data,latitude,altitude,temp,humidity,pressure,charge_type,heart_features,algorithm_version,created_date,version) 
-values (2, '2' , 1,'PHONE', '测试用户1','VIP','outside',80,120,-100,80,37.5,60,'',0.0,200,37.6,null,null,'YEAR',null,null,'2013-07-02 01:00:00',1);
+values (2, '2' , 1,'PHONE', '测试用户1','VIP','outside',80,120,-100,80,37.5,60,'',0.0,200,37.6,null,null,'YEAR',null,null,'2012-12-12 01:00:00',1);
 insert into health_examination (id , apk_id , user_id , test_item , user_name , user_type , level , blood_pressure_low,blood_pressure_high,heart_rhythm , breath,body_temp,pulserate,heart_data,latitude,altitude,temp,humidity,pressure,charge_type,heart_features,algorithm_version,created_date,version) 
 values (3, '3' , 1,'PHONE', '测试用户1','VIP','outside',80,120,300,40,37.5,60,'',0.0,200,37.6,null,null,'YEAR',null,null,'2013-07-03 01:00:00',1);
 insert into health_examination (id , apk_id , user_id , test_item , user_name , user_type , level , blood_pressure_low,blood_pressure_high,heart_rhythm , breath,body_temp,pulserate,heart_data,latitude,altitude,temp,humidity,pressure,charge_type,heart_features,algorithm_version,created_date,version) 
@@ -239,5 +239,4 @@ insert into card (id , encoded_serial , serial , encoded_password , days , creat
 values (14 , '9a04b55b7f73eb5b9dfd57680291b2afc592bf8f' , '1010' , '9a04b55b7f73eb5b9dfd57680291b2afc592bf8f' , 7 , '2013-07-12 01:00:00' , 1 , '2020-09-12 01:00:00'  , null , null , null , null , null ,null , null);
 -- card end
 
-commit;insert into system_config (id , type , config_key , value ) values (1 , 'basic' , 'upload.rootPath' , 'c:/upload/');
 commit;
