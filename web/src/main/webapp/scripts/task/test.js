@@ -9,6 +9,7 @@ define(function(require, exports) {
     var testStageThreeForExpert= require("./test/stageThreeForExpert").test;
     var testDeleteAsEmployee= require("./test/deleteAsEmployee").test;
     var testDeleteAllAsEmployee = require("./test/deleteAllAsEmployee").test;
+    var testReportAsAPK = require("./test/reportAsAPK").test;
     
     exports.testTask = function(mocha, angluarjs, services) {
         if (!runCase('task')) {
@@ -199,4 +200,13 @@ define(function(require, exports) {
 
     };
 
+    exports.testReport = function(mocha, angluarjs, services) {
+        if (!runCase('report')) {
+            return;
+        }
+        testReportAsAPK({
+            it: it,
+            user: {username: TESTCONFIGS.user6.username, password: TESTCONFIGS.user6.password}
+        }, angluarjs, services);
+    }
 });

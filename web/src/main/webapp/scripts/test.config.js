@@ -51,4 +51,9 @@
     TESTCONFIGS.user5.mobile = "13512345678";
     TESTCONFIGS.user5.username = "13512345678";
     TESTCONFIGS.user5.password = "passw0rd";
+
+    TESTCONFIGS.user6 = {};
+    TESTCONFIGS.user6.mobile = "13212345678";
+    TESTCONFIGS.user6.username = "13212345678";
+    TESTCONFIGS.user6.password = "passw0rd";
 })();
