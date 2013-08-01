@@ -1,3 +1,9 @@
+-- =================
+-- 注意 !!!!!!!!!!!!
+-- 不要直接改data.sql,要改source.sql
+-- data.sql是由source.sql和相应数据库的append.sql拼成的
+-- =================
+
 insert into user (id, mobile , username, email, name, password, gender, id_card , type ,birthday,address,stature,weight,city,em_contact1,em_contact1_tel,em_contact2,em_contact2_tel , bad_habits , anamnesis , created_date , last_updated , remark ,is_free , version)
 values (1,'13911111111' ,'13911111111','13911111111@test.com','测试用户1','2e8ec7d18a6e108fce3af34044c661ffa56b084f',1 ,'430203198502011218', 'SIMPLE','1983-06-04 01:00:00','地址1',1.72,72,'','','','','','','','2012-06-04 01:00:00','2012-06-04 01:00:00','',1,1);
 insert into user (id, mobile , username, email, name, password, gender, id_card , type ,birthday,address,stature,weight,city,em_contact1,em_contact1_tel,em_contact2,em_contact2_tel , bad_habits , anamnesis , created_date , last_updated , remark ,is_free , version)
@@ -10,7 +16,6 @@ insert into user (id, mobile , username, email, name, password, gender, id_card 
 values (5,'13512345678' ,'13512345678','13512345678@test.com', '测试用户4','2e8ec7d18a6e108fce3af34044c661ffa56b084f',1 ,'430203198502011218', 'SIMPLE','1983-06-04 01:00:00','地址2',1.72,72,'','','','','','','','2012-06-04 01:00:00','2012-06-04 01:00:00','',1,1);
 insert into user (id, mobile , username, email, name, password, gender, id_card , type ,birthday,address,stature,weight,city,em_contact1,em_contact1_tel,em_contact2,em_contact2_tel , bad_habits , anamnesis , created_date , last_updated , remark ,is_free , version)
 values (6,'13212345678' ,'13212345678','13212345678@test.com', '统计用户','2e8ec7d18a6e108fce3af34044c661ffa56b084f',1 ,'430203198502011218', 'SIMPLE','1983-06-04 01:00:00','地址2',1.72,72,'','','','','','','','2012-06-04 01:00:00','2012-06-04 01:00:00','',1,1);
-
 
 --employee start
 insert into employee (id ,type, name , username , password , roles , status,enabled,dismissed,gender,expire,birthday,id_card , mobile ,created_date,last_updated,version) values 
@@ -117,9 +122,9 @@ insert into health_rule_user (rule_id, user_id) values
 
 -- health_examination start
 insert into health_examination (id , apk_id ,  user_id , test_item , user_name , user_type , level , blood_pressure_low,blood_pressure_high,heart_rhythm , breath,body_temp,pulserate,heart_data,latitude,altitude,temp,humidity,pressure,charge_type,heart_features,algorithm_version,created_date,version) 
-values (1, '1' , 1,'PHONE', '测试用户1','VIP','success',80,120,60,60,37.5,60,'',0.0,200,37.6,null,null,'YEAR',null,null,'2013-07-01 01:00:00',1);
+values (1, '1' , 1,'PHONE', '测试用户1','VIP','success',80,120,60,60,37.5,60,'',0.0,200,37.6,null,null,'YEAR',null,null,'2012-12-01 01:00:00',1);
 insert into health_examination (id , apk_id , user_id , test_item , user_name , user_type , level , blood_pressure_low,blood_pressure_high,heart_rhythm , breath,body_temp,pulserate,heart_data,latitude,altitude,temp,humidity,pressure,charge_type,heart_features,algorithm_version,created_date,version) 
-values (2, '2' , 1,'PHONE', '测试用户1','VIP','outside',80,120,-100,80,37.5,60,'',0.0,200,37.6,null,null,'YEAR',null,null,'2013-07-02 01:00:00',1);
+values (2, '2' , 1,'PHONE', '测试用户1','VIP','outside',80,120,-100,80,37.5,60,'',0.0,200,37.6,null,null,'YEAR',null,null,'2012-12-12 01:00:00',1);
 insert into health_examination (id , apk_id , user_id , test_item , user_name , user_type , level , blood_pressure_low,blood_pressure_high,heart_rhythm , breath,body_temp,pulserate,heart_data,latitude,altitude,temp,humidity,pressure,charge_type,heart_features,algorithm_version,created_date,version) 
 values (3, '3' , 1,'PHONE', '测试用户1','VIP','outside',80,120,300,40,37.5,60,'',0.0,200,37.6,null,null,'YEAR',null,null,'2013-07-03 01:00:00',1);
 insert into health_examination (id , apk_id , user_id , test_item , user_name , user_type , level , blood_pressure_low,blood_pressure_high,heart_rhythm , breath,body_temp,pulserate,heart_data,latitude,altitude,temp,humidity,pressure,charge_type,heart_features,algorithm_version,created_date,version) 
@@ -196,9 +201,9 @@ insert into task (id , type ,examination_id , user_id , apk_id ,user_name , stat
 values (17,'examinationTask' , 17 , 6 , '17' , '统计用户' , 'pending',null,8,0,'2013-07-31 01:00:00',null,1);
 insert into task (id , type ,examination_id , user_id , apk_id ,user_name , status,expert_id,operator_id,auto , created_date , completed_date,version)
 values (18,'examinationTask' , 18 , 6 , '18' , '统计用户' , 'pending',null,9,0,'2013-08-01 01:00:00',null,1);
+
 -- task end
 -- system_config start
-insert into system_config (id , type , config_key , value ) values (1 , 'basic' , 'upload.rootPath' , 'c:/upload/');
 insert into system_config (id , type , config_key , value ) values (2 , 'basic' , 'examination.reply.isAuto' , 'false');
 insert into system_config (id , type , config_key , value ) values (3 , 'basic' , 'employee.live.timeout' , '30');
 
@@ -234,4 +239,5 @@ insert into card (id , encoded_serial , serial , encoded_password , days , creat
 values (14 , '9a04b55b7f73eb5b9dfd57680291b2afc592bf8f' , '1010' , '9a04b55b7f73eb5b9dfd57680291b2afc592bf8f' , 7 , '2013-07-12 01:00:00' , 1 , '2020-09-12 01:00:00'  , null , null , null , null , null ,null , null);
 -- card end
 
+commit;insert into system_config (id , type , config_key , value ) values (1 , 'basic' , 'upload.rootPath' , 'c:/upload/');
 commit;
