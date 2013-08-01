@@ -177,7 +177,7 @@ insert into task (id , type ,examination_id , user_id , apk_id ,user_name , stat
 values (14,'examinationTask' , 14 , 5 , '14' , '测试用户5' , 'pending',null,9,0,'2013-07-12 01:00:00',null,1);
 -- task end
 -- system_config start
-insert into system_config (id , type , config_key , value ) values (1 , 'basic' , 'upload.rootPath' , 'c:/upload/');
+insert into system_config (id , type , config_key , value ) values (1 , 'basic' , 'upload.rootPath' , '/home/ainia/upload/');
 insert into system_config (id , type , config_key , value ) values (2 , 'basic' , 'examination.reply.isAuto' , 'false');
 insert into system_config (id , type , config_key , value ) values (3 , 'basic' , 'employee.live.timeout' , '30');
 
@@ -202,15 +202,15 @@ values (8 , 'b4c94496648a10991fef5d7194abb3ace8f62e69' , '1004' , 'b4c94496648a1
 insert into card (id , encoded_serial , serial , encoded_password , days , created_date , created_batch , expire_date , actived_date , user_id , user_name , charged_date , charge_type , employee_id , employee_name)
 values (9 , '3772e6b05d3cdcc50283557717cd411f0cb8d485' , '1005' , '3772e6b05d3cdcc50283557717cd411f0cb8d485' , 7 , '2013-07-12 01:00:00' , 1 , '2020-09-12 01:00:00'  , null , null , null , null , null ,null , null);
 insert into card (id , encoded_serial , serial , encoded_password , days , created_date , created_batch , expire_date , actived_date , user_id , user_name , charged_date , charge_type , employee_id , employee_name)
-values (9 , '1ca8c7179798bfc955f6d3554eb71414bf838374' , '1006' , '1ca8c7179798bfc955f6d3554eb71414bf838374' , 7 , '2013-07-12 01:00:00' , 1 , '2020-09-12 01:00:00'  , null , null , null , null , null ,null , null);
+values (10 , '1ca8c7179798bfc955f6d3554eb71414bf838374' , '1006' , '1ca8c7179798bfc955f6d3554eb71414bf838374' , 7 , '2013-07-12 01:00:00' , 1 , '2020-09-12 01:00:00'  , null , null , null , null , null ,null , null);
 insert into card (id , encoded_serial , serial , encoded_password , days , created_date , created_batch , expire_date , actived_date , user_id , user_name , charged_date , charge_type , employee_id , employee_name)
-values (9 , 'cb2d511717be0101f5dd2ec2dd201498b1ffaeb6' , '1007' , 'cb2d511717be0101f5dd2ec2dd201498b1ffaeb6' , 7 , '2013-07-12 01:00:00' , 1 , '2020-09-12 01:00:00'  , null , null , null , null , null ,null , null);
+values (11 , 'cb2d511717be0101f5dd2ec2dd201498b1ffaeb6' , '1007' , 'cb2d511717be0101f5dd2ec2dd201498b1ffaeb6' , 7 , '2013-07-12 01:00:00' , 1 , '2020-09-12 01:00:00'  , null , null , null , null , null ,null , null);
 insert into card (id , encoded_serial , serial , encoded_password , days , created_date , created_batch , expire_date , actived_date , user_id , user_name , charged_date , charge_type , employee_id , employee_name)
-values (9 , '4d0344236e409d40ec587615087ae354b958dd9e' , '1008' , '4d0344236e409d40ec587615087ae354b958dd9e' , 7 , '2013-07-12 01:00:00' , 1 , '2020-09-12 01:00:00'  , null , null , null , null , null ,null , null);
+values (12 , '4d0344236e409d40ec587615087ae354b958dd9e' , '1008' , '4d0344236e409d40ec587615087ae354b958dd9e' , 7 , '2013-07-12 01:00:00' , 1 , '2020-09-12 01:00:00'  , null , null , null , null , null ,null , null);
 insert into card (id , encoded_serial , serial , encoded_password , days , created_date , created_batch , expire_date , actived_date , user_id , user_name , charged_date , charge_type , employee_id , employee_name)
-values (9 , '5dd441267acbe90364b88bdd161321afbbfa72bd' , '1009' , '5dd441267acbe90364b88bdd161321afbbfa72bd' , 7 , '2013-07-12 01:00:00' , 1 , '2020-09-12 01:00:00'  , null , null , null , null , null ,null , null);
+values (13 , '5dd441267acbe90364b88bdd161321afbbfa72bd' , '1009' , '5dd441267acbe90364b88bdd161321afbbfa72bd' , 7 , '2013-07-12 01:00:00' , 1 , '2020-09-12 01:00:00'  , null , null , null , null , null ,null , null);
 insert into card (id , encoded_serial , serial , encoded_password , days , created_date , created_batch , expire_date , actived_date , user_id , user_name , charged_date , charge_type , employee_id , employee_name)
-values (9 , '9a04b55b7f73eb5b9dfd57680291b2afc592bf8f' , '1010' , '9a04b55b7f73eb5b9dfd57680291b2afc592bf8f' , 7 , '2013-07-12 01:00:00' , 1 , '2020-09-12 01:00:00'  , null , null , null , null , null ,null , null);
+values (14 , '9a04b55b7f73eb5b9dfd57680291b2afc592bf8f' , '1010' , '9a04b55b7f73eb5b9dfd57680291b2afc592bf8f' , 7 , '2013-07-12 01:00:00' , 1 , '2020-09-12 01:00:00'  , null , null , null , null , null ,null , null);
 -- card end
 
 commit;
