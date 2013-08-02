@@ -31,7 +31,7 @@ angular.module('ecgCardDirectives', [])
     $scope.uploaddialog.show = function(opts) {
       var opts = opts || {};
       $scope.uploaddialog.handler = opts.handler;
-      document.getElementById("uploadCardFrame").src = PATH + '/cardUpload.html?token=' +  $.cookie("AiniaOpAuthToken");
+      document.getElementById("uploadCardFrame").src = PATH + '/views/card/upload.jsp?token=' +  $.cookie("AiniaOpAuthToken");
       $('#ecgUploadDialog').modal('show');
     };
 
