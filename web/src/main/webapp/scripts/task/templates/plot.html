@@ -21,6 +21,8 @@
      ng-src="{{PATH}}/api/user/{{examinationplot.userId}}/examination/{{examinationplot.examinationId}}/ecg6" class="plot"></img>
 <img title="ECG V" ng-show="examinationplot.examinationId"
      ng-src="{{PATH}}/api/user/{{examinationplot.userId}}/examination/{{examinationplot.examinationId}}/ecg7" class="plot"></img>
+<img title="Oxygen" ng-show="examinationplot.examinationId"
+     ng-src="{{PATH}}/api/user/{{examinationplot.userId}}/examination/{{examinationplot.examinationId}}/ecg8" class="plot"></img>
 </div>
 
 <p class="buttons" ng-show="examinationplot.examinationId">
@@ -28,11 +30,6 @@
 <button type="button" class="btn btn-small" ng-click="examinationplot.zoom='medium'" ng-class="{'btn-primary': examinationplot.zoom == 'medium'}">中</button>
 <button type="button" class="btn btn-small" ng-click="examinationplot.zoom='large'" ng-class="{'btn-primary': examinationplot.zoom == 'large'}">大</button>
 </p>
-
-<h5 class="ecgHd">血氧图</h5>
-
-<img title="Oxygen" ng-show="examinationplot.examinationId"
-     ng-src="{{PATH}}/api/user/{{examinationplot.userId}}/examination/{{examinationplot.examinationId}}/ecg8" class="oxygenPlot"></img>
 
 <p class="buttons" ng-show="examinationplot.examinationId">
 <a ng-href="{{PATH}}/api/user/{{examinationplot.userId}}/examination/{{examinationplot.examinationId}}/raw" target="_blank"

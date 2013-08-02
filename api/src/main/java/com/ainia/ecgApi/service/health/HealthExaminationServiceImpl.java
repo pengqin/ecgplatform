@@ -34,6 +34,7 @@ import com.ainia.ecgApi.service.task.ExaminationTaskService;
 import com.ainia.ecgApi.service.task.TaskService;
 import com.ainia.ecgApi.utils.DataProcessor;
 import com.ainia.ecgApi.utils.ECGChart;
+import com.ainia.ecgApi.utils.OxygenChart;
 
 /**
  * <p>HealthExamination Service Impl</p>
@@ -91,7 +92,7 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 		if (uploadData == null && !isTest) {
 			throw new ServiceException("file.is.empty");
 		} else if (uploadData != null && uploadData.length == 0) {
-			throw new ServiceException("file.is.empty");
+			throw new ServiceException("file.length.is.zero");
 		}
 
 		/*
@@ -185,7 +186,7 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 						
 						byte[] ecg1 = ECGChart.createChart(
 								"ECG I",
-								daolian, processor.getMaxDaolianI(), 0,
+								daolian, processor.getMaxDaolian(), 0,
 								daolian.length, (int)(daolian.length*0.756), (int)37.8*8);
 						uploadService.save(Type.heart_img, ecg1Path, ecg1);
 
@@ -196,7 +197,7 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 								+ "/ecg2.jpg";
 						byte[] ecg2 = ECGChart.createChart(
 								"ECG II",
-								daolian, processor.getMaxDaolianII(), 0,
+								daolian, processor.getMaxDaolian(), 0,
 								daolian.length, (int)(daolian.length*0.756), (int)37.8*8);
 						uploadService.save(Type.heart_img, ecg2Path, ecg2);
 
@@ -207,7 +208,7 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 								+ "/ecg3.jpg";
 						byte[] ecg3 = ECGChart.createChart(
 								"ECG III",
-								daolian, processor.getMaxDaolianIII(), 0,
+								daolian, processor.getMaxDaolian(), 0,
 								daolian.length, (int)(daolian.length*0.756), (int)37.8*8);
 						uploadService.save(Type.heart_img, ecg3Path, ecg3);
 
@@ -218,7 +219,7 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 								+ "/ecg4.jpg";
 						byte[] ecg4 = ECGChart.createChart(
 								"ECG aVR",
-								daolian, processor.getMaxDaolianAVR(), 0,
+								daolian, processor.getMaxDaolian(), 0,
 								daolian.length, (int)(daolian.length*0.756), (int)37.8*8);
 						uploadService.save(Type.heart_img, ecg4Path, ecg4);
 
@@ -229,7 +230,7 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 								+ "/ecg5.jpg";
 						byte[] ecg5 = ECGChart.createChart(
 								"ECG aVL",
-								daolian, processor.getMaxDaolianAVL(), 0,
+								daolian, processor.getMaxDaolian(), 0,
 								daolian.length, (int)(daolian.length*0.756), (int)37.8*8);
 						uploadService.save(Type.heart_img, ecg5Path, ecg5);
 
@@ -240,7 +241,7 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 								+ "/ecg6.jpg";
 						byte[] ecg6 = ECGChart.createChart(
 								"ECG aVF",
-								daolian, processor.getMaxDaolianAVF(), 0,
+								daolian, processor.getMaxDaolian(), 0,
 								daolian.length, (int)(daolian.length*0.756), (int)37.8*8);
 						uploadService.save(Type.heart_img, ecg6Path, ecg6);
 
@@ -251,20 +252,19 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 								+ "/ecg7.jpg";
 						byte[] ecg7 = ECGChart.createChart(
 								"ECG V",
-								daolian, processor.getMaxDaolianV(), 0,
+								daolian, processor.getMaxDaolian(), 0,
 								daolian.length, (int)(daolian.length*0.756), (int)37.8*8);
 						uploadService.save(Type.heart_img, ecg7Path, ecg7);		
 
-						float [] oxygen = processor.getOxygen();
-						String ecg8Path = "user/"
+						byte[] oxygenData = processor.getOxygenData();
+						int oxyLen = processor.getOxygenDataLen();
+						String oxyPath = "user/"
 								+ String.valueOf(authUser.getId())
 								+ "/examination/" + examination.getId()
 								+ "/ecg8.jpg";
-						byte[] ecg8 = ECGChart.createChart(
-								"Oxygen",
-								oxygen, 100f, 0,
-								oxygen.length, 1600, 300);
-						uploadService.save(Type.heart_img, ecg8Path, ecg8);	
+						byte[] oxyChart = OxygenChart.createChart(oxygenData, 0, oxyLen, oxyLen*10, (int)37.8*8);
+						String oxyUri = uploadService.save(Type.heart_img,
+								oxyPath, oxyChart);
 						
 						//存储原始文件
 						String rawPath = "user/" +  String.valueOf(authUser.getId()) + "/examination/" + examination.getId() + "/raw";

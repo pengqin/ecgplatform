@@ -154,29 +154,14 @@ public class ECGChart {
 		rangeAxis.setVisible(true);
 		
 		double vMarkerInterval = 0.0;
-		if (max <= 1.0f) {
-			rangeAxis.setRange(-1.0, 1.0);
-			rangeAxis.setTickUnit(new NumberTickUnit(0.2));
-			vMarkerInterval = 1.0;
-		} else if (max > 1f && max <= 2.0f) {
-			rangeAxis.setRange(-2.0, 2.0);
-			rangeAxis.setTickUnit(new NumberTickUnit(0.2));
-			vMarkerInterval = 1.0;
-		} else if (max > 2f && max <= 4.0f) {
+		if (max <= 4.0f) {
 			rangeAxis.setRange(-4.0, 4.0);
 			rangeAxis.setTickUnit(new NumberTickUnit(0.2));
 			vMarkerInterval = 1.0;
-		} else if (max > 4f && max <= 8.0f) {
-			rangeAxis.setRange(-8.0, 8.0);
-			rangeAxis.setTickUnit(new NumberTickUnit(0.2));
-			vMarkerInterval = 1.0;
-		} else if (max == 100f) {
-			rangeAxis.setRange(0.0, 100.0);
-			rangeAxis.setTickUnit(new NumberTickUnit(0.2));
-			vMarkerInterval = 1.0;
-			rangeAxis.setTickLabelsVisible(true);
 		} else {
-			rangeAxis.setAutoRange(true);
+			rangeAxis.setRange(-8.0, 8.0);
+			rangeAxis.setTickUnit(new NumberTickUnit(0.4));
+			vMarkerInterval = 2.0;
 		}
 		
 		int count = dataset.getItemCount(0);

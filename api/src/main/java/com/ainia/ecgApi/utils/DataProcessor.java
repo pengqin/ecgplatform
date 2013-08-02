@@ -7,7 +7,6 @@ import com.ainia.ecgApi.dto.health.DataRecord;
 import com.ainia.ecgApi.dto.health.HealthInfo;
 
 public class DataProcessor {
-
 	private static final int BREATHING_TYPE = 0x21; // 呼吸类型，这个版本有可能被去掉，但解析代码要保留
 	private static final int ECG1_TYPE = 0x22; // 心电1类型
 	private static final int ECG2_TYPE = 0x23; // 心电2类型
@@ -15,7 +14,6 @@ public class DataProcessor {
 	private static final int INFO_TYPE = 0x25; // 数值 类型
 	private static final int SECTION_LENGTH = 45;
 
-	private ArrayList <Float> oxygenVals = new ArrayList <Float> ();
 	private float[] daolian_i;
 	private float[] daolian_ii;
 	private float[] daolian_iii;
@@ -24,13 +22,11 @@ public class DataProcessor {
 	private float[] daolian_avf;
 	private float[] daolian_v;
 	private HealthInfo healthInfo;
-	private float maxDaolianI = 0.0f;
-	private float maxDaolianII = 0.0f;
-	private float maxDaolianIII = 0.0f;
-	private float maxDaolianAVR = 0.0f;
-	private float maxDaolianAVL = 0.0f;
-	private float maxDaolianAVF = 0.0f;
-	private float maxDaolianV = 0.0f;
+	
+	private byte[] oxygenData = new byte[3000];
+	private int oxygenDataLength = 0;
+	
+	private float maxDaolian = 0.0f;
 
 	// Map<Integer, DataRecord> _records = new HashMap<Integer, DataRecord>();
 	List<DataRecord> _records = new ArrayList<DataRecord>();
@@ -55,15 +51,12 @@ public class DataProcessor {
 
 	private void splitData(byte[] data, int len) throws DataException {
 		int i = 0;
-		//int type_temp = 0;
 		try {
-		
 			while (i < len) {
 				if ((data[i] & 0xff) == 0xaa && (data[i + 1] & 0xff) == 0xaa
 						&& (data[i + 2] & 0xff) == 0xaa) {
 					int sn = data[i + 3] & 0xff;
 					int type = data[i + 4];
-					//type_temp = type;
 					if (type != INFO_TYPE) {
 						if (sn != _sn) {
 							if (_sn == -1 || checkSN(sn, _sn)) {
@@ -141,7 +134,8 @@ public class DataProcessor {
 		daolian_v = new float[dataLength];
 
 		for (DataRecord record : _records) {
-			if (record.ecg1 != null && record.ecg2 != null && record.ecg3 != null) {
+			if (record.ecg1 != null && record.ecg2 != null
+					&& record.ecg3 != null) {
 				for (int i = 0; i < 40; i += 4) {
 					float ecg1 = bytes4ToFloat(record.ecg1, i);
 					float ecg2 = bytes4ToFloat(record.ecg2, i);
@@ -155,31 +149,17 @@ public class DataProcessor {
 
 					daolian_i[length] = ecg1;
 					daolian_ii[length] = ecg2;
-					daolian_iii[length] = ecg2 - ecg1;
+					daolian_iii[length] = ecg1 + ecg2;
 					daolian_avr[length] = (ecg1 + ecg2) / (-2);
 					daolian_avl[length] = ecg1 - ecg2 / 2;
 					daolian_avf[length] = ecg2 - ecg1 / 2;
 					daolian_v[length] = ecg3;
 					
-					/*
 					float max_i_ii = Math.max(Math.abs(ecg1), Math.abs(ecg2));
 					float max = Math.max(Math.abs(max_i_ii), Math.abs(ecg1+ecg2));
-
 					if (max > maxDaolian) {
 						maxDaolian = max;
 					}
-					
-					if (Math.abs(ecg3) > maxDaolianV) {
-						maxDaolianV = Math.abs(ecg3);
-					}*/
-					
-					maxDaolianI = Math.max(maxDaolianI, Math.abs(ecg1));
-					maxDaolianII = Math.max(maxDaolianII, Math.abs(ecg2));
-					maxDaolianIII= Math.max(maxDaolianIII, Math.abs(ecg1 + ecg2));
-					maxDaolianAVR = Math.max(maxDaolianAVR, Math.abs((ecg1 + ecg2) / (-2)));
-					maxDaolianAVL = Math.max(maxDaolianAVL, Math.abs(ecg1 - ecg2 / 2));
-					maxDaolianAVF = Math.max(maxDaolianAVF, Math.abs(ecg2 - ecg1 / 2));
-					maxDaolianV = Math.max(maxDaolianV, Math.abs(ecg3));
 					
 					length++;
 				}
@@ -234,23 +214,36 @@ public class DataProcessor {
 		
 		int i = start + 5;
 		hi.temperature = data[i] + data[i+1]/100f;
-		//hi.pulserate = data[i+2];
-		hi.heartrate = data[i+2];
+		hi.pulserate = data[i+2];
 		hi.oxygen = data[i+3];
-		oxygenVals.add(new Float(hi.oxygen));
-		hi.oxygenChart = new byte[24];
-		copyBytes(hi.oxygenChart, data, i+4, 24);
-		//hi.heartrate = data[i+28];
+		//hi.oxygenChart = new byte[24];
+		
+		copyOxygenData(data, i+4, 24);
+
+		hi.heartrate = data[i+28];
 		hi.sbp = data[i+29];
 		hi.dbp = data[i+30];
 		hi.ptt = data[i+31];
 		
 		return start + SECTION_LENGTH;
 	}
+	
+	private void copyOxygenData(byte[] data, int start, int length) {
+		copyBytes(this.oxygenData, this.oxygenDataLength, data, start, length);
+		this.oxygenDataLength += length;
+	}
 
-	private static void copyBytes(byte[] section, byte[] data, int start, int length) {
+	private static void copyBytes(byte[] section, byte[] data, int start,
+			int length) {
 		for (int i = 0; i < length; i++) {
 			section[i] = data[i + start];
+		}
+	}
+	
+	private static void copyBytes(byte[] dest, int destStart, byte[] orig, int origStart, int length) {
+		while(length > 0) {
+			dest[destStart++] = orig[origStart++];
+			length --;
 		}
 	}
 
@@ -272,15 +265,6 @@ public class DataProcessor {
 		l &= 0xffffff;
 		l |= ((long) b[index + 0] << 24);
 		return Float.intBitsToFloat(l);
-	}
-
-	public float[] getOxygen() {
-		float[] oxygen = new float[oxygenVals.size()];
-		int i = 0;
-		for (Float ox : oxygenVals) {
-			oxygen[i++] = ox.floatValue();
-		}
-		return oxygen;
 	}
 
 	public float[] getDaolian_i() {
@@ -315,30 +299,16 @@ public class DataProcessor {
 		return this.healthInfo;
 	}
 	
-	public float getMaxDaolianI() {
-		return this.maxDaolianI;
+	public float getMaxDaolian() {
+		return this.maxDaolian;
 	}
 	
-	public float getMaxDaolianII() {
-		return this.maxDaolianII;
+	public byte[] getOxygenData() {
+		return this.oxygenData;
 	}
 	
-	public float getMaxDaolianIII() {
-		return this.maxDaolianIII;
-	}
-	
-	public float getMaxDaolianAVR() {
-		return this.maxDaolianAVR;
+	public int getOxygenDataLen() {
+		return this.oxygenDataLength;
 	}
 
-	public float getMaxDaolianAVL() {
-		return this.maxDaolianAVL;
-	}
-
-	public float getMaxDaolianAVF() {
-		return this.maxDaolianAVF;
-	}
-	public float getMaxDaolianV() {
-		return this.maxDaolianV;
-	}
 }
