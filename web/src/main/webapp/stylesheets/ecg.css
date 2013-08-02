@@ -1,17 +1,17 @@
 /*基本元素*/
 html, body {
 	height: 100%;
+	min-width: 940px !important;
 }
 i { 
 	padding-right: 5px;
 }
 .navbar-inner > .container {
 	width: 98%;
-	min-width: 940px;
 }
 .container {
 	width: 98%;
-	min-width: 940px;
+}
 }
 
 /*应用加载时没有滚动条*/
