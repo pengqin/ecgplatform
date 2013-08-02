@@ -8,7 +8,7 @@
 <body>
 
 <form id="form" enctype="multipart/form-data" action="/api/card/upload" method="post" style="display:block;">
-	<input type="hidden" id="token" name="token" value="operator1_Employee">
+	<input type="hidden" id="token" name="token" value="">
 	<input id="file" name="file" type="file">
 	<input type="submit" value="提交">
 </form>
