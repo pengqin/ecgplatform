@@ -136,6 +136,15 @@ public class HealthExaminationServiceTest {
     }
 
     @Test
+    public void testMockUpload() throws IOException, DataException, InterruptedException {
+    	when(authenticateService.getCurrentUser()).thenReturn(new AuthUserImpl(2L , "test" , "13700230001" , User.class.getSimpleName()));
+    	((HealthExaminationServiceImpl)healthExaminationService).setAuthenticateService(authenticateService);
+    	HealthExamination examination = new HealthExamination();
+    	examination.setIsTest(true);
+    	healthExaminationService.upload(examination , null , null);
+    }
+
+    @Test
     public void testDelete() {
         healthExaminationService.create(healthExamination);
         

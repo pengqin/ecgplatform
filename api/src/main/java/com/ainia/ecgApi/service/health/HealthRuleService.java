@@ -1,5 +1,7 @@
 package com.ainia.ecgApi.service.health;
 
+import java.util.List;
+
 import com.ainia.ecgApi.core.crud.BaseService;
 import com.ainia.ecgApi.domain.health.HealthRule;
 
@@ -42,5 +44,10 @@ public interface HealthRuleService extends BaseService<HealthRule , Long> {
 	 */
 	public void deleteByGroup(Long groupId);
 	
-	
+	/**
+	 * 查找用户的所需filter
+	 * @param userId
+	 * List
+	 */
+	public List<HealthRule> findAllFiltersByUser(Long userId);
 }

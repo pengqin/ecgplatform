@@ -1,6 +1,5 @@
 package com.ainia.ecgApi.service.health;
 
-import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -10,7 +9,6 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,11 +18,11 @@ import com.ainia.ecgApi.core.crud.Query;
 import com.ainia.ecgApi.core.exception.ServiceException;
 import com.ainia.ecgApi.core.security.AuthUser;
 import com.ainia.ecgApi.core.security.AuthenticateService;
-import com.ainia.ecgApi.core.utils.DigestUtils;
 import com.ainia.ecgApi.dao.health.HealthExaminationDao;
 import com.ainia.ecgApi.domain.health.HealthExamination;
 import com.ainia.ecgApi.domain.health.HealthReply;
 import com.ainia.ecgApi.domain.health.HealthRule;
+import com.ainia.ecgApi.domain.health.HealthRuleReply;
 import com.ainia.ecgApi.domain.sys.SystemConfig;
 import com.ainia.ecgApi.domain.sys.User;
 import com.ainia.ecgApi.domain.task.ExaminationTask;
@@ -80,6 +78,7 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 
 	public void upload(final HealthExamination examination , final byte[] uploadData , String md5) {
 
+		// 判断是否有效登录
 		final AuthUser authUser = authenticateService.getCurrentUser();	
 		if (authUser == null) {
 			throw new ServiceException("authUser.error.notFound");
@@ -87,6 +86,15 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 		if (!User.class.getSimpleName().equals(authUser.getType())) {
 			throw new ServiceException("examination.error.upload.notAllowed");
 		}
+		// 判断是否是测试请求
+		boolean isTest = examination.getIsTest() == null ? false : examination.getIsTest();
+		if (uploadData == null && !isTest) {
+			throw new ServiceException("file.is.empty");
+		} else if (uploadData != null && uploadData.length == 0) {
+			throw new ServiceException("file.is.empty");
+		}
+
+		/*
 		//校验MD5值
 		if (StringUtils.isNotBlank(md5)) {
 			BigInteger bigint = new BigInteger(1 , DigestUtils.md5(uploadData));
@@ -96,20 +104,20 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 					log.warn(" the upload file md5 is not valid");
 				}
 			}
-		}
+		}*/
 		
-		// 防止被 /user/{id}/examination 注入
-		examination.setId(null);
+		examination.setId(null); // 防止被 examination的id被注入
 		examination.setUserId(authUser.getId());
 		examination.setUserName(authUser.getUsername());
 		examination.setUserType(authUser.getType());
-		examination.setTestItem("ipad");
+		examination.setTestItem("mobile");
 		
 		this.create(examination);
 		
 		//判断是否自动回复
 		String config = systemConfigService.findByKey(SystemConfig.EXAMINATION_REPLY_AUTO);
-		boolean isAuto = config == null?false : Boolean.valueOf(config);
+		boolean isAuto = config == null ? false : Boolean.valueOf(config);
+		boolean isReplied = false;
 		
 		ExaminationTask task = new ExaminationTask();
 		task.setExaminationId(examination.getId());
@@ -124,21 +132,41 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 			if (filters != null) {
 				for (HealthRule rule : filters) {
 					if (rule.isMatch(examination)) {
-						HealthReply reply = new HealthReply();
-						reply.setExaminationId(examination.getId());
-						rule.autoReply(reply);
-						healthReplyService.create(reply);
-						task.setAuto(true);
+						List <HealthRuleReply> repliyConfgs = rule.getReplys();
+						if (repliyConfgs != null && repliyConfgs.size() > 0) {
+							// 获得预设
+							HealthRuleReply replyConfig = repliyConfgs.get(0);
+							
+							// 设置reply
+							HealthReply reply = new HealthReply();
+							reply.setResult(replyConfig.getResult());
+							reply.setContent(replyConfig.getContent());
+							reply.setLevel(rule.getLevel());
+							reply.setReason("系统自动回复");
+							reply.setExaminationId(examination.getId());
+							rule.autoReply(reply);
+							healthReplyService.create(reply);
+							
+							// 设置task为auto
+							task.setAuto(true);
+							
+							isReplied = true;
+						}
+						
 					}
 				}
-				taskService.complete(task);
 			}
-		}
-		else {
-			taskService.pending(task);	
+			// 是否添加了回复数据
+			if (isReplied) {
+				taskService.complete(task); 
+			} else {
+				taskService.pending(task); 
+			}
+		} else {
+			taskService.pending(task);	// 直接转人工
 		}
 		
-		if (examination.getIsTest() == null || !examination.getIsTest()) {
+		if (!isTest) {
 			executorService.execute(new Runnable(){
 
 				public void run() {
