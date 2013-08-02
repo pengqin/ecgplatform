@@ -1,6 +1,5 @@
 package com.ainia.ecgApi.service.health;
 
-import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -10,7 +9,6 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,11 +18,11 @@ import com.ainia.ecgApi.core.crud.Query;
 import com.ainia.ecgApi.core.exception.ServiceException;
 import com.ainia.ecgApi.core.security.AuthUser;
 import com.ainia.ecgApi.core.security.AuthenticateService;
-import com.ainia.ecgApi.core.utils.DigestUtils;
 import com.ainia.ecgApi.dao.health.HealthExaminationDao;
 import com.ainia.ecgApi.domain.health.HealthExamination;
 import com.ainia.ecgApi.domain.health.HealthReply;
 import com.ainia.ecgApi.domain.health.HealthRule;
+import com.ainia.ecgApi.domain.health.HealthRuleReply;
 import com.ainia.ecgApi.domain.sys.SystemConfig;
 import com.ainia.ecgApi.domain.sys.User;
 import com.ainia.ecgApi.domain.task.ExaminationTask;
@@ -36,6 +34,7 @@ import com.ainia.ecgApi.service.task.ExaminationTaskService;
 import com.ainia.ecgApi.service.task.TaskService;
 import com.ainia.ecgApi.utils.DataProcessor;
 import com.ainia.ecgApi.utils.ECGChart;
+import com.ainia.ecgApi.utils.OxygenChart;
 
 /**
  * <p>HealthExamination Service Impl</p>
@@ -80,6 +79,7 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 
 	public void upload(final HealthExamination examination , final byte[] uploadData , String md5) {
 
+		// 判断是否有效登录
 		final AuthUser authUser = authenticateService.getCurrentUser();	
 		if (authUser == null) {
 			throw new ServiceException("authUser.error.notFound");
@@ -87,6 +87,15 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 		if (!User.class.getSimpleName().equals(authUser.getType())) {
 			throw new ServiceException("examination.error.upload.notAllowed");
 		}
+		// 判断是否是测试请求
+		boolean isTest = examination.getIsTest() == null ? false : examination.getIsTest();
+		if (uploadData == null && !isTest) {
+			throw new ServiceException("file.is.empty");
+		} else if (uploadData != null && uploadData.length == 0) {
+			throw new ServiceException("file.length.is.zero");
+		}
+
+		/*
 		//校验MD5值
 		if (StringUtils.isNotBlank(md5)) {
 			BigInteger bigint = new BigInteger(1 , DigestUtils.md5(uploadData));
@@ -96,20 +105,20 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 					log.warn(" the upload file md5 is not valid");
 				}
 			}
-		}
+		}*/
 		
-		// 防止被 /user/{id}/examination 注入
-		examination.setId(null);
+		examination.setId(null); // 防止被 examination的id被注入
 		examination.setUserId(authUser.getId());
 		examination.setUserName(authUser.getUsername());
 		examination.setUserType(authUser.getType());
-		examination.setTestItem("ipad");
+		examination.setTestItem("mobile");
 		
 		this.create(examination);
 		
 		//判断是否自动回复
 		String config = systemConfigService.findByKey(SystemConfig.EXAMINATION_REPLY_AUTO);
-		boolean isAuto = config == null?false : Boolean.valueOf(config);
+		boolean isAuto = config == null ? false : Boolean.valueOf(config);
+		boolean isReplied = false;
 		
 		ExaminationTask task = new ExaminationTask();
 		task.setExaminationId(examination.getId());
@@ -124,21 +133,41 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 			if (filters != null) {
 				for (HealthRule rule : filters) {
 					if (rule.isMatch(examination)) {
-						HealthReply reply = new HealthReply();
-						reply.setExaminationId(examination.getId());
-						rule.autoReply(reply);
-						healthReplyService.create(reply);
-						task.setAuto(true);
+						List <HealthRuleReply> repliyConfgs = rule.getReplys();
+						if (repliyConfgs != null && repliyConfgs.size() > 0) {
+							// 获得预设
+							HealthRuleReply replyConfig = repliyConfgs.get(0);
+							
+							// 设置reply
+							HealthReply reply = new HealthReply();
+							reply.setResult(replyConfig.getResult());
+							reply.setContent(replyConfig.getContent());
+							reply.setLevel(rule.getLevel());
+							reply.setReason("系统自动回复");
+							reply.setExaminationId(examination.getId());
+							rule.autoReply(reply);
+							healthReplyService.create(reply);
+							
+							// 设置task为auto
+							task.setAuto(true);
+							
+							isReplied = true;
+						}
+						
 					}
 				}
-				taskService.complete(task);
 			}
-		}
-		else {
-			taskService.pending(task);	
+			// 是否添加了回复数据
+			if (isReplied) {
+				taskService.complete(task); 
+			} else {
+				taskService.pending(task); 
+			}
+		} else {
+			taskService.pending(task);	// 直接转人工
 		}
 		
-		if (examination.getIsTest() == null || !examination.getIsTest()) {
+		if (!isTest) {
 			executorService.execute(new Runnable(){
 
 				public void run() {
@@ -157,7 +186,7 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 						
 						byte[] ecg1 = ECGChart.createChart(
 								"ECG I",
-								daolian, processor.getMaxDaolianI(), 0,
+								daolian, processor.getMaxDaolian(), 0,
 								daolian.length, (int)(daolian.length*0.756), (int)37.8*8);
 						uploadService.save(Type.heart_img, ecg1Path, ecg1);
 
@@ -168,7 +197,7 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 								+ "/ecg2.jpg";
 						byte[] ecg2 = ECGChart.createChart(
 								"ECG II",
-								daolian, processor.getMaxDaolianII(), 0,
+								daolian, processor.getMaxDaolian(), 0,
 								daolian.length, (int)(daolian.length*0.756), (int)37.8*8);
 						uploadService.save(Type.heart_img, ecg2Path, ecg2);
 
@@ -179,7 +208,7 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 								+ "/ecg3.jpg";
 						byte[] ecg3 = ECGChart.createChart(
 								"ECG III",
-								daolian, processor.getMaxDaolianIII(), 0,
+								daolian, processor.getMaxDaolian(), 0,
 								daolian.length, (int)(daolian.length*0.756), (int)37.8*8);
 						uploadService.save(Type.heart_img, ecg3Path, ecg3);
 
@@ -190,7 +219,7 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 								+ "/ecg4.jpg";
 						byte[] ecg4 = ECGChart.createChart(
 								"ECG aVR",
-								daolian, processor.getMaxDaolianAVR(), 0,
+								daolian, processor.getMaxDaolian(), 0,
 								daolian.length, (int)(daolian.length*0.756), (int)37.8*8);
 						uploadService.save(Type.heart_img, ecg4Path, ecg4);
 
@@ -201,7 +230,7 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 								+ "/ecg5.jpg";
 						byte[] ecg5 = ECGChart.createChart(
 								"ECG aVL",
-								daolian, processor.getMaxDaolianAVL(), 0,
+								daolian, processor.getMaxDaolian(), 0,
 								daolian.length, (int)(daolian.length*0.756), (int)37.8*8);
 						uploadService.save(Type.heart_img, ecg5Path, ecg5);
 
@@ -212,7 +241,7 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 								+ "/ecg6.jpg";
 						byte[] ecg6 = ECGChart.createChart(
 								"ECG aVF",
-								daolian, processor.getMaxDaolianAVF(), 0,
+								daolian, processor.getMaxDaolian(), 0,
 								daolian.length, (int)(daolian.length*0.756), (int)37.8*8);
 						uploadService.save(Type.heart_img, ecg6Path, ecg6);
 
@@ -223,20 +252,19 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 								+ "/ecg7.jpg";
 						byte[] ecg7 = ECGChart.createChart(
 								"ECG V",
-								daolian, processor.getMaxDaolianV(), 0,
+								daolian, processor.getMaxDaolian(), 0,
 								daolian.length, (int)(daolian.length*0.756), (int)37.8*8);
 						uploadService.save(Type.heart_img, ecg7Path, ecg7);		
 
-						float [] oxygen = processor.getOxygen();
-						String ecg8Path = "user/"
+						byte[] oxygenData = processor.getOxygenData();
+						int oxyLen = processor.getOxygenDataLen();
+						String oxyPath = "user/"
 								+ String.valueOf(authUser.getId())
 								+ "/examination/" + examination.getId()
 								+ "/ecg8.jpg";
-						byte[] ecg8 = ECGChart.createChart(
-								"Oxygen",
-								oxygen, 100f, 0,
-								oxygen.length, 1600, 300);
-						uploadService.save(Type.heart_img, ecg8Path, ecg8);	
+						byte[] oxyChart = OxygenChart.createChart(oxygenData, 0, oxyLen, oxyLen*10, (int)37.8*8);
+						String oxyUri = uploadService.save(Type.heart_img,
+								oxyPath, oxyChart);
 						
 						//存储原始文件
 						String rawPath = "user/" +  String.valueOf(authUser.getId()) + "/examination/" + examination.getId() + "/raw";

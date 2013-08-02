@@ -239,5 +239,5 @@ insert into card (id , encoded_serial , serial , encoded_password , days , creat
 values (14 , '9a04b55b7f73eb5b9dfd57680291b2afc592bf8f' , '1010' , '9a04b55b7f73eb5b9dfd57680291b2afc592bf8f' , 7 , '2013-07-12 01:00:00' , 1 , '2020-09-12 01:00:00'  , null , null , null , null , null ,null , null);
 -- card end
 
-commit;insert into system_config (id , type , config_key , value ) values (1 , 'basic' , 'upload.rootPath' , 'c:/upload/');
+commit;insert into system_config (id , type , config_key , value ) values (1 , 'basic' , 'upload.rootPath' , '/home/ainia/upload/');
 commit;

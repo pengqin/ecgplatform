@@ -59,10 +59,8 @@ define(function(require, exports) {
             });
         });
 
-        // http://www.acwind.net/blog/?p=749
-        return;
         // 没有token不能创建请求
-        it("some test examinations should not be created without token.", function(done) {
+        it("the test examinations should not be created without token.", function(done) {
             $.ajax({
                 url: PATH + '/api/user/{userId}/examination',
                 data: {
@@ -77,7 +75,7 @@ define(function(require, exports) {
         });
 
         // 错误token也不能创建请求
-        it("some test examinations should not be created with invalid token.", function(done) {
+        it("the test examinations should not be created with invalid token.", function(done) {
             $.ajax({
                 url: PATH + '/api/user/{userId}/examination',
                 data: {
@@ -93,7 +91,7 @@ define(function(require, exports) {
         });
 
         // 正确的token,没有文件的话 也不能创建测试例子
-        it("some test examinations should not be created with invalid token but without file.", function(done) {
+        it("the test examinations should not be created with invalid token but without file.", function(done) {
             $.ajax({
                 url: PATH + '/api/user/{userId}/examination',
                 data: {
@@ -108,8 +106,10 @@ define(function(require, exports) {
             });
         });
 
+        return;
+
         // 正确的token,没有文件的话, 能创建测试例子
-        it("some test examinations should not be created with invalid token but without file.", function(done) {
+        it("the test examinations should be created with invalid token but without file.", function(done) {
             $.ajax({
                 url: PATH + '/api/user/' + userId + '/examination',
                 data: {

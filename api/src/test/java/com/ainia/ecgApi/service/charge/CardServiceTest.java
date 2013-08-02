@@ -2,6 +2,7 @@ package com.ainia.ecgApi.service.charge;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -105,18 +106,19 @@ public class CardServiceTest {
 	}
 
 	@Test
-	public void testUpload() throws IOException {
+	public void testUpload() throws Exception {
 		CSVReader reader = new CSVReader(new InputStreamReader(Thread
 				.currentThread().getContextClassLoader()
 				.getResourceAsStream("card/upload.csv")));
 		List<String[]> list = reader.readAll();
 		List<Card> cards = new ArrayList(list.size());
+		SimpleDateFormat format  = new SimpleDateFormat("yyyy-MM-dd");
 		for (String[] values : list) {
 			Card card = new Card();
 			PropertyUtil.setProperty(card, Card.ENCODED_SERIAL, values[0]);
 			PropertyUtil.setProperty(card, Card.ENCODED_PASSWORD, values[1]);
 			PropertyUtil.setProperty(card, Card.DAYS, values[2]);
-			PropertyUtil.setProperty(card, Card.EXPIRED_DATE, values[3]);
+			PropertyUtil.setProperty(card, Card.EXPIRED_DATE, format.parse(values[3]));
 
 			cards.add(card);
 		}

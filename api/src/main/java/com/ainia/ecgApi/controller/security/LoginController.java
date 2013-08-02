@@ -82,14 +82,17 @@ public class LoginController {
 		if (user == null) {
 			ajaxResult.setStatus(HttpStatus.NOT_FOUND.value());
 		}
-		if (!authenticateService.checkPassword(user.getPassword() , password , null)) {
-			ajaxResult.setStatus(HttpStatus.UNAUTHORIZED.value());
+		if (user != null) {
+			if (!authenticateService.checkPassword(user.getPassword() , password , null)) {
+				ajaxResult.setStatus(HttpStatus.UNAUTHORIZED.value());
+			}
+			else {
+				ajaxResult.setStatus(HttpStatus.OK.value());
+				result.put(AjaxResult.AUTH_TOKEN , authenticateService.generateToken(username , User.class.getSimpleName()));
+				result.put(AjaxResult.AUTH_ID , user.getId().toString());
+			}
 		}
-		else {
-			ajaxResult.setStatus(HttpStatus.OK.value());
-			result.put(AjaxResult.AUTH_TOKEN , authenticateService.generateToken(username , User.class.getSimpleName()));
-			result.put(AjaxResult.AUTH_ID , user.getId().toString());
-		}
+		
 		return new ResponseEntity<Map<String , String>>(result, HttpStatus.valueOf(ajaxResult.getStatus()));
 	}
 

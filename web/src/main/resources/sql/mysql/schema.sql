@@ -115,7 +115,7 @@ create table health_examination (
     user_type varchar(30),
     is_test int,
     level varchar(30),
-    apk_id varchar(30),
+    apk_id varchar(40),
     blood_pressure_low int,
     blood_pressure_high int,
     heart_rhythm int,
@@ -163,7 +163,7 @@ create table task(
     id bigint auto_increment,
     status varchar(30),
     type varchar(30),
-    apk_id varchar(30),
+    apk_id varchar(40),
     user_id bigint,
     user_name varchar(30),
     expert_id bigint,
@@ -181,7 +181,7 @@ drop table if exists system_config;
 create table system_config (
     id int auto_increment,
     type varchar(10),
-    apk_id varchar(30),
+    apk_id varchar(40),
     config_key varchar(30),
     value varchar(200),
     primary key(id)

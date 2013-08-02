@@ -2,6 +2,7 @@ package com.ainia.ecgApi.controller.charge;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -105,12 +106,14 @@ public class CardController  {
 	        List<String[]> list =reader.readAll();  
 	        List<Card> cards = new ArrayList(list.size());
         
+	        // TODO: 判断不能喝现存卡号重复,卡号之间不重复,天数都是正整数,失效日期都是今天算起半年以后的日期
+	        SimpleDateFormat format   = new SimpleDateFormat("yyyy-MM-dd");
 	        for (String[] values : list) {
 	        	Card card = new Card();
 	        	PropertyUtil.setProperty(card , Card.ENCODED_SERIAL , cardService.encodeString(values[0] , null));
 	        	PropertyUtil.setProperty(card , Card.ENCODED_PASSWORD , cardService.encodeString(values[1], null));
 	        	PropertyUtil.setProperty(card , Card.DAYS , values[2]);
-	        	PropertyUtil.setProperty(card , Card.EXPIRED_DATE , values[3]);
+	        	PropertyUtil.setProperty(card , Card.EXPIRED_DATE , format.parse(values[3]));
 	        	cards.add(card);
 	        }
 	        cardService.create(cards);

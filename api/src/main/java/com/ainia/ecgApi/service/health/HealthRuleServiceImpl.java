@@ -1,5 +1,7 @@
 package com.ainia.ecgApi.service.health;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,4 +50,8 @@ public class HealthRuleServiceImpl extends BaseServiceImpl<HealthRule , Long> im
 	public void deleteByGroup(Long groupId) {
 		healthRuleDao.deleteByGroup(groupId);
 	}
+	
+	public List<HealthRule> findAllFiltersByUser(Long userId) {
+		return null;
+	};
 }

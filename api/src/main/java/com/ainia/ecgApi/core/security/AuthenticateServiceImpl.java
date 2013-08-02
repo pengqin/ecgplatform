@@ -63,7 +63,6 @@ public class AuthenticateServiceImpl implements AuthenticateService {
 		if (token.indexOf(TOKEN_SPLAT) == -1) {
 			throw new ServiceException("exception.token.invalid");
 		}
-		log.debug("=======================================");
 		log.debug("token is " + token);
 		String[] value = token.split(TOKEN_SPLAT);
 		String username = value[0];
@@ -82,9 +81,7 @@ public class AuthenticateServiceImpl implements AuthenticateService {
 		if (authUser == null) {
 			throw new ServiceException("auth.error.unknown");
 		}
-		if (log.isDebugEnabled()) {
-			log.debug("load the user " + authUser + " by token " + token);
-		}
+		log.debug("load the user " + authUser + " by token " + token);
 		return authUser;
 	}
 
