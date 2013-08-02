@@ -169,11 +169,11 @@ public class ECGChart {
 		} else if (max > 4f && max <= 8.0f) {
 			rangeAxis.setRange(-8.0, 8.0);
 			rangeAxis.setTickUnit(new NumberTickUnit(0.2));
-			vMarkerInterval = 2.0;
+			vMarkerInterval = 1.0;
 		} else if (max == 100f) {
 			rangeAxis.setRange(0.0, 100.0);
-			rangeAxis.setTickUnit(new NumberTickUnit(10));
-			vMarkerInterval = 10.0;
+			rangeAxis.setTickUnit(new NumberTickUnit(0.2));
+			vMarkerInterval = 1.0;
 			rangeAxis.setTickLabelsVisible(true);
 		} else {
 			rangeAxis.setAutoRange(true);

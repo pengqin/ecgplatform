@@ -116,7 +116,7 @@ public class CardServiceTest {
 			PropertyUtil.setProperty(card, Card.ENCODED_SERIAL, values[0]);
 			PropertyUtil.setProperty(card, Card.ENCODED_PASSWORD, values[1]);
 			PropertyUtil.setProperty(card, Card.DAYS, values[2]);
-			PropertyUtil.setProperty(card, Card.EXPIRED_DATE, values[3]);
+			PropertyUtil.setProperty(card, Card.EXPIRED_DATE, values[3] + " 00:00:00");
 
 			cards.add(card);
 		}

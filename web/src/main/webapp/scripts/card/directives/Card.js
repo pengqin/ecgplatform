@@ -1,6 +1,8 @@
 'use strict';
 define(function(require, exports) {
 
+var dialogTemp = require("../templates/dialog.html");
+
 angular.module('ecgCardDirectives', [])
 .controller('CardUploadController', ['$scope', '$filter', '$location', 'EnumService', 'CardService', function ($scope, $filter, $location, EnumService, CardService) {
     // 表格头
@@ -9,6 +11,40 @@ angular.module('ecgCardDirectives', [])
     // 命名空间
     $scope.card = {};
 
+}])
+.controller('UploadDialogController', 
+    ['$scope', '$filter', '$timeout', '$location', 'EnumService', 'CardService', 
+    function ($scope, $filter, $timeout, $location, EnumService, CardService) {
+
+    // 命名空间
+    $scope.uploaddialog = {};
+
+    $scope.uploaddialog.execute = function() {
+        document.getElementById("uploadCardFrame").contentWindow.upload();
+    };
+
+    $scope.uploaddialog.hide = function(opts) {
+      $('#ecgUploadDialog').modal('hide');
+    };
+    window.closeUploadCardDialog = $scope.uploaddialog.hide;
+
+    $scope.uploaddialog.show = function(opts) {
+      var opts = opts || {};
+      $scope.uploaddialog.handler = opts.handler;
+      document.getElementById("uploadCardFrame").src = PATH + '/cardUpload.html?token=' +  $.cookie("AiniaOpAuthToken");
+      $('#ecgUploadDialog').modal('show');
+    };
+
+}])
+.directive("ecgUploadDialog", [ '$location', function($location) {
+    return {
+        restrict : 'A',
+        replace : false,
+        template : dialogTemp,
+        controller : "UploadDialogController",
+        link : function($scope, $element, $attrs) {
+        }
+    };
 }])
 .controller('CardQueryController', ['$scope', '$timeout', '$location', 'EnumService', 'CardService',
     function ($scope, $timeout, $location, EnumService, CardService) {
