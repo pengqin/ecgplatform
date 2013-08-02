@@ -25,8 +25,6 @@
 	</target>
 
 	<target name="copy" depends="clean, concat">
-		<copy tofile="${web.dir}/src/main/resources/sql/mysql/data.sql" overwrite="true" file="${basedir}/src/main/resources/sql/h2/data.sql">
-		</copy>
 		<copy todir="${api.dir}/src/main/resources/sql/mysql">
 			<fileset dir="${basedir}/src/main/resources/sql/mysql">
 			</fileset>
