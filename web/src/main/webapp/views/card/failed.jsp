@@ -1,5 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" %>
-<%@include file="/views/include/pub.jsp" %>
 <html>
 <head>
 <title>卡号上传失败</title>
