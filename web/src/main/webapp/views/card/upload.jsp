@@ -34,7 +34,6 @@
 	}
 
 	token = window.location.href.substring(idx + 6);
-	console.info(token);
 
 	document.getElementById("token").value = token;
 
