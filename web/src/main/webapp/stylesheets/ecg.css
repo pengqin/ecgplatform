@@ -9,9 +9,11 @@ i {
 .navbar-inner > .container {
 	width: 98%;
 }
+.ecgContent {
+	min-height: 500px;
+}
 .container {
 	width: 98%;
-}
 }
 
 /*应用加载时没有滚动条*/

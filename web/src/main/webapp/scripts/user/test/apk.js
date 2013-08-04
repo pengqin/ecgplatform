@@ -338,20 +338,24 @@ define(function(require, exports) {
                 url: PATH + '/api/user/' + userId + '/password',
                 type: 'PUT',
                 data: {oldPassword: user.password, newPassword: user.password + 'updated'},
-                headers: {Authorization: token}
+                headers: {Authorization: token},
+                dataType: 'json'
             }).then(function(res) {
+                expect(res.token).not.to.be(undefined);
+                token = res.token;
                 done()
             }, function() {
                 throw new Error('failed to update.');
             });
         });
 
-        it("the user should authenciated with new password.", function(done) {
+        // 老密码不能登录
+        it("the user should not authenciated with old password.", function(done) {
             $.ajax({
                 url: PATH + '/api/user/auth',
                 data: {
-                    'mobile': user.mobile,
-                    'password': user.password + 'updated'
+                    'username': user.mobile,
+                    'password': user.password
                 },
                 type: 'POST',
                 dataType: 'json'
@@ -359,6 +363,23 @@ define(function(require, exports) {
                 throw new Error('failed to authnenciate with mobile.');
             }, function() {
                 done();
+            });
+        });
+
+        // 新密码可以登录
+        it("the user should authenciated with new password.", function(done) {
+            $.ajax({
+                url: PATH + '/api/user/auth',
+                data: {
+                    'username': user.mobile,
+                    'password': user.password + 'updated'
+                },
+                type: 'POST',
+                dataType: 'json'
+            }).then(function(res) {
+                done();
+            }, function() {
+                throw new Error('failed to authnenciate with mobile.');
             });
         });
 

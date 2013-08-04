@@ -66,7 +66,9 @@ define(function(require, exports) {
             expect(sessionuser).not.to.be(undefined);
             // updated
             ProfileService.updateUserPassword(sessionuser.id, user.password, user.password + 'updated')
-            .then(function() {
+            .then(function(token) {
+                expect(token).not.to.be(undefined);
+                httpProvider.defaults.headers.common['Authorization'] = token;
                 done();
             }, function() {
                 throw new Error('the session user\'s password can\'t be updated');
