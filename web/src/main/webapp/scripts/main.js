@@ -16,12 +16,14 @@ var faqTemp = require("./common/templates/faq.html");
 
 // GOABAL VAL
 window.PATH = window.location.pathname.slice(0, window.location.pathname.lastIndexOf("/"));
-    
+
 angular.module('ecgApp', ['ecgCommon', 'ecgTask', 'ecgMonitor', 'ecgEmployee', 'ecgUser', 'ecgRule', 'ecgProfile', 'ecgCard'])
 .config(['$httpProvider', '$routeProvider', function ($httpProvider, $routeProvider) {
         var token = $.cookie('AiniaOpAuthToken');
         // header头带认证参数
-         $httpProvider.defaults.headers.common['Authorization'] = token;
+        $httpProvider.defaults.headers.common['Authorization'] = token;
+        // 修改密码需要更改token
+        window.ecgHttpProvider = $httpProvider;
     
         // 配置路由,和模块相关的配置均在相应模块下的main.js
         $routeProvider

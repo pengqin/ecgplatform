@@ -85,8 +85,8 @@ angular.module('ecgProfileDirectives', [])
     };
 }])
 // 修改密码
-.controller('ProfilPasswordController', ['$scope', '$routeParams', '$timeout', '$location', 'EnumService', 'ProfileService',
-    function ($scope, $routeParams, $timeout, $location, EnumService, ProfileService) {
+.controller('ProfilPasswordController', ['$scope', '$http', '$routeParams', '$timeout', '$location', 'EnumService', 'ProfileService',
+    function ($scope, $http, $routeParams, $timeout, $location, EnumService, ProfileService) {
 
    	$scope.profile.user = null;
 
@@ -112,18 +112,33 @@ angular.module('ecgProfileDirectives', [])
     };
 
     $scope.profile.updatePassword = function() {
-        var isEmployee = $scope.session.user.isEmployee, promise;
+        var isEmployee = $scope.session.user.isEmployee, promise, updateCookie;
         
         $scope.profile.user.birthday = $('#profile-birthday input').val();
         
         if (isEmployee && isEmployee()) {
             promise = ProfileService.updatePassword($scope.profile.user.id, $scope.profile.user.oldPassword, $scope.profile.user.newPassword);
+            updateCookie = function(token) {
+                $.cookie('AiniaOpAuthToken', encodeURI(token), { expires: 1, path: '/' });
+            };
         } else {
             promise = ProfileService.updateUserPassword($scope.profile.user.id, $scope.profile.user.oldPassword, $scope.profile.user.newPassword);
+            updateCookie = function() {
+                $.cookie('AiniaSelfAuthToken', encodeURI(token), { expires: 3, path: '/' });
+            };
         }
 
         $scope.dialog.showStandby();
-        promise.then(function(result) {
+        promise.then(function(token) {
+            if (!token) {
+                $scope.message.success("修改密码失败!");
+                return;
+            }
+            // 修改token
+            window.ecgHttpProvider.defaults.headers.common['Authorization'] = token;
+            // 更新cookie
+            if (updateCookie) { updateCookie(token); }
+            // 后续操作
             $scope.dialog.hideStandby();
             $scope.message.success("修改密码成功!");
             refresh();

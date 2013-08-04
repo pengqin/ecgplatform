@@ -29,12 +29,11 @@ define(function(require, exports) {
                 throw new Error('failed to authnenciate as a new user.');
             });
         });
-        return;
 
         // 发送邮件提示
-        it("the retake email should be sent..", function(done) {
+        it("the retake email should be sent.", function(done) {
             $.ajax({
-                url: PATH + '/api/password/retake?email=' + user.email,
+                url: PATH + '/api/user/password/retake?email=' + user.email,
                 dataType: 'json'
             }).then(function(res) {
                 done();
@@ -43,6 +42,20 @@ define(function(require, exports) {
             });
         });
 
+        if (window.location.href.indexOf("sms") > -1) {
+            // 发送邮件提示
+            it("the retake sms should be sent.", function(done) {
+                $.ajax({
+                    url: PATH + '/api/user/password/retake?mobile=' + user.username,
+                    dataType: 'json'
+                }).then(function(res) {
+                    done();
+                }, function() {
+                    throw new Error('failed to send retake sms.');
+                });
+            });
+        }
+        
     };
 
 });
