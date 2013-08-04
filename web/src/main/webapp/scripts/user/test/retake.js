@@ -42,17 +42,20 @@ define(function(require, exports) {
             });
         });
 
-        // 发送邮件提示
-        it("the retake sms should be sent.", function(done) {
-            $.ajax({
-                url: PATH + '/api/user/password/retake?mobile=' + user.username,
-                dataType: 'json'
-            }).then(function(res) {
-                done();
-            }, function() {
-                throw new Error('failed to send retake sms.');
+        if (window.location.href.indexOf("sms") > -1) {
+            // 发送邮件提示
+            it("the retake sms should be sent.", function(done) {
+                $.ajax({
+                    url: PATH + '/api/user/password/retake?mobile=' + user.username,
+                    dataType: 'json'
+                }).then(function(res) {
+                    done();
+                }, function() {
+                    throw new Error('failed to send retake sms.');
+                });
             });
-        });
+        }
+        
     };
 
 });
