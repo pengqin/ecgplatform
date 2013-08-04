@@ -13,6 +13,7 @@ create table user (
     retake_date datetime,
     retake_count int,
     salt varchar(100),
+    token_date datetime,
     last_login_date datetime,
     gender int,
 	type varchar(10),
