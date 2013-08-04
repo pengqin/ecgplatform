@@ -214,9 +214,7 @@ public class UserController extends BaseController<User , Long> {
 		else {
 			userService.changePassword(id, oldPassword, newPassword);
 		}
-		String month = String.valueOf(new DateTime().getMonthOfYear());
-		user.setSalt(EncodeUtils.encodeHex((EncodeUtils.asciiSum(user.getPassword()) + 
-				month).getBytes()));
+		user.setSalt(EncodeUtils.encodeHex(EncodeUtils.asciiSum(user.getPassword()).getBytes()));
 		userService.update(user);
 		
 		Map result = new HashMap(1);

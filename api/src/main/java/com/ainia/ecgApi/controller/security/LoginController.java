@@ -66,10 +66,8 @@ public class LoginController {
 			ajaxResult.setStatus(HttpStatus.UNAUTHORIZED.value());
 		}
 		else {
-			String month = String.valueOf(new DateTime().getMonthOfYear());
 			authenticateService.setCurrentUser(new AuthUserImpl(employee.getId() , employee.getName() , employee.getUsername() , Employee.class.getSimpleName() , employee.getRolesArray()));
-			employee.setSalt(EncodeUtils.encodeHex((EncodeUtils.asciiSum(employee.getPassword()) + 
-													month).getBytes()));
+			employee.setSalt(EncodeUtils.encodeHex(EncodeUtils.asciiSum(employee.getPassword()).getBytes()));
 			employee.setLastLoginDate(new Date());
 			employeeService.update(employee);
 			ajaxResult.setStatus(HttpStatus.OK.value());
@@ -99,8 +97,7 @@ public class LoginController {
 			else {
 				String month = String.valueOf(new DateTime().getMonthOfYear());
 				authenticateService.setCurrentUser(new AuthUserImpl(user.getId() ,user.getName() , user.getUsername() , User.class.getSimpleName()));
-				user.setSalt(EncodeUtils.encodeHex((EncodeUtils.asciiSum(user.getPassword()) + 
-													month).getBytes()));
+				user.setSalt(EncodeUtils.encodeHex(EncodeUtils.asciiSum(user.getPassword()).getBytes()));
 				user.setLastLoginDate(new Date());
 				userService.update(user);
 				ajaxResult.setStatus(HttpStatus.OK.value());

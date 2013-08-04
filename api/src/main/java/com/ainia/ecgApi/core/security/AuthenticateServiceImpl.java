@@ -74,7 +74,7 @@ public class AuthenticateServiceImpl implements AuthenticateService {
 		if (User.class.getSimpleName().equals(userType)) {
 			User user = userService.findByUsername(username);
 			Date lastLoginDate = user.getLastLoginDate();
-			if (lastLoginDate == null || new DateTime().minusDays(1).isAfter(lastLoginDate.getTime())) {
+			if (lastLoginDate == null || new DateTime().minusDays(30).isAfter(lastLoginDate.getTime())) {
 				throw new ServiceException("exception.auth.token.invalid");
 			}
 			if (user != null) {

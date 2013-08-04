@@ -94,9 +94,7 @@ public class EmployeeController extends BaseController<Employee , Long> {
 		else {
 			employeeService.changePassword(id, oldPassword, newPassword);
 		}
-		String month = String.valueOf(new DateTime().getMonthOfYear());
-		employee.setSalt(EncodeUtils.encodeHex((EncodeUtils.asciiSum(employee.getPassword()) + 
-				month).getBytes()));
+		employee.setSalt(EncodeUtils.encodeHex(EncodeUtils.asciiSum(employee.getPassword()).getBytes()));
 		employeeService.update(employee);
 		
 		Map result = new HashMap(1);
