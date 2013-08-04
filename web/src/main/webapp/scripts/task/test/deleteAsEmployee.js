@@ -68,7 +68,6 @@ define(function(require, exports) {
                 type: 'DELETE',
                 headers: {Authorization: token}
             }).then(function(res) {
-                console.info(res);
                 throw new Error('should not be deleted by the api /api/task/{id}.');
             }, function() {
                 done();

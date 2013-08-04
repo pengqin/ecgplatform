@@ -16,8 +16,8 @@ define(function(require, exports) {
             return;
         }
 
-        console.info('all roles will be used in the task test module.');
-        
+        console.debug('all roles will be used in the task test module.');
+
         var adminRuntime = {
             undone: 0,
             done: 0
@@ -152,10 +152,10 @@ define(function(require, exports) {
         // 场景3结束
 
         it("the runtime should be updated as expectation", function() {
-            console.info(adminRuntime);
-            console.info(chiefRuntime);
-            console.info(operatorRuntime);
-            console.info(operator1Runtime);
+            console.debug(adminRuntime);
+            console.debug(chiefRuntime);
+            console.debug(operatorRuntime);
+            console.debug(operator1Runtime);
             expect(adminRuntime.undone).to.be(chiefRuntime.undone);
         });
 
