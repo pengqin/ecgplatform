@@ -62,6 +62,7 @@ create table employee (
     email varchar(64),
     salt varchar(100),
     last_login_date datetime,
+    token_date datetime,
     version int,
     primary key(id)
 );
