@@ -23,7 +23,8 @@
 		<tr>
 		<td width="150px" valign="top"><label for="user-email">邮箱地址:</label></td>
 		<td>
-			<input ng-model="user.newobj.email" class="input-xlarge" id="user-email" ng-pattern="/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/"
+			<input ng-model="user.newobj.email" class="input-xlarge" id="user-email"
+				   ng-pattern="/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/"
 				   required placeholder="请输入有效邮箱地址" ng-change="user.checkUnique()"></input>
 			<span class="required">*</span><span class="desc">找回密码的唯一手段</span></td>
 		</tr>

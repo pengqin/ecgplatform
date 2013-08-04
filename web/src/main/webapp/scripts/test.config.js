@@ -56,4 +56,10 @@
     TESTCONFIGS.user6.mobile = "13212345678";
     TESTCONFIGS.user6.username = "13212345678";
     TESTCONFIGS.user6.password = "passw0rd";
+
+    TESTCONFIGS.user7 = {};
+    TESTCONFIGS.user7.mobile = "13811749917";
+    TESTCONFIGS.user7.username = "13811749917";
+    TESTCONFIGS.user7.email = "16259903@qq.com";
+    TESTCONFIGS.user7.password = "passw0rd";
 })();
