@@ -63,6 +63,10 @@ angular.module('ecgProfileService', [])
                     headers:{'Content-Type':'application/x-www-form-urlencoded'},
                     data: $.param({oldPassword: oldpwd, newPassword: newpwd}),
                     url: employeeUri + '/' + id + '/password'
+                }).then(function(res) {
+                    return res.data.token;
+                }, function() {
+                    return null;
                 });
             },
             resetPassword: function(id) {
@@ -91,6 +95,10 @@ angular.module('ecgProfileService', [])
                     headers:{'Content-Type':'application/x-www-form-urlencoded'},
                     data: $.param({oldPassword: oldpwd, newPassword: newpwd}),
                     url: userUri + '/' + id + '/password'
+                }).then(function(res) {
+                    return res.data.token;
+                }, function() {
+                    return null;
                 });
             },
             heartbeat: function(employee) {

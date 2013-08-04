@@ -11,7 +11,6 @@ define(function(require, exports) {
             return;
         }
 
-        /*
         runCaseAs('admin') ? testBaseAsAdminOrChief({
         	it: mocha.it,
         	user: {username: TESTCONFIGS.admin.username, password: TESTCONFIGS.admin.password}
@@ -23,7 +22,7 @@ define(function(require, exports) {
 
         runCaseAs('user') ? testAutoReplyAsAPK({
             it: mocha.it
-        }, angluarjs, services) : null;*/
+        }, angluarjs, services) : null;
 
         runCaseAs('user') ? testRetakePWDAsAPK({
             it: mocha.it,
