@@ -12,8 +12,6 @@
 <p><strong>${serial}</strong></p>
 </c:forEach>
 
-<a href="${path}/views/card/upload.jsp">返回</a>
-
 </body>
 
 </html>
