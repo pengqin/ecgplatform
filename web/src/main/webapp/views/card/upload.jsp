@@ -9,7 +9,7 @@
 
 <form id="form" enctype="multipart/form-data" action="/api/card/upload" method="post" style="display:block;">
 	<input type="hidden" id="token" name="token" value="">
-	<input id="file" name="file" type="file">
+	<input id="file" name="file" type="file" value="请选择充值卡CSV数据文件">
 </form>
 <div id="notoken" style="display:none;"> 
 	您无法访问该页面
@@ -26,14 +26,14 @@
 		node.style.display = flag ? 'block' : 'none';
 	}
 
-	var token = window.location.href.split("=");
-	if (token.length !== 2) {
+	var idx = window.location.href.indexOf("token=");
+	if (idx < 0) {
 		toggle(document.getElementById("form"), false);
 		toggle(document.getElementById("notoken"), true);
 		return;
 	}
 
-	token = token[1];
+	token = window.location.href.substring(idx + 6);
 
 	document.getElementById("token").value = token;
 

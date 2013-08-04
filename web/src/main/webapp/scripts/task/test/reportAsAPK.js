@@ -51,6 +51,21 @@ define(function(require, exports) {
         it("the statisticses data can be retrieved.", function(done) {
             expect(userId).not.to.be(null);
             $.ajax({
+                url: PATH + '/api/examination/avg?userId=' + userId + '&start=2013-05-01',
+                dataType: 'json',
+                headers: {Authorization: token}
+            }).then(function(statisticses) {
+                expect(statisticses).not.to.be(undefined);
+                done();
+            }, function() {
+                throw new Error('not able to retrieved the statistics data.');
+            });
+        });
+
+        // 访问统计接口 特定时间段数据
+        it("the statisticses data can be retrieved.", function(done) {
+            expect(userId).not.to.be(null);
+            $.ajax({
                 url: PATH + '/api/examination/avg?userId=' + userId + '&start=2013-05-01&end=2013-08-01',
                 dataType: 'json',
                 headers: {Authorization: token}
