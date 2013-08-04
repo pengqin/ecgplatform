@@ -123,28 +123,28 @@ angular.module('ecgProfileDirectives', [])
             };
         } else {
             promise = ProfileService.updateUserPassword($scope.profile.user.id, $scope.profile.user.oldPassword, $scope.profile.user.newPassword);
-            updateCookie = function() {
+            updateCookie = function(token) {
                 $.cookie('AiniaSelfAuthToken', encodeURI(token), { expires: 3, path: '/' });
             };
         }
 
         $scope.dialog.showStandby();
         promise.then(function(token) {
-            if (!token) {
-                $scope.message.success("修改密码失败!");
-                return;
-            }
-            // 修改token
-            window.ecgHttpProvider.defaults.headers.common['Authorization'] = token;
-            // 更新cookie
-            if (updateCookie) { updateCookie(token); }
             // 后续操作
             $scope.dialog.hideStandby();
-            $scope.message.success("修改密码成功!");
+
+            if (!token) {
+                $scope.message.error("修改密码失败！您输入正确的旧密码可能不正确。");
+                return;
+            }
+            // 更新cookie
+            if (updateCookie) { updateCookie(token); }
+            
+            $scope.message.success("修改密码成功！");
             refresh();
         }, function() {
             $scope.dialog.hideStandby();
-            $scope.message.error("修改密码失败!");
+            $scope.message.error("修改密码失败！您输入正确的旧密码可能不正确。");
         });;
     };
 }])
