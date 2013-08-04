@@ -396,6 +396,10 @@ public class UserController extends BaseController<User , Long> {
 		if (StringUtils.isBlank(mobile) && StringUtils.isBlank(email)) {
 			response = new ResponseEntity(HttpStatus.BAD_REQUEST);
 		}
+		if (StringUtils.isBlank(newPassword) || StringUtils.isBlank(code)) {
+			response = new ResponseEntity(HttpStatus.BAD_REQUEST);
+		}
+
 		if (StringUtils.isNotBlank(email)) {
 			User user = userService.findByEmail(email);
 			if (user == null) {

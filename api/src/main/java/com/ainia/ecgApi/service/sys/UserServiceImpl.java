@@ -182,23 +182,24 @@ public class UserServiceImpl extends BaseServiceImpl<User , Long> implements Use
 		String retakeCode = user.getRetakeCode();
 		Date   retakeDate = user.getRetakeDate();
 		Integer retakeCount= user.getRetakeCount() == null ? 1 : user.getRetakeCount();
-		if (StringUtils.isBlank(newPassword) || StringUtils.isBlank(code)) {
-			throw new ServiceException("exception.user.retakePassword.infoError");
-		}
+
 		if (new DateTime(retakeDate).plusHours(24).isBefore(new Date().getTime())) {
-			throw new ServiceException("exception.user.retakePassword.dateTimeout");
+			throw new ServiceException("exception.user.retakePassword.expried");
 		}
 		if (!retakeCode.equals(code)) {
-			if (retakeCount > RETAKE_MAX_NUM) {
+			ServiceException exception;
+			if (retakeCount >= RETAKE_MAX_NUM) {
 				user.setRetakeCode(null);
 				user.setRetakeCount(null);
 				user.setRetakeDate(null);
+				exception = new ServiceException("exception.user.retakePassword.code.max.try");
 			}
 			else {
 				user.setRetakeCount(retakeCount + 1);
+				exception = new ServiceException("exception.user.retakePassword.code.not.equal");
 			}
 			userDao.save(user);
-			throw new ServiceException("exception.user.retakePassword.codeNotEqual");
+			throw exception;
 		}
 		//reset the password
 		user.setPassword(authenticateService.encodePassword(newPassword , null));
