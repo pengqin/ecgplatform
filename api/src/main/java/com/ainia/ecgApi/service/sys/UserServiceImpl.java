@@ -57,6 +57,8 @@ public class UserServiceImpl extends BaseServiceImpl<User , Long> implements Use
 		if (StringUtils.isNotBlank(user.getPassword())) {
 			user.setPassword(authenticateService.encodePassword(user.getPassword() , null));
 		}
+		// TODO 手机已经被注册了，需要抛出终端可判断的exception，否则终端智能看到500的unknown
+		// TODO 邮箱已经被注册以后，和上一步相同处理
 		return super.create(user);
 	}
 	
