@@ -328,7 +328,7 @@ public class UserController extends BaseController<User , Long> {
     	if (!authUser.isUser()) {
     		return new ResponseEntity(HttpStatus.FORBIDDEN);
     	}
-    	cardService.charge(serial, password ,  activedDate , authUser.getId() , userService.get(authUser.getId()));
+    	cardService.charge(serial, password ,  activedDate , null , userService.get(authUser.getId()));
     	
     	return new ResponseEntity(HttpStatus.OK);
 	}
