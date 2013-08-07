@@ -4,7 +4,11 @@ define(function(require, exports) {
 var profileEditTemp = require("../templates/profile/edit.html");
 var profilePasswordTemp = require("../templates/profile/password.html");
 
+var httpProvider;
 angular.module('ecgProfileDirectives', [])
+.config(['$httpProvider', function ($httpProvider) {
+    httpProvider = $httpProvider;
+}])
 .controller('ProfileController', ['$scope', '$routeParams', '$timeout', '$location', 'EnumService', 'ProfileService',
     function ($scope, $routeParams, $timeout, $location, EnumService, ProfileService) {
     $scope.subheader.title = "个人设置";
@@ -137,6 +141,8 @@ angular.module('ecgProfileDirectives', [])
                 $scope.message.error("修改密码失败！您输入正确的旧密码可能不正确。");
                 return;
             }
+            // 更新请求头
+            httpProvider.defaults.headers.common['Authorization'] = token;
             // 更新cookie
             if (updateCookie) { updateCookie(token); }
             

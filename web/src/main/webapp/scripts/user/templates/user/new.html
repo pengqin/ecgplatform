@@ -25,8 +25,8 @@
 		<td>
 			<input ng-model="user.newobj.email" class="input-xlarge" id="user-email"
 				   ng-pattern="/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/"
-				   required placeholder="请输入有效邮箱地址" ng-change="user.checkUnique()"></input>
-			<span class="required">*</span><span class="desc">找回密码的唯一手段</span></td>
+				   placeholder="请输入有效邮箱地址" ng-change="user.checkUnique()"></input>
+			<span class="desc">找回密码的唯一手段</span></td>
 		</tr>
 
 		<tr>
@@ -115,7 +115,7 @@
 		<button class="btn" type="button"
 				ng-class="{'btn-primary': createChiefForm.$valid && user.isUnique && user.isEmailUnique}" 
 				ng-click="user.create()"
-				ng-disabled="!createChiefForm.$valid || !user.isUnique">
+				ng-disabled="!createChiefForm.$valid || !user.isUnique || !user.isEmailUnique">
 			<i class="icon-save"></i>保存
 		</button>
 		<a href="#/user" class="btn"><i class="icon-remove"></i>取消</a>
