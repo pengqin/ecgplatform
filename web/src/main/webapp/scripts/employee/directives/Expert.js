@@ -80,6 +80,9 @@ angular.module('ecgExpert', [])
         $location.path("expert/" + expert.id);
     };
 
+    // 刷新功能
+    $scope.expert.refresh = refreshGrid;
+
 }])
 .controller('ExpertNewController', ['$scope', '$timeout', '$location', 'EnumService', 'ProfileService', 'ExpertService',
     function ($scope, $timeout, $location, EnumService, ProfileService, ExpertService) {

@@ -1,5 +1,9 @@
 <div class="row-fluid">
 	<div class="span12 buttons">
+		<button class="btn btn-primary" type="button"
+				ng-click="user.refresh()">
+			<i class="icon-refresh"></i>刷新
+		</button>
 		<a href="#/user/new" class="btn btn-primary" ng-show="session.user.isChief() || session.user.isAdmin()"><i class="icon-plus" ></i>新增用户</a>
 		<!--button class="btn" type="button"
 				ng-class="{'btn-danger': user.selectedItem != null}"
@@ -29,6 +33,6 @@
 		  </tbody>
 		</table>
 
-		<at-pagination items-per-page="10" instance="userPagination" list="user.filteredData"></at-pagination>
+		<div at-server-pagination items-per-page="15" instance="userPagination" list="user.data" paging="user.paging"></div>
     </div>
 </div>
