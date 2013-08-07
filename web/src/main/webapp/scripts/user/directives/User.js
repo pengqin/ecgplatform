@@ -127,7 +127,7 @@ angular.module('ecgUserModules', [])
     };
 
     $scope.user.isUnique = false;
-    $scope.user.isEmailUnique = false;
+    $scope.user.isEmailUnique = true;
     $scope.user.checkUnique = function() {
         if ($scope.user.newobj.mobile) {
             UserService.findAllByMobile($scope.user.newobj.mobile).then(function(users) {
@@ -203,6 +203,23 @@ angular.module('ecgUserModules', [])
     refresh();
 
     $scope.user.genders = EnumService.getGenders();
+
+    $scope.user.isEmailUnique = true;
+    $scope.user.checkUnique = function() {
+        if ($scope.user.updateobj.email) {
+            UserService.findAllByEmail($scope.user.updateobj.email).then(function(users) {
+                if (users.length > 0) { 
+                    $scope.user.isEmailUnique = false;
+                    $scope.message.warn("邮箱地址" + $scope.user.updateobj.email + "已存在!");
+                } else {
+                    $scope.user.isEmailUnique = true;
+                }
+            }, function() {
+                $scope.user.isEmailUnique = false;
+                $scope.message.warn("查询邮箱地址是否唯一时出错!");
+            });
+        }    
+    };
 
     $('#user-birthday').datetimepicker({
         format: "yyyy-MM-dd",

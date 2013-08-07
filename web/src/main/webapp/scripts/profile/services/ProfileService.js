@@ -3,9 +3,6 @@ define(function(require, exports) {
 
 var httpProvider;
 angular.module('ecgProfileService', [])
-.config(['$httpProvider', function ($httpProvider) {
-    httpProvider = $httpProvider;
-}])
 .factory("ProfileService", function($rootScope, $http) {
     var employeeUri = PATH + "/api/employee";
     var userUri = PATH + "/api/user";
@@ -68,7 +65,6 @@ angular.module('ecgProfileService', [])
                 data: $.param({oldPassword: oldpwd, newPassword: newpwd}),
                 url: employeeUri + '/' + id + '/password'
             }).then(function(res) {
-                httpProvider.defaults.headers.common['Authorization'] = res.data.token;
                 return res.data.token;
             }, function() {
                 return null;
@@ -101,7 +97,6 @@ angular.module('ecgProfileService', [])
                 data: $.param({oldPassword: oldpwd, newPassword: newpwd}),
                 url: userUri + '/' + id + '/password'
             }).then(function(res) {
-                httpProvider.defaults.headers.common['Authorization'] = res.data.token;
                 return res.data.token;
             }, function() {
                 return null;

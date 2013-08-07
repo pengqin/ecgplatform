@@ -64,14 +64,13 @@ define(function(require, exports) {
         });
 
         // 不能注册2次
-        it("the user should not be created by user/apk again.", function(done) {
+        it("the user should not be created by user/apk with the same username again.", function(done) {
             $.ajax({
                 url: PATH + '/api/user',
                 data: {
                     'username': user.mobile,
                     'name': user.name,
-                    'password': user.password,
-                    'email': user.mobile + '@test.com'
+                    'password': user.password
                 },
                 type: 'POST'
             }).then(function(res) {
@@ -82,7 +81,7 @@ define(function(require, exports) {
         });
 
         // 相同邮箱不能继续注册
-        it("the user should not be created by user/apk again.", function(done) {
+        it("the user should not be created by user/apk with the same email again.", function(done) {
             $.ajax({
                 url: PATH + '/api/user',
                 data: {
