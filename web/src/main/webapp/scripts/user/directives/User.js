@@ -15,14 +15,20 @@ angular.module('ecgUserModules', [])
 
     // 表格展示
     $scope.user.data = null;
-    $scope.user.filteredData = null;
+    $scope.user.paging = {
+        total: 50,
+        curPage: 0,
+        goToPage: function(page) {
+            console.info(page);
+        }
+    };
+
     // 刷新功能
     function refreshGrid() {
         $scope.dialog.showLoading();
         UserService.queryAll().then(function(users) {
             $scope.dialog.hideStandby();
             $scope.user.data = users;
-            $scope.user.filteredData = $scope.user.data;
         }, function() {
             $scope.dialog.hideStandby();
             $scope.message.error("无法加载用户数据!");
@@ -106,6 +112,9 @@ angular.module('ecgUserModules', [])
     $scope.user.showPage = function(user) {
         $location.path("user/" + user.id);
     };
+
+    // 刷新功能
+    $scope.user.refresh = refreshGrid;
 
 }])
 .controller('UserNewController', ['$scope', '$timeout', '$location', 'EnumService', 'ProfileService', 'UserService',

@@ -80,6 +80,8 @@ angular.module('ecgOperator', [])
         $location.path("operator/" + operator.id);
     };
 
+    // 刷新功能
+    $scope.operator.refresh = refreshGrid;
 }])
 .controller('OperatorNewController', ['$scope', '$timeout', '$location', 'EnumService', 'ProfileService', 'OperatorService',
     function ($scope, $timeout, $location, EnumService, ProfileService, OperatorService) {

@@ -2,7 +2,7 @@
 define(function(require, exports) {
 
 angular.module('ecgRuleService', [])
-    .factory("RuleService", function($rootScope, $http) {
+    .factory("RuleService", function($rootScope, $http, $q) {
         var uri = PATH + "/api/rule";
 
         return {
@@ -145,42 +145,16 @@ angular.module('ecgRuleService', [])
                 high.level = 'outside';
                 high.groupId = groupId;
 
-                return this.create(low)
-                .then(function(result) {
-                    if (result) {
-                        success++;
-                    } else {
-                        error++;
-                    }
-                }, function() {
-                    error++;
-                })
-                .then(function() {
-                    return that.create(mid);
-                })
-                .then(function(result) {
-                    if (result) {
-                        success++;
-                    } else {
-                        error++;
-                    }
-                }, function() {
-                    error++;
-                })
-                .then(function() {
-                    return that.create(high);
-                })
-                .then(function(result) {
-                    if (result) {
-                        success++;
-                    } else {
-                        error++;
-                    }
-                }, function() {
-                    error++;
-                })
-                .then(function() {
-                    return {success: success, error: error};
+                return $q.all([this.create(low), this.create(mid), this.create(high)]).then(function(responses) {
+                    var allsuccess = {success: 0, error: 0};
+                    $(responses).each(function(i, result){
+                        if (!result) {
+                            allsuccess.error++;
+                        } else {
+                            allsuccess.success++;
+                        }
+                    });
+                    return allsuccess;
                 });
             },
             sortRules: function(rules) {

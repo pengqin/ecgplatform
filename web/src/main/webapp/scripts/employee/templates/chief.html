@@ -1,5 +1,9 @@
 <div class="row-fluid">
 	<div class="span12 buttons">
+		<button class="btn btn-primary" type="button"
+				ng-click="chief.refresh()">
+			<i class="icon-refresh"></i>刷新
+		</button>
 		<a href="#/chief/new" class="btn btn-primary"><i class="icon-plus"></i>新增主任</a>
 		<button class="btn" type="button"
 				ng-class="{'btn-danger': chief.selectedItem != null}"
