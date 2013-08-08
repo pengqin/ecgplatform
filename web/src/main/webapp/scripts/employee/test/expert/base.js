@@ -46,6 +46,17 @@ define(function(require, exports) {
             });
         });
 
+        // Expert
+        it("the expert list should be retrieved with only one item", function(done) {
+            expect(ExpertService).not.to.be(undefined);
+            ExpertService.queryAll({'page.max': 1}).then(function(experts) {
+                expect(experts.length).to.be(1);
+                done();
+            }, function() {
+                throw new Error('the expert list can\'t be retrieved');
+            });
+        });
+
         it("the expert should not be created without username and name", function(done) {
             expect(ExpertService.getPlainObject).not.to.be(undefined);
             var invalid = ExpertService.getPlainObject();

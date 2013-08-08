@@ -8,6 +8,9 @@ angular.module('ecgSysConfigService', [])
         return {
             queryAll: function(params) {
                 var params = params || {};
+                if (typeof params["page.max"] === undefined) {
+                    params["page.max"] = 999;
+                }
                 return $http({
                     method: 'GET',
                     url: uri + '?' + $.param(params)

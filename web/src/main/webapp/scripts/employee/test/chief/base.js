@@ -44,6 +44,28 @@ define(function(require, exports) {
             });
         });
 
+        // Chief
+        it("the chief list should be retrieved with only one item", function(done) {
+            expect(ChiefService).not.to.be(undefined);
+            ChiefService.queryAll({'page.max': 1}).then(function(chiefs) {
+                expect(chiefs.length).to.be(1);
+                done();
+            }, function() {
+                throw new Error('the chief list can\'t be retrieved');
+            });
+        });
+
+        // Chief
+        it("the chief list should be retrieved without items", function(done) {
+            expect(ChiefService).not.to.be(undefined);
+            ChiefService.queryAll({'page.curPage': 2}).then(function(chiefs) {
+                expect(chiefs.length).to.be(0);
+                done();
+            }, function() {
+                throw new Error('the chief list can\'t be retrieved');
+            });
+        });
+
         it("the chief should not be created without username and name", function(done) {
             expect(ChiefService.getPlainObject).not.to.be(undefined);
             var invalid = ChiefService.getPlainObject();
