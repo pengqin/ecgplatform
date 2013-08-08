@@ -7,7 +7,7 @@ require("./monitor/main");
 require("./employee/main");
 require("./user/main");
 require("./profile/main");
-require("./rule/main");
+require("./sys/main");
 require("./card/main");
 
 var welcomeTemp = require("./common/templates/welcome.html");
@@ -17,7 +17,7 @@ var faqTemp = require("./common/templates/faq.html");
 // GOABAL VAL
 window.PATH = window.location.pathname.slice(0, window.location.pathname.lastIndexOf("/"));
 
-angular.module('ecgApp', ['ecgCommon', 'ecgTask', 'ecgMonitor', 'ecgEmployee', 'ecgUser', 'ecgRule', 'ecgProfile', 'ecgCard'])
+angular.module('ecgApp', ['ecgCommon', 'ecgTask', 'ecgMonitor', 'ecgEmployee', 'ecgUser', 'ecgSys', 'ecgProfile', 'ecgCard'])
 .config(['$httpProvider', '$routeProvider', function ($httpProvider, $routeProvider) {
         var token = $.cookie('AiniaOpAuthToken');
         // header头带认证参数

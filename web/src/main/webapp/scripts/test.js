@@ -6,7 +6,7 @@ require("./monitor/main");
 require("./employee/main");
 require("./user/main");
 require("./profile/main");
-require("./rule/main");
+require("./sys/main");
 require("./task/main");
 require("./card/main");
 
@@ -14,7 +14,7 @@ var testCommon = require("./common/test").testCommon;
 var testEmployee = require("./employee/test").testEmployee;
 var testUser = require("./user/test").testUser;
 var testProfile = require("./profile/test").testProfile;
-var testRule = require("./rule/test").testRule;
+var testRule = require("./sys/test").testRule;
 var testTask = require("./task/test").testTask;
 var testTaskReport = require("./task/test").testReport;
 var testCard = require("./card/test").testCard;
@@ -24,7 +24,7 @@ window.PATH = window.location.pathname.slice(0, window.location.pathname.lastInd
 
 var httpProvider;
 // 定义模块
-angular.module('ecgTestApp', ['ecgCommon', 'ecgTask', 'ecgMonitor', 'ecgEmployee', 'ecgUser', 'ecgRule', 'ecgTask', "ecgProfile", "ecgCard"])
+angular.module('ecgTestApp', ['ecgCommon', 'ecgTask', 'ecgMonitor', 'ecgEmployee', 'ecgUser', 'ecgSys', 'ecgTask', "ecgProfile", "ecgCard"])
 .config(['$httpProvider', '$routeProvider', function ($httpProvider, $routeProvider) {
      httpProvider = $httpProvider;
 }])

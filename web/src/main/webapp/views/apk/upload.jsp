@@ -2,20 +2,41 @@
 <%@include file="/views/include/pub.jsp" %>
 <html>
 <head>
-<title>卡号上传</title>
+<title>APK上传</title>
 </head>
 
 <body>
 
-<form id="form" enctype="multipart/form-data" action="{path}/api/card/upload" method="post" style="display:block;">
+<form id="form" enctype="multipart/form-data" action="${path}/api/apk" method="post" style="display:block;">
 	<input type="hidden" id="token" name="token" value="">
-	<input id="file" name="file" type="file" value="请选择充值卡CSV数据文件">
+	
+	<table class="ecgprops">
+        <tr>
+        <td width="100px"><label>版本号:</label></td>
+        <td><input type="text" id="version" name="version" value=""></td>
+        </tr>
+        
+        <tr>
+        <td><label>是否激活:</label></td>
+        <td>
+            <select name="enabled">
+                <option value="true">是</option>
+                <option value="true">否</option>
+            </select>
+        </td>
+        </tr>
+        
+        <tr>
+        <td ><label>APK文件:</label></td>
+        <td><input id="file" name="file" type="file" value="请选择APK"></td>
+        </tr>
+    </table>
 </form>
 <div id="notoken" style="display:none;"> 
 	您无法访问该页面
 </div>
 <div id="loading" style="display:none;"> 
-	正在上传，请稍后
+	正在上传，请稍候
 </div>
 
 <script>
@@ -49,6 +70,10 @@
 			alert("token无效!");
 			return;
 		}
+		if (!document.getElementById("version").value) {
+            alert("请填写版本号!");
+            return;
+        }
 		if (!document.getElementById("file").value) {
 			alert("请选择上传文件!");
 			return;
