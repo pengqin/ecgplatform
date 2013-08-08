@@ -139,10 +139,25 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 			
 			for (HealthRule rule : filters) {
 				if (rule.isMatch(examination)) {
+					// 数据状态
+					if (examination.getLevel() == null) {
+						examination.setLevel(rule.getLevel());
+					} else if (examination.getLevel().compareTo(rule.getLevel()) < 0) {
+						examination.setLevel(rule.getLevel());
+					}
+	
+					if (!isAuto) {
+						continue;
+					}
+					
 					List <HealthRuleReply> repliyConfgs = rule.getReplys();
 					if (repliyConfgs != null && repliyConfgs.size() > 0) {
 						// 获得预设
 						HealthRuleReply replyConfig = repliyConfgs.get(0);
+						
+						isReplied = true;
+						// 设置task为auto
+						task.setAuto(true);
 						
 						// 设置reply
 						HealthReply reply = new HealthReply();
@@ -151,19 +166,7 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 						reply.setLevel(rule.getLevel());
 						reply.setReason("系统自动回复");
 						reply.setExaminationId(examination.getId());
-						rule.autoReply(reply);
-						if (isAuto) {
-							isReplied = true;
-							// 设置task为auto
-							task.setAuto(true);
-							healthReplyService.create(reply);
-						}
-						
-						if (examination.getLevel() == null) {
-							examination.setLevel(rule.getLevel());
-						} else if (examination.getLevel().compareTo(rule.getLevel()) < 0) {
-							examination.setLevel(rule.getLevel());
-						}
+						healthReplyService.create(reply);
 					}
 					
 				}
