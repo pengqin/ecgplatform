@@ -24,7 +24,7 @@ angular.module('ecgCardDirectives', [])
     };
 
     $scope.uploaddialog.hide = function(opts) {
-      $('#ecgUploadDialog').modal('hide');
+      $('#ecgCardUploadDialog').modal('hide');
     };
     window.closeUploadCardDialog = $scope.uploaddialog.hide;
 
@@ -32,11 +32,11 @@ angular.module('ecgCardDirectives', [])
       var opts = opts || {};
       $scope.uploaddialog.handler = opts.handler;
       document.getElementById("uploadCardFrame").src = PATH + '/views/card/upload.jsp?token=' +  $.cookie("AiniaOpAuthToken");
-      $('#ecgUploadDialog').modal('show');
+      $('#ecgCardUploadDialog').modal('show');
     };
 
 }])
-.directive("ecgUploadDialog", [ '$location', function($location) {
+.directive("ecgCardUploadDialog", [ '$location', function($location) {
     return {
         restrict : 'A',
         replace : false,
