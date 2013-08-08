@@ -8,6 +8,9 @@ angular.module('ecgRuleService', [])
         return {
             queryAll: function(params) {
                 var params = params || {};
+                if (typeof params["page.max"] === undefined) {
+                    params["page.max"] = 999;
+                }
                 return $http({
                     method: 'GET',
                     url: uri + '?' + $.param(params)
@@ -18,7 +21,6 @@ angular.module('ecgRuleService', [])
                         return [];    
                     }
                 }, function() {
-                    $rootScope.message.error('服务器异常,无法获取数据');
                     return [];
                 });
             },
@@ -34,10 +36,14 @@ angular.module('ecgRuleService', [])
                 return this.queryAll(params);
             },
             queryAllGroupByUser: function(user) {
-                var id = user.id || user;
+                var id = user.id || user,
+                    params = params || {};
+                if (typeof params["page.max"] === undefined) {
+                    params["page.max"] = 999;
+                }
                 return $http({
                     method: 'GET',
-                    url: PATH + "/api/user/" + id + "/rule"
+                    url: PATH + "/api/user/" + id + "/rule" + '?' + $.param(params)
                 }).then(function(res) { // 构造session用户
                     if (res.data && res.data.length > 0) {
                         return res.data;
@@ -45,7 +51,6 @@ angular.module('ecgRuleService', [])
                         return [];    
                     }
                 }, function() {
-                    $rootScope.message.error('服务器异常,无法获取数据');
                     return [];
                 });
             },
@@ -95,7 +100,6 @@ angular.module('ecgRuleService', [])
                 }).then(function(res) {
                     return res.data;
                 }, function() {
-                    $rootScope.message.error('服务器异常,无法获取标识为' + id + '的数据.');
                     return null;
                 });
             },
@@ -201,7 +205,6 @@ angular.module('ecgRuleService', [])
                         return [];    
                     }
                 }, function() {
-                    //$rootScope.message.error('服务器异常,无法获取数据');
                     return [];
                 });
             },

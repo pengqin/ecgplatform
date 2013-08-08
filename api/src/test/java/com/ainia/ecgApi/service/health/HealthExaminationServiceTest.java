@@ -27,9 +27,14 @@ import com.ainia.ecgApi.core.crud.Query;
 import com.ainia.ecgApi.core.security.AuthUserImpl;
 import com.ainia.ecgApi.core.security.AuthenticateService;
 import com.ainia.ecgApi.domain.health.HealthExamination;
+import com.ainia.ecgApi.domain.health.HealthReply;
 import com.ainia.ecgApi.domain.health.HealthRule.Level;
+import com.ainia.ecgApi.service.health.HealthReplyService;
 import com.ainia.ecgApi.domain.sys.User;
+import com.ainia.ecgApi.domain.sys.SystemConfig;
 import com.ainia.ecgApi.utils.DataException;
+import com.ainia.ecgApi.service.health.HealthReplyService;
+import com.ainia.ecgApi.service.sys.SystemConfigService;
 
 /**
  * <p>HealthExamination Service test</p>
@@ -48,6 +53,10 @@ public class HealthExaminationServiceTest {
 
     @Autowired
     private HealthExaminationService healthExaminationService;
+    @Autowired
+    private SystemConfigService systemConfigService;
+    @Autowired
+    private HealthReplyService healthReplyService;
     @Mock
     private AuthenticateService authenticateService;
     
@@ -56,7 +65,15 @@ public class HealthExaminationServiceTest {
     public void setHealthExaminationService(HealthExaminationService healthExaminationService) {
         this.healthExaminationService = healthExaminationService;
     }
-    
+
+    public void setSystemConfigService(SystemConfigService systemConfigService) {
+        this.systemConfigService = systemConfigService;
+    }
+
+    public void setHealthReplyService(HealthReplyService healthReplyService) {
+        this.healthReplyService = healthReplyService;
+    }
+
     @Before
     public void setUp() {
     	MockitoAnnotations.initMocks(this);
@@ -142,6 +159,76 @@ public class HealthExaminationServiceTest {
     	HealthExamination examination = new HealthExamination();
     	examination.setIsTest(true);
     	healthExaminationService.upload(examination , null , null);
+    }
+
+    @Test
+    public void testAutoReply() throws IOException, DataException, InterruptedException {
+    	when(authenticateService.getCurrentUser()).thenReturn(new AuthUserImpl(2L , "test" , "13700230001" , User.class.getSimpleName()));
+    	((HealthExaminationServiceImpl)healthExaminationService).setAuthenticateService(authenticateService);
+    	
+    	SystemConfig config = systemConfigService.get(2l);
+    	config.setValue("true");
+    	systemConfigService.update(config);
+    	
+    	// 心率正常范围
+    	HealthExamination examination = new HealthExamination();
+    	examination.setIsTest(true);
+    	examination.setHeartRhythm(70);
+    	healthExaminationService.upload(examination , null , null);
+    	Assert.assertTrue(examination.getLevel().equals(Level.success));
+    	
+    	// 心率警告范围
+    	examination = new HealthExamination();
+    	examination.setIsTest(true);
+    	examination.setHeartRhythm(95);
+    	healthExaminationService.upload(examination , null , null);
+    	Assert.assertTrue(examination.getLevel().equals(Level.warning));
+    	Query<HealthReply> query1 = new Query();
+    	query1.eq(HealthReply.EXAMINATION_ID , examination.getId());
+    	Assert.assertTrue(healthReplyService.findAll(query1).size() == 1);
+    	
+    	// 心率危险范围
+    	examination = new HealthExamination();
+    	examination.setIsTest(true);
+    	examination.setHeartRhythm(30);
+    	healthExaminationService.upload(examination , null , null);
+    	Assert.assertTrue(examination.getLevel().equals(Level.danger));	
+
+    	// 心率异常范围
+    	examination = new HealthExamination();
+    	examination.setIsTest(true);
+    	examination.setHeartRhythm(-100);
+    	healthExaminationService.upload(examination , null , null);
+    	Assert.assertTrue(examination.getLevel().equals(Level.outside));
+
+    	// 心率异常范围
+    	examination = new HealthExamination();
+    	examination.setIsTest(true);
+    	examination.setHeartRhythm(300);
+    	healthExaminationService.upload(examination , null , null);
+    	Assert.assertTrue(examination.getLevel().equals(Level.outside));
+ 
+    	// 心率正常 呼吸警告
+    	examination = new HealthExamination();
+    	examination.setIsTest(true);
+    	examination.setHeartRhythm(70);
+    	examination.setBreath(95);
+    	healthExaminationService.upload(examination , null , null);
+    	Assert.assertTrue(examination.getLevel().equals(Level.warning));
+    	Query<HealthReply> query2 = new Query();
+    	query2.eq(HealthReply.EXAMINATION_ID , examination.getId());
+    	Assert.assertTrue(healthReplyService.findAll(query2).size() == 2);
+
+    	// 心率危险 呼吸警告
+    	examination = new HealthExamination();
+    	examination.setIsTest(true);
+    	examination.setHeartRhythm(30);
+    	examination.setBreath(95);
+    	healthExaminationService.upload(examination , null , null);
+    	Assert.assertTrue(examination.getLevel().equals(Level.danger));
+    	
+    	config.setValue("false");
+    	systemConfigService.update(config);
     }
 
     @Test

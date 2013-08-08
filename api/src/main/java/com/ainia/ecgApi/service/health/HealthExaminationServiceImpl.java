@@ -23,9 +23,11 @@ import com.ainia.ecgApi.domain.health.HealthExamination;
 import com.ainia.ecgApi.domain.health.HealthReply;
 import com.ainia.ecgApi.domain.health.HealthRule;
 import com.ainia.ecgApi.domain.health.HealthRuleReply;
+import com.ainia.ecgApi.domain.health.HealthRule.Level;
 import com.ainia.ecgApi.domain.sys.SystemConfig;
 import com.ainia.ecgApi.domain.sys.User;
 import com.ainia.ecgApi.domain.task.ExaminationTask;
+import com.ainia.ecgApi.domain.task.Task.Status;
 import com.ainia.ecgApi.dto.health.HealthInfo;
 import com.ainia.ecgApi.service.common.UploadService;
 import com.ainia.ecgApi.service.common.UploadService.Type;
@@ -107,6 +109,7 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 			}
 		}*/
 		
+		examination.setLevel(Level.outside);
 		examination.setId(null); // 防止被 examination的id被注入
 		examination.setUserId(authUser.getId());
 		examination.setUserName(authUser.getUsername());
@@ -115,58 +118,70 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 		
 		this.create(examination);
 		
-		//判断是否自动回复
-		String config = systemConfigService.findByKey(SystemConfig.EXAMINATION_REPLY_AUTO);
-		boolean isAuto = config == null ? false : Boolean.valueOf(config);
-		boolean isReplied = false;
-		
 		ExaminationTask task = new ExaminationTask();
 		task.setExaminationId(examination.getId());
-		task.setAuto(isAuto);
+		task.setAuto(false); // 只有真正回复了才设置成true
 		task.setUserId(authUser.getId());
 		task.setUserName(authUser.getName());
 		task.setApkId(examination.getApkId());
-		if (isAuto) {
-			Query ruleQuery = new Query();
-			ruleQuery.equals(HealthRule.USAGE.equals(HealthRule.Usage.filter));
-			List<HealthRule> filters = healthRuleService.findAll(ruleQuery);
-			if (filters != null) {
-				for (HealthRule rule : filters) {
-					if (rule.isMatch(examination)) {
-						List <HealthRuleReply> repliyConfgs = rule.getReplys();
-						if (repliyConfgs != null && repliyConfgs.size() > 0) {
-							// 获得预设
-							HealthRuleReply replyConfig = repliyConfgs.get(0);
-							
-							// 设置reply
-							HealthReply reply = new HealthReply();
-							reply.setResult(replyConfig.getResult());
-							reply.setContent(replyConfig.getContent());
-							reply.setLevel(rule.getLevel());
-							reply.setReason("系统自动回复");
-							reply.setExaminationId(examination.getId());
-							rule.autoReply(reply);
-							healthReplyService.create(reply);
-							
-							// 设置task为auto
-							task.setAuto(true);
-							
-							isReplied = true;
-						}
-						
+		task.setStatus(Status.draft);
+		taskService.create(task);
+		
+		//判断是否由于自动回复导致已回复
+		boolean isReplied = false;
+
+		Query ruleQuery = new Query();
+		ruleQuery.equals(HealthRule.USAGE.equals(HealthRule.Usage.filter));
+		List<HealthRule> filters = healthRuleService.findAll(ruleQuery);
+		if (filters != null) {
+			String config = systemConfigService.findByKey(SystemConfig.EXAMINATION_REPLY_AUTO);
+			boolean isAuto = config == null ? false : Boolean.valueOf(config);
+			
+			for (HealthRule rule : filters) {
+				if (rule.isMatch(examination)) {
+					// 数据状态
+					if (examination.getLevel() == null) {
+						examination.setLevel(rule.getLevel());
+					} else if (examination.getLevel().compareTo(rule.getLevel()) < 0) {
+						examination.setLevel(rule.getLevel());
 					}
+	
+					if (!isAuto) {
+						continue;
+					}
+					
+					List <HealthRuleReply> repliyConfgs = rule.getReplys();
+					if (repliyConfgs != null && repliyConfgs.size() > 0) {
+						// 获得预设
+						HealthRuleReply replyConfig = repliyConfgs.get(0);
+						
+						isReplied = true;
+						// 设置task为auto
+						task.setAuto(true);
+						
+						// 设置reply
+						HealthReply reply = new HealthReply();
+						reply.setResult(replyConfig.getResult());
+						reply.setContent(replyConfig.getContent());
+						reply.setLevel(rule.getLevel());
+						reply.setReason("系统自动回复");
+						reply.setExaminationId(examination.getId());
+						healthReplyService.create(reply);
+					}
+					
 				}
 			}
-			// 是否添加了回复数据
-			if (isReplied) {
-				taskService.complete(task); 
-			} else {
-				taskService.pending(task); 
-			}
-		} else {
-			taskService.pending(task);	// 直接转人工
 		}
-		
+			
+		// 是否添加了回复数据
+		if (isReplied) {
+			taskService.complete(task); 
+		} else {
+			taskService.pending(task); 
+		}
+		// 更新examinaiton
+		update(examination);
+
 		if (!isTest) {
 			executorService.execute(new Runnable(){
 

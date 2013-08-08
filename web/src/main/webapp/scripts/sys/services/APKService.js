@@ -19,10 +19,14 @@ angular.module('ecgAPKService', [])
             enabled: false
         }];
         return {
-            queryAll: function() {
+            queryAll: function(params) {
+                var params = params || {};
+                if (typeof params["page.max"] === undefined) {
+                    params["page.max"] = 999;
+                }
                 return $http({
                     method: 'GET',
-                    url: uri
+                    url: uri + '?' + $.param(params)
                 }).then(function(res) {
                     if (res.data.datas && res.data.datas.length > 0) {
                         return res.data.datas;

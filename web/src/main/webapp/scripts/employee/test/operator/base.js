@@ -44,6 +44,17 @@ define(function(require, exports) {
             });
         });
 
+        // Operator
+        it("the operator list should be retrieved with only one item", function(done) {
+            expect(OperatorService).not.to.be(undefined);
+            OperatorService.queryAll({'page.max': 1}).then(function(operators) {
+                expect(operators.length).to.be(1);
+                done();
+            }, function() {
+                throw new Error('the operator list can\'t be retrieved');
+            });
+        });
+
         it("the operator should not be created without username and name", function(done) {
             expect(OperatorService.getPlainObject).not.to.be(undefined);
             var invalid = OperatorService.getPlainObject();
