@@ -17,16 +17,6 @@
         </tr>
         
         <tr>
-        <td><label>是否是正式版:</label></td>
-        <td>
-            <select name="isReleased">
-                <option value="true">是</option>
-                <option value="true">否</option>
-            </select>
-        </td>
-        </tr>
-        
-        <tr>
         <td><label>是否激活:</label></td>
         <td>
             <select name="enabled">
