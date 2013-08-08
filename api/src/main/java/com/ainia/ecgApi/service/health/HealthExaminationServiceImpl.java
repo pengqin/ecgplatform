@@ -118,24 +118,25 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 		
 		this.create(examination);
 		
-		//判断是否自动回复
-		String config = systemConfigService.findByKey(SystemConfig.EXAMINATION_REPLY_AUTO);
-		boolean isAuto = config == null ? false : Boolean.valueOf(config);
-		boolean isReplied = false;
-		
 		ExaminationTask task = new ExaminationTask();
 		task.setExaminationId(examination.getId());
-		task.setAuto(isAuto);
+		task.setAuto(false); // 只有真正回复了才设置成true
 		task.setUserId(authUser.getId());
 		task.setUserName(authUser.getName());
 		task.setApkId(examination.getApkId());
 		task.setStatus(Status.draft);
 		taskService.create(task);
 		
+		//判断是否由于自动回复导致已回复
+		boolean isReplied = false;
+
 		Query ruleQuery = new Query();
 		ruleQuery.equals(HealthRule.USAGE.equals(HealthRule.Usage.filter));
 		List<HealthRule> filters = healthRuleService.findAll(ruleQuery);
 		if (filters != null) {
+			String config = systemConfigService.findByKey(SystemConfig.EXAMINATION_REPLY_AUTO);
+			boolean isAuto = config == null ? false : Boolean.valueOf(config);
+			
 			for (HealthRule rule : filters) {
 				if (rule.isMatch(examination)) {
 					List <HealthRuleReply> repliyConfgs = rule.getReplys();
@@ -157,7 +158,6 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 							task.setAuto(true);
 							healthReplyService.create(reply);
 						}
-						
 						
 						if (examination.getLevel() == null) {
 							examination.setLevel(rule.getLevel());
