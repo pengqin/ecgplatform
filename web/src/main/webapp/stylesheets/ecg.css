@@ -56,6 +56,7 @@ i {
 /*菜单*/
 .navbar #cards-menu,
 .navbar .examination,
+.navbar .apk,
 .navbar .sysconfig {
 	display: none;
 }
@@ -92,6 +93,7 @@ i {
 }
 .navbar.admin .sysconfig,
 .navbar.admin #cards-menu,
+.navbar.admin .apk,
 .navbar.user .examination {
 	display: block;
 }
