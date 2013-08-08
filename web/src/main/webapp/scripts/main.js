@@ -7,7 +7,7 @@ require("./monitor/main");
 require("./employee/main");
 require("./user/main");
 require("./profile/main");
-require("./rule/main");
+require("./sys/main");
 require("./card/main");
 
 var welcomeTemp = require("./common/templates/welcome.html");
