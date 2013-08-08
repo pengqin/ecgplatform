@@ -62,6 +62,7 @@ public class Task implements Domain {
 	}
 	
 	public enum Status {
+		draft,
 		pending,
 		proceeding,
 		completed

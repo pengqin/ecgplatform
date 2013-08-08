@@ -83,10 +83,10 @@ public class HealthRule implements Domain {
 	}
 	
 	public enum Level {
-		danger,
-		warning,
+		outside,
 		success,
-		outside
+		warning,
+		danger
 	}
 	@PrePersist
 	public void onCreate() {
@@ -110,9 +110,13 @@ public class HealthRule implements Domain {
 	 */
 	@Transient
 	public boolean isMatch(HealthExamination examination) {
-		if (PropertyUtil.hasReadableProperty(examination,  this.code)) {
-			Float value = (Float)PropertyUtil.getProperty(examination, this.code);
-			if ((this.min == null || value > this.min) && (this.max == null || value < this.max)) {
+		String propName = examination.getPropNameByCode(this.code);
+		if (PropertyUtil.hasReadableProperty(examination,  propName) && PropertyUtil.getProperty(examination, propName) != null) {
+			Float value = Float.valueOf(PropertyUtil.getProperty(examination, propName).toString());
+			if (this.min != null &&
+				this.max != null &&
+				value >= this.min &&
+				value < this.max) {
 				return true;
 			}
 		}

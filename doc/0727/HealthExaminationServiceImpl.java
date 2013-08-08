@@ -114,9 +114,17 @@ public class HealthExaminationServiceImpl extends
 						rule.autoReply(reply);
 						healthReplyService.create(reply);
 						task.setAuto(true);
+						if (examination.getLevel() == null) {
+							examination.setLevel(rule.getLevel());
+						} else if (examination.getLevel() < rule.getLevel()) {
+							examination.setLevel(rule.getLevel());
+						}
 					}
 				}
 				taskService.complete(task);
+				update(examination);
+			} else {
+				taskService.pending(task);
 			}
 		} else {
 			taskService.pending(task);
@@ -221,7 +229,6 @@ public class HealthExaminationServiceImpl extends
 					examination.setHeartData(rawUri);
 					update(examination);
 				} catch (Exception e) {
-					System.out.println("Data error!");
 					e.printStackTrace();
 					examination.setHasDataError(true);
 					update(examination);

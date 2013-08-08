@@ -402,6 +402,26 @@ public class HealthExamination implements Domain {
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this);
 	}
+	
+	public String getPropNameByCode (String code) {
+		String prop = "unknown";
+		if ("1".equals(code)) {
+			prop =  HealthExamination.BLOOD_PRESSURE_LOW;
+		} else if ("2".equals(code)) {
+			prop =  HealthExamination.BLOOD_PRESSURE_HIGH;
+		} else if ("3".equals(code)) {
+			prop =  HealthExamination.HEART_RHYTHM;
+		} else if ("4".equals(code)) {
+			prop =  HealthExamination.BLOOD_OXYGEN;
+		} else if ("5".equals(code)) {
+			prop =  HealthExamination.BREATH;
+		} else if ("6".equals(code)) {
+			prop =  HealthExamination.BODY_TEMP;
+		} else if ("7".equals(code)) {
+			prop =  HealthExamination.PULSERATE;
+		}
+		return prop;
+	}
 
 	
 }

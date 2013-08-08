@@ -84,7 +84,7 @@ public class TaskServiceImpl extends BaseServiceImpl<Task , Long> implements Tas
 		}
 		task.setOperatorId(selectedOperator.getId());
 		task.setStatus(Status.pending);
-		return super.create(task);
+		return super.update(task);
 	}
 
 	public Task proceeding(Task task) {
