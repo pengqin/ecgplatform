@@ -27,10 +27,13 @@ import com.ainia.ecgApi.core.crud.Query;
 import com.ainia.ecgApi.core.security.AuthUserImpl;
 import com.ainia.ecgApi.core.security.AuthenticateService;
 import com.ainia.ecgApi.domain.health.HealthExamination;
+import com.ainia.ecgApi.domain.health.HealthReply;
 import com.ainia.ecgApi.domain.health.HealthRule.Level;
+import com.ainia.ecgApi.service.health.HealthReplyService;
 import com.ainia.ecgApi.domain.sys.User;
 import com.ainia.ecgApi.domain.sys.SystemConfig;
 import com.ainia.ecgApi.utils.DataException;
+import com.ainia.ecgApi.service.health.HealthReplyService;
 import com.ainia.ecgApi.service.sys.SystemConfigService;
 
 /**
@@ -52,6 +55,8 @@ public class HealthExaminationServiceTest {
     private HealthExaminationService healthExaminationService;
     @Autowired
     private SystemConfigService systemConfigService;
+    @Autowired
+    private HealthReplyService healthReplyService;
     @Mock
     private AuthenticateService authenticateService;
     
@@ -64,7 +69,11 @@ public class HealthExaminationServiceTest {
     public void setSystemConfigService(SystemConfigService systemConfigService) {
         this.systemConfigService = systemConfigService;
     }
-  
+
+    public void setHealthReplyService(HealthReplyService healthReplyService) {
+        this.healthReplyService = healthReplyService;
+    }
+
     @Before
     public void setUp() {
     	MockitoAnnotations.initMocks(this);
@@ -174,6 +183,9 @@ public class HealthExaminationServiceTest {
     	examination.setHeartRhythm(95);
     	healthExaminationService.upload(examination , null , null);
     	Assert.assertTrue(examination.getLevel().equals(Level.warning));
+    	Query<HealthReply> query1 = new Query();
+    	query1.eq(HealthReply.EXAMINATION_ID , examination.getId());
+    	Assert.assertTrue(healthReplyService.findAll(query1).size() == 1);
     	
     	// 心率危险范围
     	examination = new HealthExamination();
@@ -203,6 +215,9 @@ public class HealthExaminationServiceTest {
     	examination.setBreath(95);
     	healthExaminationService.upload(examination , null , null);
     	Assert.assertTrue(examination.getLevel().equals(Level.warning));
+    	Query<HealthReply> query2 = new Query();
+    	query2.eq(HealthReply.EXAMINATION_ID , examination.getId());
+    	Assert.assertTrue(healthReplyService.findAll(query2).size() == 2);
 
     	// 心率危险 呼吸警告
     	examination = new HealthExamination();
