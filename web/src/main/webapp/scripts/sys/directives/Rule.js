@@ -3,7 +3,7 @@ define(function(require, exports) {
 
 var ruleListTemp = require("../templates/list.html");
 
-angular.module('ecgRuleBaseDirectives', [])
+angular.module('ecgRuleDirectives', [])
 .controller('RuleController', ['$scope', '$timeout', '$location', 'RuleService', function ($scope, $timeout, $location, RuleService) {
     // 表格头
     $scope.subheader.title = "规则列表";

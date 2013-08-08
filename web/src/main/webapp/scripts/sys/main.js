@@ -4,17 +4,20 @@ define(function(require, exports) {
 require("./services/RuleService");
 require("./services/ReplyConfigService");
 require("./services/SysConfigService");
+require("./services/APKService");
 require("./directives/Rule");
 require("./directives/RuleConfig");
 require("./directives/SysConfig");
+require("./directives/APK");
 
 var ruleTemp = require("./templates/rule.html");
 var newTemp = require("./templates/new.html");
 var editTemp = require("./templates/edit.html");
 var configTemp = require("./templates/config.html");
 var sysconfigTemp = require("./templates/sysconfig.html");
+var apkTemp = require("./templates/apk.html");
 
-angular.module('ecgRule', ['ecgRuleService', 'ecgReplyConfigService', 'ecgSysConfigService', 'ecgRuleBaseDirectives', 'ecgRuleConfig', 'ecgSysConfig'])
+angular.module('ecgSys', ['ecgRuleService', 'ecgReplyConfigService', 'ecgSysConfigService',  'ecgAPKService', 'ecgRuleDirectives', 'ecgRuleConfig', 'ecgSysConfig', 'ecgAPK'])
 .config(['$routeProvider', function ($routeProvider) {
     $routeProvider
     .when('/rule', {
@@ -36,6 +39,10 @@ angular.module('ecgRule', ['ecgRuleService', 'ecgReplyConfigService', 'ecgSysCon
     .when('/sysconfig', {
         template: sysconfigTemp,
         controller: 'SysConfigController'
+    })
+    .when('/apk', {
+        template: apkTemp,
+        controller: 'APKController'
     });
 }]);
 

@@ -24,7 +24,7 @@ window.PATH = window.location.pathname.slice(0, window.location.pathname.lastInd
 
 var httpProvider;
 // 定义模块
-angular.module('ecgTestApp', ['ecgCommon', 'ecgTask', 'ecgMonitor', 'ecgEmployee', 'ecgUser', 'ecgRule', 'ecgTask', "ecgProfile", "ecgCard"])
+angular.module('ecgTestApp', ['ecgCommon', 'ecgTask', 'ecgMonitor', 'ecgEmployee', 'ecgUser', 'ecgSys', 'ecgTask', "ecgProfile", "ecgCard"])
 .config(['$httpProvider', '$routeProvider', function ($httpProvider, $routeProvider) {
      httpProvider = $httpProvider;
 }])
