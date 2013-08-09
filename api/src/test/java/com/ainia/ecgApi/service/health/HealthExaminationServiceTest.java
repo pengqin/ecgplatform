@@ -173,6 +173,12 @@ public class HealthExaminationServiceTest {
     	SystemConfig config = systemConfigService.get(2l);
     	config.setValue("true");
     	systemConfigService.update(config);
+    	
+    	if (!System.getProperties().getProperty("os.name").startsWith("Windows")) {
+    		config = systemConfigService.get(1l);
+        	config.setValue("/tmp");
+        	systemConfigService.update(config);
+    	}
 
     	((HealthExaminationServiceImpl)healthExaminationService).setAuthenticateService(authenticateService);
     	HealthExamination examination = new HealthExamination();
@@ -187,8 +193,7 @@ public class HealthExaminationServiceTest {
     	Assert.assertTrue(examination.getLevel() != null);
     	Query<HealthReply> query2 = new Query();
     	query2.eq(HealthReply.EXAMINATION_ID , examination.getId());
-    	System.out.println(healthReplyService.findAll(query2).size());
-    	//Assert.assertTrue(healthReplyService.findAll(query2).size() > 0);
+		Assert.assertTrue(healthReplyService.findAll(query2).size() > 0);
     }
     
     @Test
