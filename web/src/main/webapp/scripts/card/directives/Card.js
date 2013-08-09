@@ -85,15 +85,28 @@ angular.module('ecgCardDirectives', [])
 
     // 表格展示
     $scope.card.data = null;
-    $scope.card.filteredData = null;
+    $scope.card.paging = {
+        total: 0,
+        curPage: 1,
+        goToPage: function(page, max) {
+            refreshGrid({'page.curPage': page, 'page.max': max});
+        }
+    };
 
     // 刷新功能
-    function refreshGrid() {
+    var globalParams = {};
+    function refreshGrid(params) {
+        globalParams = $.extend(globalParams, params);
         $scope.dialog.showLoading();
-        CardService.queryAll().then(function(cards) {
+        CardService.queryAll(globalParams).then(function(paging) {
             $scope.dialog.hideStandby();
-            $scope.card.data = cards;
-            $scope.card.filteredData = $scope.card.data;
+            if (paging) {
+                $scope.card.paging.total = paging.total;
+                $scope.card.paging.curPage = paging.curPage;
+                $scope.card.data = paging.datas;
+            } else {
+                $scope.message.error("无法加载充值历史!");
+            }
         }, function() {
             $scope.dialog.hideStandby();
             $scope.message.error("无法加载充值历史!");
@@ -103,7 +116,9 @@ angular.module('ecgCardDirectives', [])
 
     // 过滤功能
     $scope.card.queryChanged = function(query) {
-        return $scope.card.filteredData = $filter("filter")($scope.card.data, query);
+        globalParams['serial:like'] = query;
+        globalParams['page.curPage'] = 1;
+        refreshGrid(globalParams);
     };
 
     $scope.card.refresh = refreshGrid;

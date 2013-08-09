@@ -34,6 +34,8 @@ angular.module('ecgUserModules', [])
                 $scope.user.paging.total = paging.total;
                 $scope.user.paging.curPage = paging.curPage;
                 $scope.user.data = paging.datas;
+            } else {
+                $scope.message.error("无法加载用户数据!");
             }
         }, function() {
             $scope.dialog.hideStandby();

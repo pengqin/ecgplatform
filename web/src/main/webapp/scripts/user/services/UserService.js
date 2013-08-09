@@ -9,21 +9,20 @@ angular.module('ecgUserService', [])
         return {
             queryAll: function(params) {
                 var params = params || {};
-                var params = params || {};
-                if (typeof params["page.max"] === undefined) {
-                    params["page.max"] = 10; // user.html的每页行数也需要一起修改
+                if (typeof params["page.max"] == 'undefined') {
+                    params["page.max"] = 15; // user.html的每页行数也需要一起修改
                 }
                 return $http({
                     method: 'GET',
                     url: uri + '?' + $.param(params)
                 }).then(function(res) {
-                    if (res.data.datas && res.data.datas.length > 0) {
+                    if (res.data.datas) {
                         return res.data;
                     } else {
                         return null;    
                     }
                 }, function() {
-                    return {};
+                    return null;
                 });
             },
             getPlainObject: function() {
