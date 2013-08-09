@@ -218,7 +218,7 @@ table tbody tr.active {
 
 /* ecg plot */
 .plot-c {
-	width: 100%; min-width: 500px; height: 710px;
+	width: 100%; min-width: 500px; height: 810px;
 	overflow:auto;
 	margin: 10px 0px;
 }
@@ -229,13 +229,13 @@ table tbody tr.active {
 	display: block;
 }
 .plot-c.small {
-	height: 750px;
+	height: 850px;
 }
 .plot-c.medium {
-	height: 1500px;
+	height: 1610px;
 }
 .plot-c.large {
-	height: 2200px;
+	height: 2410px;
 }
 .plot-c.small img {
 	height: 100px;
