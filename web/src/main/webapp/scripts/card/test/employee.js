@@ -57,7 +57,8 @@ define(function(require, exports) {
         var usedcard, usedcount = 0;
         it("the charge history can be retrieved.", function(done) {
             expect(CardService).not.to.be(undefined);
-            CardService.queryAll().then(function(cards) {
+            CardService.queryAll().then(function(paging) {
+                var cards = paging.datas;
                 expect(cards).not.to.be(undefined);
                 expect(cards.length).not.to.be(0);
                 usedcount = cards.length;
@@ -169,7 +170,8 @@ define(function(require, exports) {
         // 被使用卡的信息应该能找到
         it("the used card can be found.", function(done) {
             var found = false;
-            CardService.queryAll().then(function(cards) {
+            CardService.queryAll().then(function(paging) {
+                var cards = paging.datas;
                 $(cards).each(function(i, card) {
                     if (card.serial == unused.serial) {
                         found = true;

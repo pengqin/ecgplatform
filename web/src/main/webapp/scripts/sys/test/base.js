@@ -1,5 +1,4 @@
 'use strict';
-'use strict';
 define(function(require, exports) {
 
     exports.test = function(mocha, angluarjs, services) {
@@ -146,10 +145,10 @@ define(function(require, exports) {
             expect(UserService).not.to.be(undefined);
 
             UserService.queryAll({mobile: TESTCONFIGS.user.mobile})
-            .then(function(users) {
-                expect(users).not.to.be(undefined);
-                expect(users.length).to.be(1);
-                user = users[0];
+            .then(function(paging) {
+                expect(paging).not.to.be(undefined);
+                expect(paging.datas.length).not.to.be(0);
+                user = paging.datas[0];
                 done();
             }, function() {
                 throw new Error('the replyconfig can\'t be removed');

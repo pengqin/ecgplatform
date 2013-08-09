@@ -23,6 +23,7 @@ angular.module('ecgTask', ['ecgTaskService', 'ecgTaskView', 'ecgReplyForm'])
     $scope.todo.current = null;
     $scope.todo.replyform = 'hidden';
     $scope.todo.cursor = 0;
+    $scope.todo.total = 0;
 
     var refreshHandler = null;
 
@@ -48,18 +49,14 @@ angular.module('ecgTask', ['ecgTaskService', 'ecgTaskView', 'ecgReplyForm'])
                 status: 'undone',
                 id: $routeParams.id || ''
             }
-        ).then(function(tasks) {
+        ).then(function(paging) {
+            var tasks = paging.datas;
+            $scope.todo.total = paging.total;
             $scope.dialog.hideStandby();
             $scope.todo.tasks = tasks;
             $scope.todo.cursor = $scope.todo.tasks.length - 1;
+            $scope.subheader.title = "待办工作(共" + paging.total + "条)";
             selectTask();
-        });
-        // 查总数
-        TaskService.queryAllTaskByEmployee(
-            user, 
-            {status: 'undone'}
-        ).then(function(tasks) {
-            $scope.subheader.title = "待办工作(共" + tasks.length + "条)";
         });
 
         // 60秒后刷新
@@ -110,7 +107,8 @@ angular.module('ecgTask', ['ecgTaskService', 'ecgTaskView', 'ecgReplyForm'])
             $scope.todo.replyform = 'hidden';
             if ($scope.todo.tasks.length > 0) {
                 selectTask();
-                $scope.subheader.title = "待办工作(共" + $scope.todo.tasks.length + "条)";
+                $scope.todo.total--;
+                $scope.subheader.title = "待办工作(共" + $scope.todo.total + "条)";
             } else {
                 refreshGrid();
             }
@@ -139,6 +137,14 @@ angular.module('ecgTask', ['ecgTaskService', 'ecgTaskView', 'ecgReplyForm'])
     $scope.task.data = null;
     $scope.task.selected = null;
 
+    $scope.task.paging = {
+        total: 0,
+        curPage: 1,
+        goToPage: function(page, max) {
+            refreshGrid({'page.curPage': page, 'page.max': max});
+        }
+    };
+
     // level名称
     $scope.task.getLevelLabel = EnumService.getLevelLabel;
     // level名称
@@ -157,9 +163,13 @@ angular.module('ecgTask', ['ecgTaskService', 'ecgTaskView', 'ecgReplyForm'])
         var user = $scope.session.user;
         
         $scope.dialog.showLoading();
-        TaskService.queryAllTaskByEmployee(user).then(function(tasks) {
+        TaskService.queryAllTaskByEmployee(user, opts)
+        .then(function(paging) {
+            var tasks = paging.datas;
             $scope.dialog.hideStandby();
             $scope.task.selected = null;
+            $scope.task.paging.total = paging.total;
+            $scope.task.paging.curPage = paging.curPage;
             $scope.task.data = tasks;
         });
 
@@ -238,6 +248,14 @@ angular.module('ecgTask', ['ecgTaskService', 'ecgTaskView', 'ecgReplyForm'])
     $scope.task.selected = null;
     $scope.task.showDetail = false;
 
+    $scope.task.paging = {
+        total: 0,
+        curPage: 1,
+        goToPage: function(page, max) {
+            refreshGrid({'page.curPage': page, 'page.max': max});
+        }
+    };
+
     // level名称
     $scope.task.getLevelLabel = EnumService.getLevelLabel;
     // level名称
@@ -256,7 +274,7 @@ angular.module('ecgTask', ['ecgTaskService', 'ecgTaskView', 'ecgReplyForm'])
 
     var refreshHandler = null;
 
-    function refreshGrid() {
+    function refreshGrid(opts) {
         var opts = opts || {auto: false};
         if (!opts.auto && refreshHandler) {
             $timeout.cancel(refreshHandler);
@@ -265,9 +283,13 @@ angular.module('ecgTask', ['ecgTaskService', 'ecgTaskView', 'ecgReplyForm'])
         var user = $scope.session.user;
         
         $scope.dialog.showLoading();
-        TaskService.queryAllTaskByUser(user).then(function(tasks) {
+        TaskService.queryAllTaskByUser(user, opts)
+        .then(function(paging) {
+            var tasks = paging.datas;
             $scope.dialog.hideStandby();
             $scope.task.selected = null;
+            $scope.task.paging.total = paging.total;
+            $scope.task.paging.curPage = paging.curPage;
             $scope.task.data = tasks;
         });
 

@@ -146,12 +146,59 @@ public class HealthExaminationServiceTest {
     	}
     	byte[] bytes = out.toByteArray();
     	((HealthExaminationServiceImpl)healthExaminationService).setAuthenticateService(authenticateService);
-    	healthExaminationService.upload(new HealthExamination() , bytes , null);
+    	HealthExamination examination = new HealthExamination();
+    	healthExaminationService.upload(examination , bytes , null);
     	Thread.sleep(5000);
     	input.close();
     	out.close();
+    	
+    	Assert.assertTrue(examination.getLevel() != null);
+    	Query<HealthReply> query1 = new Query();
+    	query1.eq(HealthReply.EXAMINATION_ID , examination.getId());
+    	Assert.assertTrue(healthReplyService.findAll(query1).size() == 0);
     }
 
+    @Test
+    public void testUploadAndAutoReply() throws IOException, DataException, InterruptedException {
+    	when(authenticateService.getCurrentUser()).thenReturn(new AuthUserImpl(2L , "test" , "13700230001" , User.class.getSimpleName()));
+    	Resource resource = new ClassPathResource("health/sample2");
+    	ByteArrayOutputStream out = new ByteArrayOutputStream();
+    	int b = -1;
+    	InputStream input = resource.getInputStream();
+    	while ((b = input.read()) != -1) {
+    		out.write(b);
+    	}
+    	byte[] bytes = out.toByteArray();
+    	
+    	SystemConfig config = systemConfigService.get(2l);
+    	config.setValue("true");
+    	systemConfigService.update(config);
+    	
+    	if (!System.getProperties().getProperty("os.name").startsWith("Windows")) {
+    		config = systemConfigService.get(1l);
+        	config.setValue("/tmp/");
+        	systemConfigService.update(config);
+    	}
+
+    	((HealthExaminationServiceImpl)healthExaminationService).setAuthenticateService(authenticateService);
+    	HealthExamination examination = new HealthExamination();
+    	healthExaminationService.upload(examination , bytes , null);
+    	Thread.sleep(5000);
+    	input.close();
+    	out.close();
+    	
+    	config.setValue("false");
+    	systemConfigService.update(config);
+ 
+    	Assert.assertTrue(examination.getLevel() != null);
+    	Query<HealthReply> query2 = new Query();
+    	query2.eq(HealthReply.EXAMINATION_ID , examination.getId());
+    	
+    	if (System.getProperties().getProperty("os.name").startsWith("Windows")) {
+    		Assert.assertTrue(healthReplyService.findAll(query2).size() > 0);
+    	}
+    }
+    
     @Test
     public void testMockUpload() throws IOException, DataException, InterruptedException {
     	when(authenticateService.getCurrentUser()).thenReturn(new AuthUserImpl(2L , "test" , "13700230001" , User.class.getSimpleName()));

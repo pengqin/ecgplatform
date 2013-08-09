@@ -53,7 +53,8 @@ define(function(require, exports) {
         var user;
         it("the user should be retrieved.", function(done) {
             expect(UserService).not.to.be(undefined);
-            UserService.queryAll({username: user.username}).then(function(users) {
+            UserService.queryAll({username: user.username}).then(function(paging) {
+                var users = paging.datas;
                 expect(users).not.to.be(undefined);
                 expect(users.length).to.be(1);
                 user = users[0];

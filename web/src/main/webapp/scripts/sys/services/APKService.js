@@ -5,23 +5,10 @@ angular.module('ecgAPKService', [])
     .factory("APKService", function($rootScope, $http) {
         var uri = PATH + "/api/apk";
 
-        var mock = [{
-            id: 1,
-            version: 1,
-            createdDate: '2013-05-01',
-            isReleased: true,
-            enabled: true
-        }, {
-            id: 2,
-            version: 2,
-            createdDate: '2013-05-02',
-            isReleased: true,
-            enabled: false
-        }];
         return {
             queryAll: function(params) {
                 var params = params || {};
-                if (typeof params["page.max"] === undefined) {
+                if (typeof params["page.max"] === 'undefined') {
                     params["page.max"] = 999;
                 }
                 return $http({
@@ -34,7 +21,7 @@ angular.module('ecgAPKService', [])
                         return [];    
                     }
                 }, function() {
-                    return mock || [];
+                    return null;
                 });
             },
             remove: function(id) {

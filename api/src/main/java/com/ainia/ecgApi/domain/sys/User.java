@@ -338,7 +338,8 @@ public class User implements Domain {
 	public void setRetakeCount(Integer retakeCount) {
 		this.retakeCount = retakeCount;
 	}
-	
+
+	@JsonFormat(pattern = "yyyy-MM-dd hh:mm" ,  timezone = "GMT+08:00")
 	public Date getLastLoginDate() {
 		return lastLoginDate;
 	}

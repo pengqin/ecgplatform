@@ -26,10 +26,10 @@ define(function(require, exports) {
                     ));
                 });
 
-                $q.all(querys).then(function(results) {
+                $q.all(querys).then(function(pagings) {
                     var sum = 0;
-                    operator.pending = results[0].length;
-                    operator.completed = results[1].length;
+                    operator.pending = pagings[0].total;
+                    operator.completed = pagings[1].total;
                     sum = operator.pending + operator.completed;
                     if (sum > 0) {
                         operator.percent = parseInt(operator.completed / sum * 100);

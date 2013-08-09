@@ -4,7 +4,11 @@
 				ng-click="card.refresh()">
 			<i class="icon-refresh"></i>刷新
 		</button>
-		<input type="text" placeholder="请输入任意关键字" title="请输入任意关键字" ng-model="card.query" ng-change="card.queryChanged(card.query)">
+		<input type="text" placeholder="请输入卡号" title="请输入卡号" ng-model="card.query">
+		<button class="btn btn-primary" type="button"
+				ng-click="card.queryChanged(card.query)">
+			<i class="icon-search"></i>查询
+		</button>
     </div>
 </div>
 <div class="row-fluid">
@@ -23,6 +27,6 @@
 		  </tbody>
 		</table>
 
-		<at-pagination items-per-page="10" instance="cardPagination" list="card.filteredData"></at-pagination>
+		<div at-server-pagination items-per-page="15" instance="cardPagination" list="card.data" paging="card.paging"></div>
     </div>
 </div>
