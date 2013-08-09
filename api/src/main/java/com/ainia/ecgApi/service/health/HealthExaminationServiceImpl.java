@@ -55,6 +55,8 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
     @Autowired
     private HealthReplyService healthReplyService;
     @Autowired
+    private HealthRuleReplyService healthRuleReplyService;
+    @Autowired
     private ExaminationTaskService examinationTaskService;
     @Autowired
     private TaskService taskService;
@@ -86,54 +88,58 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 		String config = systemConfigService.findByKey(SystemConfig.EXAMINATION_REPLY_AUTO);
 		boolean isAuto = config == null ? false : Boolean.valueOf(config);
 		
-		if (!isAuto) {
-			return isReplied;
-		}
-
+		// TODO: 不仅仅找到系统级别的filters
 		Query ruleQuery = new Query();
 		ruleQuery.equals(HealthRule.USAGE.equals(HealthRule.Usage.filter));
 		List<HealthRule> filters = healthRuleService.findAll(ruleQuery);
-		if (filters != null) {
+
+		if (filters == null) { return isReplied; }
 			
-			for (HealthRule rule : filters) {
-				if (rule.isMatch(examination)) {
-					// 数据状态
-					if (examination.getLevel() == null) {
-						examination.setLevel(rule.getLevel());
-					} else if (examination.getLevel().compareTo(rule.getLevel()) < 0) {
-						examination.setLevel(rule.getLevel());
-					}
-	
-					List <HealthRuleReply> repliyConfgs = rule.getReplys();
-					if (repliyConfgs != null && repliyConfgs.size() > 0) {
-						// 获得预设
-						HealthRuleReply replyConfig = repliyConfgs.get(0);
-						
-						isReplied = true;
-						
-						// 设置reply
-						HealthReply reply = new HealthReply();
-						reply.setResult(replyConfig.getResult());
-						reply.setContent(replyConfig.getContent());
-						reply.setLevel(rule.getLevel());
-						reply.setReason("系统自动回复");
-						reply.setExaminationId(examination.getId());
-						healthReplyService.create(reply);
-					}
-					
+		for (HealthRule rule : filters) {
+			if (rule.isMatch(examination)) {
+				// 数据状态
+				if (examination.getLevel() == null) {
+					examination.setLevel(rule.getLevel());
+				} else if (examination.getLevel().compareTo(rule.getLevel()) < 0) {
+					examination.setLevel(rule.getLevel());
 				}
+
+				if (!isAuto) {
+					continue;
+				}
+				
+		    	Query<HealthRuleReply> repliyConfgQuery = new Query();
+		    	repliyConfgQuery.eq(HealthRuleReply.RULE_ID , rule.getId());
+				List <HealthRuleReply> repliyConfgs = healthRuleReplyService.findAll(repliyConfgQuery);
+				if (repliyConfgs != null && repliyConfgs.size() > 0) {
+					// 获得预设
+					HealthRuleReply replyConfig = repliyConfgs.get(0);
+					
+					isReplied = true;
+					
+					// 设置reply
+					HealthReply reply = new HealthReply();
+					reply.setResult(replyConfig.getResult());
+					reply.setContent(replyConfig.getContent());
+					reply.setLevel(rule.getLevel());
+					reply.setReason("系统自动回复");
+					reply.setExaminationId(examination.getId());
+					healthReplyService.create(reply);
+				}
+				
 			}
 		}
 
 		return isReplied;
 	}
 	
-	private void updateTask(final ExaminationTask task, final HealthExamination examination) {
+	private void updateTaskAndExamination(final ExaminationTask task, final HealthExamination examination) {
 		if (autoreply(examination)) {
 			taskService.complete(task); 
 		} else {
 			taskService.pending(task); 
 		}
+		update(examination);
 	}
 
 	public void upload(final HealthExamination examination , final byte[] uploadData , String md5) {
@@ -298,21 +304,19 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 						examination.setBloodOxygen(hi.oxygen);
 						
 						// 根据医疗数据做后续处理,如自动回复
-						update(examination);
-						updateTask(task, examination);
+						updateTaskAndExamination(task, examination);
 						
 					}
 					catch(Exception e) {
 						e.printStackTrace();
 						examination.setHasDataError(true);
-						update(examination);
-						updateTask(task, examination);
+						updateTaskAndExamination(task, examination);
 					}
 				}
 				
 			});		
 		} else {
-			updateTask(task, examination);
+			updateTaskAndExamination(task, examination);
 		}
 	}
 
