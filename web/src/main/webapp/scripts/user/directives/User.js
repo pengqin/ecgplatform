@@ -16,25 +16,38 @@ angular.module('ecgUserModules', [])
     // 表格展示
     $scope.user.data = null;
     $scope.user.paging = {
-        total: 50,
-        curPage: 0,
-        goToPage: function(page) {
-            console.info(page);
+        total: 0,
+        curPage: 1,
+        goToPage: function(page, max) {
+            refreshGrid({'page.curPage': page, 'page.max': max});
         }
     };
 
     // 刷新功能
-    function refreshGrid() {
+    var globalParams = {};
+    function refreshGrid(params) {
+        globalParams = $.extend(globalParams, params);
         $scope.dialog.showLoading();
-        UserService.queryAll().then(function(users) {
+        UserService.queryAll(globalParams).then(function(paging) {
             $scope.dialog.hideStandby();
-            $scope.user.data = users;
+            if (paging) {
+                $scope.user.paging.total = paging.total;
+                $scope.user.paging.curPage = paging.curPage;
+                $scope.user.data = paging.datas;
+            }
         }, function() {
             $scope.dialog.hideStandby();
             $scope.message.error("无法加载用户数据!");
         });
     }
     refreshGrid();
+
+    // 过滤功能
+    $scope.user.queryChanged = function(query) {
+        globalParams['username:like'] = query;
+        globalParams['page.curPage'] = 1;
+        refreshGrid(globalParams);
+    };
 
     // 显示label
     $scope.user.getGenderLabel = function(user) {
@@ -101,11 +114,6 @@ angular.module('ecgUserModules', [])
                 });
             }
         });
-    };
-
-    // 过滤功能
-    $scope.user.queryChanged = function(query) {
-        return $scope.user.filteredData = $filter("filter")($scope.user.data, query);
     };
 
     // 编辑功能

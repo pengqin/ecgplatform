@@ -273,62 +273,13 @@
           paging: "="
         },
         link: function($scope, $element, $attributes) {
-          /*
           $scope.instance = $scope;
-
-          $scope.currentPage = $scope.paging.curPage;
-          $scope.itemsPerPage = $scope.paging.max;
-          $scope.numberOfPages = Math.ceil($scope.paging.total / $scope.paging.max);
-          $scope.pages = (function() {
-            var _i, _ref, _results;
-
-            _results = [];
-            for (x = _i = 0, _ref = $scope.numberOfPages - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; x = 0 <= _ref ? ++_i : --_i) {
-              _results.push(x);
-            }
-            return _results;
-          })();
-
-          $scope.fromPage = function() {
-            if ($scope.list) {
-              return $scope.itemsPerPage * $scope.currentPage - $scope.list.length;
-            }
-          };
-          $scope.getFillerArray = function() {
-            var fillerLength, itemCountOnLastPage, x, _i, _ref, _ref1, _results;
-
-            if ($scope.currentPage === $scope.numberOfPages - 1) {
-              itemCountOnLastPage = $scope.list.length % $scope.itemsPerPage;
-              if (itemCountOnLastPage !== 0) {
-                fillerLength = $scope.itemsPerPage - itemCountOnLastPage - 1;
-                _results = [];
-                for (x = _i = _ref = $scope.list.length, _ref1 = $scope.list.length + fillerLength; _ref <= _ref1 ? _i <= _ref1 : _i >= _ref1; x = _ref <= _ref1 ? ++_i : --_i) {
-                  _results.push(x);
-                }
-                return _results;
-              } else {
-                return [];
-              }
-            }
-          };
-
-          $scope.goToPage = function(page) {
-            page = Math.max(0, page);
-            page = Math.min($scope.numberOfPages - 1, page);
-            $scope.paging.goToPage(page + 1);
-          }
-
-          return $scope.$watch("list", function() {
-            return $scope.list = $scope.list;
-          });
-          */
-
-          $scope.instance = $scope;
-          $scope.currentPage = $scope.paging.curPage;
+          $scope.currentPage = $scope.paging.curPage - 1;
           $scope.numberOfPages = Math.ceil($scope.paging.total / $scope.itemsPerPage);
           $scope.update = function() {
             var x;
 
+            $scope.currentPage = $scope.paging.curPage - 1;
             if ($scope.list) {
               if ($scope.list.length > 0) {
                 $scope.numberOfPages = Math.ceil($scope.paging.total / $scope.itemsPerPage);
@@ -349,31 +300,15 @@
             }
           };
           $scope.fromPage = function() {
-            if ($scope.list) {
-              return $scope.itemsPerPage * $scope.currentPage - $scope.list.length;
-            }
+              return $scope.itemsPerPage;
           };
           $scope.getFillerArray = function() {
-            var fillerLength, itemCountOnLastPage, x, _i, _ref, _ref1, _results;
-
-            if ($scope.currentPage === $scope.numberOfPages - 1) {
-              itemCountOnLastPage = $scope.list.length % $scope.itemsPerPage;
-              if (itemCountOnLastPage !== 0) {
-                fillerLength = $scope.itemsPerPage - itemCountOnLastPage - 1;
-                _results = [];
-                for (x = _i = _ref = $scope.list.length, _ref1 = $scope.list.length + fillerLength; _ref <= _ref1 ? _i <= _ref1 : _i >= _ref1; x = _ref <= _ref1 ? ++_i : --_i) {
-                  _results.push(x);
-                }
-                return _results;
-              } else {
-                return [];
-              }
-            }
+            return $scope.list;
           };
           $scope.goToPage = function(page) {
             page = Math.max(0, page);
             page = Math.min($scope.numberOfPages - 1, page);
-            $scope.paging.goToPage(page);
+            $scope.paging.goToPage(page + 1, $scope.itemsPerPage);
           }
           $scope.update();
           return $scope.$watch("list", function() {
