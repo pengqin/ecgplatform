@@ -8,7 +8,7 @@ angular.module('ecgAPKService', [])
         return {
             queryAll: function(params) {
                 var params = params || {};
-                if (typeof params["page.max"] === undefined) {
+                if (typeof params["page.max"] === 'undefined') {
                     params["page.max"] = 999;
                 }
                 return $http({

@@ -12,8 +12,8 @@ define(function(require, exports) {
 
         $(['pending', 'proceeding', 'completed']).each(function(i, status) {
             TaskService.queryAllTaskByEmployee({}, {status: status})
-            .then(function(results) {
-                $scope.overview.currentreport[status] = results.length;
+            .then(function(paging) {
+                $scope.overview.currentreport[status] = paging.total;
             });
         });
     }])

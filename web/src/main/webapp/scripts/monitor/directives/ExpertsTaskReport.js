@@ -26,10 +26,10 @@ define(function(require, exports) {
                     ));
                 });
 
-                $q.all(querys).then(function(results) {
+                $q.all(querys).then(function(pagings) {
                     var sum = 0;
-                    expert.proceeding = results[0].length;
-                    expert.completed = results[1].length;
+                    expert.proceeding = pagings[0].total;
+                    expert.completed = pagings[1].total;
                     sum = expert.proceeding + expert.completed;
                     if (sum > 0) {
                         expert.percent = parseInt(expert.completed / sum  * 100);

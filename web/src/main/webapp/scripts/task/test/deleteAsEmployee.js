@@ -53,7 +53,9 @@ define(function(require, exports) {
             expect(TaskService).not.to.be(undefined);
             // to get a task
             sessionemployee.roles = "admin";
-            TaskService.queryAllTaskByEmployee(sessionemployee).then(function(tasks) {
+            TaskService.queryAllTaskByEmployee(sessionemployee)
+            .then(function(paging) {
+                var tasks = paging.datas;
                 expect(tasks).not.to.be(undefined);
                 expect(tasks.length).not.to.be(0);
                 task = tasks[0];

@@ -48,7 +48,8 @@ define(function(require, exports) {
             TaskService.queryAllTaskByEmployee(
                 user, 
                 {status: 'undone'}
-            ).then(function(tasks) {
+            ).then(function(paging) {
+                var tasks = paging.datas;
                 expect(tasks).not.to.be(null);
                 expect(tasks.length).not.to.be(0);
                 env.undone = tasks.length;
@@ -89,7 +90,8 @@ define(function(require, exports) {
             TaskService.queryAllTaskByEmployee(
                 user, 
                 {status: 'done'}
-            ).then(function(tasks) {
+            ).then(function(paging) {
+                var tasks = paging.datas;
                 expect(tasks).not.to.be(null);
                 env.done = tasks.length;
                 done();

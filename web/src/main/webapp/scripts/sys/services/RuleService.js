@@ -8,7 +8,7 @@ angular.module('ecgRuleService', [])
         return {
             queryAll: function(params) {
                 var params = params || {};
-                if (typeof params["page.max"] === undefined) {
+                if (typeof params["page.max"] === 'undefined') {
                     params["page.max"] = 999;
                 }
                 return $http({
@@ -38,7 +38,7 @@ angular.module('ecgRuleService', [])
             queryAllGroupByUser: function(user) {
                 var id = user.id || user,
                     params = params || {};
-                if (typeof params["page.max"] === undefined) {
+                if (typeof params["page.max"] === 'undefined') {
                     params["page.max"] = 999;
                 }
                 return $http({
