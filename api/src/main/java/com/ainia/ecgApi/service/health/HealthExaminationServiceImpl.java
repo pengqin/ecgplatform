@@ -94,7 +94,6 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 			
 		for (HealthRule rule : filters) {
 			if (rule.isMatch(examination)) {
-				System.out.println(rule);
 				// 数据状态
 				if (examination.getLevel() == null) {
 					examination.setLevel(rule.getLevel());

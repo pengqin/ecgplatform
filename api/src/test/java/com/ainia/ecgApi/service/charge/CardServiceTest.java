@@ -99,10 +99,12 @@ public class CardServiceTest {
 				"1003", "1004", "1005", "1006", "1007", "1008", "1009", "1010" };
 
 		for (String serial : serials) {
+			/*
 			System.out.println("=========================");
 			System.out.println("serial " + serial);
 			System.out.println("encodedSerial "
 					+ cardService.encodeString(serial, null));
+			*/
 		}
 	}
 

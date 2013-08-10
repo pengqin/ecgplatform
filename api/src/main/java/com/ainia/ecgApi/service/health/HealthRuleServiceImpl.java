@@ -66,6 +66,7 @@ public class HealthRuleServiceImpl extends BaseServiceImpl<HealthRule , Long> im
 		
 		Query ruleQuery = new Query();
 		ruleQuery.eq(HealthRule.USAGE, HealthRule.Usage.group);
+		ruleQuery.isNull(HealthRule.EMPLOYEE_ID);
 		ruleQuery.isNull(HealthRule.GROUP_ID);
 		List<HealthRule> sysRules = healthRuleDao.findAll(ruleQuery);
 		
@@ -90,10 +91,8 @@ public class HealthRuleServiceImpl extends BaseServiceImpl<HealthRule , Long> im
 			if (found) {
 				filterQuery.eq(HealthRule.GROUP_ID, foundUserRule.getId());
 			} else {
-				System.out.println("sysRule" + sysRule.getId());
 				filterQuery.eq(HealthRule.GROUP_ID, sysRule.getId());
 			}
-			System.out.println(healthRuleDao.findAll(filterQuery));
 			filters.addAll(healthRuleDao.findAll(filterQuery));
 		}
 		

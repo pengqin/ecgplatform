@@ -260,9 +260,6 @@ public class HealthExaminationServiceTest {
     	examination.setIsTest(true);
     	examination.setHeartRhythm(70);
     	examination.setBreath(95);
-    	System.out.println("---------------------------");
-    	System.out.println("---------------------------");
-    	System.out.println("---------------------------");
     	healthExaminationService.upload(examination , null , null);
     	Assert.assertTrue(examination.getLevel().equals(Level.warning));
     	Query<HealthReply> query2 = new Query();
@@ -315,7 +312,7 @@ public class HealthExaminationServiceTest {
     	DateTime now = new DateTime(2013 , 7 , 1 , 0 , 0 ,0);
     	List<Map> results =  healthExaminationService.statisticsByUserAndDay(1L , now.toDate() , now.plusYears(1).toDate());
     	for (Map map : results) {
-    		System.out.println(map.get(HealthExamination.CREATED_DATE));
+    		//System.out.println(map.get(HealthExamination.CREATED_DATE));
     	}
     	Assert.assertTrue(results.size() > 0);
     }

@@ -72,7 +72,7 @@ insert into health_rule_reply (id , title , content , result , rule_id, created_
 values (5, '标题' , '心跳异常的建议' , '心跳异常' , 6, '2012-06-04 01:00:00', '2012-06-04 01:00:00' , 1);
 
 insert into health_rule (id , name , code , rule_usage , can_reply , type , employee_id ,group_id, unit , level ,min , max,created_date,remark , version)
-values (7 , '呼吸规则' , '5' , 'group' ,1, '11', null ,1, '次' , 'success' , 0 , 100 , '2012-06-04 01:00:00' , '心跳数字的用于检测的区间' , 1);
+values (7 , '呼吸规则' , '5' , 'group' ,1, '11', null , null, '次' , 'success' , 0 , 100 , '2012-06-04 01:00:00' , '心跳数字的用于检测的区间' , 1);
 insert into health_rule (id , name , code , rule_usage , can_reply, type , employee_id ,group_id,  unit , level ,min , max,created_date,remark , version)
 values (8 , '呼吸规则的回复区间' , '5' , 'filter' , 1, '11' , null , 7, '次' , 'outside' , -9999 , 0 , '2012-06-04 01:00:00' , '呼吸规则的说明' , 1);
 insert into health_rule (id , name , code , rule_usage , can_reply, type , employee_id ,group_id,  unit , level ,min , max,created_date,remark , version)
