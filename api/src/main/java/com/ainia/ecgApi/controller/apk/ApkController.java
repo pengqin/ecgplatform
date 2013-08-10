@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.ainia.ecgApi.core.crud.Page;
 import com.ainia.ecgApi.core.crud.Query;
+import com.ainia.ecgApi.core.crud.Query.OrderType;
 import com.ainia.ecgApi.core.web.AjaxResult;
 import com.ainia.ecgApi.domain.apk.Apk;
 import com.ainia.ecgApi.service.apk.ApkService;
@@ -49,6 +50,7 @@ public class ApkController {
 	@RequestMapping(method = RequestMethod.GET ,produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public Page<Apk> index(Query<Apk> query) {
+		query.addOrder(Apk.VERSION , OrderType.desc);
 		long total = apkService.count(query);
 		query.getPage().setTotal(total);
 		query.getPage().setDatas(apkService.findAll(query));
