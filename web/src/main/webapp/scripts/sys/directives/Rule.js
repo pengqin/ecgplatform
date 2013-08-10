@@ -65,6 +65,8 @@ angular.module('ecgRuleDirectives', [])
     };
     refreshGrid();
 
+    $scope.rule.refresh = refreshGrid;
+
     // 编辑功能
     $scope.rule.showPage = function(item) {
         if (!item.editable) { return; }
