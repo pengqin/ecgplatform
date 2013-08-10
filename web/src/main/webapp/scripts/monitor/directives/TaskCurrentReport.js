@@ -11,7 +11,7 @@ define(function(require, exports) {
         $scope.overview.currentreport = {pending: '-', proceeding: '-', completed: '-'};
 
         $(['pending', 'proceeding', 'completed']).each(function(i, status) {
-            TaskService.queryAllTaskByEmployee({}, {status: status})
+            TaskService.queryAllTaskByEmployee({}, {status: status, 'page.max': 1})
             .then(function(paging) {
                 $scope.overview.currentreport[status] = paging.total;
             });

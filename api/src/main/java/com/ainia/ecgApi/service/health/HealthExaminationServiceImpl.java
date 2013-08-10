@@ -88,10 +88,7 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 		String config = systemConfigService.findByKey(SystemConfig.EXAMINATION_REPLY_AUTO);
 		boolean isAuto = config == null ? false : Boolean.valueOf(config);
 		
-		// TODO: 不仅仅找到系统级别的filters
-		Query ruleQuery = new Query();
-		ruleQuery.equals(HealthRule.USAGE.equals(HealthRule.Usage.filter));
-		List<HealthRule> filters = healthRuleService.findAll(ruleQuery);
+		List<HealthRule> filters = healthRuleService.findAllFiltersByUser(examination.getUserId());
 
 		if (filters == null) { return isReplied; }
 			

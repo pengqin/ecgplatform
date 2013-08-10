@@ -273,6 +273,27 @@ public class HealthExaminationServiceTest {
     	examination.setBreath(95);
     	healthExaminationService.upload(examination , null , null);
     	Assert.assertTrue(examination.getLevel().equals(Level.danger));
+   
+    	config.setValue("false");
+    	systemConfigService.update(config);
+    }
+    
+    @Test
+    public void testCustomAutoReply() throws IOException, DataException, InterruptedException {
+    	when(authenticateService.getCurrentUser()).thenReturn(new AuthUserImpl(1L , "13911111111" , "13911111111" , User.class.getSimpleName()));
+    	((HealthExaminationServiceImpl)healthExaminationService).setAuthenticateService(authenticateService);
+    	
+    	SystemConfig config = systemConfigService.get(2l);
+    	config.setValue("true");
+    	systemConfigService.update(config);
+    	
+    	// 心率正常范围
+    	HealthExamination examination = new HealthExamination();
+    	examination.setUserId(1l);
+    	examination.setIsTest(true);
+    	examination.setBreath(95);
+    	healthExaminationService.upload(examination , null , null);
+    	Assert.assertTrue(examination.getLevel().equals(Level.success));
     	
     	config.setValue("false");
     	systemConfigService.update(config);
@@ -291,7 +312,7 @@ public class HealthExaminationServiceTest {
     	DateTime now = new DateTime(2013 , 7 , 1 , 0 , 0 ,0);
     	List<Map> results =  healthExaminationService.statisticsByUserAndDay(1L , now.toDate() , now.plusYears(1).toDate());
     	for (Map map : results) {
-    		System.out.println(map.get(HealthExamination.CREATED_DATE));
+    		//System.out.println(map.get(HealthExamination.CREATED_DATE));
     	}
     	Assert.assertTrue(results.size() > 0);
     }

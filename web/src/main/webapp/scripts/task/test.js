@@ -65,7 +65,6 @@ define(function(require, exports) {
 
         // 场景1 结束
 
-
         /**
          * 场景2,接线员自己回复，并将更改当前环境
          */

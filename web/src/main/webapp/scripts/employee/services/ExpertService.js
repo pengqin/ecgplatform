@@ -25,6 +25,24 @@ angular.module('ecgExpertService', [])
                     return [];
                 });
             },
+            getTotal: function(params) {
+                var params = params || {};
+                if (typeof params["page.max"] === 'undefined') {
+                    params["page.max"] = 1;
+                }
+                return $http({
+                    method: 'GET',
+                    url: uri + '?' + $.param(params)
+                }).then(function(res) {
+                    if (res.data) {
+                        return res.data.total;
+                    } else {
+                        return 0;    
+                    }
+                }, function() {
+                    return 0;
+                });
+            },
             getPlainObject: function() {
                 return {
                     name: "",

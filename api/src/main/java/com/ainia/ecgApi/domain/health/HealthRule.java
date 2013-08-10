@@ -48,7 +48,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  */
 @Entity
 public class HealthRule implements Domain {
-	
+	public static final String GROUP_ID = "groupId";
+	public static final String EMPLOYEE_ID = "employeeId";
 	public static final String RULE_ID = "ruleId";
 	public static final String USAGE = "usage";
 	
