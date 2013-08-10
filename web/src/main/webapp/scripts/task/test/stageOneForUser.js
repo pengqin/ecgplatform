@@ -172,6 +172,62 @@ define(function(require, exports) {
             });
         });
 
+        var createdDateConditonId = null;
+        it("the user's task should not be retrieved with one createdDate.", function(done) {
+            $.ajax({
+                url: PATH + '/api/user/' + userId + '/task?createdDate:gth=2013-07-10',
+                dataType: 'json',
+                headers: {Authorization: token}
+            }).then(function(res) {
+                expect(res.datas.length).to.be(3);
+                createdDateConditonId = res.datas[0].id;
+                done();
+            }, function() {
+                throw new Error('failed to retrieve a task id.');
+            });
+        });
+
+        it("the user's task should not be retrieved with one createdDate and one apkId:in.", function(done) {
+            expect(createdDateConditonId).not.to.be(undefined);
+            $.ajax({
+                url: PATH + '/api/user/' + userId + '/task?createdDate:gth=2013-07-10&apkId:in=' + createdDateConditonId,
+                dataType: 'json',
+                headers: {Authorization: token}
+            }).then(function(res) {
+                expect(res.datas.length).to.be(1);
+                done();
+            }, function() {
+                throw new Error('failed to retrieve a task id.');
+            });
+        });
+
+        it("the user's task should not be retrieved with one createdDate and one apkId:notIn.", function(done) {
+            expect(createdDateConditonId).not.to.be(undefined);
+            $.ajax({
+                url: PATH + '/api/user/' + userId + '/task?createdDate:gth=2013-07-10&apkId:notIn=' + createdDateConditonId,
+                dataType: 'json',
+                headers: {Authorization: token}
+            }).then(function(res) {
+                expect(res.datas.length).to.be(2);
+                done();
+            }, function() {
+                throw new Error('failed to retrieve a task id.');
+            });
+        });
+
+        it("the user's task should not be retrieved with two createdDate.", function(done) {
+            $.ajax({
+                url: PATH + '/api/user/' + userId + '/task?createdDate:gth=2013-07-10&createdDate:lth=2013-07-12',
+                dataType: 'json',
+                headers: {Authorization: token}
+            }).then(function(res) {
+                expect(res.datas.length).to.be(2);
+                done();
+            }, function() {
+                throw new Error('failed to retrieve a task id.');
+            });
+        });
+
         it("the user's task should be deleted", function(done) {
             expect(taskId).not.to.be(undefined);
             $.ajax({

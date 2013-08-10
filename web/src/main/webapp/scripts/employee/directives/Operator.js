@@ -104,11 +104,11 @@ angular.module('ecgOperator', [])
 
     $scope.operator.isUnique = true;
     $scope.operator.checkUnique = function() {
-        if (!$scope.operator.newobj.operatorname) { return; }
-        ProfileService.get($scope.operator.newobj.operatorname).then(function(operator) {
+        if (!$scope.operator.newobj.username) { return; }
+        ProfileService.get($scope.operator.newobj.username).then(function(operator) {
             if (operator) { 
                 $scope.operator.isUnique = false;
-                $scope.message.warn("用户" + $scope.operator.newobj.operatorname + "已存在!");
+                $scope.message.warn("用户" + $scope.operator.newobj.username + "已存在!");
             } else {
                 $scope.operator.isUnique = true;
             }
@@ -121,7 +121,7 @@ angular.module('ecgOperator', [])
     $scope.operator.create = function() {
         $scope.dialog.showStandby();
         $scope.operator.newobj.birthday = $('#operator-birthday input').val();
-        $scope.operator.newobj.password = $scope.operator.newobj.operatorname;
+        $scope.operator.newobj.password = $scope.operator.newobj.username;
         OperatorService.create($scope.operator.newobj)
         .then(function(result) {
             $scope.dialog.hideStandby();
