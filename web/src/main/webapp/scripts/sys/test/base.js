@@ -114,10 +114,16 @@ define(function(require, exports) {
                 code: rule.code
             }).then(function(rules) {
                 expect(rules.length).to.be(1);
+                expect(rules[0].groupId).to.be(null); // 否则判定健康状态和自动回复都会出问题
+                if (user.username === 'admin' || user.username === 'chief') {
+                    expect(rules[0].employeeId).to.be(null); // 否则判定健康状态和自动回复都会出问题
+                }
                 rule.id = rules[0].id;
                 done();
             });
         });
+
+        return;
 
 
         // 能更新
