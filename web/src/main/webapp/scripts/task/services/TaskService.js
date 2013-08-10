@@ -35,7 +35,7 @@ angular.module('ecgTaskService', [])
                 }
 
                 var paging = {};
-                paging['page.max'] = opts['page.max'] || 15;
+                paging['page.max'] = typeof opts['page.max'] === 'undefined' ? 15 : opts['page.max'];
                 paging['page.curPage'] = opts['page.curPage'] || 1;
 
                 return $http({

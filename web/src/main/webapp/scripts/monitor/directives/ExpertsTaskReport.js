@@ -22,7 +22,7 @@ define(function(require, exports) {
                 $(statuses).each(function(i, status) {
                     querys.push(TaskService.queryAllTaskByEmployee(
                         {id: expert.id, roles: "expert"}, 
-                        {status: status}
+                        {status: status, 'page.max': 1}
                     ));
                 });
 
