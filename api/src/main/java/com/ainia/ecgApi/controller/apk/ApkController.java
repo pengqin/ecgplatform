@@ -64,10 +64,14 @@ public class ApkController {
      * ResponseEntity
      */
     @RequestMapping(method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity create(Apk apk , @RequestParam(value = "file" , required = true) MultipartFile file ) throws IOException {
-    	apkService.upload(apk , file.getBytes());
-		return new ResponseEntity<AjaxResult>(HttpStatus.CREATED);
+    public String create(Apk apk , @RequestParam(value = "file" , required = true) MultipartFile file ) throws IOException {
+    	try {
+    		apkService.upload(apk , file.getBytes());
+    		return "apk/success";
+    	}
+    	catch(Exception e) {
+    		return "apk/failed";
+    	}
     }
 
 
