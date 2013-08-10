@@ -260,6 +260,9 @@ public class HealthExaminationServiceTest {
     	examination.setIsTest(true);
     	examination.setHeartRhythm(70);
     	examination.setBreath(95);
+    	System.out.println("---------------------------");
+    	System.out.println("---------------------------");
+    	System.out.println("---------------------------");
     	healthExaminationService.upload(examination , null , null);
     	Assert.assertTrue(examination.getLevel().equals(Level.warning));
     	Query<HealthReply> query2 = new Query();
@@ -273,6 +276,27 @@ public class HealthExaminationServiceTest {
     	examination.setBreath(95);
     	healthExaminationService.upload(examination , null , null);
     	Assert.assertTrue(examination.getLevel().equals(Level.danger));
+   
+    	config.setValue("false");
+    	systemConfigService.update(config);
+    }
+    
+    @Test
+    public void testCustomAutoReply() throws IOException, DataException, InterruptedException {
+    	when(authenticateService.getCurrentUser()).thenReturn(new AuthUserImpl(1L , "13911111111" , "13911111111" , User.class.getSimpleName()));
+    	((HealthExaminationServiceImpl)healthExaminationService).setAuthenticateService(authenticateService);
+    	
+    	SystemConfig config = systemConfigService.get(2l);
+    	config.setValue("true");
+    	systemConfigService.update(config);
+    	
+    	// 心率正常范围
+    	HealthExamination examination = new HealthExamination();
+    	examination.setUserId(1l);
+    	examination.setIsTest(true);
+    	examination.setBreath(95);
+    	healthExaminationService.upload(examination , null , null);
+    	Assert.assertTrue(examination.getLevel().equals(Level.success));
     	
     	config.setValue("false");
     	systemConfigService.update(config);
