@@ -225,7 +225,6 @@ define(function(require, exports) {
                 throw new Error('the rule can\'t be retrieved by id');
             });
         });
-        return;
 
         // 不能创建非法数据
         it("the replyconfig for a specific filter rule should not be created without required fields", function(done) {
