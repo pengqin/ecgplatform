@@ -22,7 +22,7 @@ public interface ApkService extends BaseService<Apk , Long> {
 	 * @param content
 	 * void
 	 */
-	public void upload(Apk apk , byte[] content) throws IOException ;
+	public void upload(Apk apk , byte[] content) throws Exception ;
 	
 	/**
 	 * <p>获取apk文件</p>

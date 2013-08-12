@@ -99,7 +99,7 @@ public class CardController  {
     						@RequestParam("token") String token , Model model) throws IOException {
     	AuthUser authUser = authenticateService.loadUserByToken(token);
     	if (authUser == null || authUser.isUser()) {
-    		return "/failed.html";
+    		return "/card/failed";
     	}
     	CSVReader reader = new CSVReader(new InputStreamReader(file.getInputStream()));
         List<String[]> list = reader.readAll();  

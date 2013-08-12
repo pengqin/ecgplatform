@@ -1,14 +1,20 @@
 package com.ainia.ecgApi.domain.apk;
 
-import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.PrePersist;
 import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotBlank;
 
 import com.ainia.ecgApi.core.bean.Domain;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 /**
  * <p>apk 对象</p>
  * Copyright: Copyright (c) 2013
@@ -24,11 +30,19 @@ public class Apk implements Domain {
 	public static final String APK_NAME = "healthApk";
 	public static final String APK_SUFFIX = ".apk";
 	public static final String VERSION = "version";
+	public static final String ENABLED = "enabled";
 	
 	private Long id;
 	private String version;
 	private boolean isReleased;
-	private boolean enabled;
+	private boolean enabled = true;
+	private Date createdDate;
+	private String externalUrl;
+
+	@PrePersist
+	public void onCreate() {
+		this.createdDate = new Date();
+	}
 
 	/**
 	 * <p>返回APK 存储名称</p>
@@ -37,7 +51,7 @@ public class Apk implements Domain {
 	 */
 	@Transient
 	public String getName() {
-		 return APK_NAME +  this.getVersion()  + APK_SUFFIX;
+		 return APK_NAME +  this.getId()  + APK_SUFFIX;
 	}
 	
 	@Override
@@ -47,6 +61,7 @@ public class Apk implements Domain {
 		return id;
 	}
 
+	@NotBlank
 	public String getVersion() {
 		return version;
 	}
@@ -55,6 +70,7 @@ public class Apk implements Domain {
 		this.version = version;
 	}
 
+	@JsonIgnore
 	public boolean isReleased() {
 		return isReleased;
 	}
@@ -65,6 +81,16 @@ public class Apk implements Domain {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	@NotNull
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm" , timezone = "GMT+08:00")
+	public Date getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
 	}
 
 	public boolean isEnabled() {
@@ -98,6 +124,14 @@ public class Apk implements Domain {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+
+	public String getExternalUrl() {
+		return externalUrl;
+	}
+
+	public void setExternalUrl(String externalUrl) {
+		this.externalUrl = externalUrl;
 	}
 	
 

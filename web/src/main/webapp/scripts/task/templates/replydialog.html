@@ -1,7 +1,7 @@
 <div id="ecgReplyDialog" class="modal hide" style="width:650px;" tabindex="-1" role="dialog" aria-labelledby="ecgModalLabel" aria-hidden="true">
     <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3>增加人工回复</h3>
+    <h3>人工回复</h3>
     <hr/>
 </div>
 <div class="modal-body">
@@ -49,7 +49,13 @@
         </tr>
 
         </table>
+
+        <p><input type="checkbox"
+                  ng-checked="replydialog.reply.deletePreConfig"
+                  ng-model="replydialog.reply.deletePreConfig"
+                  style="margin: 0px;"> <strong>清除系统预设回复</strong></p>
     </form>
+
 </div>
 
 <div class="modal-footer">
@@ -57,7 +63,7 @@
         ng-class="{'btn-primary': addManualReplyForm.$valid}" 
         ng-click="replydialog.execute()"
         ng-disabled="!addManualReplyForm.$valid">
-        <i class="icon-ok"></i>增加
+        <i class="icon-ok"></i>回复
     </button>
     <button class="btn" data-dismiss="modal" aria-hidden="true">
         <i class="icon-remove"></i>关闭

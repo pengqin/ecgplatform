@@ -32,8 +32,6 @@ angular.module('ecgAPK', [])
     // 当前选中数据
     $scope.apk.selectedItem = null;
 
-
-
     // 删除功能
     $scope.apk.confirmDelete = function() {
         var selectedItem = $scope.apk.selectedItem;
@@ -73,11 +71,16 @@ angular.module('ecgAPK', [])
     $scope.uploaddialog = {};
 
     $scope.uploaddialog.execute = function() {
-        document.getElementById("uploadAPKFrame").contentWindow.upload();
+        var iframeWin = document.getElementById("uploadAPKFrame").contentWindow;
+        if (!iframeWin.upload) { return; }
+        iframeWin.upload();
     };
 
     $scope.uploaddialog.hide = function(opts) {
       $('#ecgAPKUploadDialog').modal('hide');
+      if ($scope.apk && $scope.apk.refresh) {
+        $scope.apk.refresh();
+      }
     };
     window.closeUploadAPKDialog = $scope.uploaddialog.hide;
 
