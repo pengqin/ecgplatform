@@ -20,7 +20,9 @@ angular.module('ecgCardDirectives', [])
     $scope.uploaddialog = {};
 
     $scope.uploaddialog.execute = function() {
-        document.getElementById("uploadCardFrame").contentWindow.upload();
+        var iframeWin = document.getElementById("uploadCardFrame").contentWindow;
+        if (!iframeWin.upload) { return; }
+        iframeWin.upload();
     };
 
     $scope.uploaddialog.hide = function(opts) {

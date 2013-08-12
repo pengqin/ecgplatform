@@ -1,12 +1,15 @@
 package com.ainia.ecgApi.service.apk;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ainia.ecgApi.core.crud.BaseDao;
 import com.ainia.ecgApi.core.crud.BaseServiceImpl;
+import com.ainia.ecgApi.core.crud.Condition;
+import com.ainia.ecgApi.core.crud.Query;
 import com.ainia.ecgApi.core.exception.ServiceException;
 import com.ainia.ecgApi.dao.apk.ApkDao;
 import com.ainia.ecgApi.domain.apk.Apk;
@@ -37,7 +40,17 @@ public class ApkServiceImpl extends BaseServiceImpl<Apk , Long> implements ApkSe
     }
 
 	@Override
-	public void upload(Apk apk, byte[] content) throws IOException {
+	public void upload(Apk apk, byte[] content) throws Exception {
+		Query<Apk> apkQuery = new Query();
+		apkQuery.addCondition(Condition.eq(Apk.VERSION, apk.getVersion()));
+		//apkQuery.addCondition(Condition.eq(Apk.ENABLED, apk.isEnabled()));
+		
+		List <Apk> apks = apkDao.findAll(apkQuery);
+		
+		if (apks != null && apks.size() > 0) {
+			throw new ServiceException("apk.version.should.be.uniqued");
+		}
+		
 		apkDao.save(apk);
 		uploadService.save(Type.apk ,apk.getName() ,content);
 	}

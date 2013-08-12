@@ -20,6 +20,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.ainia.ecgApi.core.crud.Page;
 import com.ainia.ecgApi.core.crud.Query;
 import com.ainia.ecgApi.core.crud.Query.OrderType;
+import com.ainia.ecgApi.core.security.AuthUser;
+import com.ainia.ecgApi.core.security.AuthenticateService;
 import com.ainia.ecgApi.core.web.AjaxResult;
 import com.ainia.ecgApi.domain.apk.Apk;
 import com.ainia.ecgApi.service.apk.ApkService;
@@ -40,7 +42,8 @@ public class ApkController {
     @Autowired
     private ApkService apkService;
     
-    
+    @Autowired
+    private AuthenticateService authenticateService;
 	/**
 	 * <p>load the domain list</p>
 	 * Page<T>
@@ -65,8 +68,13 @@ public class ApkController {
      * @throws IOException
      * ResponseEntity
      */
-    @RequestMapping(method = RequestMethod.POST)
-    public String create(Apk apk , @RequestParam(value = "file" , required = true) MultipartFile file ) throws IOException {
+    @RequestMapping(value = "upload", method = RequestMethod.POST)
+    public String create(Apk apk , @RequestParam(value = "file" , required = true) MultipartFile file, @RequestParam(value="token", required = true) String token ) throws IOException {
+    	AuthUser authUser = authenticateService.loadUserByToken(token);
+    	if (authUser == null || authUser.isUser()) {
+    		return "apk/failed";
+    	}
+    	
     	try {
     		apkService.upload(apk , file.getBytes());
     		return "apk/success";

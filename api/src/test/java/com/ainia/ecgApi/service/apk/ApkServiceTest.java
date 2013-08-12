@@ -1,19 +1,28 @@
 package com.ainia.ecgApi.service.apk;
 
+import static org.mockito.Mockito.when;
+
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.util.List;
 
-import org.joda.time.DateTime;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import com.ainia.ecgApi.core.crud.Query;
+import com.ainia.ecgApi.core.security.AuthUserImpl;
+import com.ainia.ecgApi.core.security.AuthenticateService;
 import com.ainia.ecgApi.domain.apk.Apk;
+import com.ainia.ecgApi.domain.sys.User;
 
 /**
  * <p>Apk Service test</p>
@@ -32,6 +41,9 @@ public class ApkServiceTest {
 
     @Autowired
     private ApkService apkService;
+
+    @Mock
+    private AuthenticateService authenticateService;
 
     private static Apk apk;
     
@@ -55,6 +67,32 @@ public class ApkServiceTest {
         List<Apk> apks = apkService.findAll(query);
         
     }
+
+    @Test
+    public void testUpload() throws Exception{
+    	/*
+    	when(authenticateService.getCurrentUser()).thenReturn(new AuthUserImpl(2L , "test" , "13700230001" , User.class.getSimpleName()));
+    	
+    	Resource resource = new ClassPathResource("apk/sample");
+    	ByteArrayOutputStream out = new ByteArrayOutputStream();
+    	int b = -1;
+    	InputStream input = resource.getInputStream();
+    	while ((b = input.read()) != -1) {
+    		out.write(b);
+    	}
+    	byte[] bytes = out.toByteArray();
+    	
+    	Apk apk = new Apk();
+        apk.setVersion("1");
+        apk.setEnabled(true);
+       
+    	apkService.upload(apk , bytes);
+    	Thread.sleep(5000);
+    	input.close();
+    	out.close();*/
+    	
+    }
+
 
     @Test
     public void testCreate() {
