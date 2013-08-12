@@ -225,5 +225,7 @@ create table apk (
     version varchar(20) not null unique,
     released int,
     enabled int,
+    created_date datetime,
+    external_url varchar(300),
     primary key(id)
 );
