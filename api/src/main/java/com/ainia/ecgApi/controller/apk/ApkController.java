@@ -90,16 +90,18 @@ public class ApkController {
     	Apk apk = apkService.get(id);
     	if (apk == null) {
     		res.setStatus(HttpStatus.NOT_FOUND.value());
+    		res.flushBuffer();
+    	} else {
+    		OutputStream os = res.getOutputStream();
+            try {  
+                res.reset();  
+                res.setHeader("Content-Disposition", "attachment; filename=" + apk.getName());  
+                res.setContentType("application/octet-stream; charset=utf-8");  
+                os.write(apkService.load(apk));
+            } finally {  
+            	os.close();
+            }  
     	}
-        OutputStream os = res.getOutputStream();
-        try {  
-            res.reset();  
-            res.setHeader("Content-Disposition", "attachment; filename=" + apk.getName());  
-            res.setContentType("application/octet-stream; charset=utf-8");  
-            os.write(apkService.load(apk));
-        } finally {  
-        	os.close();
-        }  
     }
     
 	/**
