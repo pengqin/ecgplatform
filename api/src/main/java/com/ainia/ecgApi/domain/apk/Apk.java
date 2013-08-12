@@ -51,7 +51,7 @@ public class Apk implements Domain {
 	 */
 	@Transient
 	public String getName() {
-		 return APK_NAME +  this.getCreatedDate().getTime()  + APK_SUFFIX;
+		 return APK_NAME +  this.getVersion()  + APK_SUFFIX;
 	}
 	
 	@Override
