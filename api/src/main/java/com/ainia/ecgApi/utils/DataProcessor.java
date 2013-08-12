@@ -28,6 +28,8 @@ public class DataProcessor {
 	
 	private float maxDaolian = 0.0f;
 
+	private boolean snerror = false;
+
 	// Map<Integer, DataRecord> _records = new HashMap<Integer, DataRecord>();
 	List<DataRecord> _records = new ArrayList<DataRecord>();
 	DataRecord _curRecord = null;
@@ -65,7 +67,8 @@ public class DataProcessor {
 								_curRecord.serialNumber = sn;
 								_records.add(_curRecord);
 							} else {
-								throw new DataException("SN不连续!");
+								snerror = true;
+								//throw new DataException("SN不连续!");
 							}
 						}
 						i = createSectionRecord(data, i);
@@ -309,6 +312,10 @@ public class DataProcessor {
 	
 	public int getOxygenDataLen() {
 		return this.oxygenDataLength;
+	}
+
+	public boolean isSnerror() {
+		return snerror;
 	}
 
 }

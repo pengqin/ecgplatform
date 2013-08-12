@@ -303,6 +303,10 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 						// 根据医疗数据做后续处理,如自动回复
 						updateTaskAndExamination(task, examination);
 						
+						if (processor.isSnerror() && log.isWarnEnabled()) {
+							log.warn("sn error!");
+						}
+						
 					}
 					catch(Exception e) {
 						e.printStackTrace();
