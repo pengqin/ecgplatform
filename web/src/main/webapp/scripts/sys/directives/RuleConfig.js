@@ -342,6 +342,7 @@ angular.module('ecgRuleConfig', [])
 
     $scope.ruleconfig.addUsers = function() {
         $scope.userdialog.show({
+            excludes: $scope.ruleconfig.users,
             handler: function(users) {
                 var len = users.length, count = 0;
                 $(users).each(function(i, user) {

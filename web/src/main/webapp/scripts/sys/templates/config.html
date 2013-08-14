@@ -141,8 +141,9 @@
 <div class="row-fluid" ng-show="ruleconfig.rule && ruleconfig.rule.employeeId != null">
 	<div class="span12">
 		<h5 class="ecgHd">该规则的适用客户</h5>
+		<br/>
 	    <div ng-repeat="user in ruleconfig.users" class="employeeLink" ng-click="ruleconfig.check(user)">
-			<div class="alert alert-info">
+			<div class="alert alert-success">
         	<input type="checkbox" ng-checked="user.removed"> <strong>{{user.name}}</strong>
         	</div>
       	</div>

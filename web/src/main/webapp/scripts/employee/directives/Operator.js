@@ -278,6 +278,7 @@ angular.module('ecgOperator', [])
 
     $scope.operator.addExperts = function() {
         $scope.expertdialog.show({
+            excludes: $scope.operator.experts,
             handler: function(experts) {
                 var len = experts.length, count = 0;
                 $(experts).each(function(i, expert) {
@@ -364,8 +365,8 @@ angular.module('ecgOperator', [])
 
     // 表格展示
     $scope.operatordialog.data = null;
-    function refreshGrid() {
-        OperatorService.queryAll().then(function(operators) {
+    function refreshGrid(params) {
+        OperatorService.queryAll(params).then(function(operators) {
             $scope.operatordialog.data = operators;
         });
     };
@@ -389,10 +390,22 @@ angular.module('ecgOperator', [])
     };
 
     $scope.operatordialog.show = function(opts) {
-      var opts = opts || {};
+      var opts = opts || {}, ids = '';
+
+      if (opts.excludes) {
+        $(opts.excludes).each(function(i, user) {
+            var comma = '';
+            if (i != 0) {
+                comma = ',';
+            }
+            ids += comma + user.id;
+
+        });
+      }
+
       $scope.operatordialog.handler = opts.handler;
       $('#ecgOperatorsDialog').modal('show');
-      refreshGrid();
+      refreshGrid({'id:notIn': ids});
     };
 
 }])
