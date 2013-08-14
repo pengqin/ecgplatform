@@ -124,12 +124,15 @@ angular.module('ecgRuleDirectives', [])
         }
     };
 }])
-.controller('RuleNewController', ['$scope', '$location', 'RuleService', function ($scope, $location, RuleService) {
+.controller('RuleNewController', ['$scope', '$location', 'EnumService', 'RuleService', function ($scope, $location, EnumService, RuleService) {
     // 表格头
     $scope.subheader.title = "新增规则";
 
     // 命名空间
     $scope.rule = {};
+
+    // codes
+    $scope.rule.codes = EnumService.getCodesList();
 
     // 规则是否唯一
     $scope.rule.isUnique = true;
@@ -141,9 +144,17 @@ angular.module('ecgRuleDirectives', [])
     var user = null;
     $scope.$watch("session.user" , function() {
         user = $scope.session.user;
-        if (!user.isAdmin() && !user.isChief()) {
+        if (user.isAdmin && !user.isAdmin() && !user.isChief()) {
             $scope.rule.newobj.employeeId = user.id;
         }
+    });
+
+    $scope.$watch("rule.newobj.code" , function() {
+        var code = $scope.rule.newobj.code, owner = '';
+        if (!code) { return; }
+        if (!user) { return; }
+        if (user.isExpert()) { owner = user.name = '自定义的'; }
+        $scope.rule.newobj.name = owner + EnumService.getCodeLabel(code) + '规则';
     });
 
     // 测试系统级别rule唯一性

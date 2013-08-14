@@ -91,6 +91,23 @@ angular.module('ecgCommon', ["angular-table", "ecgNav", "ecgHeader", "ecgMessage
         getCodes: function() {
             return codes;
         },
+        getCodesList: function() {
+            var list = [];
+            for (var prop in codes) {
+                list.push({value: prop, label: prop + ' ' +codes[prop].label});
+            }
+            return list;
+        },
+        getCodeLabel: function(_prop) {
+            var label = '未知';
+            for (var prop in codes) {
+                if (_prop == prop) {
+                    label = codes[prop].label;
+                    break;
+                }
+            }
+            return label;
+        },
         getEmployeeStatus: function() {
             return employeestatus;
         },

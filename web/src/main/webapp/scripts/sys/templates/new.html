@@ -4,10 +4,11 @@
 		<form name="createRuleForm">
 		<table class="ecgprops">
 
-		<tr>
+		<tr style="display:none">
 		<td width="150px" valign="top"><label for="rule-type">设备类型:</label></td>
 		<td>
 			<input ng-model="rule.newobj.type" class="input-xlarge" id="rule-type" ng-pattern="/^\d+$/"
+				   value="11" readonly="readonly"
 				   focus required placeholder="请输入设备类型" ng-change="rule.checkUnique()"></input>
 			<span class="required">*</span>
 		</tr>
@@ -15,8 +16,7 @@
 		<tr>
 		<td valign="top"><label for="rule-code">指标编码:</label></td>
 		<td>
-			<input ng-model="rule.newobj.code" ng-pattern="/^\d+$/"
-			 class="input-xlarge" id="rule-code" required placeholder="请输入指标编码" ng-change="rule.checkUnique()"></input>
+			<select ng-model="rule.newobj.code" ng-options="g.value as g.label for g in rule.codes"></select>
 			<span class="required">*</span>
 			<span class="desc">注意:指标编码设定后,不可修改</span>
 		</td>
