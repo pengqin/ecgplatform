@@ -7,7 +7,7 @@
 
 <body>
 
-<form id="form" enctype="multipart/form-data" action="{path}/api/card/upload" method="post" style="display:block;">
+<form id="form" enctype="multipart/form-data" action="${path}/api/card/upload" method="post" style="display:block;">
 	<input type="hidden" id="token" name="token" value="">
 	<input id="file" name="file" type="file" value="请选择充值卡CSV数据文件">
 </form>
