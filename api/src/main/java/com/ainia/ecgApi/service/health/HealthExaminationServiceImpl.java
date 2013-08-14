@@ -38,16 +38,6 @@ import com.ainia.ecgApi.service.task.TaskService;
 import com.ainia.ecgApi.utils.DataProcessor;
 import com.ainia.ecgApi.utils.ECGChart;
 import com.ainia.ecgApi.utils.OxygenChart;
-import com.lowagie.text.Chapter;
-import com.lowagie.text.Document;
-import com.lowagie.text.Font;
-import com.lowagie.text.PageSize;
-import com.lowagie.text.Paragraph;
-import com.lowagie.text.Phrase;
-import com.lowagie.text.pdf.BaseFont;
-import com.lowagie.text.pdf.PdfPCell;
-import com.lowagie.text.pdf.PdfPTable;
-import com.lowagie.text.pdf.PdfWriter;
 
 /**
  * <p>HealthExamination Service Impl</p>
@@ -116,7 +106,7 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 					continue;
 				}
 				
-		    	Query<HealthRuleReply> repliyConfgQuery = new Query();
+		    	Query<HealthRuleReply> repliyConfgQuery = new Query <HealthRuleReply> ();
 		    	repliyConfgQuery.eq(HealthRuleReply.RULE_ID , rule.getId());
 				List <HealthRuleReply> repliyConfgs = healthRuleReplyService.findAll(repliyConfgQuery);
 				if (repliyConfgs != null && repliyConfgs.size() > 0) {
@@ -294,8 +284,7 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 								+ "/examination/" + examination.getId()
 								+ "/ecg8.jpg";
 						byte[] oxyChart = OxygenChart.createChart(oxygenData, 0, oxyLen, oxyLen*10, (int)37.8*8);
-						String oxyUri = uploadService.save(Type.heart_img,
-								oxyPath, oxyChart);
+						uploadService.save(Type.heart_img, oxyPath, oxyChart);
 						
 						//存储原始文件
 						String rawPath = "user/" +  String.valueOf(authUser.getId()) + "/examination/" + examination.getId() + "/raw";
@@ -333,7 +322,7 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 	@Override
 	public List<Map> statisticsByUserAndDay(Long userId, Date start, Date end) {
 		List<Object[]> list = healthExaminationDao.statisticsByUserAndDay(userId, start, end);
-		List<Map> results = new ArrayList(list.size());
+		List<Map> results = new ArrayList <Map>(list.size());
 		try {
 			//TODO 暂时使用日期方式转换 处理日期格式化
 			SimpleDateFormat from = new SimpleDateFormat("yyyy-M-d");

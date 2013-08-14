@@ -1,9 +1,6 @@
 package com.ainia.ecgApi.controller.health;
 
-import java.io.IOException;
 import java.util.Date;
-
-import javax.servlet.http.HttpServletResponse;
 
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,22 +22,10 @@ import com.ainia.ecgApi.core.security.AuthenticateService;
 import com.ainia.ecgApi.core.web.AjaxResult;
 import com.ainia.ecgApi.domain.health.HealthExamination;
 import com.ainia.ecgApi.domain.health.HealthReply;
-import com.ainia.ecgApi.domain.sys.User;
 import com.ainia.ecgApi.service.common.UploadService;
-import com.ainia.ecgApi.service.common.UploadService.Type;
 import com.ainia.ecgApi.service.health.HealthExaminationService;
 import com.ainia.ecgApi.service.health.HealthReplyService;
 import com.ainia.ecgApi.service.sys.UserService;
-import com.lowagie.text.Chapter;
-import com.lowagie.text.Document;
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.Font;
-import com.lowagie.text.Image;
-import com.lowagie.text.PageSize;
-import com.lowagie.text.Paragraph;
-import com.lowagie.text.pdf.BaseFont;
-import com.lowagie.text.pdf.PdfPTable;
-import com.lowagie.text.pdf.PdfWriter;
 
 /**
  * <p>HealthExamination controller</p>
@@ -118,9 +103,9 @@ public class HealthExaminationController extends BaseController<HealthExaminatio
     public ResponseEntity<?> findReply(@PathVariable("id") Long id) {
     	HealthExamination examination = healthExaminationService.get(id);
     	if (examination == null) {
-    		return new ResponseEntity(HttpStatus.NOT_FOUND);
+    		return new ResponseEntity (HttpStatus.NOT_FOUND);
     	}
-    	Query<HealthReply> query = new Query();
+    	Query<HealthReply> query = new Query <HealthReply> ();
     	query.eq(HealthReply.EXAMINATION_ID , id);
     	
     	return new ResponseEntity(healthReplyService.findAll(query) , HttpStatus.OK);
