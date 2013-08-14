@@ -44,8 +44,8 @@ angular.module('ecgCommon', ["angular-table", "ecgNav", "ecgHeader", "ecgMessage
         '3': {col: "heartRhythm", label: "心率"},
         '4': {col: "bloodOxygen", label: "血氧饱和度"},
         '5': {col: "breath", label: "呼吸"},
-        '6': {col: "bodyTemp", label: "体温"},
-        '7': {col: "pulserate", label: "脉率"}
+        '6': {col: "bodyTemp", label: "体温"}
+        //'7': {col: "pulserate", label: "脉率"}
     };
     var employeestatus = [
         {key: 'ONLINE', label: "正在上班"},
