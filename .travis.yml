@@ -3,7 +3,8 @@ jdk:
   - oraclejdk7
 script:
   - cd doc
-  - mvn install:install-file -Dfile=itextAsian-1.4.2_12-b03.jar -DgroupId=com.lowagie -DartifactId=itextAsian -Dversion=1.4.2_12-b03 -Dpackaging=jar -DgeneratePom=true 
+  - mv itextAsian-1.4.2_12-b03.jar /itextAsian-1.4.2_12-b03.jar
+  - mvn install:install-file -Dfile=/itextAsian-1.4.2_12-b03.jar -DgroupId=com.lowagie -DartifactId=itextAsian -Dversion=1.4.2_12-b03 -Dpackaging=jar -DgeneratePom=true 
   - cd ../api
   - mvn clean install
   - cd ../web
