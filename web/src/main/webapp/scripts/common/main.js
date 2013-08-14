@@ -94,7 +94,7 @@ angular.module('ecgCommon', ["angular-table", "ecgNav", "ecgHeader", "ecgMessage
         getCodesList: function() {
             var list = [];
             for (var prop in codes) {
-                list.push({value: prop, label: prop + ' ' +codes[prop].label});
+                list.push({value: prop, label: codes[prop].label});
             }
             return list;
         },

@@ -12,7 +12,7 @@ angular.module('ecgRuleDirectives', [])
     $scope.rule = {};
 
 }])
-.controller('RuleListController', ['$scope', '$timeout', '$location', 'RuleService', function ($scope, $timeout, $location, RuleService) {
+.controller('RuleListController', ['$scope', '$timeout', '$location', 'EnumService', 'RuleService', function ($scope, $timeout, $location, EnumService, RuleService) {
 
     if (!$scope.rule) {
         $scope.rule = {};
@@ -24,6 +24,8 @@ angular.module('ecgRuleDirectives', [])
     $scope.rule.rules = null;
     $scope.rule.sysRules = null;
     $scope.rule.customRules = null;
+
+    $scope.rule.getLabel = EnumService.getCodeLabel;
 
     // 初始化及刷新功能
     function filteredRules() {
@@ -151,32 +153,36 @@ angular.module('ecgRuleDirectives', [])
 
     $scope.$watch("rule.newobj.code" , function() {
         var code = $scope.rule.newobj.code, owner = '';
-        if (!code) { return; }
-        if (!user) { return; }
-        if (user.isExpert()) { owner = user.name = '自定义的'; }
+        if (!code || !user) { return; }
+        if (user.isExpert()) { owner = user.name + '自定义的'; }
         $scope.rule.newobj.name = owner + EnumService.getCodeLabel(code) + '规则';
+
+        // 检测唯一
+        $scope.rule.checkUnique();
     });
 
     // 测试系统级别rule唯一性
     $scope.rule.checkUnique = function() {
         if (!$scope.rule.newobj.code) { return; }
-        if (!user.isAdmin() && !user.isChief()) { return; }
-
-        RuleService.queryAll({
-            code: $scope.rule.newobj.code,
-            usage: 'group', 
-            employeeId: null
-        }).then(function(rules) {
-            if (rules.length > 0) { 
-                $scope.rule.isUnique = false;
-                $scope.message.warn("指标编码为" + $scope.rule.newobj.code + "的系统规则已存在!");
-            } else {
+        if (user.isAdmin() || user.isExpert() || user.isChief()) {
+            RuleService.queryAll({
+                code: $scope.rule.newobj.code,
+                usage: 'group', 
+                employeeId: user.isExpert() ? user.id : null
+            }).then(function(rules) {
+                var  owner = '';
+                if (user.isExpert()) { owner = user.name + '自定义的'; }
+                if (rules.length > 0) { 
+                    $scope.rule.isUnique = false;
+                    $scope.message.warn(owner + EnumService.getCodeLabel($scope.rule.newobj.code) + "规则已存在!");
+                } else {
+                    $scope.rule.isUnique = true;
+                }
+            }, function() {
                 $scope.rule.isUnique = true;
-            }
-        }, function() {
-            $scope.rule.isUnique = true;
-            $scope.message.warn("查询系统规则是否唯一时出错!");
-        });
+                $scope.message.warn("查询系统规则是否唯一时出错!");
+            });
+        }
     };
 
     // 创建函数
