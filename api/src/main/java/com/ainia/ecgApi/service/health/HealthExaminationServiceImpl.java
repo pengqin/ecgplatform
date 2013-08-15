@@ -129,6 +129,12 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 	// 接线员已经和专家绑定
 	private boolean isOpAndExpLinked () {
 		boolean linked = false;
+		// 如果不是自动回复
+		String config = systemConfigService.findByKey(SystemConfig.EXAMINATION_REPLY_AUTO);
+		boolean isAuto = config == null ? false : Boolean.valueOf(config);
+		if (isAuto) { return true; }
+		
+		// 查看
 		List <Operator> operators = operatorService.findAll(new Query());
 		for (Operator operator  : operators) {
 			if (operator.getExperts().size() > 0) {
