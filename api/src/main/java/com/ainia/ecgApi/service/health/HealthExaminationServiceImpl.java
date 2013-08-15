@@ -216,7 +216,7 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 		
 		// 判断是否有接线员已经和专家绑定
 		if (!isOpAndExpLinked()) {
-			throw new ServiceException("none.operator.is.linked.with.expert.yet");
+			throw new ServiceException("none.operator.is.linked.with.expert");
 		}
 		
 		// 判断是否是测试请求
