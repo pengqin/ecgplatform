@@ -423,7 +423,7 @@ angular.module('ecgOperator', [])
     };
 
     $scope.operatordialog.show = function(opts) {
-      var opts = opts || {}, ids = '';
+      var opts = opts || {}, ids = '', params;
 
       if (opts.excludes) {
         $(opts.excludes).each(function(i, user) {
@@ -434,11 +434,14 @@ angular.module('ecgOperator', [])
             ids += comma + user.id;
 
         });
+        if (opts.excludes.length > 0) {
+            params = {'id:notIn': ids};
+        }
       }
 
       $scope.operatordialog.handler = opts.handler;
       $('#ecgOperatorsDialog').modal('show');
-      refreshGrid({'id:notIn': ids});
+      refreshGrid(params);
     };
 
 }])

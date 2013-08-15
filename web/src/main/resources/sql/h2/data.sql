@@ -213,7 +213,7 @@ insert into system_config (id , type , config_key , value ) values (4 , 'basic' 
 -- system_config end
 -- card start
 insert into card (id , encoded_serial , serial , encoded_password , days , created_date , created_batch , expire_date , actived_date , user_id , user_name , charged_date , charge_type , employee_id , employee_name)
-values (1 , '147e97abe07c375d5d08c97b4868962eac60157b' , '0032153088270012' , 'fbe97e617d61fc408d9c52a078b33a802ee7e533' , 365 , '2013-07-12 01:00:00' , 1 , '2020-09-12 01:00:00' , '2012-07-12 01:00:00' , 1 , '测试用户1' , '2012-07-10 01:00:00' , 'MOBILE' , null , null);
+values (1 , '147e97abe07c375d5d08c97b4868962eac60157b' , '0032153088270012' , 'fbe97e617d61fc408d9c52a078b33a802ee7e533' , 365 , '2013-07-12 01:00:00' , 1 , '2020-09-12 01:00:00' , '2013-01-12 01:00:00' , 1 , '测试用户1' , '2013-01-10 01:00:00' , 'MOBILE' , null , null);
 insert into card (id , encoded_serial , serial , encoded_password , days , created_date , created_batch , expire_date , actived_date , user_id , user_name , charged_date , charge_type , employee_id , employee_name)
 values (2 , 'e911576581a499eaa6e803fe9e7dc6b43c2a817c' , '0033178902311110' , 'fbe97e617d61fc408d9c52a078b33a802ee7e533' , 365 , '2013-07-12 01:00:00' , 1 , '2020-09-12 01:00:00'  , null , null , null , null , null , null , null);
 insert into card (id , encoded_serial , serial , encoded_password , days , created_date , created_batch , expire_date , actived_date , user_id , user_name , charged_date , charge_type , employee_id , employee_name)

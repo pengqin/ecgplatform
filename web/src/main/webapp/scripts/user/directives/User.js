@@ -352,7 +352,7 @@ angular.module('ecgUserModules', [])
     };
 
     $scope.userdialog.show = function(opts) {
-      var opts = opts || {}, ids = '';
+      var opts = opts || {}, ids = '', params;
 
       if (opts.excludes) {
         $(opts.excludes).each(function(i, user) {
@@ -361,12 +361,14 @@ angular.module('ecgUserModules', [])
                 comma = ',';
             }
             ids += comma + user.id;
-
         });
+        if (opts.excludes.length > 0) {
+            params = {'id:notIn': ids};
+        }
       }
       $scope.userdialog.handler = opts.handler;
       $('#ecgUsersDialog').modal('show');
-      refreshGrid({'id:notIn': ids});
+      refreshGrid(params);
     };
 
 }])
