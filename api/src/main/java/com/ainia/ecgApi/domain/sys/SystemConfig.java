@@ -26,6 +26,7 @@ public class SystemConfig implements Domain {
 	
 	public static final String KEY = "key";
 	
+	public static final String EXAMINATION_REPLY_FREE = "examination.reply.isFree";
 	public static final String EXAMINATION_REPLY_AUTO = "examination.reply.isAuto";
 	public static final String EMPLOYEE_LIVE_TIMEOUT = "employee.live.timeout";
 

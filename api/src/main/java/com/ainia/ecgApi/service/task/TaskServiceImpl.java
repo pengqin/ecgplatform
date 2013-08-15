@@ -1,5 +1,6 @@
 package com.ainia.ecgApi.service.task;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -68,8 +69,20 @@ public class TaskServiceImpl extends BaseServiceImpl<Task , Long> implements Tas
 		throw new ServiceException("task.error.status.notNull");
 	}
 
+	// 没有绑定专家的不能获得任务
+	private List <Operator> getOperators() {
+		List <Operator> returnOperators = new ArrayList <Operator> ();
+		List <Operator> operators = operatorService.findAll(new Query());
+		for (Operator operator  : operators) {
+			if (operator.getExperts().size() > 0) {
+				returnOperators.add(operator);
+			}
+		}
+		return returnOperators;
+	}
+
 	public Task pending(Task task) {
-		List<Operator> operators = operatorService.findAll(new Query());
+		List<Operator> operators = getOperators();
 		Operator selectedOperator = null;
 		int selectedOperatorTask = Integer.MAX_VALUE;
 		for (Operator operator  : operators) {

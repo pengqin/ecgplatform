@@ -201,7 +201,7 @@ define(function(require, exports) {
             });
         });
 
-        // 错误时间不能充值 因为员工已经帮他充值 从2013-08-15/2014-08-15
+        // 错误时间不能充值 因为员工已经帮他充值 从2013-01-12/2014-01-12
         it("the used card can not be used with wrong activedDate.", function(done) {
             expect(userId).not.to.be(null);
             expect(usedcard).not.to.be(undefined);

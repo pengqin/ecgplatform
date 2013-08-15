@@ -36,10 +36,13 @@ define(function(require, exports) {
         });
 
         // Expert
+        var beforeExclude, excludeId;
         it("the expert list should be retrieved", function(done) {
             expect(ExpertService).not.to.be(undefined);
             ExpertService.queryAll().then(function(experts) {
                 expect(experts.length).not.to.be(0);
+                excludeId = experts[0].id;
+                beforeExclude = experts.length;
                 done();
             }, function() {
                 throw new Error('the expert list can\'t be retrieved');
@@ -50,6 +53,30 @@ define(function(require, exports) {
         it("the expert list should be retrieved with only one item", function(done) {
             expect(ExpertService).not.to.be(undefined);
             ExpertService.queryAll({'page.max': 1}).then(function(experts) {
+                expect(experts.length).to.be(1);
+                done();
+            }, function() {
+                throw new Error('the expert list can\'t be retrieved');
+            });
+        });
+
+        // Expert
+        it("the expert list should be retrieved with only one item", function(done) {
+            expect(ExpertService).not.to.be(undefined);
+            expect(excludeId).not.to.be(undefined);
+            ExpertService.queryAll({'id:notIn': excludeId}).then(function(experts) {
+                expect(experts.length).to.be(beforeExclude - 1);
+                done();
+            }, function() {
+                throw new Error('the expert list can\'t be retrieved');
+            });
+        });
+
+        // Expert
+        it("the expert list should be retrieved with only one item", function(done) {
+            expect(ExpertService).not.to.be(undefined);
+            expect(excludeId).not.to.be(undefined);
+            ExpertService.queryAll({'id:in': excludeId}).then(function(experts) {
                 expect(experts.length).to.be(1);
                 done();
             }, function() {

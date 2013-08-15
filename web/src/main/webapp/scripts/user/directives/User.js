@@ -303,12 +303,36 @@ angular.module('ecgUserModules', [])
 
     // 表格展示
     $scope.userdialog.data = null;
-    function refreshGrid() {
-        UserService.queryAll().then(function(users) {
-            $scope.userdialog.data = users;
+    $scope.userdialog.paging = {
+        total: 0,
+        curPage: 1,
+        goToPage: function(page, max) {
+            refreshGrid({'page.curPage': page, 'page.max': max});
+        }
+    };
+
+    var globalParams = {};
+    function refreshGrid(params) {
+        globalParams = $.extend(globalParams, params);
+        UserService.queryAll(globalParams).then(function(paging) {
+            if (paging) {
+                $scope.userdialog.paging.total = paging.total;
+                $scope.userdialog.paging.curPage = paging.curPage;
+                $scope.userdialog.data = paging.datas;
+            } else {
+                $scope.message.error("无法加载用户数据!");
+            }
         });
     };
     refreshGrid();
+
+
+    // 过滤功能
+    $scope.userdialog.queryChanged = function(query) {
+        globalParams['username:like'] = query;
+        globalParams['page.curPage'] = 1;
+        refreshGrid(globalParams);
+    };
 
     $scope.userdialog.execute = function() {
         var selecteds = [];
@@ -328,10 +352,23 @@ angular.module('ecgUserModules', [])
     };
 
     $scope.userdialog.show = function(opts) {
-      var opts = opts || {};
+      var opts = opts || {}, ids = '', params;
+
+      if (opts.excludes) {
+        $(opts.excludes).each(function(i, user) {
+            var comma = '';
+            if (i != 0) {
+                comma = ',';
+            }
+            ids += comma + user.id;
+        });
+        if (opts.excludes.length > 0) {
+            params = {'id:notIn': ids};
+        }
+      }
       $scope.userdialog.handler = opts.handler;
       $('#ecgUsersDialog').modal('show');
-      refreshGrid();
+      refreshGrid(params);
     };
 
 }])

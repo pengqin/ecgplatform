@@ -119,7 +119,7 @@ angular.module('ecgRuleConfig', [])
 
     // 新区间
     $scope.ruleconfig.newRule = function() {
-        var point = parseFloat(prompt("请输入1-1000之间的数字:"), 10);
+        var point = parseFloat(prompt("请输入1-1000之间的数字作为区间分界点:"), 10);
         if (isNaN(point)) {
             return;
         }
@@ -210,8 +210,8 @@ angular.module('ecgRuleConfig', [])
             text: "请确认删除区间[" + selectedItem.min + "," + selectedItem.max + ")及其相关预设回复, 该操作无法恢复!",
             handler: function() {
                 var updateobj;
-                if (selectedItem.arrayIdx === 0) {
-                    updateobj = $scope.ruleconfig.rules[1];
+                if (selectedItem.arrayIdx === 1) {
+                    updateobj = $scope.ruleconfig.rules[2];
                     updateobj.min = selectedItem.min;
                 } else {
                     updateobj = $scope.ruleconfig.rules[selectedItem.arrayIdx - 1];
@@ -223,7 +223,7 @@ angular.module('ecgRuleConfig', [])
                     .then(function() {
                         $scope.dialog.hideStandby();
                         $scope.message.success("删除区间成功!");
-                        /// 刷新
+                        // 刷新
                         refreshRules();
                     }, function() {
                         $scope.dialog.hideStandby();
@@ -236,7 +236,6 @@ angular.module('ecgRuleConfig', [])
                     // 刷新
                     refreshRules();
                 });
-                
             }
         });
     };
@@ -342,6 +341,7 @@ angular.module('ecgRuleConfig', [])
 
     $scope.ruleconfig.addUsers = function() {
         $scope.userdialog.show({
+            excludes: $scope.ruleconfig.users,
             handler: function(users) {
                 var len = users.length, count = 0;
                 $(users).each(function(i, user) {
@@ -378,7 +378,7 @@ angular.module('ecgRuleConfig', [])
         
         if (removes.length == 0) {
             $scope.dialog.alert({
-                text: '请选择需要删除的绑定!'
+                text: '请选择需要解除的绑定!'
             });
             return;
         };
@@ -386,7 +386,7 @@ angular.module('ecgRuleConfig', [])
         len = removes.length;
 
         $scope.dialog.confirm({
-            text: "请确认删除这些用户, 该操作无法恢复!",
+            text: "请确认解除这些用户绑定关系, 该操作无法恢复!",
             handler: function() {
                 $scope.dialog.showStandby();
                 $(removes).each(function(i, remove) {
@@ -395,13 +395,13 @@ angular.module('ecgRuleConfig', [])
                         count++;
                         if (count === len) {
                             $scope.dialog.hideStandby();
-                            $scope.message.success("成功删除绑定！");
+                            $scope.message.success("成功解除绑定！");
                             refreshLinks();
                         }
                     }, function() {
                         count++;
                         $scope.dialog.hideStandby();
-                        $scope.message.error("无法删除该绑定，用户名为：" + remove.name);
+                        $scope.message.error("无法解除绑定，用户名为：" + remove.name);
                     });
                 });
             }
