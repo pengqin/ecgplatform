@@ -1,9 +1,9 @@
 package com.ainia.ecgApi.service.health;
 
-import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,22 +16,27 @@ import org.springframework.stereotype.Service;
 import com.ainia.ecgApi.core.crud.BaseDao;
 import com.ainia.ecgApi.core.crud.BaseServiceImpl;
 import com.ainia.ecgApi.core.crud.Query;
+import com.ainia.ecgApi.core.crud.Query.OrderType;
 import com.ainia.ecgApi.core.exception.ServiceException;
 import com.ainia.ecgApi.core.security.AuthUser;
 import com.ainia.ecgApi.core.security.AuthenticateService;
 import com.ainia.ecgApi.dao.health.HealthExaminationDao;
+import com.ainia.ecgApi.domain.charge.Card;
 import com.ainia.ecgApi.domain.health.HealthExamination;
 import com.ainia.ecgApi.domain.health.HealthReply;
 import com.ainia.ecgApi.domain.health.HealthRule;
 import com.ainia.ecgApi.domain.health.HealthRule.Level;
 import com.ainia.ecgApi.domain.health.HealthRuleReply;
+import com.ainia.ecgApi.domain.sys.Operator;
 import com.ainia.ecgApi.domain.sys.SystemConfig;
 import com.ainia.ecgApi.domain.sys.User;
 import com.ainia.ecgApi.domain.task.ExaminationTask;
 import com.ainia.ecgApi.domain.task.Task.Status;
 import com.ainia.ecgApi.dto.health.HealthInfo;
+import com.ainia.ecgApi.service.charge.CardService;
 import com.ainia.ecgApi.service.common.UploadService;
 import com.ainia.ecgApi.service.common.UploadService.Type;
+import com.ainia.ecgApi.service.sys.OperatorService;
 import com.ainia.ecgApi.service.sys.SystemConfigService;
 import com.ainia.ecgApi.service.task.ExaminationTaskService;
 import com.ainia.ecgApi.service.task.TaskService;
@@ -69,7 +74,11 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
     private SystemConfigService systemConfigService;
     @Autowired
     private HealthRuleService healthRuleService;
-    
+    @Autowired
+    private CardService cardService;
+    @Autowired
+    private OperatorService operatorService;
+
     private ExecutorService executorService = Executors.newFixedThreadPool(3);
     
     
@@ -80,6 +89,54 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 
 	public void reply(Long id , HealthReply reply) {
 		healthReplyService.create(reply);
+	}
+
+	// 判断用户是否已经充值
+	private boolean canFreeReply(final HealthExamination examination) {
+		// 判断系统是否允许免费使用
+		String config = systemConfigService.findByKey(SystemConfig.EXAMINATION_REPLY_FREE);
+		boolean isFree = config == null ? false : Boolean.valueOf(config);
+		if (isFree) { return true; }
+
+		// 判断用户是否充值以及在服务时间
+		AuthUser authUser = authenticateService.getCurrentUser();
+		Query<Card> query = new Query<Card>();
+		query.isNotNull(Card.ACTIVED_DATE);
+		query.isNotNull(Card.USER_ID);
+		query.eq(Card.USER_ID, examination.getUserId());
+		query.addOrder(Card.ACTIVED_DATE, OrderType.desc);
+		List<Card> cards = cardService.findAll(query);
+
+		if (cards == null || cards.size() == 0) { return false; }
+
+		int inner = 0;
+		GregorianCalendar gc = new GregorianCalendar();
+		Date now = new Date();
+		for (Card card: cards) {
+			Date endDate;
+			gc.setTime(card.getActivedDate());
+			gc.add(GregorianCalendar.DATE, card.getDays());
+			endDate = gc.getTime();
+			if (card.getActivedDate().before(now) || endDate.after(now)) {
+				inner++;
+			}
+		}
+		if (inner > 0) { return true; }
+
+		return false;
+	}
+
+	// 接线员已经和专家绑定
+	private boolean isOpAndExpLinked () {
+		boolean linked = false;
+		List <Operator> operators = operatorService.findAll(new Query());
+		for (Operator operator  : operators) {
+			if (operator.getExperts().size() > 0) {
+				linked = true;
+				break;
+			}
+		}
+		return linked;
 	}
 
 	private boolean autoreply(final HealthExamination examination) {
@@ -150,7 +207,12 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 		if (!User.class.getSimpleName().equals(authUser.getType())) {
 			throw new ServiceException("examination.error.upload.notAllowed");
 		}
-
+		
+		// 判断是否有接线员已经和专家绑定
+		if (!isOpAndExpLinked()) {
+			throw new ServiceException("operator.are.not.linked.with.expert.yet");
+		}
+		
 		// 判断是否是测试请求
 		boolean isTest = examination.getIsTest() == null ? false : examination.getIsTest();
 		if (uploadData == null && !isTest) {
@@ -159,6 +221,10 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 			throw new ServiceException("file.length.is.zero");
 		}
 
+		// 判断是否用户可以免费使用
+		if (!canFreeReply(examination)) {
+			throw new ServiceException("examination.reply.is.not.free");
+		}
 		/*
 		//校验MD5值
 		if (StringUtils.isNotBlank(md5)) {

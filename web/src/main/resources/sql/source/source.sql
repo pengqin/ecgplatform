@@ -208,6 +208,7 @@ values (18,'examinationTask' , 18 , 6 , '18' , '统计用户' , 'pending',null,9
 -- system_config start
 insert into system_config (id , type , config_key , value ) values (2 , 'basic' , 'examination.reply.isAuto' , 'false');
 insert into system_config (id , type , config_key , value ) values (3 , 'basic' , 'employee.live.timeout' , '30');
+insert into system_config (id , type , config_key , value ) values (4 , 'basic' , 'examination.reply.isFree' , 'true');
 
 -- system_config end
 -- card start

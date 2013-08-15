@@ -9,7 +9,7 @@
         <table at-table class="table table-bordered" pagination="operatorsDialogPagination">
           <thead></thead>
           <tbody>
-            <tr ng-click="item.selected = !item.selected" ng-class="{'active': item.selected}">
+            <tr ng-click="operatordialog.select(item)" ng-class="{'active': item.selected}">
                 <td at-implicit sortable title="登录名" attribute="username"></td>
                 <td at-implicit sortable title="姓名" attribute="name"></td>
             </tr>

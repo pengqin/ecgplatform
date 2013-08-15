@@ -319,7 +319,7 @@ angular.module('ecgExpert', [])
         
         if (removes.length == 0) {
             $scope.dialog.alert({
-                text: '请选择需要删除的绑定!'
+                text: '请先选择专家!'
             });
             return;
         };
@@ -327,7 +327,7 @@ angular.module('ecgExpert', [])
         len = removes.length;
 
         $scope.dialog.confirm({
-            text: "请确认删除这些专家与接线员绑定, 该操作无法恢复!",
+            text: "请确认解除绑定, 该操作无法恢复!",
             handler: function() {
                 $scope.dialog.showStandby();
                 $(removes).each(function(i, remove) {
@@ -336,13 +336,13 @@ angular.module('ecgExpert', [])
                         count++;
                         if (count === len) {
                             $scope.dialog.hideStandby();
-                            $scope.message.success("成功删除绑定！");
+                            $scope.message.success("成功解除绑定！");
                             refreshLinks();
                         }
                     }, function() {
                         count++;
                         $scope.dialog.hideStandby();
-                        $scope.message.error("无法删除该绑定，用户名为：" + remove.name);
+                        $scope.message.error("无法解除绑定，用户名为：" + remove.name);
                     });
                 });
             }
@@ -365,6 +365,8 @@ angular.module('ecgExpert', [])
 
     // 命名空间
     $scope.expertdialog = {};
+    // 只能单选
+    $scope.expertdialog.single = true;
 
     // 表格展示
     $scope.expertdialog.data = null;
@@ -374,6 +376,15 @@ angular.module('ecgExpert', [])
         });
     };
     refreshGrid();
+
+    $scope.expertdialog.select = function(item) {
+        if ($scope.expertdialog.single) {
+            $($scope.expertdialog.data).each(function(i, expert) {
+                expert.selected = false;
+            });
+        }
+        item.selected = !item.selected;
+    };
 
     $scope.expertdialog.execute = function() {
         var selecteds = [];

@@ -14,7 +14,8 @@
 
         <tr>
         <td>
-        <input ng-model="replydialog.reply.result" class="input-xlarge" id="replydialog-result" required placeholder="请输入结果,最多10个汉字。"></input>
+        <input ng-model="replydialog.reply.result" ng-maxlength="40"
+               class="input-xlarge" id="replydialog-result" required placeholder="请输入结果，最多20个汉字"></input>
         <span class="required">*</span>
         </tr>
 
@@ -42,8 +43,8 @@
 
         <tr>
         <td>
-        <textarea rows="3" ng-model="replydialog.reply.content"
-        class="input-xlarge" id="replydialog-content" required placeholder="请输入回复内容" style="width:450px;"></textarea>
+        <textarea rows="3" ng-model="replydialog.reply.content" ng-maxlength="100"
+        class="input-xlarge" id="replydialog-content" required placeholder="请输入回复内容，最多50个汉字" style="width:450px;"></textarea>
         <span class="required">*</span>
         </td>
         </tr>
