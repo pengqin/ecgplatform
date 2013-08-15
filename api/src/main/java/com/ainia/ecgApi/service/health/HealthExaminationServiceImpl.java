@@ -117,7 +117,7 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 			gc.setTime(card.getActivedDate());
 			gc.add(GregorianCalendar.DATE, card.getDays());
 			endDate = gc.getTime();
-			if (card.getActivedDate().before(now) || endDate.after(now)) {
+			if (card.getActivedDate().before(now) && endDate.after(now)) {
 				inner++;
 			}
 		}
