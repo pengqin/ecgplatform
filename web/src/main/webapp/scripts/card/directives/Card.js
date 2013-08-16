@@ -121,6 +121,7 @@ angular.module('ecgCardDirectives', [])
 
     $scope.card.reset = function() {
         $scope.card.query = {};
+        $('#charged-month input').val('')
     };
     
     $scope.card.queryChanged = function(query) {
@@ -129,8 +130,8 @@ angular.module('ecgCardDirectives', [])
         }
         var chargedMonth = $('#charged-month input').val();
         if (chargedMonth) {
-            globalParams['createdDate:gth'] = chargedMonth + '-01';
-            globalParams['createdDate:lth'] = chargedMonth + '-31 23:59:59';
+            globalParams['chargedDate:gth'] = chargedMonth + '-01';
+            globalParams['chargedDate:lth'] = chargedMonth + '-31 23:59:59';
         }
         globalParams['page.curPage'] = 1;
         refreshGrid(globalParams);
