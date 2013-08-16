@@ -125,6 +125,7 @@ public class CardServiceImpl extends BaseServiceImpl<Card , Long> implements Car
 		card.setSerial(serial);
 		card.setUserId(user.getId());
 		card.setUserName(user.getName());
+		card.setChargedDate(new Date());
 		card.setActivedDate(activedDate);
 		
 		this.update(card);
