@@ -125,13 +125,21 @@ angular.module('ecgCardDirectives', [])
     };
     
     $scope.card.queryChanged = function(query) {
+        // 卡号
         if (query.serial) {
             globalParams['serial:like'] = query.serial;
+        } else {
+            delete globalParams['serial:like'];
         }
+        
+        // 充值月份
         var chargedMonth = $('#charged-month input').val();
         if (chargedMonth) {
             globalParams['chargedDate:gth'] = chargedMonth + '-01';
             globalParams['chargedDate:lth'] = chargedMonth + '-31 23:59:59';
+        } else {
+            delete globalParams['chargedDate:gth'];
+            delete globalParams['chargedDate:lth'];
         }
         globalParams['page.curPage'] = 1;
         refreshGrid(globalParams);
