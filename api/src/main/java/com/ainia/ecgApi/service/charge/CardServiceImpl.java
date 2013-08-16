@@ -58,7 +58,7 @@ public class CardServiceImpl extends BaseServiceImpl<Card , Long> implements Car
     	query.isNotNull(Card.ACTIVED_DATE);
     	query.isNotNull(Card.USER_ID);
     	query.eq(Card.USER_ID , user.getId());
-    	query.addOrder(Card.CHARGED_DATE , OrderType.desc);
+    	query.addOrder(Card.ACTIVED_DATE , OrderType.desc);
     	
 		List <Card> cards = cardDao.findAll(query);
 		if (cards != null) {
