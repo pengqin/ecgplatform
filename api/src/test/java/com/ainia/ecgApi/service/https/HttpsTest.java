@@ -58,7 +58,7 @@ public class HttpsTest {
 		
         HttpClient httpClient = new DefaultHttpClient(mgr);  
   
-        HttpGet get = new HttpGet("https://localhost:8443/api/user");
+        HttpGet get = new HttpGet("https://115.28.52.3:8443/web/index.html");
         HttpResponse response = httpClient.execute(get);  
         
         if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {

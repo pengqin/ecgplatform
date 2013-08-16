@@ -19,6 +19,8 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import au.com.bytecode.opencsv.CSVReader;
 
 import com.ainia.ecgApi.core.crud.Query;
+import com.ainia.ecgApi.core.utils.DigestUtils;
+import com.ainia.ecgApi.core.utils.EncodeUtils;
 import com.ainia.ecgApi.core.utils.PropertyUtil;
 import com.ainia.ecgApi.domain.charge.Card;
 
@@ -108,26 +110,18 @@ public class CardServiceTest {
 		}
 	}
 
+
 	@Test
 	public void testUpload() throws Exception {
 		CSVReader reader = new CSVReader(new InputStreamReader(Thread
 				.currentThread().getContextClassLoader()
 				.getResourceAsStream("card/upload.csv")));
 		List<String[]> list = reader.readAll();
-		List<Card> cards = new ArrayList(list.size());
-		SimpleDateFormat format  = new SimpleDateFormat("yyyy-MM-dd");
-		for (String[] values : list) {
-			Card card = new Card();
-			PropertyUtil.setProperty(card, Card.ENCODED_SERIAL, values[0]);
-			PropertyUtil.setProperty(card, Card.ENCODED_PASSWORD, values[1]);
-			PropertyUtil.setProperty(card, Card.DAYS, values[2]);
-			PropertyUtil.setProperty(card, Card.EXPIRED_DATE, format.parse(values[3]));
-
-			cards.add(card);
-		}
-		cardService.create(cards);
+		long count = cardService.count(new Query());
+		cardService.createByUpload(list);
+		Assert.assertTrue((list.size() + count) == cardService.count(new Query()));
 	}
-	
+
 	@Test
 	public void testUploadError() throws Exception {
 		CSVReader reader = new CSVReader(new InputStreamReader(Thread

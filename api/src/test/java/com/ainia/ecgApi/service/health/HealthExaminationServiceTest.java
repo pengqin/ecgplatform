@@ -137,7 +137,7 @@ public class HealthExaminationServiceTest {
     @Test
     public void testUpload() throws IOException, DataException, InterruptedException {
     	when(authenticateService.getCurrentUser()).thenReturn(new AuthUserImpl(2L , "test" , "13700230001" , User.class.getSimpleName()));
-    	Resource resource = new ClassPathResource("health/sample2");
+    	Resource resource = new ClassPathResource("health/sample3");
     	ByteArrayOutputStream out = new ByteArrayOutputStream();
     	int b = -1;
     	InputStream input = resource.getInputStream();
@@ -161,7 +161,7 @@ public class HealthExaminationServiceTest {
     @Test
     public void testUploadAndAutoReply() throws IOException, DataException, InterruptedException {
     	when(authenticateService.getCurrentUser()).thenReturn(new AuthUserImpl(2L , "test" , "13700230001" , User.class.getSimpleName()));
-    	Resource resource = new ClassPathResource("health/sample2");
+    	Resource resource = new ClassPathResource("health/sample3");
     	ByteArrayOutputStream out = new ByteArrayOutputStream();
     	int b = -1;
     	InputStream input = resource.getInputStream();
