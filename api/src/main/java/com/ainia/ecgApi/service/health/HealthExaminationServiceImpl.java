@@ -268,18 +268,23 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 
 				public void run() {
 					try {
-						// decompress the file
-						ByteArrayOutputStream baos = new ByteArrayOutputStream();
+						final byte[] uploadData;
+						
+						if (examination.getIsGziped()) {
+							// decompress the file
+							ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-						GZIPInputStream gis = new GZIPInputStream(new ByteArrayInputStream(gzipedUploadData));
+							GZIPInputStream gis = new GZIPInputStream(new ByteArrayInputStream(gzipedUploadData));
 
-						int count;
-						byte data[] = new byte[255];
-						while ((count = gis.read(data, 0, 255)) != -1) {
-							baos.write(data, 0, count);
+							int count;
+							byte data[] = new byte[255];
+							while ((count = gis.read(data, 0, 255)) != -1) {
+								baos.write(data, 0, count);
+							}
+							uploadData = baos.toByteArray();
+						} else {
+							uploadData = gzipedUploadData;
 						}
-
-						final byte[] uploadData = baos.toByteArray();
 
 						//save the file
 				    	DataProcessor processor = new DataProcessor();

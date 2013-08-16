@@ -135,6 +135,30 @@ public class HealthExaminationServiceTest {
     }
 
     @Test
+    public void testUngzipUpload() throws IOException, DataException, InterruptedException {
+    	when(authenticateService.getCurrentUser()).thenReturn(new AuthUserImpl(2L , "test" , "13700230001" , User.class.getSimpleName()));
+    	Resource resource = new ClassPathResource("health/sample2");
+    	ByteArrayOutputStream out = new ByteArrayOutputStream();
+    	int b = -1;
+    	InputStream input = resource.getInputStream();
+    	while ((b = input.read()) != -1) {
+    		out.write(b);
+    	}
+    	byte[] bytes = out.toByteArray();
+    	((HealthExaminationServiceImpl)healthExaminationService).setAuthenticateService(authenticateService);
+    	HealthExamination examination = new HealthExamination();
+    	healthExaminationService.upload(examination , bytes , null);
+    	Thread.sleep(5000);
+    	input.close();
+    	out.close();
+    	
+    	Assert.assertTrue(examination.getLevel() != null);
+    	Query<HealthReply> query1 = new Query();
+    	query1.eq(HealthReply.EXAMINATION_ID , examination.getId());
+    	Assert.assertTrue(healthReplyService.findAll(query1).size() == 0);
+    }
+
+    @Test
     public void testUpload() throws IOException, DataException, InterruptedException {
     	when(authenticateService.getCurrentUser()).thenReturn(new AuthUserImpl(2L , "test" , "13700230001" , User.class.getSimpleName()));
     	Resource resource = new ClassPathResource("health/sample3");
@@ -147,6 +171,7 @@ public class HealthExaminationServiceTest {
     	byte[] bytes = out.toByteArray();
     	((HealthExaminationServiceImpl)healthExaminationService).setAuthenticateService(authenticateService);
     	HealthExamination examination = new HealthExamination();
+    	examination.setIsGziped(true);
     	healthExaminationService.upload(examination , bytes , null);
     	Thread.sleep(5000);
     	input.close();
@@ -182,6 +207,7 @@ public class HealthExaminationServiceTest {
 
     	((HealthExaminationServiceImpl)healthExaminationService).setAuthenticateService(authenticateService);
     	HealthExamination examination = new HealthExamination();
+    	examination.setIsGziped(true);
     	healthExaminationService.upload(examination , bytes , null);
     	Thread.sleep(5000);
     	input.close();
