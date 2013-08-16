@@ -117,13 +117,39 @@ angular.module('ecgCardDirectives', [])
     refreshGrid();
 
     // 过滤功能
+    $scope.card.query = {};
+
+    $scope.card.reset = function() {
+        $scope.card.query = {};
+    };
+    
     $scope.card.queryChanged = function(query) {
-        globalParams['serial:like'] = query;
+        if (query.serial) {
+            globalParams['serial:like'] = query.serial;
+        }
+        var chargedMonth = $('#charged-month input').val();
+        if (chargedMonth) {
+            globalParams['createdDate:gth'] = chargedMonth + '-01';
+            globalParams['createdDate:lth'] = chargedMonth + '-31 23:59:59';
+        }
         globalParams['page.curPage'] = 1;
         refreshGrid(globalParams);
     };
 
     $scope.card.refresh = refreshGrid;
+
+    // 日期功能
+    $('#charged-month').datetimepicker({
+        format: "yyyy-MM",
+        language: "zh-CN",
+        viewMode: 1,
+        minViewMode: 1,
+        pickTime: false
+    }).on('changeDate', function(ev){
+        // an bug
+        //$scope.card.query.chargedMonth = $('#charged-month input').val();
+        $scope.$apply();
+    });
 }])
 .controller('CardChargeController', ['$scope', '$routeParams', '$timeout', '$location', 'EnumService', 'CardService',
     function ($scope, $routeParams, $timeout, $location, EnumService, CardService) {
