@@ -59,7 +59,7 @@ public class CardController  {
     public ResponseEntity index(Query query) {
     	query.isNotNull(Card.ACTIVED_DATE);
     	query.isNotNull(Card.USER_ID);
-    	query.addOrder(Card.ACTIVED_DATE , OrderType.desc);
+    	query.addOrder(Card.CHARGED_DATE , OrderType.desc);
 		long total = cardService.count(query);
 		query.getPage().setTotal(total);
 		query.getPage().setDatas(cardService.findAll(query));

@@ -35,6 +35,7 @@ public class Card implements Domain {
 	public static String DAYS = "days";
 	public static String EXPIRED_DATE = "expireDate";
 	public static String ACTIVED_DATE = "activedDate";
+	public static String CHARGED_DATE = "chargedDate";
 	public static String USER_ID = "userId";
 
 	private Long id;
