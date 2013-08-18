@@ -117,13 +117,48 @@ angular.module('ecgCardDirectives', [])
     refreshGrid();
 
     // 过滤功能
+    $scope.card.query = {};
+
+    $scope.card.reset = function() {
+        $scope.card.query = {};
+        $('#charged-month input').val('')
+    };
+    
     $scope.card.queryChanged = function(query) {
-        globalParams['serial:like'] = query;
+        // 卡号
+        if (query.serial) {
+            globalParams['serial:like'] = query.serial;
+        } else {
+            delete globalParams['serial:like'];
+        }
+        
+        // 充值月份
+        var chargedMonth = $('#charged-month input').val();
+        if (chargedMonth) {
+            globalParams['chargedDate:gth'] = chargedMonth + '-01';
+            globalParams['chargedDate:lth'] = chargedMonth + '-31 23:59:59';
+        } else {
+            delete globalParams['chargedDate:gth'];
+            delete globalParams['chargedDate:lth'];
+        }
         globalParams['page.curPage'] = 1;
         refreshGrid(globalParams);
     };
 
     $scope.card.refresh = refreshGrid;
+
+    // 日期功能
+    $('#charged-month').datetimepicker({
+        format: "yyyy-MM",
+        language: "zh-CN",
+        viewMode: 1,
+        minViewMode: 1,
+        pickTime: false
+    }).on('changeDate', function(ev){
+        // an bug
+        //$scope.card.query.chargedMonth = $('#charged-month input').val();
+        $scope.$apply();
+    });
 }])
 .controller('CardChargeController', ['$scope', '$routeParams', '$timeout', '$location', 'EnumService', 'CardService',
     function ($scope, $routeParams, $timeout, $location, EnumService, CardService) {
