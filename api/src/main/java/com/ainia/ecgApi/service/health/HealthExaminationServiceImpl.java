@@ -3,6 +3,8 @@ package com.ainia.ecgApi.service.health;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -270,6 +272,15 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 		examination.setUserName(authUser.getUsername());
 		examination.setUserType(authUser.getType());
 		examination.setTestItem("mobile");
+		if (examination.getMedicine() != null) {
+			try {
+				examination.setMedicine(URLDecoder.decode(examination.getMedicine(), "UTF-8"));
+			}
+			catch(UnsupportedEncodingException e) {
+				throw new ServiceException("examination.medicine.decode.error");
+			}
+			
+		}
 		this.create(examination);
 		
 		final ExaminationTask task = new ExaminationTask();
