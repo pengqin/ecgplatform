@@ -588,10 +588,14 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 			Chapter chapter4 = new Chapter(new Paragraph("心电图 ",  titleFont) , 1);
 			chapter4.setNumberDepth(0);
 			
-			for (int i = 1; i < 8; i++) {
+			for (int i = 1; i < 9; i++) {
 				String ecgPath = String.valueOf(User.class.getSimpleName().toLowerCase() + "/" + user.getId()) + "/examination/" + examination.getId() + "/ecg" + i + ".jpg";
 				Image image = Image.getInstance(uploadService.load(Type.heart_img , ecgPath));
-				image.scalePercent(23, 38);
+				if (i != 8) {
+					image.scalePercent(6, 10);
+				} else {
+					image.scalePercent(3, 6);
+				}
 				
 				chapter4.add(image);
 			}

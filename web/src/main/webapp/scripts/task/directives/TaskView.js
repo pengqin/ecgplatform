@@ -164,11 +164,7 @@ define(function(require, exports) {
             if(!$scope.todo.current) { return; }
             $scope.examinationplot.userId = $scope.todo.current.userId;
             $scope.examinationplot.examinationId = $scope.todo.current.examinationId;
-            if ($scope.todo.current.status === 'completed') {
-              $scope.examinationplot.pdf = true;
-            } else {
-              $scope.examinationplot.pdf = false;
-            }
+            $scope.examinationplot.pdf = false;
         });
 
         // 监听已完成
