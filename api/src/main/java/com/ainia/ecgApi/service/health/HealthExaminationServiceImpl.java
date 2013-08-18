@@ -1,5 +1,7 @@
 package com.ainia.ecgApi.service.health;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -10,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.zip.GZIPInputStream;
 
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -221,7 +224,7 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 		update(examination);
 	}
 
-	public void upload(final HealthExamination examination , final byte[] uploadData , String md5) {
+	public void upload(final HealthExamination examination , final byte[] gzipedUploadData , String md5) {
 
 		// 判断是否有效登录
 		final AuthUser authUser = authenticateService.getCurrentUser();	
@@ -239,9 +242,9 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 		
 		// 判断是否是测试请求
 		boolean isTest = examination.getIsTest() == null ? false : examination.getIsTest();
-		if (uploadData == null && !isTest) {
+		if (gzipedUploadData == null && !isTest) {
 			throw new ServiceException("file.is.empty");
-		} else if (uploadData != null && uploadData.length == 0) {
+		} else if (gzipedUploadData != null && gzipedUploadData.length == 0) {
 			throw new ServiceException("file.length.is.zero");
 		}
 
@@ -283,6 +286,24 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 
 				public void run() {
 					try {
+						final byte[] uploadData;
+						
+						if (examination.getIsGziped()) {
+							// decompress the file
+							ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+							GZIPInputStream gis = new GZIPInputStream(new ByteArrayInputStream(gzipedUploadData));
+
+							int count;
+							byte data[] = new byte[255];
+							while ((count = gis.read(data, 0, 255)) != -1) {
+								baos.write(data, 0, count);
+							}
+							uploadData = baos.toByteArray();
+						} else {
+							uploadData = gzipedUploadData;
+						}
+
 						//save the file
 				    	DataProcessor processor = new DataProcessor();
 				    	processor.process(uploadData , uploadData.length);
@@ -570,7 +591,7 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 			for (int i = 1; i < 8; i++) {
 				String ecgPath = String.valueOf(User.class.getSimpleName().toLowerCase() + "/" + user.getId()) + "/examination/" + examination.getId() + "/ecg" + i + ".jpg";
 				Image image = Image.getInstance(uploadService.load(Type.heart_img , ecgPath));
-				image.scalePercent(28, 38);
+				image.scalePercent(23, 38);
 				
 				chapter4.add(image);
 			}
