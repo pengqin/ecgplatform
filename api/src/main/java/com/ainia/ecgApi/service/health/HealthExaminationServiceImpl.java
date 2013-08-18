@@ -119,12 +119,12 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 		boolean isFree = config == null ? false : Boolean.valueOf(config);
 		if (isFree) { return true; }
 
+		AuthUser authUser = authenticateService.getCurrentUser();	
 		// 判断用户是否充值以及在服务时间
-		AuthUser authUser = authenticateService.getCurrentUser();
 		Query<Card> query = new Query<Card>();
 		query.isNotNull(Card.ACTIVED_DATE);
 		query.isNotNull(Card.USER_ID);
-		query.eq(Card.USER_ID, examination.getUserId());
+		query.eq(Card.USER_ID, authUser.getId());
 		query.addOrder(Card.ACTIVED_DATE, OrderType.desc);
 		List<Card> cards = cardService.findAll(query);
 
