@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.PrePersist;
+import javax.persistence.Transient;
 import javax.persistence.Version;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -47,6 +48,7 @@ public class HealthExamination implements Domain {
 	private String testItem;
 	private String userType;
 	private Boolean isTest;
+	private Boolean isGziped = false;
 	private Level  level;
 	private String apkId;
 	private Integer bloodPressureLow;
@@ -372,6 +374,14 @@ public class HealthExamination implements Domain {
 		this.apkId = apkId;
 	}
 
+	@Transient
+	public Boolean getIsGziped() {
+		return isGziped;
+	}
+
+	public void setIsGziped(Boolean isGziped) {
+		this.isGziped = isGziped;
+	}
 
 	@Override
 	public int hashCode() {
@@ -423,5 +433,4 @@ public class HealthExamination implements Domain {
 		return prop;
 	}
 
-	
 }
