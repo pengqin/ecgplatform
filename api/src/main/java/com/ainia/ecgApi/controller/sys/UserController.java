@@ -335,7 +335,7 @@ public class UserController extends BaseController<User , Long> {
 		User user = userService.get(examination.getUserId());
 		
 		StringBuffer fileName = new StringBuffer();
-		fileName.append("体检测试报告-").append(user.getName())
+		fileName.append("AINIA体检测试报告-").append(user.getName())
 				.append("-").append(new DateTime().toString("yyyy-MM-dd"));
 		response.setContentType("application/pdf");
 		response.setHeader("Content-Disposition", "attachment; filename=" + URLEncoder.encode(fileName.toString() ,"UTF-8"));
