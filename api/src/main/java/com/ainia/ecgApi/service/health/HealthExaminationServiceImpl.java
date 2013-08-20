@@ -3,6 +3,8 @@ package com.ainia.ecgApi.service.health;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -119,12 +121,12 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 		boolean isFree = config == null ? false : Boolean.valueOf(config);
 		if (isFree) { return true; }
 
+		AuthUser authUser = authenticateService.getCurrentUser();	
 		// 判断用户是否充值以及在服务时间
-		AuthUser authUser = authenticateService.getCurrentUser();
 		Query<Card> query = new Query<Card>();
 		query.isNotNull(Card.ACTIVED_DATE);
 		query.isNotNull(Card.USER_ID);
-		query.eq(Card.USER_ID, examination.getUserId());
+		query.eq(Card.USER_ID, authUser.getId());
 		query.addOrder(Card.ACTIVED_DATE, OrderType.desc);
 		List<Card> cards = cardService.findAll(query);
 
@@ -270,6 +272,15 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 		examination.setUserName(authUser.getUsername());
 		examination.setUserType(authUser.getType());
 		examination.setTestItem("mobile");
+		if (examination.getMedicine() != null) {
+			try {
+				examination.setMedicine(URLDecoder.decode(examination.getMedicine(), "UTF-8"));
+			}
+			catch(UnsupportedEncodingException e) {
+				throw new ServiceException("examination.medicine.decode.error");
+			}
+			
+		}
 		this.create(examination);
 		
 		final ExaminationTask task = new ExaminationTask();
@@ -471,14 +482,15 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 			
 			BaseFont bfChinese = BaseFont.createFont("STSongStd-Light", "UniGB-UCS2-H", true);
 		    Font titleFont = new Font(bfChinese, 30, Font.BOLD);  
-		    Font textFont = new Font(bfChinese, 18, Font.NORMAL); 
+		    Font textFont = new Font(bfChinese, 18, Font.BOLD); 
 		    Font valueFont = new Font(bfChinese , 12 , Font.NORMAL);
 		    //-------------------  page1  -----------------------------------
-			Paragraph title = new Paragraph("体检病例报告",  titleFont);
+			Paragraph title = new Paragraph("体检病例报告",  new Font(bfChinese, 50, Font.BOLD));
 			title.setAlignment(1);
-			Chapter chapter = new Chapter(title , 1);
-			chapter.setNumberDepth(0);
+			Chapter chapter = new Chapter(new Paragraph("") , 1);
 			
+			chapter.setNumberDepth(0);
+			chapter.add(title);
 			PdfPTable firstTable = new PdfPTable(2);
 			firstTable.setTotalWidth(180);
 			firstTable.setSpacingBefore(80);
@@ -495,37 +507,71 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 			
 			firstTable.addCell(createCell("检测日期 " , textFont , 0));
 			firstTable.addCell(createCell(new DateTime(user.getCreatedDate()).toString("yyyy-MM-dd") , 
-					valueFont , 1));
+					new Font(bfChinese, 10, Font.NORMAL) , 0));
 			
 			doc.add(chapter);
 			firstTable.completeRow();
 		    // write the table to an absolute position
-			firstTable.writeSelectedRows(0, -1, 360, firstTable.getTotalHeight() + 60, canvas);
+			firstTable.writeSelectedRows(0, -1, 360, firstTable.getTotalHeight() + 120, canvas);
 		    //-------------------  page1  -----------------------------------
 			//-------------------  page2  -----------------------------------
 			Paragraph userInfo = new Paragraph("个人信息",  titleFont);
 			Chapter chapter2 = new Chapter(userInfo , 1);
 			chapter2.setNumberDepth(0);
 			
-			PdfPTable infoTable = new PdfPTable(4);
+			PdfPTable infoTable = new PdfPTable(2);
 			infoTable.setSpacingBefore(20);
 			infoTable.setSpacingAfter(20);
 			
 			infoTable.addCell(createCell("姓名 " , textFont , 0));
 			infoTable.addCell(createCell(user.getName() , valueFont , 1));
 			
+			infoTable.addCell(createCell("性别 " , textFont , 0));
+			infoTable.addCell(createCell(user.isMan()?"男":"女" , valueFont , 1));
+			
+			
+			infoTable.addCell(createCell("身高 " , textFont , 0));
+			infoTable.addCell(createCell(StringUtils.valueOf(user.getStature()) + "CM" , valueFont , 1));
+			
+			infoTable.addCell(createCell("体重 " , textFont , 0));
+			infoTable.addCell(createCell(StringUtils.valueOf(user.getWeight()) + "KG" , valueFont , 1));
+			
+			infoTable.addCell(createCell("生日 " , textFont , 0));
+			infoTable.addCell(createCell(user.getBirthday()==null?"":new DateTime(user.getBirthday()
+											).toString("yyyy-MM-dd"), valueFont , 1));
+		
+			infoTable.addCell(createCell("邮箱 " , textFont , 0));
+			infoTable.addCell(createCell(user.getEmail(), valueFont , 1));
+			
+			infoTable.addCell(createCell("身份证 " , textFont , 0));
+			infoTable.addCell(createCell(user.getIdCard(), valueFont , 1));
+			
 			infoTable.addCell(createCell("电话 " , textFont , 0));
 			infoTable.addCell(createCell(user.getMobile() , valueFont , 1));
 			
+			infoTable.addCell(createCell("现住址 " , textFont , 0));
+			infoTable.addCell(createCell(user.getAddress() , valueFont , 1));
+			
+			infoTable.addCell(createCell("联系人1 " , textFont , 0));
+			infoTable.addCell(createCell(StringUtils.valueOf(user.getEmContact1()), valueFont , 1));
+			
+			infoTable.addCell(createCell("联系人1 电话" , textFont , 0));
+			infoTable.addCell(createCell(StringUtils.valueOf(user.getEmContact1Tel()), valueFont , 1));
+			
+			infoTable.addCell(createCell("联系人2 " , textFont , 0));
+			infoTable.addCell(createCell(StringUtils.valueOf(user.getEmContact2()), valueFont , 1));
+			
+			infoTable.addCell(createCell("联系人2 电话" , textFont , 0));
+			infoTable.addCell(createCell(StringUtils.valueOf(user.getEmContact2Tel()), valueFont , 1));
+			
+			infoTable.addCell(createCell("常住城市 " , textFont , 0));
+			infoTable.addCell(createCell(StringUtils.valueOf(user.getCity()), valueFont , 1));
+			
 			infoTable.addCell(createCell("不良嗜好 " , textFont , 0));
-			PdfPCell badHabits = createCell(user.getBadHabits() , valueFont , 1);
-			badHabits.setColspan(3);
-			infoTable.addCell(badHabits);
+			infoTable.addCell(createCell(user.getBadHabits() , valueFont , 1));
 			
 			infoTable.addCell(createCell("既往病史 " , textFont , 0));
-			PdfPCell anamnesis = createCell(user.getAnamnesis() , valueFont , 1);
-			anamnesis.setColspan(3);
-			infoTable.addCell(anamnesis);
+			infoTable.addCell(createCell(user.getAnamnesis() , valueFont , 1));
 
 			chapter2.add(infoTable);
 			
@@ -588,10 +634,14 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 			Chapter chapter4 = new Chapter(new Paragraph("心电图 ",  titleFont) , 1);
 			chapter4.setNumberDepth(0);
 			
-			for (int i = 1; i < 8; i++) {
+			for (int i = 1; i < 9; i++) {
 				String ecgPath = String.valueOf(User.class.getSimpleName().toLowerCase() + "/" + user.getId()) + "/examination/" + examination.getId() + "/ecg" + i + ".jpg";
 				Image image = Image.getInstance(uploadService.load(Type.heart_img , ecgPath));
-				image.scalePercent(23, 38);
+				if (i != 8) {
+					image.scalePercent(6, 10);
+				} else {
+					image.scalePercent(3, 6);
+				}
 				
 				chapter4.add(image);
 			}
@@ -606,6 +656,14 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 	}
 	
 	private PdfPCell createCell(String name , Font font , float borderBottom) {
+		PdfPCell cell = new PdfPCell(new Phrase(name , font));
+		cell.setBorderWidth(0);
+		cell.setHorizontalAlignment(1);
+		cell.setBorderWidthBottom(borderBottom);
+		return cell;
+	}
+	
+	private PdfPCell createCell(String name , Font font , float borderBottom , int align) {
 		PdfPCell cell = new PdfPCell(new Phrase(name , font));
 		cell.setBorderWidth(0);
 		cell.setHorizontalAlignment(1);
