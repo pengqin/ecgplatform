@@ -3,6 +3,8 @@ package com.ainia.ecgApi.service.health;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -119,12 +121,12 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 		boolean isFree = config == null ? false : Boolean.valueOf(config);
 		if (isFree) { return true; }
 
+		AuthUser authUser = authenticateService.getCurrentUser();	
 		// 判断用户是否充值以及在服务时间
-		AuthUser authUser = authenticateService.getCurrentUser();
 		Query<Card> query = new Query<Card>();
 		query.isNotNull(Card.ACTIVED_DATE);
 		query.isNotNull(Card.USER_ID);
-		query.eq(Card.USER_ID, examination.getUserId());
+		query.eq(Card.USER_ID, authUser.getId());
 		query.addOrder(Card.ACTIVED_DATE, OrderType.desc);
 		List<Card> cards = cardService.findAll(query);
 
@@ -270,6 +272,15 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 		examination.setUserName(authUser.getUsername());
 		examination.setUserType(authUser.getType());
 		examination.setTestItem("mobile");
+		if (examination.getMedicine() != null) {
+			try {
+				examination.setMedicine(URLDecoder.decode(examination.getMedicine(), "UTF-8"));
+			}
+			catch(UnsupportedEncodingException e) {
+				throw new ServiceException("examination.medicine.decode.error");
+			}
+			
+		}
 		this.create(examination);
 		
 		final ExaminationTask task = new ExaminationTask();
@@ -588,10 +599,14 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 			Chapter chapter4 = new Chapter(new Paragraph("心电图 ",  titleFont) , 1);
 			chapter4.setNumberDepth(0);
 			
-			for (int i = 1; i < 8; i++) {
+			for (int i = 1; i < 9; i++) {
 				String ecgPath = String.valueOf(User.class.getSimpleName().toLowerCase() + "/" + user.getId()) + "/examination/" + examination.getId() + "/ecg" + i + ".jpg";
 				Image image = Image.getInstance(uploadService.load(Type.heart_img , ecgPath));
-				image.scalePercent(23, 38);
+				if (i != 8) {
+					image.scalePercent(6, 10);
+				} else {
+					image.scalePercent(3, 6);
+				}
 				
 				chapter4.add(image);
 			}

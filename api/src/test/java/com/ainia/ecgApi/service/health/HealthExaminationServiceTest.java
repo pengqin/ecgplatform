@@ -224,7 +224,7 @@ public class HealthExaminationServiceTest {
     		Assert.assertTrue(healthReplyService.findAll(query2).size() > 0);
     	}
     }
-    
+
     @Test
     public void testMockUpload() throws IOException, DataException, InterruptedException {
     	when(authenticateService.getCurrentUser()).thenReturn(new AuthUserImpl(2L , "test" , "13700230001" , User.class.getSimpleName()));
@@ -341,5 +341,72 @@ public class HealthExaminationServiceTest {
     		//System.out.println(map.get(HealthExamination.CREATED_DATE));
     	}
     	Assert.assertTrue(results.size() > 0);
+    }
+
+    @Test
+    public void testUploadAndCharge() throws IOException, DataException, InterruptedException {
+    	when(authenticateService.getCurrentUser()).thenReturn(new AuthUserImpl(1L , "测试用户1" , "13911111111" , User.class.getSimpleName()));
+
+    	// 自动回复
+    	SystemConfig config = systemConfigService.get(2l);
+    	config.setValue("true");
+    	systemConfigService.update(config);
+
+    	// 不能免费使用
+    	SystemConfig config1 = systemConfigService.get(4l);
+    	config1.setValue("false");
+    	systemConfigService.update(config1);
+   
+    	((HealthExaminationServiceImpl)healthExaminationService).setAuthenticateService(authenticateService);
+    	HealthExamination examination = new HealthExamination();
+    	examination.setIsTest(true);
+    	examination.setHeartRhythm(70);
+    	healthExaminationService.upload(examination , null , null);
+    	
+    	config.setValue("false");
+    	systemConfigService.update(config);
+    	
+    	config1.setValue("true");
+    	systemConfigService.update(config1);
+ 
+    	Assert.assertTrue(examination.getLevel() != null);
+    }
+
+    /**
+     * 必须放到最后，否则相关config无法reset
+     * @throws Exception
+     */
+    @Test
+    public void testUploadAndChargeFailed() throws Exception {
+    	when(authenticateService.getCurrentUser()).thenReturn(new AuthUserImpl(2L , "测试用户2" , "13922222222" , User.class.getSimpleName()));
+
+    	// 自动回复
+    	SystemConfig config = systemConfigService.get(2l);
+    	config.setValue("true");
+    	systemConfigService.update(config);
+
+    	// 不能免费使用
+    	SystemConfig config1 = systemConfigService.get(4l);
+    	config1.setValue("false");
+    	systemConfigService.update(config1);
+   
+    	((HealthExaminationServiceImpl)healthExaminationService).setAuthenticateService(authenticateService);
+    	HealthExamination examination = new HealthExamination();
+    	examination.setIsTest(true);
+    	examination.setHeartRhythm(70);
+    	try {
+    		healthExaminationService.upload(examination , null , null);
+    	} catch(Exception e) {
+    		
+    	}
+    	
+    	config.setValue("false");
+    	systemConfigService.update(config);
+    	
+    	config1.setValue("true");
+    	systemConfigService.update(config1);
+ 
+    	Assert.assertTrue(examination.getLevel() == null);
+    	
     }
 }
