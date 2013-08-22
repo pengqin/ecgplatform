@@ -60,6 +60,12 @@ angular.module('ecgCommon', ["angular-table", "ecgNav", "ecgHeader", "ecgMessage
         getGenderLabel: function(gender) {
             return gender ?  '男': '女';
         },
+        getBools: function() {
+            return [{label: '是', value: true}, {label: '否', value: false}];
+        },
+        getBoolLabel: function(value) {
+            return value ?  '是': '否';
+        },
         getDismissedStates: function() {
             return [{label: '离职', value: true}, {label: '在职', value: false}];
         },

@@ -54,6 +54,7 @@ public class User implements Domain {
 	private String email;
 	private String idCard;
 	private int gender;
+	private boolean married;
 	private String city;
 	private String emContact1;
 	private String emContact1Tel;
@@ -380,6 +381,7 @@ public class User implements Domain {
 		return result;
 	}
 
+	
 
 	@Override
 	public boolean equals(Object obj) {
@@ -401,6 +403,12 @@ public class User implements Domain {
 	@Override
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this);
+	}
+	public boolean isMarried() {
+		return married;
+	}
+	public void setMarried(boolean married) {
+		this.married = married;
 	}
 
 }

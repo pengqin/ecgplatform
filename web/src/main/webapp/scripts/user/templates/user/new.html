@@ -35,6 +35,11 @@
 		</tr>
 
 		<tr>
+		<td><label for="user-gender">是否已婚:</label></td>
+		<td><select ng-model="user.newobj.married" ng-options="g.value as g.label for g in user.bools"></select></td>
+		</tr>
+
+		<tr>
 		<td ><label for="user-birthday">出生日期:</label></td>
 		<td>
 			
