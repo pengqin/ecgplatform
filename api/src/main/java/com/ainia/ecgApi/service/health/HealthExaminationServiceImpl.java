@@ -673,7 +673,7 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 				if (x > w) {
 					x = w;
 				}
-				if (j == 8) {
+				if (j == 7) {
 					break;
 				}
 				ecgChapter = new Chapter(new Paragraph("心电图 第" + j + "部分",  titleFont) , 1);
