@@ -66,6 +66,9 @@ angular.module('ecgCommon', ["angular-table", "ecgNav", "ecgHeader", "ecgMessage
         getBoolLabel: function(value) {
             return value ?  '是': '否';
         },
+        getMarrieds: function() {
+            return [{label: '未婚', value: 0}, {label: '已婚', value: 1}, {label: '离异', value: 2}];
+        },
         getDismissedStates: function() {
             return [{label: '离职', value: true}, {label: '在职', value: false}];
         },
