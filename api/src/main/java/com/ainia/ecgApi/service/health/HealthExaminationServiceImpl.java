@@ -706,7 +706,7 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 			BufferedImage bSource = ImageIO.read(new ByteArrayInputStream(uploadService.load(Type.heart_img , ecgPath)));
 			w = bSource.getWidth();
 			j = 1;
-			step = 1600;
+			step = 1300;
 			do {
 				int x = step * j;
 				if (x > w) {
