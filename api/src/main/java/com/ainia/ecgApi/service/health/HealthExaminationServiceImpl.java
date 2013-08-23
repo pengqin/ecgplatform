@@ -534,7 +534,15 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 			
 			infoTable.addCell(createCell("性别 " , textFont , 0));
 			infoTable.addCell(createCell(user.isMan()?"男":"女" , valueFont , 1));
-			
+
+			infoTable.addCell(createCell("婚姻状况 " , textFont , 0));
+			String married = "未婚";
+			if (user.getMarried() == 1) {
+				married = "已婚";
+			} else if (user.getMarried() == 2) {
+				married = "离异";
+			}
+			infoTable.addCell(createCell(married , valueFont , 1));
 			
 			infoTable.addCell(createCell("身高 " , textFont , 0));
 			infoTable.addCell(createCell(StringUtils.valueOf(user.getStature()) + "CM" , valueFont , 1));
@@ -637,33 +645,38 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 			doc.add(chapter3);
 			//-------------------  page3  -----------------------------------
 			//-------------------  page4  -----------------------------------
-			Chapter chapter4 = new Chapter(new Paragraph("心电图 ",  titleFont) , 1);
-			chapter4.setNumberDepth(0);
+
 			
 			int w = 0;
 			int h = 0;
 
 			List<BufferedImage> sources = new ArrayList<BufferedImage>();
-			for (int i = 1; i < 9; i++) {
-//			//	chapter4.add(new Paragraph("心电图 " + i,  new Font(bfChinese, 12 , Font.BOLD)) );
+			for (int i = 1; i < 8; i++) {
+//			//	bloodChapter.add(new Paragraph("心电图 " + i,  new Font(bfChinese, 12 , Font.BOLD)) );
 				String ecgPath = String.valueOf(User.class.getSimpleName().toLowerCase() + "/" + user.getId()) + "/examination/" + examination.getId() + "/ecg" + i + ".jpg";
 				BufferedImage source = ImageIO.read(new ByteArrayInputStream(uploadService.load(Type.heart_img , ecgPath)));
-				if (i != 8 && source.getWidth() > w) {
+				if (source.getWidth() > w) {
 					w = source.getWidth();
 				}
-				if (i != 8 && source.getHeight() > h) {
+				if (source.getHeight() > h) {
 					h = source.getHeight();
 				}
 				sources.add(source);
 			}
-			
-			int step = 500;
+
+			Chapter ecgChapter;
+			int step = (int)(w / 7);
 			int j = 1;
 			do {
 				int x = step * j;
 				if (x > w) {
 					x = w;
 				}
+				if (j == 8) {
+					break;
+				}
+				ecgChapter = new Chapter(new Paragraph("心电图 第" + j + "部分",  titleFont) , 1);
+				ecgChapter.setNumberDepth(0);
 				for (int i = 1; i < 8; i++) {
 					BufferedImage source = sources.get(i - 1);
 					BufferedImage dest = new BufferedImage(step , h , BufferedImage.TYPE_INT_RGB);
@@ -676,22 +689,32 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 					ByteArrayOutputStream out = new ByteArrayOutputStream();
 					ImageIO.write(dest , "jpg", out);
 					Image image = Image.getInstance(out.toByteArray());
-					image.scalePercent(100 , 26);
-					chapter4.add(image);
+					image.scalePercent(38, 19);
+					ecgChapter.add(image);
 				}
+				doc.add(ecgChapter);
 				j++;
 			}
 			while ((step * (j-1)) < w);
+
 			/**
 			 * 单独输出第8张图
 			 */
+			Chapter bloodChapter = new Chapter(new Paragraph("血氧图",  titleFont) , 1);
+			String ecgPath = String.valueOf(User.class.getSimpleName().toLowerCase() + "/" + user.getId()) + "/examination/" + examination.getId() + "/ecg8.jpg";
+			BufferedImage bSource = ImageIO.read(new ByteArrayInputStream(uploadService.load(Type.heart_img , ecgPath)));
+			w = bSource.getWidth();
 			j = 1;
+			step = (int)(w / 17);
 			do {
 				int x = step * j;
 				if (x > w) {
 					x = w;
 				}
-				BufferedImage source = sources.get(7);
+				if (j == 17) {
+					break;
+				}
+				BufferedImage source = bSource;
 				BufferedImage dest = new BufferedImage(step , h , BufferedImage.TYPE_INT_RGB);
 				Graphics2D graphics = dest.createGraphics();
 //			    AffineTransform trans = new AffineTransform();
@@ -702,13 +725,13 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 				ByteArrayOutputStream out = new ByteArrayOutputStream();
 				ImageIO.write(dest , "jpg", out);
 				Image image = Image.getInstance(out.toByteArray());
-				image.scalePercent(100 , 26);
-				chapter4.add(image);
+				image.scalePercent(34 , 17);
+				bloodChapter.add(image);
 				j++;
 			}
 			while ((step * (j-1)) < w);
 			
-			doc.add(chapter4);
+			doc.add(bloodChapter);
 			//-------------------  page4  -----------------------------------
 			
 			doc.close();

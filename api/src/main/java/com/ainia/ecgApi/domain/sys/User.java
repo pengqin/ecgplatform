@@ -54,7 +54,7 @@ public class User implements Domain {
 	private String email;
 	private String idCard;
 	private int gender;
-	private boolean married;
+	private int married;
 	private String city;
 	private String emContact1;
 	private String emContact1Tel;
@@ -404,11 +404,12 @@ public class User implements Domain {
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this);
 	}
-	public boolean isMarried() {
+	public int getMarried() {
 		return married;
 	}
-	public void setMarried(boolean married) {
+	public void setMarried(int married) {
 		this.married = married;
 	}
+
 
 }
