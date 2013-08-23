@@ -666,7 +666,7 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 
 			Chapter ecgChapter;
 			//int step = (int)(w / 7);
-			int step = 1700;
+			int step = 1400;
 			int j = 1;
 			do {
 				int x = step * j;
