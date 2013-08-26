@@ -185,7 +185,7 @@ public class HealthExaminationServiceTest {
 
     @Test
     public void testUploadAndAutoReply() throws IOException, DataException, InterruptedException {
-    	when(authenticateService.getCurrentUser()).thenReturn(new AuthUserImpl(2L , "test" , "13700230001" , User.class.getSimpleName()));
+    	when(authenticateService.getCurrentUser()).thenReturn(new AuthUserImpl(1L , "test" , "13700230001" , User.class.getSimpleName()));
     	Resource resource = new ClassPathResource("health/sample3");
     	ByteArrayOutputStream out = new ByteArrayOutputStream();
     	int b = -1;

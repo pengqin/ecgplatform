@@ -320,12 +320,18 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 							uploadData = gzipedUploadData;
 						}
 
-						//save the file
+						//存储原始文件
+						String rawPath = "user/" +  String.valueOf(authUser.getId()) + "/examination/" + examination.getId() + "/raw";
+						String rawUri = uploadService.save(Type.heart_img , rawPath , uploadData);
+						
+						examination.setHeartData(rawUri);
+						
+						// 解析数据
 				    	DataProcessor processor = new DataProcessor();
 				    	processor.process(uploadData , uploadData.length);
 						float[] daolian = processor.getDaolian_i();
 						
-						//生成文件相对路径
+						// 生成文件相对路径
 						daolian = processor.getDaolian_i();
 						String ecg1Path = "user/"
 								+ String.valueOf(authUser.getId())
@@ -412,12 +418,6 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 								+ "/ecg8.jpg";
 						byte[] oxyChart = OxygenChart.createChart(oxygenData, 0, oxyLen, oxyLen*10, (int)37.8*8);
 						uploadService.save(Type.heart_img, oxyPath, oxyChart);
-						
-						//存储原始文件
-						String rawPath = "user/" +  String.valueOf(authUser.getId()) + "/examination/" + examination.getId() + "/raw";
-						String rawUri = uploadService.save(Type.heart_img , rawPath , uploadData);
-						
-						examination.setHeartData(rawUri);
 						
 						// 获得医疗数据
 						HealthInfo hi = processor.getHealthInfo();
