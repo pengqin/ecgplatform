@@ -665,14 +665,15 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 			}
 
 			Chapter ecgChapter;
-			int step = (int)(w / 7);
+			//int step = (int)(w / 7);
+			int step = 1400;
 			int j = 1;
 			do {
 				int x = step * j;
 				if (x > w) {
 					x = w;
 				}
-				if (j == 8) {
+				if (j == 7) {
 					break;
 				}
 				ecgChapter = new Chapter(new Paragraph("心电图 第" + j + "部分",  titleFont) , 1);
@@ -705,7 +706,8 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 			BufferedImage bSource = ImageIO.read(new ByteArrayInputStream(uploadService.load(Type.heart_img , ecgPath)));
 			w = bSource.getWidth();
 			j = 1;
-			step = (int)(w / 17);
+
+			step = 1300;
 			do {
 				int x = step * j;
 				if (x > w) {
