@@ -186,7 +186,7 @@ public class HealthExaminationServiceTest {
     @Test
     public void testUploadAndAutoReply() throws IOException, DataException, InterruptedException {
     	when(authenticateService.getCurrentUser()).thenReturn(new AuthUserImpl(1L , "test" , "13700230001" , User.class.getSimpleName()));
-    	Resource resource = new ClassPathResource("health/sample3");
+    	Resource resource = new ClassPathResource("health/sample4.dat");
     	ByteArrayOutputStream out = new ByteArrayOutputStream();
     	int b = -1;
     	InputStream input = resource.getInputStream();
@@ -207,7 +207,7 @@ public class HealthExaminationServiceTest {
 
     	((HealthExaminationServiceImpl)healthExaminationService).setAuthenticateService(authenticateService);
     	HealthExamination examination = new HealthExamination();
-    	examination.setIsGziped(true);
+    	examination.setIsGziped(false);
     	healthExaminationService.upload(examination , bytes , null);
     	Thread.sleep(5000);
     	input.close();
