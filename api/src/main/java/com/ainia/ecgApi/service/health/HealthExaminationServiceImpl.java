@@ -304,6 +304,8 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 					try {
 						final byte[] uploadData;
 						
+						System.out.println("start to unzip...........");
+						
 						if (examination.getIsGziped()) {
 							// decompress the file
 							ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -320,12 +322,14 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 							uploadData = gzipedUploadData;
 						}
 
+						System.out.println("start to save raw...........");
 						//存储原始文件
 						String rawPath = "user/" +  String.valueOf(authUser.getId()) + "/examination/" + examination.getId() + "/raw";
 						String rawUri = uploadService.save(Type.heart_img , rawPath , uploadData);
 						
 						examination.setHeartData(rawUri);
 						
+						System.out.println("start to process raw...........");
 						// 解析数据
 				    	DataProcessor processor = new DataProcessor();
 				    	processor.process(uploadData , uploadData.length);
