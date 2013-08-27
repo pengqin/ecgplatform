@@ -259,6 +259,15 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 		if (!canFreeReply(examination)) {
 			throw new ServiceException("examination.reply.is.not.free");
 		}
+
+		// 校验gzip是否正确
+		if (examination.getIsGziped()) {
+			try {
+				new GZIPInputStream(new ByteArrayInputStream(gzipedUploadData));
+			} catch(Exception e) {
+				throw new ServiceException("examination.data.not.in.ziped.format");
+			}
+		}
 		/*
 		//校验MD5值
 		if (StringUtils.isNotBlank(md5)) {
@@ -308,19 +317,15 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 						String zipPath = "user/" +  String.valueOf(authUser.getId()) + "/examination/" + examination.getId() + "/zip";
 						uploadService.save(Type.heart_img , zipPath , gzipedUploadData);
 						
-						System.out.println("start to unzip...........");
-						
 						try {
 							if (examination.getIsGziped()) {
 								// decompress the file
-								ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
 								GZIPInputStream gis = new GZIPInputStream(new ByteArrayInputStream(gzipedUploadData));
 
+								ByteArrayOutputStream baos = new ByteArrayOutputStream();
 								int count;
 								byte data[] = new byte[200];
 								while ((count = gis.read(data, 0, 200)) != -1) {
-									System.out.println("unzipping...");
 									baos.write(data, 0, count);
 								}
 								uploadData = baos.toByteArray();
@@ -331,14 +336,12 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 							e.printStackTrace();
 						}
 
-						System.out.println("start to save raw...........");
 						//存储原始数据
 						String rawPath = "user/" +  String.valueOf(authUser.getId()) + "/examination/" + examination.getId() + "/raw";
 						String rawUri = uploadService.save(Type.heart_img , rawPath , uploadData);
 						
 						examination.setHeartData(rawUri);
 						
-						System.out.println("start to process raw...........");
 						// 解析数据
 				    	DataProcessor processor = new DataProcessor();
 				    	processor.process(uploadData , uploadData.length);
