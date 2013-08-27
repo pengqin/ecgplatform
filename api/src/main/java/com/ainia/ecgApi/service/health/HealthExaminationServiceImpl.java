@@ -259,6 +259,15 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 		if (!canFreeReply(examination)) {
 			throw new ServiceException("examination.reply.is.not.free");
 		}
+
+		// 校验gzip是否正确
+		if (examination.getIsGziped()) {
+			try {
+				new GZIPInputStream(new ByteArrayInputStream(gzipedUploadData));
+			} catch(Exception e) {
+				throw new ServiceException("examination.data.not.in.ziped.format");
+			}
+		}
 		/*
 		//校验MD5值
 		if (StringUtils.isNotBlank(md5)) {
@@ -302,30 +311,44 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 
 				public void run() {
 					try {
-						final byte[] uploadData;
+						byte[] uploadData = new byte[0];
+
 						
-						if (examination.getIsGziped()) {
-							// decompress the file
-							ByteArrayOutputStream baos = new ByteArrayOutputStream();
+						try {
+							if (examination.getIsGziped()) {
+								//存储数据包
+								String zipPath = "user/" +  String.valueOf(authUser.getId()) + "/examination/" + examination.getId() + "/zip";
+								uploadService.save(Type.heart_img , zipPath , gzipedUploadData);
 
-							GZIPInputStream gis = new GZIPInputStream(new ByteArrayInputStream(gzipedUploadData));
+								// decompress the file
+								GZIPInputStream gis = new GZIPInputStream(new ByteArrayInputStream(gzipedUploadData));
 
-							int count;
-							byte data[] = new byte[255];
-							while ((count = gis.read(data, 0, 255)) != -1) {
-								baos.write(data, 0, count);
+								ByteArrayOutputStream baos = new ByteArrayOutputStream();
+								int count;
+								byte data[] = new byte[200];
+								while ((count = gis.read(data, 0, 200)) != -1) {
+									baos.write(data, 0, count);
+								}
+								uploadData = baos.toByteArray();
+							} else {
+								uploadData = gzipedUploadData;
 							}
-							uploadData = baos.toByteArray();
-						} else {
-							uploadData = gzipedUploadData;
+						} catch(Exception e) {
+							e.printStackTrace();
 						}
 
-						//save the file
+						//存储原始数据
+						String rawPath = "user/" +  String.valueOf(authUser.getId()) + "/examination/" + examination.getId() + "/raw";
+						String rawUri = uploadService.save(Type.heart_img , rawPath , uploadData);
+						
+						examination.setHeartData(rawUri);
+						
+						// 解析数据
 				    	DataProcessor processor = new DataProcessor();
 				    	processor.process(uploadData , uploadData.length);
 						float[] daolian = processor.getDaolian_i();
 						
-						//生成文件相对路径
+						// 生成文件相对路径
 						daolian = processor.getDaolian_i();
 						String ecg1Path = "user/"
 								+ String.valueOf(authUser.getId())
@@ -412,12 +435,6 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 								+ "/ecg8.jpg";
 						byte[] oxyChart = OxygenChart.createChart(oxygenData, 0, oxyLen, oxyLen*10, (int)37.8*8);
 						uploadService.save(Type.heart_img, oxyPath, oxyChart);
-						
-						//存储原始文件
-						String rawPath = "user/" +  String.valueOf(authUser.getId()) + "/examination/" + examination.getId() + "/raw";
-						String rawUri = uploadService.save(Type.heart_img , rawPath , uploadData);
-						
-						examination.setHeartData(rawUri);
 						
 						// 获得医疗数据
 						HealthInfo hi = processor.getHealthInfo();
@@ -665,14 +682,15 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 			}
 
 			Chapter ecgChapter;
-			int step = (int)(w / 7);
+			//int step = (int)(w / 7);
+			int step = 1400;
 			int j = 1;
 			do {
 				int x = step * j;
 				if (x > w) {
 					x = w;
 				}
-				if (j == 8) {
+				if (j == 7) {
 					break;
 				}
 				ecgChapter = new Chapter(new Paragraph("心电图 第" + j + "部分",  titleFont) , 1);
@@ -705,7 +723,8 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 			BufferedImage bSource = ImageIO.read(new ByteArrayInputStream(uploadService.load(Type.heart_img , ecgPath)));
 			w = bSource.getWidth();
 			j = 1;
-			step = (int)(w / 17);
+
+			step = 1300;
 			do {
 				int x = step * j;
 				if (x > w) {
