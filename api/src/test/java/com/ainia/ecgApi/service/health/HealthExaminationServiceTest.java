@@ -3,8 +3,10 @@ package com.ainia.ecgApi.service.health;
 import static org.mockito.Mockito.when;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
 
@@ -29,12 +31,10 @@ import com.ainia.ecgApi.core.security.AuthenticateService;
 import com.ainia.ecgApi.domain.health.HealthExamination;
 import com.ainia.ecgApi.domain.health.HealthReply;
 import com.ainia.ecgApi.domain.health.HealthRule.Level;
-import com.ainia.ecgApi.service.health.HealthReplyService;
-import com.ainia.ecgApi.domain.sys.User;
 import com.ainia.ecgApi.domain.sys.SystemConfig;
-import com.ainia.ecgApi.utils.DataException;
-import com.ainia.ecgApi.service.health.HealthReplyService;
+import com.ainia.ecgApi.domain.sys.User;
 import com.ainia.ecgApi.service.sys.SystemConfigService;
+import com.ainia.ecgApi.utils.DataException;
 
 /**
  * <p>HealthExamination Service test</p>
@@ -182,11 +182,13 @@ public class HealthExaminationServiceTest {
     	query1.eq(HealthReply.EXAMINATION_ID , examination.getId());
     	Assert.assertTrue(healthReplyService.findAll(query1).size() == 0);
     }
+    
+
 
     @Test
     public void testUploadAndAutoReply() throws IOException, DataException, InterruptedException {
-    	when(authenticateService.getCurrentUser()).thenReturn(new AuthUserImpl(2L , "test" , "13700230001" , User.class.getSimpleName()));
-    	Resource resource = new ClassPathResource("health/sample3");
+    	when(authenticateService.getCurrentUser()).thenReturn(new AuthUserImpl(1L , "test" , "13700230001" , User.class.getSimpleName()));
+    	Resource resource = new ClassPathResource("health/sample4.dat");
     	ByteArrayOutputStream out = new ByteArrayOutputStream();
     	int b = -1;
     	InputStream input = resource.getInputStream();
@@ -207,7 +209,7 @@ public class HealthExaminationServiceTest {
 
     	((HealthExaminationServiceImpl)healthExaminationService).setAuthenticateService(authenticateService);
     	HealthExamination examination = new HealthExamination();
-    	examination.setIsGziped(true);
+    	examination.setIsGziped(false);
     	healthExaminationService.upload(examination , bytes , null);
     	Thread.sleep(5000);
     	input.close();
