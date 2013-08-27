@@ -185,6 +185,9 @@ public class UserServiceImpl extends BaseServiceImpl<User , Long> implements Use
 		Date   retakeDate = user.getRetakeDate();
 		Integer retakeCount= user.getRetakeCount() == null ? 1 : user.getRetakeCount();
 
+		if (retakeCode == null) {
+			throw new ServiceException("exception.user.retakeCode.is.null");
+		}
 		if (new DateTime(retakeDate).plusHours(24).isBefore(new Date().getTime())) {
 			throw new ServiceException("exception.user.retakePassword.expried");
 		}
