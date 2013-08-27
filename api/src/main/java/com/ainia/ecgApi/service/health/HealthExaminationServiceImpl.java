@@ -302,28 +302,37 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 
 				public void run() {
 					try {
-						final byte[] uploadData;
+						byte[] uploadData = new byte[0];
+
+						//存储数据包
+						String zipPath = "user/" +  String.valueOf(authUser.getId()) + "/examination/" + examination.getId() + "/zip";
+						uploadService.save(Type.heart_img , zipPath , gzipedUploadData);
 						
 						System.out.println("start to unzip...........");
 						
-						if (examination.getIsGziped()) {
-							// decompress the file
-							ByteArrayOutputStream baos = new ByteArrayOutputStream();
+						try {
+							if (examination.getIsGziped()) {
+								// decompress the file
+								ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-							GZIPInputStream gis = new GZIPInputStream(new ByteArrayInputStream(gzipedUploadData));
+								GZIPInputStream gis = new GZIPInputStream(new ByteArrayInputStream(gzipedUploadData));
 
-							int count;
-							byte data[] = new byte[255];
-							while ((count = gis.read(data, 0, 255)) != -1) {
-								baos.write(data, 0, count);
+								int count;
+								byte data[] = new byte[200];
+								while ((count = gis.read(data, 0, 200)) != -1) {
+									System.out.println("unzipping...");
+									baos.write(data, 0, count);
+								}
+								uploadData = baos.toByteArray();
+							} else {
+								uploadData = gzipedUploadData;
 							}
-							uploadData = baos.toByteArray();
-						} else {
-							uploadData = gzipedUploadData;
+						} catch(Exception e) {
+							e.printStackTrace();
 						}
 
 						System.out.println("start to save raw...........");
-						//存储原始文件
+						//存储原始数据
 						String rawPath = "user/" +  String.valueOf(authUser.getId()) + "/examination/" + examination.getId() + "/raw";
 						String rawUri = uploadService.save(Type.heart_img , rawPath , uploadData);
 						
