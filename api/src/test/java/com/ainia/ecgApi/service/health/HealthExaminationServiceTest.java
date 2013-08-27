@@ -183,6 +183,31 @@ public class HealthExaminationServiceTest {
     	Assert.assertTrue(healthReplyService.findAll(query1).size() == 0);
     }
     
+    @Test
+    public void testExportUpload() throws IOException, InterruptedException {
+    	Long userId = 2L;
+    	when(authenticateService.getCurrentUser()).thenReturn(new AuthUserImpl(userId , "test" , "13700230001" , User.class.getSimpleName()));
+    	Resource resource = new ClassPathResource("health/sample3");
+    	ByteArrayOutputStream out = new ByteArrayOutputStream();
+    	int b = -1;
+    	InputStream input = resource.getInputStream();
+    	while ((b = input.read()) != -1) {
+    		out.write(b);
+    	}
+    	byte[] bytes = out.toByteArray();
+    	((HealthExaminationServiceImpl)healthExaminationService).setAuthenticateService(authenticateService);
+    	HealthExamination examination = new HealthExamination();
+    	examination.setIsGziped(true);
+    	healthExaminationService.upload(examination , bytes , null);
+    	Thread.sleep(5000);
+    	input.close();
+    	out.close();
+    	String exportPath = "c:/upload/user/" + userId + "/examination/" + examination.getId() + "/export.pdf";
+    	OutputStream output = new FileOutputStream(exportPath);
+    	System.out.println("export pdf file " + exportPath);
+    	healthExaminationService.exportPDF(examination,  output);
+    }
+    
 
 
     @Test
