@@ -313,12 +313,13 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 					try {
 						byte[] uploadData = new byte[0];
 
-						//存储数据包
-						String zipPath = "user/" +  String.valueOf(authUser.getId()) + "/examination/" + examination.getId() + "/zip";
-						uploadService.save(Type.heart_img , zipPath , gzipedUploadData);
 						
 						try {
 							if (examination.getIsGziped()) {
+								//存储数据包
+								String zipPath = "user/" +  String.valueOf(authUser.getId()) + "/examination/" + examination.getId() + "/zip";
+								uploadService.save(Type.heart_img , zipPath , gzipedUploadData);
+
 								// decompress the file
 								GZIPInputStream gis = new GZIPInputStream(new ByteArrayInputStream(gzipedUploadData));
 
