@@ -63,10 +63,16 @@ public class AuthenticateServiceImpl implements AuthenticateService {
 	}
 	
 	public AuthUser loadUserByToken(String tokenStr) {
+		//TODO 测试用需删除
+		if (tokenStr.equals("testToken")) {
+			return new AuthUserImpl(1L , "test" , "13700230001" , User.class.getSimpleName());
+		}
 		String token = new String(EncodeUtils.decodeBase64(tokenStr));
 		if (token.indexOf(TOKEN_SPLIT) == -1) {
 			throw new ServiceException("exception.token.invalid");
 		}
+		
+		
 		log.debug("token is " + token);
 		String[] value = token.split(TOKEN_SPLIT);
 		String username = value[0];
