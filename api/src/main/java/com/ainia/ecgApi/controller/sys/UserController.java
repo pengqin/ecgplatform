@@ -418,22 +418,28 @@ public class UserController extends BaseController<User , Long> {
 		if (StringUtils.isBlank(mobile) && StringUtils.isBlank(email)) {
 			response = new ResponseEntity(HttpStatus.BAD_REQUEST);
 		}
+		User user = null;
+		Map<String , String> result = new HashMap<String , String>(1);
 		if (StringUtils.isNotBlank(email)) {
-			User user = userService.findByEmail(email);
+			user = userService.findByEmail(email);
 			if (user == null) {
 				return new ResponseEntity(HttpStatus.NOT_FOUND);
 			}
 			userService.retakePassword(user, Message.Type.email);
 			response = new ResponseEntity(HttpStatus.OK);
-		}
-		if (StringUtils.isNotBlank(mobile)){
-			User user = userService.findByMobile(mobile);
+		} else if (StringUtils.isNotBlank(mobile)){
+			user = userService.findByMobile(mobile);
 			if (user == null) {
 				return new ResponseEntity(HttpStatus.NOT_FOUND);
 			}
 			userService.retakePassword(user, Message.Type.sms);
 		}
-		return response;
+		if (user != null) {
+			String maskMobile = user.getUsername();
+			maskMobile = maskMobile.substring(0, 3) + "****" + maskMobile.substring(7);
+			result.put("mobile", maskMobile);
+		}
+		return new ResponseEntity<Map<String , String>>(result, HttpStatus.OK);
 	}
 	/**
 	 * <p>通过随机码重置密码</p>
