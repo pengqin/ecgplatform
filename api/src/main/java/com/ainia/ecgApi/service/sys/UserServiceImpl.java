@@ -181,9 +181,11 @@ public class UserServiceImpl extends BaseServiceImpl<User , Long> implements Use
 
 	@Override
 	public void retakePassword(User user, String code, String newPassword) {
+		user = this.get(user.getId());
+
 		String retakeCode = user.getRetakeCode();
 		Date   retakeDate = user.getRetakeDate();
-		Integer retakeCount= user.getRetakeCount() == null ? 1 : user.getRetakeCount();
+		int retakeCount= user.getRetakeCount() == null ? 0 : user.getRetakeCount().intValue();
 
 		if (retakeCode == null) {
 			throw new ServiceException("exception.user.retakeCode.is.null");
@@ -200,13 +202,16 @@ public class UserServiceImpl extends BaseServiceImpl<User , Long> implements Use
 				exception = new ServiceException("exception.user.retakePassword.code.max.try");
 			}
 			else {
-				user.setRetakeCount(retakeCount + 1);
+				user.setRetakeCount(new Integer(retakeCount + 1));
 				exception = new ServiceException("exception.user.retakePassword.code.not.equal");
 			}
 			userDao.save(user);
 			throw exception;
 		}
-		//reset the password
+		//reset the password, and clear the reteak's info
+		user.setRetakeCode(null);
+		user.setRetakeCount(null);
+		user.setRetakeDate(null);
 		user.setPassword(authenticateService.encodePassword(newPassword , null));
 		userDao.save(user);
 	}
