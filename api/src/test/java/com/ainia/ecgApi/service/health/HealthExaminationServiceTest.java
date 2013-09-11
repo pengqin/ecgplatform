@@ -207,7 +207,6 @@ public class HealthExaminationServiceTest {
     	input.close();
     	out.close();
     	
-    	System.out.println("===============" + examination.getBloodPressureHigh());
     	Assert.assertTrue(examination.getBloodPressureHigh() != null);
     	Assert.assertTrue(examination.getBloodPressureLow() != null);
     }
