@@ -44,6 +44,8 @@ angular.module('ecgUserService', [])
                     "badHabits": "", // 可空
                     "anamnesis": "", // 可空
                     "remark": "", // 可空
+                    "gender": 1, // 男
+                    "married": 1, // 已婚
                     "isFree": true
                 };
             },
