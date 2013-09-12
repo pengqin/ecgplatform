@@ -177,7 +177,7 @@ public class HealthExaminationServiceTest {
     	((HealthExaminationServiceImpl)healthExaminationService).setAuthenticateService(authenticateService);
     	HealthExamination examination = new HealthExamination();
     	examination.setIsGziped(true);
-    	healthExaminationService.upload(examination , bytes , null);
+    	healthExaminationService.upload(examination, bytes , null);
     	Thread.sleep(5000);
     	input.close();
     	out.close();
@@ -187,7 +187,30 @@ public class HealthExaminationServiceTest {
     	query1.eq(HealthReply.EXAMINATION_ID , examination.getId());
     	Assert.assertTrue(healthReplyService.findAll(query1).size() == 0);
     }
-    
+
+    @Test
+    public void testUploadLongData() throws IOException, DataException, InterruptedException {
+    	when(authenticateService.getCurrentUser()).thenReturn(new AuthUserImpl(2L , "test" , "13700230001" , User.class.getSimpleName()));
+    	Resource resource = new ClassPathResource("health/sample5");
+    	ByteArrayOutputStream out = new ByteArrayOutputStream();
+    	int b = -1;
+    	InputStream input = resource.getInputStream();
+    	while ((b = input.read()) != -1) {
+    		out.write(b);
+    	}
+    	byte[] bytes = out.toByteArray();
+    	((HealthExaminationServiceImpl)healthExaminationService).setAuthenticateService(authenticateService);
+    	HealthExamination examination = new HealthExamination();
+    	examination.setIsGziped(false);
+    	healthExaminationService.upload(examination, bytes , null);
+    	Thread.sleep(5000);
+    	input.close();
+    	out.close();
+    	
+    	Assert.assertTrue(examination.getBloodPressureHigh() != null);
+    	Assert.assertTrue(examination.getBloodPressureLow() != null);
+    }
+
     @Test
     public void testExportUpload() throws IOException, InterruptedException {
     	Long userId = 2L;

@@ -436,12 +436,14 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 						uploadService.save(Type.heart_img, oxyPath, oxyChart);
 						
 						// 获得医疗数据
+						
 						HealthInfo hi = processor.getHealthInfo();
 						examination.setHeartRhythm(hi.heartrate);
 						examination.setBloodPressureLow(hi.dbp);
 						examination.setBloodPressureHigh(hi.sbp);
 						examination.setPulserate(hi.pulserate);
 						examination.setBloodOxygen(hi.oxygen);
+						
 						
 						// 根据医疗数据做后续处理,如自动回复
 						updateTaskAndExamination(task, examination);
@@ -451,6 +453,7 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 						}
 					}
 					catch(Exception e) {
+						e.printStackTrace();
 						examination.setHasDataError(true);
 						updateTaskAndExamination(task, examination);
 					}
