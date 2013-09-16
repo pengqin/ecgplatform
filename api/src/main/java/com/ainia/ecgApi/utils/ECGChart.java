@@ -116,7 +116,7 @@ public class ECGChart {
 		for (int j = 0; j < length; j++, i++) {
 			all_data[i] = data[j];
 		}
-		final XYDataset dataset = createDataset(data, start, length);
+		final XYDataset dataset = createDataset(all_data, start, length);
 		final JFreeChart chart = createChart(label, dataset, max);
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		try {
@@ -124,13 +124,16 @@ public class ECGChart {
 			BufferedImage chartImage = 
 				chart.createBufferedImage(chartWidth, chartHeight, BufferedImage.TYPE_INT_RGB, null);
 			ImageIO.write(chartImage, "JPEG", out);
-			return out.toByteArray();
+			chartImage.flush();
+		} catch (Exception e) {
+			e.printStackTrace();
 		} finally {
 			try {
 				out.close();
 			} catch (IOException e) {
 			}
 		}
+		return out.toByteArray();
 	}
 	
 	private static XYDataset createDataset(float[] data, int start, int length) {
@@ -202,7 +205,7 @@ public class ECGChart {
 			final Marker marker = new ValueMarker(i);
 			marker.setPaint(Color.red);
 			if (i % 50 != 0) {
-				marker.setStroke(new BasicStroke(0.3f, BasicStroke.CAP_SQUARE,
+				marker.setStroke(new BasicStroke(0.5f, BasicStroke.CAP_SQUARE,
 						BasicStroke.JOIN_MITER, 10.0f, new float[] { 2.0f },
 						0.0f));
 			}
