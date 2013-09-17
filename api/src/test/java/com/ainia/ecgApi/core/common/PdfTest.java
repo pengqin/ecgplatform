@@ -238,7 +238,7 @@ public class PdfTest {
 		
 //		section.add(t);
 //		
-//		Image image = Image.getInstance("d:/ecg7.jpg");
+//		Image image = Image.getInstance("d:/ecg7.png");
 //		image.scalePercent(80, 10);
 //		
 //		section.add(image);

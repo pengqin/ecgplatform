@@ -203,7 +203,7 @@ public class HealthExaminationServiceTest {
     	HealthExamination examination = new HealthExamination();
     	examination.setIsGziped(false);
     	healthExaminationService.upload(examination, bytes , null);
-    	Thread.sleep(5000);
+    	Thread.sleep(25000);
     	input.close();
     	out.close();
     	

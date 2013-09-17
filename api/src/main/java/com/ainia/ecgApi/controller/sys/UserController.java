@@ -314,7 +314,7 @@ public class UserController extends BaseController<User , Long> {
 	public void loadEcg(@PathVariable("id") Long id , @PathVariable("examinationId") Long examinationId , 
 										@PathVariable("index") int index, HttpServletResponse response)  {
 		//TODO 文件后缀名固定
-		String ecgPath = String.valueOf(User.class.getSimpleName().toLowerCase() + "/" +id) + "/examination/" + examinationId + "/ecg" + index + ".jpg";
+		String ecgPath = String.valueOf(User.class.getSimpleName().toLowerCase() + "/" +id) + "/examination/" + examinationId + "/ecg" + index + ".png";
 		try {
 			response.setContentType("image/jpeg");
 			response.getOutputStream().write(uploadService.load(Type.heart_img , ecgPath));

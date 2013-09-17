@@ -40,13 +40,11 @@ package com.ainia.ecgApi.utils;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 
-import javax.imageio.ImageIO;
-
 import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.NumberTickUnit;
@@ -85,8 +83,8 @@ public class ECGChart {
 			4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f,
 			4.0f, 4.0f, };
 
-	public static byte[] createChart(String label, float[] data, float max , int start, int length, float tickUnit) throws IOException {
-		return createChart(label, data, max , start, length  , 1600 , 100);
+	public static void createChart(File file, String label, float[] data, float max , int start, int length, float tickUnit) throws IOException {
+		createChart(file, label, data, max , start, length  , 1600 , 100);
 	}
 	/**
 	 * 
@@ -100,7 +98,7 @@ public class ECGChart {
 	 *            output path
 	 * @throws IOException
 	 */
-	public static byte[] createChart(String label, float[] data, float max, int start, int length, int chartWidth, int chartHeight) throws IOException {
+	public static void createChart(File file, String label, float[] data, float max, int start, int length, int chartWidth, int chartHeight) throws IOException {
 		float[] header_data = null;
 		if (max <= 4.0f)
 			header_data = lower_header_data;
@@ -118,22 +116,12 @@ public class ECGChart {
 		}
 		final XYDataset dataset = createDataset(all_data, start, length);
 		final JFreeChart chart = createChart(label, dataset, max);
-		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		try {
-			if (chartWidth > MAX_CHART_WIDTH) chartWidth = MAX_CHART_WIDTH;
-			BufferedImage chartImage = 
-				chart.createBufferedImage(chartWidth, chartHeight, BufferedImage.TYPE_INT_RGB, null);
-			ImageIO.write(chartImage, "JPEG", out);
-			chartImage.flush();
+			//if (chartWidth > MAX_CHART_WIDTH) chartWidth = MAX_CHART_WIDTH;
+			ChartUtilities.saveChartAsPNG(file, chart, chartWidth, chartHeight);
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
-			try {
-				out.close();
-			} catch (IOException e) {
-			}
 		}
-		return out.toByteArray();
 	}
 	
 	private static XYDataset createDataset(float[] data, int start, int length) {
