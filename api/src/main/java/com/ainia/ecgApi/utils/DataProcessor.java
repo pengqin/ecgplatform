@@ -23,7 +23,7 @@ public class DataProcessor {
 	private float[] daolian_v;
 	private HealthInfo healthInfo;
 	
-	private byte[] oxygenData = new byte[12000];
+	private byte[] oxygenData = new byte[20000];
 	private int oxygenDataLength = 0;
 	
 	private float maxDaolian = 0.0f;

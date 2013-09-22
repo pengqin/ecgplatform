@@ -552,8 +552,7 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 			firstTable.addCell(createCell(String.valueOf(user.getAge()) , valueFont , 1));
 			
 			firstTable.addCell(createCell("检测日期 " , textFont , 0));
-			firstTable.addCell(createCell(new DateTime(user.getCreatedDate()).toString("yyyy-MM-dd") , 
-									valueFont, 1 , 0));
+			firstTable.addCell(createCell(new DateTime(user.getCreatedDate()).toString("yyyy-MM-dd"), valueFont, 1));
 			
 			doc.add(chapter);
 			firstTable.completeRow();
@@ -596,10 +595,10 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 											).toString("yyyy-MM-dd"), valueFont , 1));
 		
 			infoTable.addCell(createCell("邮箱 " , textFont , 0 ));
-			infoTable.addCell(createCell(user.getEmail(), valueFont , 1, 0));
+			infoTable.addCell(createCell(user.getEmail(), valueFont , 1));
 			
 			infoTable.addCell(createCell("身份证 " , textFont , 0));
-			infoTable.addCell(createCell(user.getIdCard(), valueFont , 1 , 0));
+			infoTable.addCell(createCell(user.getIdCard(), valueFont , 1));
 			
 			infoTable.addCell(createCell("电话 " , textFont , 0));
 			infoTable.addCell(createCell(user.getMobile() , valueFont , 1));
@@ -705,7 +704,7 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 				sources.add(source);
 			}
 
-			Chapter ecgChapter;
+			/*
 			//int step = (int)(w / 7);
 			int step = 1400;
 			int j = 1;
@@ -714,9 +713,8 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 				if (x > w) {
 					x = w;
 				}
-				if (j == 7) {
-					break;
-				}
+				System.out.println(j);
+
 				ecgChapter = new Chapter(new Paragraph("心电图 第" + j + "部分",  titleFont) , 1);
 				ecgChapter.setNumberDepth(0);
 				for (int i = 1; i < 8; i++) {
@@ -729,7 +727,7 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 				    graphics.drawImage(source , 0 , 0 , step , h , step*(j - 1) , 0 , x , h, null);
 //				    graphics.dispose();
 					ByteArrayOutputStream out = new ByteArrayOutputStream();
-					ImageIO.write(dest , "jpg", out);
+					ImageIO.write(dest , "png", out);
 					Image image = Image.getInstance(out.toByteArray());
 					image.scalePercent(38, 19);
 					ecgChapter.add(image);
@@ -738,6 +736,44 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 				j++;
 			}
 			while ((step * (j-1)) < w);
+			
+			*/
+
+			int step = 1400;
+			int j = 1;
+			
+			String [] names = {"I", "II", "III", "aVR", "aVL", "aVF", "V"};
+
+			for (int i = 0; i < 7; i++) {
+				Chapter ecgChapter = new Chapter(new Paragraph("ECG " + names[i],  titleFont) , 1);
+				ecgChapter.setNumberDepth(0);
+				
+				BufferedImage source = sources.get(i);
+				BufferedImage dest = new BufferedImage(step , h , BufferedImage.TYPE_INT_RGB);
+				Graphics2D graphics = dest.createGraphics();
+//			    AffineTransform trans = new AffineTransform();
+//			    trans.rotate(Math.PI/2, h/2 , h/2);
+				
+				j = 1;
+				do {
+					int x = step * j;
+					if (x > w) {
+						x = w;
+					}
+//					graphics.setTransform(trans);
+				    graphics.drawImage(source , 0 , 0 , step , h , step*(j - 1) , 0 , x , h, null);
+//					graphics.dispose();
+					ByteArrayOutputStream out = new ByteArrayOutputStream();
+					ImageIO.write(dest , "png", out);
+					Image image = Image.getInstance(out.toByteArray());
+					image.scalePercent(38, 19);
+					ecgChapter.add(image);
+					j++;
+				}
+				while ((step * (j-1)) < w);
+				
+				doc.add(ecgChapter);
+			}
 
 			/**
 			 * 单独输出第8张图
@@ -754,9 +790,7 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 				if (x > w) {
 					x = w;
 				}
-				if (j == 17) {
-					break;
-				}
+
 				BufferedImage source = bSource;
 				BufferedImage dest = new BufferedImage(step , h , BufferedImage.TYPE_INT_RGB);
 				Graphics2D graphics = dest.createGraphics();

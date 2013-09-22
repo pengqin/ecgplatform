@@ -1,14 +1,7 @@
 package com.ainia.ecgApi.utils;
 
 import java.awt.Color;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-
-import javax.imageio.ImageIO;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtilities;
@@ -103,20 +96,5 @@ public class OxygenChart {
 
 		return chart;
 
-	}
-
-	public static void writeFile(JFreeChart chart, String path, int chartWidth, int chartHeight) {
-		try {
-			OutputStream out;
-			out = new FileOutputStream(path);
-
-			BufferedImage chartImage = chart.createBufferedImage(chartWidth,
-					chartHeight, BufferedImage.TYPE_INT_RGB, null);
-			ImageIO.write(chartImage, "JPEG", out);
-
-			out.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 }
