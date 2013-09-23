@@ -39,6 +39,34 @@ define(function(require, exports) {
             });
         });
 
+        // 注册无邮箱用户
+        it("the user should be created by user/apk without email.", function(done) {
+            var testuser = {
+                mobile: 12 + (new Date()).getTime().toString().substring(0, 9),
+                name: '测试用户无邮箱',
+                password: 'passw0rd'
+            };
+            $.ajax({
+                url: PATH + '/api/user',
+                data: {
+                    'mobile': testuser.mobile,
+                    'name': testuser.name,
+                    'password': testuser.password,
+                    'gender': 1, // 男性
+                    'married': 1 // 已婚
+                },
+                type: 'POST'
+            }).then(function() {
+                if (arguments[2].status === 201) {
+                    done();
+                } else {
+                    throw new Error('failed to get a 201 status code.');
+                }
+            }, function() {
+                throw new Error('failed to create a user');
+            });
+        });
+
         it("the hacker should be created by user/apk.", function(done) {
             hacker = {
                 mobile: 19 + (new Date()).getTime().toString().substring(0, 9),
