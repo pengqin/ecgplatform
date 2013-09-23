@@ -56,7 +56,10 @@ public class UserServiceImpl extends BaseServiceImpl<User , Long> implements Use
 		if (StringUtils.isNotBlank(user.getPassword())) {
 			user.setPassword(authenticateService.encodePassword(user.getPassword() , null));
 		}
-		if (userDao.findByUsername(user.getUsername()) != null) {
+		if (user.getMobile() != null && userDao.findByMobile(user.getMobile()) != null) {
+			throw new ServiceException("mobile.is.used");
+		}
+		if (user.getUsername() != null && userDao.findByUsername(user.getUsername()) != null) {
 			throw new ServiceException("username.is.used");
 		}
 		if (user.getEmail() != null && userDao.findByEmail(user.getEmail()) != null) {
