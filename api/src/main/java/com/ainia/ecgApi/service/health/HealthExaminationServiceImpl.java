@@ -692,8 +692,12 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 
 			List<BufferedImage> sources = new ArrayList<BufferedImage>();
 			for (int i = 1; i < 8; i++) {
-//			//	bloodChapter.add(new Paragraph("心电图 " + i,  new Font(bfChinese, 12 , Font.BOLD)) );
 				String ecgPath = String.valueOf(User.class.getSimpleName().toLowerCase() + "/" + user.getId()) + "/examination/" + examination.getId() + "/ecg" + i + ".png";
+				// 需兼容JPG代码 方便测试
+				File file = new File(uploadService.getPath(Type.heart_img, ecgPath));
+				if (!file.exists()) {
+					ecgPath = String.valueOf(User.class.getSimpleName().toLowerCase() + "/" + user.getId()) + "/examination/" + examination.getId() + "/ecg" + i + ".jpg";
+				}
 				BufferedImage source = ImageIO.read(new ByteArrayInputStream(uploadService.load(Type.heart_img , ecgPath)));
 				if (source.getWidth() > w) {
 					w = source.getWidth();
@@ -800,7 +804,7 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 			    graphics.drawImage(source , 0 , 0 , step , h , step*(j - 1) , 0 , x , h, null);
 //			    graphics.dispose();
 				ByteArrayOutputStream out = new ByteArrayOutputStream();
-				ImageIO.write(dest , "jpg", out);
+				ImageIO.write(dest , "png", out);
 				Image image = Image.getInstance(out.toByteArray());
 				image.scalePercent(34 , 17);
 				bloodChapter.add(image);
