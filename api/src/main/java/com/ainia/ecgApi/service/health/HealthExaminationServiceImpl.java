@@ -690,7 +690,6 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 			int w = 0;
 			int h = 0;
 
-			List<BufferedImage> sources = new ArrayList<BufferedImage>();
 			for (int i = 1; i < 8; i++) {
 				String ecgPath = String.valueOf(User.class.getSimpleName().toLowerCase() + "/" + user.getId()) + "/examination/" + examination.getId() + "/ecg" + i + ".png";
 				// 需兼容JPG代码 方便测试
@@ -705,43 +704,8 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 				if (source.getHeight() > h) {
 					h = source.getHeight();
 				}
-				sources.add(source);
+				source.flush();
 			}
-
-			/*
-			//int step = (int)(w / 7);
-			int step = 1400;
-			int j = 1;
-			do {
-				int x = step * j;
-				if (x > w) {
-					x = w;
-				}
-				System.out.println(j);
-
-				ecgChapter = new Chapter(new Paragraph("心电图 第" + j + "部分",  titleFont) , 1);
-				ecgChapter.setNumberDepth(0);
-				for (int i = 1; i < 8; i++) {
-					BufferedImage source = sources.get(i - 1);
-					BufferedImage dest = new BufferedImage(step , h , BufferedImage.TYPE_INT_RGB);
-					Graphics2D graphics = dest.createGraphics();
-//				    AffineTransform trans = new AffineTransform();
-//				    trans.rotate(Math.PI/2, h/2 , h/2);
-//				    graphics.setTransform(trans);
-				    graphics.drawImage(source , 0 , 0 , step , h , step*(j - 1) , 0 , x , h, null);
-//				    graphics.dispose();
-					ByteArrayOutputStream out = new ByteArrayOutputStream();
-					ImageIO.write(dest , "png", out);
-					Image image = Image.getInstance(out.toByteArray());
-					image.scalePercent(38, 19);
-					ecgChapter.add(image);
-				}
-				doc.add(ecgChapter);
-				j++;
-			}
-			while ((step * (j-1)) < w);
-			
-			*/
 
 			int step = 1400;
 			int j = 1;
@@ -751,8 +715,14 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 			for (int i = 0; i < 7; i++) {
 				Chapter ecgChapter = new Chapter(new Paragraph("ECG " + names[i],  titleFont) , 1);
 				ecgChapter.setNumberDepth(0);
-				
-				BufferedImage source = sources.get(i);
+
+				String ecgPath = String.valueOf(User.class.getSimpleName().toLowerCase() + "/" + user.getId()) + "/examination/" + examination.getId() + "/ecg" + (i+1) + ".png";
+				// 需兼容JPG代码 方便测试
+				File file = new File(uploadService.getPath(Type.heart_img, ecgPath));
+				if (!file.exists()) {
+					ecgPath = String.valueOf(User.class.getSimpleName().toLowerCase() + "/" + user.getId()) + "/examination/" + examination.getId() + "/ecg" + (i+1) + ".jpg";
+				}
+				BufferedImage source = ImageIO.read(new ByteArrayInputStream(uploadService.load(Type.heart_img , ecgPath)));
 				BufferedImage dest = new BufferedImage(step , h , BufferedImage.TYPE_INT_RGB);
 				Graphics2D graphics = dest.createGraphics();
 //			    AffineTransform trans = new AffineTransform();
@@ -773,10 +743,16 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 					image.scalePercent(38, 19);
 					ecgChapter.add(image);
 					j++;
+					// 清空
+					out.flush();
 				}
 				while ((step * (j-1)) < w);
 				
 				doc.add(ecgChapter);
+				// 释放内存
+				graphics.dispose();
+				dest.flush();
+				source.flush();
 			}
 
 			/**

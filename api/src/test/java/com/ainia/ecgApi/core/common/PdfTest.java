@@ -23,19 +23,15 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 
-import junit.framework.TestCase;
-
 import com.ainia.ecgApi.core.security.AuthUserImpl;
 import com.ainia.ecgApi.core.security.AuthenticateService;
 import com.ainia.ecgApi.domain.health.HealthExamination;
 import com.ainia.ecgApi.service.health.HealthExaminationService;
-import com.ainia.ecgApi.service.health.HealthExaminationServiceImpl;;
+import com.ainia.ecgApi.service.health.HealthExaminationServiceImpl;
 import com.ainia.ecgApi.domain.health.HealthRule.Level;
 import com.ainia.ecgApi.domain.sys.User;
-import com.ainia.ecgApi.service.sys.SystemConfigService;
 import com.ainia.ecgApi.utils.DataException;
 
-import com.ainia.ecgApi.utils.DataException;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
