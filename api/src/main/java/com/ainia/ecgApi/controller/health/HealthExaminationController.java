@@ -1,6 +1,7 @@
 package com.ainia.ecgApi.controller.health;
 
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -131,11 +132,7 @@ public class HealthExaminationController extends BaseController<HealthExaminatio
 		}
 		// 不指定end,直至明天
 		if (end == null) {
-			end = new DateTime().plusDays(1).toDate();
-		}
-		//将查询天加1 以查询最后一天数据
-		else {
-			end = new DateTime(end.getTime()).plusDays(1).toDate();
+			end = new DateTime().toDate();
 		}
 		return new ResponseEntity( healthExaminationService.statisticsByUserAndDay(userId , start, end) , HttpStatus.OK);
 	}
