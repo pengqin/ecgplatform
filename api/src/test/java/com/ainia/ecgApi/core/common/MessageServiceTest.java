@@ -25,6 +25,9 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 
 import com.ainia.ecgApi.service.common.MessageService;
 import com.ainia.ecgApi.service.common.MessageServiceImpl;
+import com.ainia.ecgApi.service.sys.UserService;
+import com.ainia.ecgApi.service.sys.UserServiceImpl;
+import com.ainia.ecgApi.domain.sys.User;
 import com.ainia.ecgApi.dto.common.Message;
 
 
@@ -36,9 +39,15 @@ public class MessageServiceTest {
 
     @Autowired
     private com.ainia.ecgApi.service.common.MessageService messageService;
+    @Autowired
+    private com.ainia.ecgApi.service.sys.UserService userService;
     
     public void setMessageService(MessageService messageService) {
         this.messageService = messageService;
+    }
+
+    public void setUserService(UserService userService) {
+        this.userService = userService;
     }
 
     @Before
@@ -47,8 +56,15 @@ public class MessageServiceTest {
     }
 
     @Test
-    public void testSMS() throws Exception{
+    public void testSimpleSMS() throws Exception{
     	Message msg = new Message("", "888888", "", "13811749917", "测试验证码短信");
-    	messageService.sendSms(msg);
+    	//messageService.sendSms(msg);
+    }
+
+    @Test
+    public void testECGSMS() throws Exception{
+    	User user = userService.findByMobile("13811749917");
+    	Assert.assertNotNull(user);
+    	userService.retakePassword(user, Message.Type.sms);
     }
 }

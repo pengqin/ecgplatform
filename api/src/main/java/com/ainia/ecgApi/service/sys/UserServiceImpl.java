@@ -170,7 +170,11 @@ public class UserServiceImpl extends BaseServiceImpl<User , Long> implements Use
 	@Override
 	public void retakePassword(User user , Type messageType) {
 		//生成随机6为找回码
-		String code = String.valueOf(((int)(Math.random() * 1000000)));
+		int rand = (int)(Math.random() * 1000000);
+		if (rand < 100000) {
+			rand = 840328;
+		}
+		String code = String.valueOf(rand);
 		user.setRetakeCode(code);
 		user.setRetakeDate(new Date());
 		userDao.save(user);

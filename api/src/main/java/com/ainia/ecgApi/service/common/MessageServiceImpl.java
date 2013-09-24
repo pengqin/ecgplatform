@@ -1,7 +1,6 @@
 package com.ainia.ecgApi.service.common;
 
-import java.io.InputStreamReader;
-import java.io.StringWriter;
+import java.net.URLEncoder;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -48,17 +47,19 @@ public class MessageServiceImpl implements MessageService {
 
 	@Override
 	public void sendSms(Message message) {
-		HttpGet get = new HttpGet(
-			String.format(
-				"http://sms.bechtech.cn/Api/send/data/json?accesskey=%s&secretkey=%s&mobile=%s&content=%s",
-				ACCESSKEY,
-				SECRETKEY,
-				message.getTo(),
-				message.getContent()
-			)
-		);
+
 		HttpClient httpclient = new DefaultHttpClient();
 		try {
+			HttpGet get = new HttpGet(
+				String.format(
+					"http://sms.bechtech.cn/Api/send/data/json?accesskey=%s&secretkey=%s&mobile=%s&content=%s",
+					ACCESSKEY,
+					SECRETKEY,
+					message.getTo(),
+					URLEncoder.encode(message.getContent(), "UTF-8")
+				)
+			);
+			
 			HttpResponse response = httpclient.execute(get);
 			if (response.getStatusLine().getStatusCode() != 200) {
 				throw new ServiceException("exception.sms.sendError");
