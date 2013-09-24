@@ -21,6 +21,8 @@ public interface UploadService {
 	
 	public static final String UPLOAD_URI = "/upload/";
 
+	public String getPath(Type type , String relativePath);
+
 	/**
 	 * <p>保存上传文件</p>
 	 * @param type

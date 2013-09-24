@@ -47,18 +47,7 @@ import com.ainia.ecgApi.service.health.HealthExaminationService;
 import com.ainia.ecgApi.service.health.HealthRuleService;
 import com.ainia.ecgApi.service.sys.UserService;
 import com.ainia.ecgApi.service.task.TaskService;
-import com.lowagie.text.Chapter;
-import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
-import com.lowagie.text.Font;
-import com.lowagie.text.Image;
-import com.lowagie.text.PageSize;
-import com.lowagie.text.Paragraph;
-import com.lowagie.text.Section;
-import com.lowagie.text.pdf.BaseFont;
-import com.lowagie.text.pdf.PdfPCell;
-import com.lowagie.text.pdf.PdfPTable;
-import com.lowagie.text.pdf.PdfWriter;
 
 /**
  * <p>User controller</p>
@@ -314,7 +303,7 @@ public class UserController extends BaseController<User , Long> {
 	public void loadEcg(@PathVariable("id") Long id , @PathVariable("examinationId") Long examinationId , 
 										@PathVariable("index") int index, HttpServletResponse response)  {
 		//TODO 文件后缀名固定
-		String ecgPath = String.valueOf(User.class.getSimpleName().toLowerCase() + "/" +id) + "/examination/" + examinationId + "/ecg" + index + ".jpg";
+		String ecgPath = String.valueOf(User.class.getSimpleName().toLowerCase() + "/" +id) + "/examination/" + examinationId + "/ecg" + index + ".png";
 		try {
 			response.setContentType("image/jpeg");
 			response.getOutputStream().write(uploadService.load(Type.heart_img , ecgPath));

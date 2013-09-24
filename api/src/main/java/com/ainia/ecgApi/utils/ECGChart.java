@@ -38,14 +38,13 @@
  */
 package com.ainia.ecgApi.utils;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 
-import javax.imageio.ImageIO;
-
 import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.NumberTickUnit;
@@ -67,9 +66,25 @@ import org.jfree.data.xy.XYSeriesCollection;
  * 
  */
 public class ECGChart {
+
+	private static final int MAX_CHART_WIDTH = 32000;
 	
-	public static byte[] createChart(String label, float[] data, float max , int start, int length, float tickUnit) throws IOException {
-		return createChart(label, data, max , start, length  , 1600 , 100);
+	private static final float[] lower_header_data = { 0.0f, 0.0f, 0.0f, 0.0f,
+			0.0f, 2.0f, 2.0f, 2.0f, 2.0f, 2.0f, 2.0f, 2.0f, 2.0f, 2.0f, 2.0f,
+			2.0f, 2.0f, 2.0f, 2.0f, 2.0f, 2.0f, 2.0f, 2.0f, 2.0f, 2.0f, 2.0f,
+			2.0f, 2.0f, 2.0f, 2.0f, 2.0f, 2.0f, 2.0f, 2.0f, 2.0f, 2.0f, 2.0f,
+			2.0f, 2.0f, 2.0f, 2.0f, 2.0f, 2.0f, 2.0f, 2.0f, 2.0f, 2.0f, 2.0f,
+			2.0f, 2.0f, };
+
+	private static final float[] higher_header_data = { 0.0f, 0.0f, 0.0f, 0.0f,
+			0.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f,
+			4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f,
+			4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f,
+			4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f,
+			4.0f, 4.0f, };
+
+	public static void createChart(File file, String label, float[] data, float max , int start, int length, float tickUnit) throws IOException {
+		createChart(file, label, data, max , start, length  , 1600 , 100);
 	}
 	/**
 	 * 
@@ -83,20 +98,29 @@ public class ECGChart {
 	 *            output path
 	 * @throws IOException
 	 */
-	public static byte[] createChart(String label, float[] data, float max, int start, int length, int chartWidth, int chartHeight) throws IOException {
-		final XYDataset dataset = createDataset(data, start, length);
+	public static void createChart(File file, String label, float[] data, float max, int start, int length, int chartWidth, int chartHeight) throws IOException {
+		float[] header_data = null;
+		if (max <= 4.0f)
+			header_data = lower_header_data;
+		else
+			header_data = higher_header_data;
+
+		float[] all_data = new float[header_data.length + length];
+		int i = 0;
+		for (; i < header_data.length; i++) {
+			all_data[i] = header_data[i];
+		}
+
+		for (int j = 0; j < length; j++, i++) {
+			all_data[i] = data[j];
+		}
+		final XYDataset dataset = createDataset(all_data, start, length);
 		final JFreeChart chart = createChart(label, dataset, max);
-		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		try {
-			BufferedImage chartImage = 
-				chart.createBufferedImage(chartWidth, chartHeight, BufferedImage.TYPE_INT_RGB, null);
-			ImageIO.write(chartImage, "JPEG", out);
-			return out.toByteArray();
-		} finally {
-			try {
-				out.close();
-			} catch (IOException e) {
-			}
+			//if (chartWidth > MAX_CHART_WIDTH) chartWidth = MAX_CHART_WIDTH;
+			ChartUtilities.saveChartAsPNG(file, chart, chartWidth, chartHeight);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 	
@@ -155,19 +179,24 @@ public class ECGChart {
 		
 		double vMarkerInterval = 0.0;
 		if (max <= 4.0f) {
-			rangeAxis.setRange(-4.0, 4.0);
+			rangeAxis.setRange(-3.0, 3.0);
 			rangeAxis.setTickUnit(new NumberTickUnit(0.2));
 			vMarkerInterval = 1.0;
 		} else {
-			rangeAxis.setRange(-8.0, 8.0);
+			rangeAxis.setRange(-6.0, 6.0);
 			rangeAxis.setTickUnit(new NumberTickUnit(0.4));
 			vMarkerInterval = 2.0;
 		}
 		
 		int count = dataset.getItemCount(0);
-		for (int i = 0; i < count; i+=50) {
+		for (int i = 0; i < count; i += 10) {
 			final Marker marker = new ValueMarker(i);
 			marker.setPaint(Color.red);
+			if (i % 50 != 0) {
+				marker.setStroke(new BasicStroke(0.5f, BasicStroke.CAP_SQUARE,
+						BasicStroke.JOIN_MITER, 10.0f, new float[] { 2.0f },
+						0.0f));
+			}
 			plot.addDomainMarker(marker);
 		}
 		

@@ -5,6 +5,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -352,98 +353,120 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 						String ecg1Path = "user/"
 								+ String.valueOf(authUser.getId())
 								+ "/examination/" + examination.getId()
-								+ "/ecg1.jpg";
-						
-						byte[] ecg1 = ECGChart.createChart(
+								+ "/ecg1.png";
+						File ecg1File = new File(uploadService.getPath(Type.heart_img, ecg1Path));
+						if (ecg1File.exists()) { ecg1File.delete(); }
+						ecg1File.createNewFile();
+						ECGChart.createChart(
+								ecg1File,
 								"ECG I",
 								daolian, processor.getMaxDaolian(), 0,
 								daolian.length, (int)(daolian.length*0.756), (int)37.8*8);
-						uploadService.save(Type.heart_img, ecg1Path, ecg1);
 
+						
 						daolian = processor.getDaolian_ii();
 						String ecg2Path = "user/"
 								+ String.valueOf(authUser.getId())
 								+ "/examination/" + examination.getId()
-								+ "/ecg2.jpg";
-						byte[] ecg2 = ECGChart.createChart(
+								+ "/ecg2.png";
+						File ecg2File = new File(uploadService.getPath(Type.heart_img, ecg2Path));
+						if (ecg2File.exists()) { ecg2File.delete(); }
+						ecg2File.createNewFile();
+						ECGChart.createChart(
+								ecg2File,
 								"ECG II",
 								daolian, processor.getMaxDaolian(), 0,
 								daolian.length, (int)(daolian.length*0.756), (int)37.8*8);
-						uploadService.save(Type.heart_img, ecg2Path, ecg2);
 
 						daolian = processor.getDaolian_iii();
 						String ecg3Path = "user/"
 								+ String.valueOf(authUser.getId())
 								+ "/examination/" + examination.getId()
-								+ "/ecg3.jpg";
-						byte[] ecg3 = ECGChart.createChart(
+								+ "/ecg3.png";
+						File ecg3File = new File(uploadService.getPath(Type.heart_img, ecg3Path));
+						if (ecg3File.exists()) { ecg3File.delete(); }
+						ecg3File.createNewFile();
+						ECGChart.createChart(
+								ecg3File,
 								"ECG III",
 								daolian, processor.getMaxDaolian(), 0,
 								daolian.length, (int)(daolian.length*0.756), (int)37.8*8);
-						uploadService.save(Type.heart_img, ecg3Path, ecg3);
 
 						daolian = processor.getDaolian_avr();
 						String ecg4Path = "user/"
 								+ String.valueOf(authUser.getId())
 								+ "/examination/" + examination.getId()
-								+ "/ecg4.jpg";
-						byte[] ecg4 = ECGChart.createChart(
+								+ "/ecg4.png";
+						File ecg4File = new File(uploadService.getPath(Type.heart_img, ecg4Path));
+						if (ecg4File.exists()) { ecg4File.delete(); }
+						ecg4File.createNewFile();
+						ECGChart.createChart(
+								ecg4File,
 								"ECG aVR",
 								daolian, processor.getMaxDaolian(), 0,
 								daolian.length, (int)(daolian.length*0.756), (int)37.8*8);
-						uploadService.save(Type.heart_img, ecg4Path, ecg4);
 
 						daolian = processor.getDaolian_avl();
 						String ecg5Path = "user/"
 								+ String.valueOf(authUser.getId())
 								+ "/examination/" + examination.getId()
-								+ "/ecg5.jpg";
-						byte[] ecg5 = ECGChart.createChart(
+								+ "/ecg5.png";
+						File ecg5File = new File(uploadService.getPath(Type.heart_img, ecg5Path));
+						if (ecg5File.exists()) { ecg5File.delete(); }
+						ecg5File.createNewFile();
+						ECGChart.createChart(
+								ecg5File,
 								"ECG aVL",
 								daolian, processor.getMaxDaolian(), 0,
 								daolian.length, (int)(daolian.length*0.756), (int)37.8*8);
-						uploadService.save(Type.heart_img, ecg5Path, ecg5);
 
 						daolian = processor.getDaolian_avf();
 						String ecg6Path = "user/"
 								+ String.valueOf(authUser.getId())
 								+ "/examination/" + examination.getId()
-								+ "/ecg6.jpg";
-						byte[] ecg6 = ECGChart.createChart(
+								+ "/ecg6.png";
+						File ecg6File = new File(uploadService.getPath(Type.heart_img, ecg6Path));
+						if (ecg6File.exists()) { ecg6File.delete(); }
+						ecg6File.createNewFile();
+						ECGChart.createChart(
+								ecg6File,
 								"ECG aVF",
 								daolian, processor.getMaxDaolian(), 0,
 								daolian.length, (int)(daolian.length*0.756), (int)37.8*8);
-						uploadService.save(Type.heart_img, ecg6Path, ecg6);
 
 						daolian = processor.getDaolian_v();
 						String ecg7Path = "user/"
 								+ String.valueOf(authUser.getId())
 								+ "/examination/" + examination.getId()
-								+ "/ecg7.jpg";
-						byte[] ecg7 = ECGChart.createChart(
+								+ "/ecg7.png";
+						File ecg7File = new File(uploadService.getPath(Type.heart_img, ecg7Path));
+						if (ecg7File.exists()) { ecg7File.delete(); }
+						ecg7File.createNewFile();
+						ECGChart.createChart(
+								ecg7File,
 								"ECG V",
 								daolian, processor.getMaxDaolian(), 0,
 								daolian.length, (int)(daolian.length*0.756), (int)37.8*8);
-						uploadService.save(Type.heart_img, ecg7Path, ecg7);		
 
+						
 						byte[] oxygenData = processor.getOxygenData();
 						int oxyLen = processor.getOxygenDataLen();
 						String oxyPath = "user/"
 								+ String.valueOf(authUser.getId())
 								+ "/examination/" + examination.getId()
-								+ "/ecg8.jpg";
-						byte[] oxyChart = OxygenChart.createChart(oxygenData, 0, oxyLen, oxyLen*10, (int)37.8*8);
-						uploadService.save(Type.heart_img, oxyPath, oxyChart);
+								+ "/ecg8.png";
+						File ecgOxyFile = new File(uploadService.getPath(Type.heart_img, oxyPath));
+						if (ecgOxyFile.exists()) { ecgOxyFile.delete(); }
+						ecgOxyFile.createNewFile();
+						OxygenChart.createChart(ecgOxyFile, oxygenData, 0, oxyLen, oxyLen*10, (int)37.8*8);
 						
 						// 获得医疗数据
-						
 						HealthInfo hi = processor.getHealthInfo();
 						examination.setHeartRhythm(hi.heartrate);
 						examination.setBloodPressureLow(hi.dbp);
 						examination.setBloodPressureHigh(hi.sbp);
 						examination.setPulserate(hi.pulserate);
 						examination.setBloodOxygen(hi.oxygen);
-						
 						
 						// 根据医疗数据做后续处理,如自动回复
 						updateTaskAndExamination(task, examination);
@@ -529,8 +552,7 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 			firstTable.addCell(createCell(String.valueOf(user.getAge()) , valueFont , 1));
 			
 			firstTable.addCell(createCell("检测日期 " , textFont , 0));
-			firstTable.addCell(createCell(new DateTime(user.getCreatedDate()).toString("yyyy-MM-dd") , 
-									valueFont, 1 , 0));
+			firstTable.addCell(createCell(new DateTime(user.getCreatedDate()).toString("yyyy-MM-dd"), valueFont, 1));
 			
 			doc.add(chapter);
 			firstTable.completeRow();
@@ -573,10 +595,10 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 											).toString("yyyy-MM-dd"), valueFont , 1));
 		
 			infoTable.addCell(createCell("邮箱 " , textFont , 0 ));
-			infoTable.addCell(createCell(user.getEmail(), valueFont , 1, 0));
+			infoTable.addCell(createCell(user.getEmail(), valueFont , 1));
 			
 			infoTable.addCell(createCell("身份证 " , textFont , 0));
-			infoTable.addCell(createCell(user.getIdCard(), valueFont , 1 , 0));
+			infoTable.addCell(createCell(user.getIdCard(), valueFont , 1));
 			
 			infoTable.addCell(createCell("电话 " , textFont , 0));
 			infoTable.addCell(createCell(user.getMobile() , valueFont , 1));
@@ -664,14 +686,16 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 			//-------------------  page3  -----------------------------------
 			//-------------------  page4  -----------------------------------
 
-			
 			int w = 0;
 			int h = 0;
 
-			List<BufferedImage> sources = new ArrayList<BufferedImage>();
 			for (int i = 1; i < 8; i++) {
-//			//	bloodChapter.add(new Paragraph("心电图 " + i,  new Font(bfChinese, 12 , Font.BOLD)) );
-				String ecgPath = String.valueOf(User.class.getSimpleName().toLowerCase() + "/" + user.getId()) + "/examination/" + examination.getId() + "/ecg" + i + ".jpg";
+				String ecgPath = String.valueOf(User.class.getSimpleName().toLowerCase() + "/" + user.getId()) + "/examination/" + examination.getId() + "/ecg" + i + ".png";
+				// 需兼容JPG代码 方便测试
+				File file = new File(uploadService.getPath(Type.heart_img, ecgPath));
+				if (!file.exists()) {
+					ecgPath = String.valueOf(User.class.getSimpleName().toLowerCase() + "/" + user.getId()) + "/examination/" + examination.getId() + "/ecg" + i + ".jpg";
+				}
 				BufferedImage source = ImageIO.read(new ByteArrayInputStream(uploadService.load(Type.heart_img , ecgPath)));
 				if (source.getWidth() > w) {
 					w = source.getWidth();
@@ -679,61 +703,67 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 				if (source.getHeight() > h) {
 					h = source.getHeight();
 				}
-				sources.add(source);
+				source.flush();
 			}
 
-			Chapter ecgChapter;
-			//int step = (int)(w / 7);
 			int step = 1400;
 			int j = 1;
+			
 			do {
+				Chapter ecgChapter = new Chapter(new Paragraph("ECG 第 " + j + " 部分",  titleFont) , 1);
+				ecgChapter.setNumberDepth(0);
+				
 				int x = step * j;
 				if (x > w) {
 					x = w;
 				}
-				if (j == 7) {
-					break;
-				}
-				ecgChapter = new Chapter(new Paragraph("心电图 第" + j + "部分",  titleFont) , 1);
-				ecgChapter.setNumberDepth(0);
-				for (int i = 1; i < 8; i++) {
-					BufferedImage source = sources.get(i - 1);
+
+				for (int i = 0; i < 7; i++) {
+
+					String ecgPath = String.valueOf(User.class.getSimpleName().toLowerCase() + "/" + user.getId()) + "/examination/" + examination.getId() + "/ecg" + (i+1) + ".png";
+					BufferedImage source = ImageIO.read(new ByteArrayInputStream(uploadService.load(Type.heart_img , ecgPath)));
 					BufferedImage dest = new BufferedImage(step , h , BufferedImage.TYPE_INT_RGB);
 					Graphics2D graphics = dest.createGraphics();
 //				    AffineTransform trans = new AffineTransform();
 //				    trans.rotate(Math.PI/2, h/2 , h/2);
-//				    graphics.setTransform(trans);
+					
+//					graphics.setTransform(trans);
 				    graphics.drawImage(source , 0 , 0 , step , h , step*(j - 1) , 0 , x , h, null);
-//				    graphics.dispose();
+//					graphics.dispose();
 					ByteArrayOutputStream out = new ByteArrayOutputStream();
-					ImageIO.write(dest , "jpg", out);
+					ImageIO.write(dest , "png", out);
 					Image image = Image.getInstance(out.toByteArray());
 					image.scalePercent(38, 19);
 					ecgChapter.add(image);
+					
+					// 释放内存
+					out.flush();
+					graphics.dispose();
+					dest.flush();
+					source.flush();
 				}
+
 				doc.add(ecgChapter);
 				j++;
+				
 			}
 			while ((step * (j-1)) < w);
-
+	
 			/**
 			 * 单独输出第8张图
 			 */
 			Chapter bloodChapter = new Chapter(new Paragraph("血氧图",  titleFont) , 1);
-			String ecgPath = String.valueOf(User.class.getSimpleName().toLowerCase() + "/" + user.getId()) + "/examination/" + examination.getId() + "/ecg8.jpg";
+			String ecgPath = String.valueOf(User.class.getSimpleName().toLowerCase() + "/" + user.getId()) + "/examination/" + examination.getId() + "/ecg8.png";
 			BufferedImage bSource = ImageIO.read(new ByteArrayInputStream(uploadService.load(Type.heart_img , ecgPath)));
 			w = bSource.getWidth();
 			j = 1;
 
-			step = 1300;
 			do {
 				int x = step * j;
 				if (x > w) {
 					x = w;
 				}
-				if (j == 17) {
-					break;
-				}
+
 				BufferedImage source = bSource;
 				BufferedImage dest = new BufferedImage(step , h , BufferedImage.TYPE_INT_RGB);
 				Graphics2D graphics = dest.createGraphics();
@@ -743,10 +773,17 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 			    graphics.drawImage(source , 0 , 0 , step , h , step*(j - 1) , 0 , x , h, null);
 //			    graphics.dispose();
 				ByteArrayOutputStream out = new ByteArrayOutputStream();
-				ImageIO.write(dest , "jpg", out);
+				ImageIO.write(dest , "png", out);
 				Image image = Image.getInstance(out.toByteArray());
-				image.scalePercent(34 , 17);
+				image.scalePercent(38, 19);
 				bloodChapter.add(image);
+				
+				// 释放内存
+				graphics.dispose();
+				out.flush();
+				out.close();
+				dest.flush();
+				source.flush();
 				j++;
 			}
 			while ((step * (j-1)) < w);
