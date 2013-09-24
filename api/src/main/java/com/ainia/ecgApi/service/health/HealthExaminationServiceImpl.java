@@ -11,6 +11,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -490,7 +491,16 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 
 	@Override
 	public List<Map> statisticsByUserAndDay(Long userId, Date start, Date end) {
-		List<Object[]> list = healthExaminationDao.statisticsByUserAndDay(userId, start, end);
+		// 时间增1
+		Calendar cal = Calendar.getInstance();
+		GregorianCalendar gc = new GregorianCalendar();
+		cal.setTime(end);
+		if (cal.get(Calendar.HOUR_OF_DAY) == 0 && cal.get(Calendar.MINUTE) == 0 && cal.get(Calendar.SECOND) == 0) {
+			gc.setTime(end);
+			gc.add(GregorianCalendar.DATE, 1);
+		}
+		
+		List<Object[]> list = healthExaminationDao.statisticsByUserAndDay(userId, start, gc.getTime());
 		List<Map> results = new ArrayList <Map>(list.size());
 		try {
 			//TODO 暂时使用日期方式转换 处理日期格式化
