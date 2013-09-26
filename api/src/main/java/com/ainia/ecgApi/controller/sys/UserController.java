@@ -318,7 +318,7 @@ public class UserController extends BaseController<User , Long> {
 	 * <p>获取原始数据</p>
 	 * @return
 	 * byte[]
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	@RequestMapping(value = "{id}/examination/{examinationId}/raw" , method = RequestMethod.GET)
 	public void loadRaw(@PathVariable("id") Long id , @PathVariable("examinationId") Long examinationId, HttpServletResponse response)  {
@@ -344,8 +344,11 @@ public class UserController extends BaseController<User , Long> {
 		User user = userService.get(examination.getUserId());
 		
 		StringBuffer fileName = new StringBuffer();
-		fileName.append("AINIA体检测试报告-").append(user.getName())
-				.append("-").append(new DateTime().toString("yyyy-MM-dd"));
+		fileName.append("AINIA体检测试报告-")
+				.append(user.getName())
+				.append("-")
+				.append(new DateTime().toString("yyyy-MM-dd"))
+				.append(".pdf");
 		response.setContentType("application/pdf");
 		response.setHeader("Content-Disposition", "attachment; filename=" + URLEncoder.encode(fileName.toString() ,"UTF-8"));
 		healthExaminationService.exportPDF(examination,  response.getOutputStream());
