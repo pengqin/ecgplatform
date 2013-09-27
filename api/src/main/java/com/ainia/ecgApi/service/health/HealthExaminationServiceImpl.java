@@ -1,7 +1,6 @@
 package com.ainia.ecgApi.service.health;
 
 import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -645,7 +644,7 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 			List<HealthReply> replys = healthReplyService.findAllReplyByExamination(examination.getId());
 			if (replys != null) {
 				for (HealthReply reply : replys) {
-					chapter2.add(new Paragraph(reply.getContent() ,  valueFont));
+					chapter2.add(new Paragraph("【" + reply.getResult() + "】" +reply.getContent() ,  valueFont));
 				}
 			}
 			doc.add(chapter2);
@@ -716,7 +715,7 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 				source.flush();
 			}
 
-			int step = 1400;
+			int step = 1600;
 			int j = 1;
 			
 			do {
@@ -743,7 +742,7 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 					ByteArrayOutputStream out = new ByteArrayOutputStream();
 					ImageIO.write(dest , "png", out);
 					Image image = Image.getInstance(out.toByteArray());
-					image.scalePercent(38, 19);
+					image.scalePercent(32, 25);
 					ecgChapter.add(image);
 					
 					// 释放内存
@@ -785,7 +784,7 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 				ByteArrayOutputStream out = new ByteArrayOutputStream();
 				ImageIO.write(dest , "png", out);
 				Image image = Image.getInstance(out.toByteArray());
-				image.scalePercent(38, 19);
+				image.scalePercent(32, 25);
 				bloodChapter.add(image);
 				
 				// 释放内存

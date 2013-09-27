@@ -2,6 +2,7 @@ package com.ainia.ecgApi.controller.sys;
 
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,7 +11,6 @@ import java.util.Set;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -344,10 +344,11 @@ public class UserController extends BaseController<User , Long> {
 		User user = userService.get(examination.getUserId());
 		
 		StringBuffer fileName = new StringBuffer();
+		SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd hh:mm");
 		fileName.append("AINIA体检测试报告-")
 				.append(user.getName())
 				.append("-")
-				.append(new DateTime().toString("yyyy-MM-dd"))
+				.append(fmt.format(examination.getCreatedDate()))
 				.append(".pdf");
 		response.setContentType("application/pdf");
 		response.setHeader("Content-Disposition", "attachment; filename=" + URLEncoder.encode(fileName.toString() ,"UTF-8"));
