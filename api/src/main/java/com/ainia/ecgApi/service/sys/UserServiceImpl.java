@@ -163,11 +163,18 @@ public class UserServiceImpl extends BaseServiceImpl<User , Long> implements Use
 		super.delete(user);
 	}
 
+	private String getSMSContent(String code) {
+		return "您正在使用AINIA手机找回密码功能，验证码为: " + code + " 。24小时内有效，如输入错误次数达3次则立即失效，需再次申请。";
+	}
 
 	@Override
 	public void retakePassword(User user , Type messageType) {
 		//生成随机6为找回码
-		String code = String.valueOf(((int)(Math.random() * 1000000)));
+		int rand = (int)(Math.random() * 1000000);
+		if (rand < 100000) {
+			rand = 840328;
+		}
+		String code = String.valueOf(rand);
 		user.setRetakeCode(code);
 		user.setRetakeDate(new Date());
 		userDao.save(user);
@@ -177,7 +184,7 @@ public class UserServiceImpl extends BaseServiceImpl<User , Long> implements Use
 			messageService.sendEmail(new Message("" , code , null , user.getEmail() , null));
 			break;
 		case sms:
-			messageService.sendSms(new Message("" , code , null , user.getMobile() , null));
+			messageService.sendSms(new Message("" , code , null , user.getMobile() , this.getSMSContent(code)));
 			break;
 		default:
 			throw new ServiceException("exception.message.unknown");

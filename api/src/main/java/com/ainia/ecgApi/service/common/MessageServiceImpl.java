@@ -1,7 +1,6 @@
 package com.ainia.ecgApi.service.common;
 
-import java.io.InputStreamReader;
-import java.io.StringWriter;
+import java.net.URLEncoder;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -24,6 +23,9 @@ import com.ainia.ecgApi.dto.common.Message;
 @Service
 public class MessageServiceImpl implements MessageService {
 
+	private static String ACCESSKEY = "992";
+	private static String SECRETKEY = "eccdd993cc245923afbaaf4379e1d9ef9f1042b2";
+
 	@Override
 	public void sendEmail(Message message) {
 		HttpGet get = new HttpGet(String.format("http://ecgnotify.sinaapp.com/email.php?to=%s&code=%s" ,
@@ -45,10 +47,19 @@ public class MessageServiceImpl implements MessageService {
 
 	@Override
 	public void sendSms(Message message) {
-		HttpGet get = new HttpGet(String.format("http://ecgnotify.sinaapp.com/sms.php?to=%s&code=%s" ,
-				message.getTo() , message.getCode()));  
+
 		HttpClient httpclient = new DefaultHttpClient();
 		try {
+			HttpGet get = new HttpGet(
+				String.format(
+					"http://sms.bechtech.cn/Api/send/data/json?accesskey=%s&secretkey=%s&mobile=%s&content=%s",
+					ACCESSKEY,
+					SECRETKEY,
+					message.getTo(),
+					URLEncoder.encode(message.getContent(), "UTF-8")
+				)
+			);
+			
 			HttpResponse response = httpclient.execute(get);
 			if (response.getStatusLine().getStatusCode() != 200) {
 				throw new ServiceException("exception.sms.sendError");
