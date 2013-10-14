@@ -14,6 +14,9 @@ public class DataProcessor {
 	private static final int INFO_TYPE = 0x25; // 数值 类型
 	private static final int SECTION_LENGTH = 45;
 
+	private float heartrateSum = 0f;
+	private float heartrateCount = 0;
+	
 	private float[] daolian_i;
 	private float[] daolian_ii;
 	private float[] daolian_iii;
@@ -223,7 +226,10 @@ public class DataProcessor {
 		
 		copyOxygenData(data, i+4, 24);
 
-		hi.heartrate = data[i+28];
+		//hi.heartrate = data[i+28];
+		heartrateSum += data[i+28];
+		heartrateCount++;
+		hi.heartrate  = (int)(heartrateSum / heartrateCount);
 		hi.sbp = data[i+29];
 		hi.dbp = data[i+30];
 		hi.ptt = data[i+31];
