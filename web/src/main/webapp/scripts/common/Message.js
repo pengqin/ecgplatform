@@ -71,12 +71,19 @@ angular.module('ecgMessage', [])
     };
     // show a error message
     $scope.message.error = function(msg) {
-        var message = {
-            type: 'error',
-            text: msg,
-            show: true
-        };
-        $scope.message.show(message);
+        if ($scope.dialog) {
+            $scope.dialog.alert({
+                text: msg
+            });
+        } else {
+            var message = {
+                type: 'error',
+                text: msg,
+                show: true
+            };
+            $scope.message.show(message);
+        }
+
     };
     // show a warn message
     $scope.message.warn = function(msg) {
@@ -87,7 +94,7 @@ angular.module('ecgMessage', [])
         };
         $scope.message.show(message);
     };
-    
+        
     /*
     $scope.message.success('success');
     $scope.message.info('info');

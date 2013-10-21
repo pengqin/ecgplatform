@@ -45,8 +45,9 @@ angular.module('ecgUserModules', [])
     refreshGrid();
 
     // 过滤功能
-    $scope.user.queryChanged = function(query) {
-        globalParams['username:like'] = query;
+    $scope.user.queryChanged = function(username, name) {
+        globalParams['username:like'] = username;
+        globalParams['name:like'] = name;
         globalParams['page.curPage'] = 1;
         refreshGrid(globalParams);
     };
@@ -330,8 +331,8 @@ angular.module('ecgUserModules', [])
 
 
     // 过滤功能
-    $scope.userdialog.queryChanged = function(query) {
-        globalParams['username:like'] = query;
+    $scope.userdialog.queryChanged = function(username) {
+        globalParams['username:like'] = username;
         globalParams['page.curPage'] = 1;
         refreshGrid(globalParams);
     };
