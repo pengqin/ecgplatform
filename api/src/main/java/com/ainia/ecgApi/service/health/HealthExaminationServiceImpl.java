@@ -715,11 +715,11 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 				source.flush();
 			}
 
-			int step = 1600;
+			int step = 1250;
 			int j = 1;
 			
 			do {
-				Chapter ecgChapter = new Chapter(new Paragraph("ECG 第 " + j + " 部分",  titleFont) , 1);
+				Chapter ecgChapter = new Chapter(new Paragraph("ECG 第 " + j + " 部分",  titleFont) , 5);
 				ecgChapter.setNumberDepth(0);
 				
 				int x = step * j;
@@ -742,7 +742,11 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 					ByteArrayOutputStream out = new ByteArrayOutputStream();
 					ImageIO.write(dest , "png", out);
 					Image image = Image.getInstance(out.toByteArray());
-					image.scalePercent(32, 25);
+					image.setBorder(0);
+					image.setSpacingAfter(0f);
+					image.setSpacingBefore(0f);
+					image.scalePercent(40, 32);
+					//TODO:图片之间的间距过大
 					ecgChapter.add(image);
 					
 					// 释放内存
@@ -784,7 +788,7 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 				ByteArrayOutputStream out = new ByteArrayOutputStream();
 				ImageIO.write(dest , "png", out);
 				Image image = Image.getInstance(out.toByteArray());
-				image.scalePercent(32, 25);
+				image.scalePercent(40, 32);
 				bloodChapter.add(image);
 				
 				// 释放内存

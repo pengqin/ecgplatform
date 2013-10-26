@@ -10,6 +10,7 @@ import com.ainia.ecgApi.core.crud.BaseServiceImpl;
 import com.ainia.ecgApi.dao.sys.ExpertDao;
 import com.ainia.ecgApi.domain.sys.Chief;
 import com.ainia.ecgApi.domain.sys.Expert;
+import com.ainia.ecgApi.domain.sys.Operator;
 
 /**
  * <p>Expert ServiceImpl</p>
@@ -66,5 +67,9 @@ public class ExpertServiceImpl extends BaseServiceImpl<Expert , Long> implements
 	@Override
 	public List<Expert> patch(Iterable experts) {
 		return employeeService.patch(experts);
-	} 
+	}
+	@Override
+	public void delete(Expert expert) {
+		employeeService.delete(expert);
+	}
 }

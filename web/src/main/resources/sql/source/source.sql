@@ -162,6 +162,9 @@ values (17, '17' , 6,'PHONE', '统计用户','VIP','danger',83,123,13,13,37.3,63
 insert into health_examination (id , apk_id , user_id , test_item , user_name , user_type , level , blood_pressure_low,blood_pressure_high,heart_rhythm , breath,body_temp,pulserate,heart_data,latitude,altitude,temp,humidity,pressure,charge_type,heart_features,algorithm_version,created_date,version) 
 values (18, '18' , 6,'PHONE', '统计用户','VIP','danger',84,124,14,14,37.4,64,'',0.0,200,37.6,null,null,'YEAR',null,null,'2013-08-01 01:00:00',1);
 
+insert into health_examination (id , apk_id ,  user_id , test_item , user_name , user_type , level , blood_pressure_low,blood_pressure_high,heart_rhythm , breath,body_temp,pulserate,heart_data,latitude,altitude,temp,humidity,pressure,charge_type,heart_features,algorithm_version,created_date,version) 
+values (19, '19' , 6,'PHONE', '测试用户1','VIP','success',80,120,60,60,37.5,60,'',0.0,200,37.6,null,null,'YEAR',null,null,'2012-12-01 01:00:00',1);
+
 -- health_examination end
 -- task start
 insert into task (id , type ,examination_id , user_id , apk_id , user_name , status,expert_id,operator_id,auto , created_date , completed_date,version)
@@ -203,6 +206,9 @@ insert into task (id , type ,examination_id , user_id , apk_id ,user_name , stat
 values (17,'examinationTask' , 17 , 6 , '17' , '统计用户' , 'pending',null,8,0,'2013-07-31 01:00:00',null,1);
 insert into task (id , type ,examination_id , user_id , apk_id ,user_name , status,expert_id,operator_id,auto , created_date , completed_date,version)
 values (18,'examinationTask' , 18 , 6 , '18' , '统计用户' , 'pending',null,9,0,'2013-08-01 01:00:00',null,1);
+
+insert into task (id , type ,examination_id , user_id , apk_id , user_name , status,expert_id,operator_id,auto , created_date , completed_date,version)
+values (19,'examinationTask' , 19 , 1 , 'APK19' , '测试用户1' , 'completed',5,8,0,'2013-07-01 01:00:00',null,1);
 
 -- task end
 -- system_config start
