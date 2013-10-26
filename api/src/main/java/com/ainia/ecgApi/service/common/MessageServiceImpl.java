@@ -38,12 +38,10 @@ public class MessageServiceImpl implements MessageService {
 
 	@Override
 	public void sendEmail(Message message) {
-		System.out.println("=== " + message.getCode());
-		System.out.println("=== " + message.getContent());
 		SimpleMailMessage  mailMessage =  new SimpleMailMessage();
-		mailMessage.setFrom("ainiamail@163.com");
+		mailMessage.setFrom("noreply@ainia.com.cn");
 		mailMessage.setTo(message.getTo());
-		mailMessage.setSubject(message.getCode());
+		mailMessage.setSubject("AINIA找回密码邮件");
 		mailMessage.setText(message.getContent());
 		mailSender.send(mailMessage);
 //		HttpGet get = new HttpGet(String.format("http://ecgnotify.sinaapp.com/email.php?to=%s&code=%s" ,
