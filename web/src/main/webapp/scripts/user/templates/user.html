@@ -16,9 +16,12 @@
 				ng-click="user.confirmDelete()" ng-disabled="user.selectedItem == null">
 			<i class="icon-remove"></i>删除用户
 		</button>
-		<input type="text" placeholder="请输入手机号" title="请输入手机号" ng-model="user.query">
+		<span>手机号:</span>
+		<input type="text" placeholder="请输入手机号" title="请输入手机号" ng-model="user.username">
+		<span>用户名:</span>
+		<input type="text" placeholder="请输入用户名" title="请输入用户名" ng-model="user.name">
 		<button class="btn btn-primary" type="button"
-				ng-click="user.queryChanged(user.query)">
+				ng-click="user.queryChanged(user.username, user.name)">
 			<i class="icon-search"></i>查询
 		</button>
     </div>

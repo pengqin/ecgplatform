@@ -125,5 +125,16 @@ public class EmployeeController extends BaseController<Employee , Long> {
 		return new ResponseEntity(HttpStatus.OK);
 	}
 
+	@Override
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "application/json")
+	@ResponseBody
+	public ResponseEntity<AjaxResult> delete(Long id) {
+		Employee employee = employeeService.get(id);
+		if (employee == null) {
+			return new ResponseEntity<AjaxResult>(HttpStatus.NOT_FOUND);
+		}
+		employeeService.delete(employee);
+		return new ResponseEntity<AjaxResult>(HttpStatus.OK);	
+	}
 	
 }
