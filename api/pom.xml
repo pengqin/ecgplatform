@@ -366,6 +366,12 @@
       <artifactId>itextAsian</artifactId>
       <version>1.4.2_12-b03</version>
     </dependency>
+    
+    <dependency>
+      <groupId>javax.mail</groupId>
+      <artifactId>mail</artifactId>
+      <version>1.4.4</version>
+    </dependency>
     <!-- opencsv end -->
     <!-- rest doc start -->
     <!--dependency>

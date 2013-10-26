@@ -42,19 +42,25 @@ public class MessageServiceTest {
     }
 
     @Test
+    public void testSimpleEmail() {
+    	Message msg = new Message("", "888888", "", "roubaba8847514@163.com", "测试验证码短信");
+    	messageService.sendEmail(msg);
+    }
+    
+ //   @Test
     public void testSimpleSMS() throws Exception{
-    	Message msg = new Message("", "888888", "", "13811749917", "测试验证码短信");
-    	//messageService.sendSms(msg);
+    	Message msg = new Message("", "888888", "", "13027334591", "测试验证码短信");
+    	messageService.sendSms(msg);
     }
 
-    @Test
+    //@Test
     public void testSendEmail() throws Exception{
     	User user = userService.findByMobile("13811749917");
     	Assert.assertNotNull(user);
     	userService.retakePassword(user, Message.Type.email);
     }
 
-    @Test
+    //@Test
     public void testECGSMS() throws Exception{
     	User user = userService.findByMobile("13811749917");
     	Assert.assertNotNull(user);
