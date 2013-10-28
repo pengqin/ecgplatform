@@ -715,11 +715,11 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 				source.flush();
 			}
 
-			int step = 1250;
+			int step = 1200;
 			int j = 1;
 			
 			do {
-				Chapter ecgChapter = new Chapter(new Paragraph("ECG 第 " + j + " 部分",  titleFont) , 5);
+				Chapter ecgChapter = new Chapter(new Paragraph("ECG 第 " + j + " 部分",  titleFont) , 1);
 				ecgChapter.setNumberDepth(0);
 				
 				int x = step * j;
