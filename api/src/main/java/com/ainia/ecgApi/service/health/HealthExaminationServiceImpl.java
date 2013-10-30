@@ -715,7 +715,7 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 				source.flush();
 			}
 
-			int step = 1200;
+			int step = 1250;
 			int j = 1;
 			
 			do {
@@ -745,7 +745,7 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 					image.setBorder(0);
 					image.setSpacingAfter(0f);
 					image.setSpacingBefore(0f);
-					image.scalePercent(40, 32);
+					image.scalePercent(43, 34);
 					//TODO:图片之间的间距过大
 					ecgChapter.add(image);
 					
@@ -788,7 +788,7 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 				ByteArrayOutputStream out = new ByteArrayOutputStream();
 				ImageIO.write(dest , "png", out);
 				Image image = Image.getInstance(out.toByteArray());
-				image.scalePercent(40, 32);
+				image.scalePercent(43, 34);
 				bloodChapter.add(image);
 				
 				// 释放内存

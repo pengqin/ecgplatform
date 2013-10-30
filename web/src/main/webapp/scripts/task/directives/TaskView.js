@@ -112,15 +112,19 @@ define(function(require, exports) {
             
             if (!$scope.todo) { return; }
             if(!$scope.todo.current) { return; }
-            if($scope.todo.current.examination) { 
+            if($scope.todo.current.examination) {
+                var current = (new Date()).getTime();
+                if ((current - $scope.todo.current.examination.lastUpdatedTime) < 1000 * 30) {
+                    return;
+                }
                 $scope.examinationview.examination = $scope.todo.current.examination;
-                return; 
             }
 
             
             $scope.examinationview.examination = null;
             TaskService.getExamination($scope.todo.current.examinationId)
             .then(function(examination) {
+                examination.lastUpdatedTime = (new Date()).getTime();
                 $scope.examinationview.examination = examination;
                 $scope.todo.current.examination = examination;
             });
@@ -132,11 +136,18 @@ define(function(require, exports) {
 
             if (!$scope.task) { return; }
             if(!$scope.task.selected) { return; }
-            if($scope.task.selected.examination) { return; }
+            if($scope.task.selected.examination) {
+                var current = (new Date()).getTime();
+                if ((current - $scope.task.selected.examination.lastUpdatedTime) < 1000 * 30) {
+                    return;
+                }
+            }
 
             $scope.examinationview.examination = null;
             TaskService.getExamination($scope.task.selected.examinationId)
             .then(function(examination) {
+                // 用于30秒后重新更新
+                examination.lastUpdatedTime = (new Date()).getTime();
                 $scope.examinationview.examination = examination;
                 $scope.task.selected.examination = examination;
             });
