@@ -125,7 +125,24 @@
       </property> 
     </bean>
 
- 
+    <!-- ======================== 邮件发送 ========================= -->
+    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <!-- 服务器 -->
+        <property name="host" value="smtp.ainia.com.cn" />
+        <!-- 端口号 -->
+        <property name="port" value="25" />
+        <!-- 用户名 -->
+        <property name="username" value="noreply@ainia.com.cn" />
+        <!--  密码   -->
+        <property name="password" value="ainia123" />
+        <!-- SMTP服务器验证 -->
+        <property name="javaMailProperties">
+            <props>
+                <!-- 验证身份 -->
+                <prop key="mail.smtp.auth">true</prop>
+           </props>
+        </property>
+    </bean>
 
     <!-- ======================== 调度触发器 ======================== --> 
     <bean id="employeeCheckLiveTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 

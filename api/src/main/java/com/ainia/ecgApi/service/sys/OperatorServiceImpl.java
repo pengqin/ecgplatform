@@ -8,8 +8,11 @@ import org.springframework.stereotype.Service;
 import com.ainia.ecgApi.core.crud.BaseDao;
 import com.ainia.ecgApi.core.crud.BaseServiceImpl;
 import com.ainia.ecgApi.core.crud.Query;
+import com.ainia.ecgApi.core.exception.ServiceException;
 import com.ainia.ecgApi.dao.sys.OperatorDao;
 import com.ainia.ecgApi.domain.sys.Operator;
+import com.ainia.ecgApi.domain.task.ExaminationTask;
+import com.ainia.ecgApi.service.task.ExaminationTaskService;
 
 /**
  * <p>Operator ServiceImpl</p>
@@ -28,6 +31,8 @@ public class OperatorServiceImpl extends BaseServiceImpl<Operator, Long>
 	private OperatorDao operatorDao;
 	@Autowired
 	private EmployeeService employeeService;
+	@Autowired
+	private ExaminationTaskService examinationTaskService;
 	@Override
 	public BaseDao<Operator, Long> getBaseDao() {
 		return operatorDao;
@@ -66,6 +71,12 @@ public class OperatorServiceImpl extends BaseServiceImpl<Operator, Long>
 	public List<Operator> patch(Iterable operators) {
 		return employeeService.patch(operators);
 	}
+
+	@Override
+	public void delete(Operator operator) {
+		employeeService.delete(operator);
+	}
+
 	public List<Operator> findAllByWork(Query query) {
 		/*
 		query.addCondition(

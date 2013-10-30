@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.ainia.ecgApi.core.crud.BaseDao;
 import com.ainia.ecgApi.core.crud.BaseServiceImpl;
+import com.ainia.ecgApi.core.crud.Query;
 import com.ainia.ecgApi.core.exception.ServiceException;
 import com.ainia.ecgApi.core.security.AuthUser;
 import com.ainia.ecgApi.core.security.AuthenticateService;
@@ -20,6 +21,8 @@ import com.ainia.ecgApi.dao.sys.EmployeeDao;
 import com.ainia.ecgApi.domain.sys.Employee;
 import com.ainia.ecgApi.domain.sys.Employee.Status;
 import com.ainia.ecgApi.domain.sys.SystemConfig;
+import com.ainia.ecgApi.domain.task.ExaminationTask;
+import com.ainia.ecgApi.service.task.ExaminationTaskService;
 
 /**
  * <p>Employee Service Impl</p>
@@ -41,7 +44,9 @@ public class EmployeeServiceImpl extends BaseServiceImpl<Employee , Long> implem
 	private AuthenticateService authenticateService;
 	@Autowired
 	private SystemConfigService systemConfigService;
-	
+	@Autowired
+	private ExaminationTaskService examinationTaskService;
+
 	@Override
 	public BaseDao<Employee, Long> getBaseDao() {
 		return employeeDao;
@@ -72,6 +77,26 @@ public class EmployeeServiceImpl extends BaseServiceImpl<Employee , Long> implem
 		excludes.add(Employee.PASSWORD);
 		PropertyUtil.copyProperties(old , employee , excludes);
 		return super.update(old);
+	}
+
+	@Override
+	public void delete(Employee employee) {
+		int size = 0;
+		Query<ExaminationTask> query = new Query<ExaminationTask>();
+		query.eq(ExaminationTask.OPERATOR_ID, employee.getId());
+		List<ExaminationTask> tasks = this.examinationTaskService.findAll(query);
+		size += tasks.size();
+		
+		query = new Query<ExaminationTask>();
+		query.eq(ExaminationTask.EXPERT_ID, employee.getId());
+		tasks = this.examinationTaskService.findAll(query);
+		size += tasks.size();
+		
+		if (size == 0) {
+			super.delete(employee);
+		} else {
+			throw new ServiceException("exception.employee.has.some.examinations");
+		}
 	}
 
 	@Override

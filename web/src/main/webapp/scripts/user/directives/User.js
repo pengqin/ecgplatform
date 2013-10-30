@@ -45,8 +45,9 @@ angular.module('ecgUserModules', [])
     refreshGrid();
 
     // 过滤功能
-    $scope.user.queryChanged = function(query) {
-        globalParams['username:like'] = query;
+    $scope.user.queryChanged = function(username, name) {
+        globalParams['username:like'] = username;
+        globalParams['name:like'] = name;
         globalParams['page.curPage'] = 1;
         refreshGrid(globalParams);
     };
@@ -112,7 +113,7 @@ angular.module('ecgUserModules', [])
                     refreshGrid();
                 }, function() {
                     $scope.dialog.hideStandby();
-                    $scope.message.error("无法删除该数据,可能是您的权限不足,请联系管理员!");
+                    $scope.message.error("无法删除该用户，可能是权限不足,请联系管理员!");
                 });
             }
         });
@@ -330,8 +331,8 @@ angular.module('ecgUserModules', [])
 
 
     // 过滤功能
-    $scope.userdialog.queryChanged = function(query) {
-        globalParams['username:like'] = query;
+    $scope.userdialog.queryChanged = function(username) {
+        globalParams['username:like'] = username;
         globalParams['page.curPage'] = 1;
         refreshGrid(globalParams);
     };
