@@ -163,6 +163,10 @@ public class UserServiceImpl extends BaseServiceImpl<User , Long> implements Use
 		super.delete(user);
 	}
 
+	private String getEmailContent(String code) {
+		return "亲爱的用户，您好：\n\n您正在使用AINIA邮箱找回密码功能，验证码为: " + code + "\n\n该验证码24小时内有效，如输入错误次数达3次则立即失效，需再次申请。\n\n请勿向他人包括AINIA员工提供本次验证码。\n\n\n\nAINIA客户中心";
+	}
+
 	private String getSMSContent(String code) {
 		return "您正在使用AINIA手机找回密码功能，验证码为: " + code + " 。24小时内有效，如输入错误次数达3次则立即失效，需再次申请。";
 	}
@@ -181,7 +185,7 @@ public class UserServiceImpl extends BaseServiceImpl<User , Long> implements Use
 		//TODO 短信 邮件接口修改后 同步修改发送内容
 		switch(messageType) {
 		case email:
-			messageService.sendEmail(new Message("" , code , null , user.getEmail() , null));
+			messageService.sendEmail(new Message("" , code , null , user.getEmail() , this.getEmailContent(code)));
 			break;
 		case sms:
 			messageService.sendSms(new Message("" , code , null , user.getMobile() , this.getSMSContent(code)));

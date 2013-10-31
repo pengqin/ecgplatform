@@ -43,24 +43,24 @@ public class MessageServiceTest {
 
     @Test
     public void testSimpleEmail() {
-    	Message msg = new Message("", "888888", "", "roubaba8847514@163.com", "测试验证码短信");
+    	Message msg = new Message("", "888888", "", "16259903@qq.com", "亲爱的用户，您好：\n\n您正在使用AINIA邮箱找回密码功能，验证码为: 888888\n\n该验证码24小时内有效，如输入错误次数达3次则立即失效，需再次申请。\n\n请勿向他人包括AINIA员工提供本次验证码。\n\nAINIA客户中心");
     	messageService.sendEmail(msg);
     }
     
- //   @Test
+    @Test
     public void testSimpleSMS() throws Exception{
     	Message msg = new Message("", "888888", "", "13027334591", "测试验证码短信");
     	messageService.sendSms(msg);
     }
 
-    //@Test
+    @Test
     public void testSendEmail() throws Exception{
     	User user = userService.findByMobile("13811749917");
     	Assert.assertNotNull(user);
     	userService.retakePassword(user, Message.Type.email);
     }
 
-    //@Test
+    @Test
     public void testECGSMS() throws Exception{
     	User user = userService.findByMobile("13811749917");
     	Assert.assertNotNull(user);
