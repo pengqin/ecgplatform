@@ -344,7 +344,7 @@ public class UserController extends BaseController<User , Long> {
 		User user = userService.get(examination.getUserId());
 		
 		StringBuffer fileName = new StringBuffer();
-		SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+		SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd_HH_mm");
 		fileName.append("AINIA体检测试报告-")
 				.append(user.getName())
 				.append("-")

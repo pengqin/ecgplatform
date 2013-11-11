@@ -561,7 +561,7 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 			firstTable.addCell(createCell(String.valueOf(user.getAge()) , valueFont , 1));
 			
 			firstTable.addCell(createCell("检测日期 " , textFont , 0));
-			firstTable.addCell(createCell(new DateTime(user.getCreatedDate()).toString("yyyy-MM-dd"), valueFont, 1));
+			firstTable.addCell(createCell(new DateTime(examination.getCreatedDate()).toString("yyyy-MM-dd HH:mm"), valueFont, 1));
 			
 			doc.add(chapter);
 			firstTable.completeRow();

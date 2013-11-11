@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.ainia.ecgApi.core.crud.BaseDao;
 import com.ainia.ecgApi.core.crud.BaseServiceImpl;
+import com.ainia.ecgApi.core.crud.Query;
 import com.ainia.ecgApi.core.exception.InfoException;
 import com.ainia.ecgApi.core.exception.PermissionException;
 import com.ainia.ecgApi.core.exception.ServiceException;
@@ -20,9 +21,11 @@ import com.ainia.ecgApi.core.utils.PropertyUtil;
 import com.ainia.ecgApi.dao.sys.UserDao;
 import com.ainia.ecgApi.domain.sys.Employee;
 import com.ainia.ecgApi.domain.sys.User;
+import com.ainia.ecgApi.domain.task.ExaminationTask;
 import com.ainia.ecgApi.dto.common.Message;
 import com.ainia.ecgApi.dto.common.Message.Type;
 import com.ainia.ecgApi.service.common.MessageService;
+import com.ainia.ecgApi.service.task.ExaminationTaskService;
 
 /**
  * <p>User Service Impl</p>
@@ -45,6 +48,8 @@ public class UserServiceImpl extends BaseServiceImpl<User , Long> implements Use
     private AuthenticateService authenticateService;
     @Autowired
     private MessageService messageService;
+	@Autowired
+	private ExaminationTaskService examinationTaskService;
     
     public BaseDao<User , Long> getBaseDao() {
         return userDao;
@@ -147,6 +152,14 @@ public class UserServiceImpl extends BaseServiceImpl<User , Long> implements Use
 		if (!hasPermission(user)) {
 			throw new ServiceException("exception.user.cannotDelete");
 		}
+		// 如果已经有检测记录,不允许删除
+		Query<ExaminationTask> query = new Query<ExaminationTask>();
+		query.eq(ExaminationTask.USER_ID, user.getId());
+		List<ExaminationTask> tasks = this.examinationTaskService.findAll(query);
+		if (tasks.size() > 0) {
+			throw new ServiceException("exception.user.with.tasks.cannotDelete");
+		}
+
 		super.delete(id);
 	}
 
@@ -159,6 +172,13 @@ public class UserServiceImpl extends BaseServiceImpl<User , Long> implements Use
 		}
 		if (!hasPermission(user)) {
 			throw new ServiceException("exception.user.cannotDelete");
+		}
+		// 如果已经有检测记录,不允许删除
+		Query<ExaminationTask> query = new Query<ExaminationTask>();
+		query.eq(ExaminationTask.USER_ID, user.getId());
+		List<ExaminationTask> tasks = this.examinationTaskService.findAll(query);
+		if (tasks.size() > 0) {
+			throw new ServiceException("exception.user.with.tasks.cannotDelete");
 		}
 		super.delete(user);
 	}

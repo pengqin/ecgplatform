@@ -113,7 +113,7 @@ angular.module('ecgUserModules', [])
                     refreshGrid();
                 }, function() {
                     $scope.dialog.hideStandby();
-                    $scope.message.error("无法删除该用户，可能是权限不足,请联系管理员!");
+                    $scope.message.error("无法删除该用户，可能是权限不足或者是已经有检测记录,请联系管理员!");
                 });
             }
         });
