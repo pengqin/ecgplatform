@@ -46,6 +46,14 @@ public class UserServiceTest {
     public void setUp() {
     	//MockitoAnnotations.initMocks(this);
     }
+
+	@Test
+	public void testCreateWithBlankEmail() {
+		User user = new User();
+		user.setMobile("test");
+		user.setUsername("test");
+		user.setPassword("test");
+	}
     /**
      * 测试执行3次后,retake相关信息会被清空
      */

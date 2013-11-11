@@ -67,10 +67,12 @@ public class UserServiceImpl extends BaseServiceImpl<User , Long> implements Use
 		if (user.getUsername() != null && userDao.findByUsername(user.getUsername()) != null) {
 			throw new ServiceException("username.is.used");
 		}
-		if (user.getEmail() != null || !"".equals(user.getEmail())) {
+		if (user.getEmail() != null && !"".equals(user.getEmail().trim())) {
 			if (userDao.findByEmail(user.getEmail()) != null) {
 				throw new ServiceException("email.is.used");
 			}
+		} else {
+			user.setEmail(null);
 		}
 		return super.create(user);
 	}
