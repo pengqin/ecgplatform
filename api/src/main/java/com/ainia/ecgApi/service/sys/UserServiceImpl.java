@@ -189,11 +189,11 @@ public class UserServiceImpl extends BaseServiceImpl<User , Long> implements Use
 	}
 
 	private String getEmailContent(String code) {
-		return "亲爱的用户，您好：\n\n您正在使用AINIA邮箱找回密码功能，验证码为: " + code + "\n\n该验证码24小时内有效，如输入错误次数达3次则立即失效，需再次申请。\n\n请勿向他人包括AINIA员工提供本次验证码。\n\n\n\nAINIA客户中心";
+		return "亲爱的用户，您好：\n\n您正在使用邮箱找回密码功能，验证码为: " + code + "\n\n该验证码24小时内有效，如输入错误次数达3次则立即失效，需再次申请。\n\n请勿向他人包括AINIA员工提供本次验证码。\n\n\n\nAINIA客户中心";
 	}
 
 	private String getSMSContent(String code) {
-		return "您正在使用AINIA手机找回密码功能，验证码为: " + code + " 。24小时内有效，如输入错误次数达3次则立即失效，需再次申请。【AINIA客户中心】";
+		return "您正在使用手机找回密码功能，验证码为: " + code + " 。24小时内有效，如输入错误次数达3次则立即失效，需再次申请。【AINIA】";
 	}
 
 	@Override
