@@ -49,7 +49,7 @@ public class MessageServiceTest {
     
     @Test
     public void testSimpleSMS() throws Exception{
-    	Message msg = new Message("", "888888", "", "13027334591", "测试验证码短信");
+    	Message msg = new Message("", "888888", "", "13811749917", "今天天气镇的很好【AINIA客户中心】");
     	messageService.sendSms(msg);
     }
 
