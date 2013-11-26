@@ -232,7 +232,7 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 		update(examination);
 	}
 
-	public void upload(final HealthExamination examination , final byte[] gzipedUploadData , String md5) {
+	public void upload(final HealthExamination examination , final byte[] gzipedUploadData, final byte[] imgData, String md5) {
 
 		// 判断是否有效登录
 		final AuthUser authUser = authenticateService.getCurrentUser();	
@@ -319,6 +319,12 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 								//存储数据包
 								String zipPath = "user/" +  String.valueOf(authUser.getId()) + "/examination/" + examination.getId() + "/zip";
 								uploadService.save(Type.heart_img , zipPath , gzipedUploadData);
+
+								//存储图片
+								if (imgData != null && imgData.length > 0) {
+									String imgPath = "user/" +  String.valueOf(authUser.getId()) + "/examination/" + examination.getId() + "/ecg9";
+									uploadService.save(Type.heart_img , imgPath , imgData);
+								}
 
 								// decompress the file
 								GZIPInputStream gis = new GZIPInputStream(new ByteArrayInputStream(gzipedUploadData));
