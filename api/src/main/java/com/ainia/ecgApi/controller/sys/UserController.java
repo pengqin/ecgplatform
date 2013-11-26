@@ -259,7 +259,9 @@ public class UserController extends BaseController<User , Long> {
 	@ResponseBody
     public ResponseEntity upload(@PathVariable("uploadUserId") Long uploadUserId,
     							 @RequestParam(value = "file" , required = false) MultipartFile file,
-    							 @RequestParam(value = "img" , required = false) MultipartFile img,
+    							 @RequestParam(value = "img1" , required = false) MultipartFile img1,
+    							 @RequestParam(value = "img2" , required = false) MultipartFile img2,
+    							 @RequestParam(value = "img3" , required = false) MultipartFile img3,
     							 HealthExamination examination ,
     							 @RequestParam(value = "md5" , required = false) String md5) throws IOException {
 		
@@ -284,14 +286,6 @@ public class UserController extends BaseController<User , Long> {
 			}
 		}
 
-		if (img == null || img.getBytes().length == 0) {
-			if (examination.getIsTest() == null || !examination.getIsTest()) {
-				log.error("the img should not be null.");
-				entity = new ResponseEntity(HttpStatus.BAD_REQUEST);
-				return entity;
-			}
-		}
-
 		// apkId不能为空
 		if (examination.getApkId() == null) {
 			log.error("the apkId should not be null.");
@@ -299,7 +293,7 @@ public class UserController extends BaseController<User , Long> {
 			return entity;
 		}
 		
-		healthExaminationService.upload(examination , file.getBytes(), img.getBytes(), md5);
+		healthExaminationService.upload(examination , file.getBytes(), img1.getBytes(), md5);
 
     	return entity;
     }
