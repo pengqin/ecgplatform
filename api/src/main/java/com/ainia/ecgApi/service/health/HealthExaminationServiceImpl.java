@@ -232,7 +232,7 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 		update(examination);
 	}
 
-	public void upload(final HealthExamination examination , final byte[] gzipedUploadData, final byte[] imgData, String md5) {
+	public void upload(final HealthExamination examination , final byte[] gzipedUploadData, final byte[] img1Data, final byte[] img2Data, final byte[] img3Data, String md5) {
 
 		// 判断是否有效登录
 		final AuthUser authUser = authenticateService.getCurrentUser();	
@@ -312,7 +312,7 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 				public void run() {
 					try {
 						byte[] uploadData = new byte[0];
-
+						int imgcount = 0;
 						
 						try {
 							if (examination.getIsGziped()) {
@@ -321,9 +321,20 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 								uploadService.save(Type.heart_img , zipPath , gzipedUploadData);
 
 								//存储图片
-								if (imgData != null && imgData.length > 0) {
-									String imgPath = "user/" +  String.valueOf(authUser.getId()) + "/examination/" + examination.getId() + "/ecg9";
-									uploadService.save(Type.heart_img , imgPath , imgData);
+								if (img1Data != null && img1Data.length > 0) {
+									String img1Path = "user/" +  String.valueOf(authUser.getId()) + "/examination/" + examination.getId() + "/ecga.png";
+									uploadService.save(Type.heart_img , img1Path , img1Data);
+									imgcount++;
+								}
+								if (img2Data != null && img2Data.length > 0) {
+									String img2Path = "user/" +  String.valueOf(authUser.getId()) + "/examination/" + examination.getId() + "/ecgb.png";
+									uploadService.save(Type.heart_img , img2Path , img2Data);
+									imgcount++;
+								}
+								if (img3Data != null && img3Data.length > 0) {
+									String img3Path = "user/" +  String.valueOf(authUser.getId()) + "/examination/" + examination.getId() + "/ecgc.png";
+									uploadService.save(Type.heart_img , img3Path , img3Data);
+									imgcount++;
 								}
 
 								// decompress the file
@@ -473,6 +484,7 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 						examination.setBloodPressureHigh(hi.sbp);
 						examination.setPulserate(hi.pulserate);
 						examination.setBloodOxygen(hi.oxygen);
+						examination.setImgcount(Integer.valueOf(imgcount));
 						
 						// 根据医疗数据做后续处理,如自动回复
 						updateTaskAndExamination(task, examination);

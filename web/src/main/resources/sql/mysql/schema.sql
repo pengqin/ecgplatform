@@ -147,6 +147,7 @@ create table health_examination (
     algorithm_version float,
     created_date datetime,
     version int,
+    imgcount int,
     primary key(id)
 );
 

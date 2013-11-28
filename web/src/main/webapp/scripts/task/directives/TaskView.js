@@ -128,6 +128,7 @@ define(function(require, exports) {
                 examination.lastUpdatedTime = (new Date()).getTime();
                 $scope.examinationview.examination = examination;
                 $scope.todo.current.examination = examination;
+                $scope.examinationplot.imgcount = examination.imgcount;
             });
         });
 
@@ -152,6 +153,7 @@ define(function(require, exports) {
                 examination.lastUpdatedTime = (new Date()).getTime();
                 $scope.examinationview.examination = examination;
                 $scope.task.selected.examination = examination;
+                $scope.examinationplot.imgcount = examination.imgcount;
             });
         });
     }])

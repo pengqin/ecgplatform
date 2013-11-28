@@ -293,7 +293,7 @@ public class UserController extends BaseController<User , Long> {
 			return entity;
 		}
 		
-		healthExaminationService.upload(examination , file.getBytes(), img1.getBytes(), md5);
+		healthExaminationService.upload(examination , file.getBytes(), img1.getBytes(), img2.getBytes(), img3.getBytes(), md5);
 
     	return entity;
     }

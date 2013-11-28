@@ -36,7 +36,7 @@ public interface HealthExaminationService extends BaseService<HealthExamination 
 	 * @param uploadData
 	 * void
 	 */
-	public void upload(HealthExamination examination , byte[] uploadData , byte[] imgData, String md5);
+	public void upload(HealthExamination examination , byte[] uploadData , byte[] img1Data, byte[] img2Data, byte[] img3Data, String md5);
 	
 	/**
 	 * <p>统计指定用户指定时间段的测试平均值</p>

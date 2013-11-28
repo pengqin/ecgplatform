@@ -73,6 +73,7 @@ public class HealthExamination implements Domain {
 	private Float  algorithmVersion;
 	private Date createdDate;
 	private Integer version;
+	private Integer imgcount; // 用户自行上传图片数目
 	
 	@PrePersist
 	public void onCreate() {
@@ -375,6 +376,14 @@ public class HealthExamination implements Domain {
 		this.apkId = apkId;
 	}
 
+	public Integer getImgcount() {
+		return imgcount;
+	}
+
+	public void setImgcount(Integer imgcount) {
+		this.imgcount = imgcount;
+	}
+
 	@Transient
 	public Boolean getIsGziped() {
 		return isGziped;
@@ -435,5 +444,6 @@ public class HealthExamination implements Domain {
 		}
 		return prop;
 	}
+
 
 }

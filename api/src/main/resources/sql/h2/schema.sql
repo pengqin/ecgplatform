@@ -65,6 +65,7 @@ create table employee (
     last_login_date timestamp,
     token_date timestamp,
     version int,
+    imgcount int,
     primary key(id)
 );
 
