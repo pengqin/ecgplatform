@@ -25,6 +25,7 @@ import javax.imageio.ImageIO;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ainia.ecgApi.core.crud.BaseDao;
 import com.ainia.ecgApi.core.crud.BaseServiceImpl;
@@ -232,7 +233,7 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 		update(examination);
 	}
 
-	public void upload(final HealthExamination examination , final byte[] gzipedUploadData, final byte[] img1Data, final byte[] img2Data, final byte[] img3Data, String md5) {
+	public void upload(final HealthExamination examination , final byte[] gzipedUploadData, final MultipartFile img1, final MultipartFile img2, final MultipartFile img3, String md5) {
 
 		// 判断是否有效登录
 		final AuthUser authUser = authenticateService.getCurrentUser();	
@@ -321,19 +322,19 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 								uploadService.save(Type.heart_img , zipPath , gzipedUploadData);
 
 								//存储图片
-								if (img1Data != null && img1Data.length > 0) {
+								if (img1 != null) {
 									String img1Path = "user/" +  String.valueOf(authUser.getId()) + "/examination/" + examination.getId() + "/ecga.png";
-									uploadService.save(Type.heart_img , img1Path , img1Data);
+									uploadService.save(Type.heart_img , img1Path , img1.getBytes());
 									imgcount++;
 								}
-								if (img2Data != null && img2Data.length > 0) {
+								if (img2 != null) {
 									String img2Path = "user/" +  String.valueOf(authUser.getId()) + "/examination/" + examination.getId() + "/ecgb.png";
-									uploadService.save(Type.heart_img , img2Path , img2Data);
+									uploadService.save(Type.heart_img , img2Path , img2.getBytes());
 									imgcount++;
 								}
-								if (img3Data != null && img3Data.length > 0) {
+								if (img3 != null) {
 									String img3Path = "user/" +  String.valueOf(authUser.getId()) + "/examination/" + examination.getId() + "/ecgc.png";
-									uploadService.save(Type.heart_img , img3Path , img3Data);
+									uploadService.save(Type.heart_img , img3Path , img3.getBytes());
 									imgcount++;
 								}
 

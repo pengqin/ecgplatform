@@ -292,8 +292,8 @@ public class UserController extends BaseController<User , Long> {
 			entity = new ResponseEntity(HttpStatus.BAD_REQUEST);
 			return entity;
 		}
-		
-		healthExaminationService.upload(examination , file.getBytes(), img1.getBytes(), img2.getBytes(), img3.getBytes(), md5);
+
+		healthExaminationService.upload(examination , file.getBytes(), img1, img2, img3, md5);
 
     	return entity;
     }
