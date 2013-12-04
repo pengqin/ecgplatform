@@ -90,7 +90,7 @@ public class PdfTest {
     	((HealthExaminationServiceImpl)healthExaminationService).setAuthenticateService(authenticateService);
     	HealthExamination examination = new HealthExamination();
     	examination.setIsGziped(false);
-    	healthExaminationService.upload(examination, bytes , null);
+    	healthExaminationService.upload(examination, bytes , null, null, null, null);
     	Thread.sleep(25000);
     	input.close();
     	out.close();

@@ -18,6 +18,8 @@ insert into user (id, mobile , username, email, name, password, gender, id_card 
 values (6,'13212345678' ,'13212345678','110486432@qq.com', '统计用户','2e8ec7d18a6e108fce3af34044c661ffa56b084f',1 ,'430203198502011218', 'SIMPLE','1983-06-04 01:00:00','地址2',1.72,72,'','','','','','','','2012-06-04 01:00:00','2012-06-04 01:00:00','',1,1,0, '888888');
 insert into user (id, mobile , username, email, name, password, gender, id_card , type ,birthday,address,stature,weight,city,em_contact1,em_contact1_tel,em_contact2,em_contact2_tel , bad_habits , anamnesis , created_date , last_updated , remark ,is_free , version, married)
 values (7,'13811749917' ,'13811749917','16259903@qq.com', '找回密码用户','2e8ec7d18a6e108fce3af34044c661ffa56b084f',1 ,'430203198502011218', 'SIMPLE','1983-06-04 01:00:00','地址2',1.72,72,'','','','','','','','2012-06-04 01:00:00','2012-06-04 01:00:00','',1,1,0);
+insert into user (id, mobile , username, email, name, password, gender, id_card , type ,birthday,address,stature,weight,city,em_contact1,em_contact1_tel,em_contact2,em_contact2_tel , bad_habits , anamnesis , created_date , last_updated , remark ,is_free , version, married)
+values (8,'13810042699' ,'13810042699','13810042699@qq.com', '绑定专家用户','2e8ec7d18a6e108fce3af34044c661ffa56b084f',1 ,'430203198502011218', 'SIMPLE','1983-06-04 01:00:00','地址2',1.72,72,'','','','','','','','2012-06-04 01:00:00','2012-06-04 01:00:00','',1,1,0);
 
 --employee start
 insert into employee (id ,type, name , username , password , roles , status,enabled,dismissed,gender,expire,birthday,id_card , mobile ,created_date,last_updated,version) values 
@@ -44,6 +46,9 @@ insert into employee (id ,type, name , username , password , roles , status,enab
 insert into expert_operator (expert_id, operator_id) values
 (5, 8);
 
+-- 专家和用户绑定
+insert into expert_user (expert_id, user_id) values
+(7, 8);
 
 --employee end
 insert into expert_operator(expert_id , operator_id) values (3 , 4);

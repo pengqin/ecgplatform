@@ -106,6 +106,15 @@ public class UserServiceTest {
 		Assert.assertEquals(user.getRetakeCount(), null);
 	}
 
+	@Test
+	public void testUserWithExperts() {
+		User user = userService.findByEmail("13810042699@qq.com");
+		Assert.assertNotNull(user);
+		Assert.assertNotNull(user.getExperts());
+		Assert.assertEquals(user.getExperts().size(), 1);
+	}
+
+
     /**
      * 有tasks的任务删不掉
      */

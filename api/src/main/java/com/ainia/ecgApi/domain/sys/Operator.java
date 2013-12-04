@@ -49,6 +49,5 @@ public class Operator extends Employee {
 		}
 		experts.add(expert);
 	}
-	
 
 }

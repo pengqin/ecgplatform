@@ -17,10 +17,13 @@ import com.ainia.ecgApi.core.utils.PropertyUtil;
 import com.ainia.ecgApi.dao.task.TaskDao;
 import com.ainia.ecgApi.domain.sys.Expert;
 import com.ainia.ecgApi.domain.sys.Operator;
+import com.ainia.ecgApi.domain.sys.User;
 import com.ainia.ecgApi.domain.task.ExaminationTask;
 import com.ainia.ecgApi.domain.task.Task;
 import com.ainia.ecgApi.domain.task.Task.Status;
 import com.ainia.ecgApi.service.health.HealthExaminationService;
+import com.ainia.ecgApi.service.sys.UserService;
+import com.ainia.ecgApi.service.sys.ExpertService;
 import com.ainia.ecgApi.service.sys.OperatorService;
 
 /**
@@ -41,7 +44,11 @@ public class TaskServiceImpl extends BaseServiceImpl<Task , Long> implements Tas
     @Autowired
     private TaskDao taskDao;
     @Autowired
+    private UserService userService;
+    @Autowired
     private OperatorService operatorService;
+    @Autowired
+    private ExpertService expertService;
     @Autowired
     private AuthenticateService authenticateService;
     @Autowired
@@ -82,6 +89,12 @@ public class TaskServiceImpl extends BaseServiceImpl<Task , Long> implements Tas
 	}
 
 	public Task pending(Task task) {
+		// 如果用户已经和专家绑定,则直接转给专家
+		User user = userService.get(task.getUserId());
+		if (user.getExperts().size() > 0) {
+			return this.proceeding(task, (Expert)user.getExperts().toArray()[0]);
+		}
+		// 如果没有绑定 走普通流程
 		List<Operator> operators = getOperators();
 		Operator selectedOperator = null;
 		int selectedOperatorTask = Integer.MAX_VALUE;
@@ -124,6 +137,17 @@ public class TaskServiceImpl extends BaseServiceImpl<Task , Long> implements Tas
 			throw new ServiceException("task.error.expert.notFound");
 		}
 		task.setExpertId(selectedExpert.getId());
+		task.setStatus(Status.proceeding);
+		
+		return super.update(task);
+	}
+
+	public Task proceeding(Task task, Expert expert) {
+		//如果无法找到对应的专家
+		if (expert == null) {
+			throw new ServiceException("task.error.expert.notFound");
+		}
+		task.setExpertId(expert.getId());
 		task.setStatus(Status.proceeding);
 		
 		return super.update(task);

@@ -50,5 +50,26 @@ public class Expert extends Employee {
 		}
 		operators.add(operator);
 	}
-		
+
+	private Set<User> users;
+	@JsonIgnore
+	@ManyToMany(fetch=FetchType.EAGER)  
+	@JoinTable(name="expert_user"  , joinColumns={@JoinColumn(name="expert_id")}  
+        						, inverseJoinColumns={@JoinColumn(name="user_id")}  
+    )  
+	public Set<User> getUsers() {
+		return users;
+	}
+
+	public void setUsers(Set<User> users) {
+		this.users = users;
+	}
+	@Transient
+	public void addUser (User user) {
+		if (users == null)
+		{	
+			users = new HashSet();
+		}
+		users.add(user);
+	}
 }
