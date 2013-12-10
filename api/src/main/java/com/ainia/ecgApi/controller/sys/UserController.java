@@ -37,6 +37,7 @@ import com.ainia.ecgApi.core.web.AjaxResult;
 import com.ainia.ecgApi.domain.charge.Card;
 import com.ainia.ecgApi.domain.health.HealthExamination;
 import com.ainia.ecgApi.domain.health.HealthRule;
+import com.ainia.ecgApi.domain.sys.Expert;
 import com.ainia.ecgApi.domain.sys.User;
 import com.ainia.ecgApi.domain.task.Task;
 import com.ainia.ecgApi.dto.common.Message;
@@ -45,6 +46,7 @@ import com.ainia.ecgApi.service.common.UploadService;
 import com.ainia.ecgApi.service.common.UploadService.Type;
 import com.ainia.ecgApi.service.health.HealthExaminationService;
 import com.ainia.ecgApi.service.health.HealthRuleService;
+import com.ainia.ecgApi.service.sys.ExpertService;
 import com.ainia.ecgApi.service.sys.UserService;
 import com.ainia.ecgApi.service.task.TaskService;
 import com.lowagie.text.DocumentException;
@@ -76,6 +78,8 @@ public class UserController extends BaseController<User , Long> {
     private UploadService uploadService;
     @Autowired
     private CardService cardService;
+    @Autowired
+    private ExpertService expertService;
     
     @Override
     public BaseService<User , Long> getBaseService() {
@@ -490,5 +494,53 @@ public class UserController extends BaseController<User , Long> {
 			return new ResponseEntity(HttpStatus.OK);
 		}
 		
+	}
+
+	@RequestMapping(value = "{id}/expert" , method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public ResponseEntity<Set<Expert>> getExperts(@PathVariable("id") Long id) {
+		User user = userService.get(id);
+		if (user == null) {
+			return new ResponseEntity(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<Set<Expert>>(user.getExperts() , HttpStatus.OK);
+	}
+
+	/**
+	* <p>add expert to user</p>
+	* Set<Expert>
+	* @param id
+	* @param expertId
+	* @return
+	*/
+	@RequestMapping(value = "{id}/expert/{expertId}" , method = RequestMethod.POST ,
+				produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public ResponseEntity<?> addExpert(@PathVariable("id") Long id , @PathVariable("expertId") Long expertId) {
+		User user = userService.get(id);
+		user.addExpert(expertService.get(expertId));
+		userService.update(user);
+		return new ResponseEntity(HttpStatus.CREATED);
+	}
+
+	/**
+	* <p>remove expert from user</p>
+	* @param id
+	* @param expertId
+	* @return
+	* ResponseEntity<?>
+	*/
+	@RequestMapping(value = "{id}/expert/{expertId}" , method = RequestMethod.DELETE ,
+				produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public ResponseEntity<?> removeExpert(@PathVariable("id") Long id , @PathVariable("expertId") Long expertId) {
+		User user = userService.get(id);
+		Expert expert = expertService.get(expertId);
+		if (user.getExperts() == null || !user.getExperts().contains(expert)) {
+			return new ResponseEntity(HttpStatus.NOT_FOUND);
+		}
+		user.getExperts().remove(expert);
+		userService.update(user);
+		return new ResponseEntity(HttpStatus.OK);
 	}
 }
