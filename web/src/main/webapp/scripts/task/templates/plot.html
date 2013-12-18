@@ -41,3 +41,13 @@
    class="btn btn-small btn-inverse" type="button">下载原始数据</a>
  -->
 </p>
+
+<h5 class="ecgHd">用户上传</h5>
+<div>
+<img title="用户上传" ng-show="examinationplot.examinationId && examinationplot.imgcount > 0" width="100%"
+     ng-src="{{PATH}}/api/user/{{examinationplot.userId}}/examination/{{examinationplot.examinationId}}/ecga.png" class="plot"></img>
+<img title="用户上传" ng-show="examinationplot.examinationId && examinationplot.imgcount > 1" width="100%"
+     ng-src="{{PATH}}/api/user/{{examinationplot.userId}}/examination/{{examinationplot.examinationId}}/ecgb.png" class="plot"></img>
+<img title="用户上传" ng-show="examinationplot.examinationId && examinationplot.imgcount > 2" width="100%"
+     ng-src="{{PATH}}/api/user/{{examinationplot.userId}}/examination/{{examinationplot.examinationId}}/ecgc.png" class="plot"></img>
+</div>

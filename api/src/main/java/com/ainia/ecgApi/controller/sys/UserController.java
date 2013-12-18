@@ -37,6 +37,7 @@ import com.ainia.ecgApi.core.web.AjaxResult;
 import com.ainia.ecgApi.domain.charge.Card;
 import com.ainia.ecgApi.domain.health.HealthExamination;
 import com.ainia.ecgApi.domain.health.HealthRule;
+import com.ainia.ecgApi.domain.sys.Expert;
 import com.ainia.ecgApi.domain.sys.User;
 import com.ainia.ecgApi.domain.task.Task;
 import com.ainia.ecgApi.dto.common.Message;
@@ -45,6 +46,7 @@ import com.ainia.ecgApi.service.common.UploadService;
 import com.ainia.ecgApi.service.common.UploadService.Type;
 import com.ainia.ecgApi.service.health.HealthExaminationService;
 import com.ainia.ecgApi.service.health.HealthRuleService;
+import com.ainia.ecgApi.service.sys.ExpertService;
 import com.ainia.ecgApi.service.sys.UserService;
 import com.ainia.ecgApi.service.task.TaskService;
 import com.lowagie.text.DocumentException;
@@ -76,6 +78,8 @@ public class UserController extends BaseController<User , Long> {
     private UploadService uploadService;
     @Autowired
     private CardService cardService;
+    @Autowired
+    private ExpertService expertService;
     
     @Override
     public BaseService<User , Long> getBaseService() {
@@ -257,8 +261,13 @@ public class UserController extends BaseController<User , Long> {
      */
 	@RequestMapping(value = "{uploadUserId}/examination" , method = RequestMethod.POST , produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-    public ResponseEntity upload(@PathVariable("uploadUserId") Long uploadUserId , @RequestParam(value = "file" , required = false) MultipartFile file , HealthExamination examination ,
-    								@RequestParam(value = "md5" , required = false) String md5) throws IOException {
+    public ResponseEntity upload(@PathVariable("uploadUserId") Long uploadUserId,
+    							 @RequestParam(value = "file" , required = false) MultipartFile file,
+    							 @RequestParam(value = "img1" , required = false) MultipartFile img1,
+    							 @RequestParam(value = "img2" , required = false) MultipartFile img2,
+    							 @RequestParam(value = "img3" , required = false) MultipartFile img3,
+    							 HealthExamination examination ,
+    							 @RequestParam(value = "md5" , required = false) String md5) throws IOException {
 		
 		ResponseEntity entity = new ResponseEntity(HttpStatus.OK);
     	// 必须登录, 必须是用户类型, 必须是本人提交
@@ -287,8 +296,8 @@ public class UserController extends BaseController<User , Long> {
 			entity = new ResponseEntity(HttpStatus.BAD_REQUEST);
 			return entity;
 		}
-		
-		healthExaminationService.upload(examination , file.getBytes() , md5);
+
+		healthExaminationService.upload(examination , file.getBytes(), img1, img2, img3, md5);
 
     	return entity;
     }
@@ -344,7 +353,7 @@ public class UserController extends BaseController<User , Long> {
 		User user = userService.get(examination.getUserId());
 		
 		StringBuffer fileName = new StringBuffer();
-		SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+		SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd_HH_mm");
 		fileName.append("AINIA体检测试报告-")
 				.append(user.getName())
 				.append("-")
@@ -485,5 +494,53 @@ public class UserController extends BaseController<User , Long> {
 			return new ResponseEntity(HttpStatus.OK);
 		}
 		
+	}
+
+	@RequestMapping(value = "{id}/expert" , method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public ResponseEntity<Set<Expert>> getExperts(@PathVariable("id") Long id) {
+		User user = userService.get(id);
+		if (user == null) {
+			return new ResponseEntity(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<Set<Expert>>(user.getExperts() , HttpStatus.OK);
+	}
+
+	/**
+	* <p>add expert to user</p>
+	* Set<Expert>
+	* @param id
+	* @param expertId
+	* @return
+	*/
+	@RequestMapping(value = "{id}/expert/{expertId}" , method = RequestMethod.POST ,
+				produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public ResponseEntity<?> addExpert(@PathVariable("id") Long id , @PathVariable("expertId") Long expertId) {
+		User user = userService.get(id);
+		user.addExpert(expertService.get(expertId));
+		userService.update(user);
+		return new ResponseEntity(HttpStatus.CREATED);
+	}
+
+	/**
+	* <p>remove expert from user</p>
+	* @param id
+	* @param expertId
+	* @return
+	* ResponseEntity<?>
+	*/
+	@RequestMapping(value = "{id}/expert/{expertId}" , method = RequestMethod.DELETE ,
+				produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public ResponseEntity<?> removeExpert(@PathVariable("id") Long id , @PathVariable("expertId") Long expertId) {
+		User user = userService.get(id);
+		Expert expert = expertService.get(expertId);
+		if (user.getExperts() == null || !user.getExperts().contains(expert)) {
+			return new ResponseEntity(HttpStatus.NOT_FOUND);
+		}
+		user.getExperts().remove(expert);
+		userService.update(user);
+		return new ResponseEntity(HttpStatus.OK);
 	}
 }

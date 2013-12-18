@@ -49,7 +49,7 @@ public class MessageServiceTest {
     
     @Test
     public void testSimpleSMS() throws Exception{
-    	Message msg = new Message("", "888888", "", "13027334591", "测试验证码短信");
+    	Message msg = new Message("", "888888", "", "13811749917", "您正在使用手机找回密码功能，验证码为: 888888 。24小时内有效，如输入错误次数达3次则立即失效，需再次申请。【AINIA】");
     	messageService.sendSms(msg);
     }
 

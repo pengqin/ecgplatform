@@ -68,6 +68,13 @@ create table employee (
     primary key(id)
 );
 
+drop table if exists expert_user;
+
+create table expert_user (
+    user_id bigint not null ,
+    expert_id bigint not null
+);
+
 drop table if exists expert_operator;
 
 create table expert_operator (
@@ -147,6 +154,7 @@ create table health_examination (
     algorithm_version float,
     created_date timestamp,
     version int,
+    imgcount int,
     primary key(id)
 );
 

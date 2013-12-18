@@ -25,6 +25,7 @@ import javax.imageio.ImageIO;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ainia.ecgApi.core.crud.BaseDao;
 import com.ainia.ecgApi.core.crud.BaseServiceImpl;
@@ -232,7 +233,7 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 		update(examination);
 	}
 
-	public void upload(final HealthExamination examination , final byte[] gzipedUploadData , String md5) {
+	public void upload(final HealthExamination examination , final byte[] gzipedUploadData, final MultipartFile img1, final MultipartFile img2, final MultipartFile img3, String md5) {
 
 		// 判断是否有效登录
 		final AuthUser authUser = authenticateService.getCurrentUser();	
@@ -312,13 +313,30 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 				public void run() {
 					try {
 						byte[] uploadData = new byte[0];
-
+						int imgcount = 0;
 						
 						try {
 							if (examination.getIsGziped()) {
 								//存储数据包
 								String zipPath = "user/" +  String.valueOf(authUser.getId()) + "/examination/" + examination.getId() + "/zip";
 								uploadService.save(Type.heart_img , zipPath , gzipedUploadData);
+
+								//存储图片
+								if (img1 != null) {
+									String img1Path = "user/" +  String.valueOf(authUser.getId()) + "/examination/" + examination.getId() + "/ecga.png";
+									uploadService.save(Type.heart_img , img1Path , img1.getBytes());
+									imgcount++;
+								}
+								if (img2 != null) {
+									String img2Path = "user/" +  String.valueOf(authUser.getId()) + "/examination/" + examination.getId() + "/ecgb.png";
+									uploadService.save(Type.heart_img , img2Path , img2.getBytes());
+									imgcount++;
+								}
+								if (img3 != null) {
+									String img3Path = "user/" +  String.valueOf(authUser.getId()) + "/examination/" + examination.getId() + "/ecgc.png";
+									uploadService.save(Type.heart_img , img3Path , img3.getBytes());
+									imgcount++;
+								}
 
 								// decompress the file
 								GZIPInputStream gis = new GZIPInputStream(new ByteArrayInputStream(gzipedUploadData));
@@ -467,6 +485,7 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 						examination.setBloodPressureHigh(hi.sbp);
 						examination.setPulserate(hi.pulserate);
 						examination.setBloodOxygen(hi.oxygen);
+						examination.setImgcount(Integer.valueOf(imgcount));
 						
 						// 根据医疗数据做后续处理,如自动回复
 						updateTaskAndExamination(task, examination);
@@ -561,7 +580,7 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
 			firstTable.addCell(createCell(String.valueOf(user.getAge()) , valueFont , 1));
 			
 			firstTable.addCell(createCell("检测日期 " , textFont , 0));
-			firstTable.addCell(createCell(new DateTime(user.getCreatedDate()).toString("yyyy-MM-dd"), valueFont, 1));
+			firstTable.addCell(createCell(new DateTime(examination.getCreatedDate()).toString("yyyy-MM-dd HH:mm"), valueFont, 1));
 			
 			doc.add(chapter);
 			firstTable.completeRow();

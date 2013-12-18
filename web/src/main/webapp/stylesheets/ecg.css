@@ -256,3 +256,10 @@ table tbody tr.active {
 	width: 99%;
 	min-width: 800px;
 }
+.nav-tabs > li > a {
+	color: #333;
+}
+.nav-tabs .active a {
+	font-weight: bold;
+	color: blue;
+}

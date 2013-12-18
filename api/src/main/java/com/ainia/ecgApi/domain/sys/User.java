@@ -6,6 +6,7 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -75,7 +76,29 @@ public class User implements Domain {
 	private String retakeCode;
 	private Date   retakeDate;
 	private Integer retakeCount;
-	
+
+	private Set<Expert> experts;
+
+	@JsonIgnore
+	@ManyToMany(fetch=FetchType.EAGER)  
+	@JoinTable(name="expert_user"  , joinColumns={@JoinColumn(name="user_id")}  
+        						, inverseJoinColumns={@JoinColumn(name="expert_id")}  
+    )  
+	public Set<Expert> getExperts() {
+		return experts;
+	}
+
+	public void setExperts(Set<Expert> experts) {
+		this.experts = experts;
+	}
+	@Transient
+	public void addExpert(Expert expert) {
+		if (experts == null) {
+			experts = new HashSet();
+		}
+		experts.add(expert);
+	}
+
 	@PrePersist
 	public void onCreate() {
 		this.createdDate = new Date();

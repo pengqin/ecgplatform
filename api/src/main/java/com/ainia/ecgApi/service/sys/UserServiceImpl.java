@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.ainia.ecgApi.core.crud.BaseDao;
 import com.ainia.ecgApi.core.crud.BaseServiceImpl;
+import com.ainia.ecgApi.core.crud.Query;
 import com.ainia.ecgApi.core.exception.InfoException;
 import com.ainia.ecgApi.core.exception.PermissionException;
 import com.ainia.ecgApi.core.exception.ServiceException;
@@ -20,9 +21,11 @@ import com.ainia.ecgApi.core.utils.PropertyUtil;
 import com.ainia.ecgApi.dao.sys.UserDao;
 import com.ainia.ecgApi.domain.sys.Employee;
 import com.ainia.ecgApi.domain.sys.User;
+import com.ainia.ecgApi.domain.task.ExaminationTask;
 import com.ainia.ecgApi.dto.common.Message;
 import com.ainia.ecgApi.dto.common.Message.Type;
 import com.ainia.ecgApi.service.common.MessageService;
+import com.ainia.ecgApi.service.task.ExaminationTaskService;
 
 /**
  * <p>User Service Impl</p>
@@ -45,6 +48,8 @@ public class UserServiceImpl extends BaseServiceImpl<User , Long> implements Use
     private AuthenticateService authenticateService;
     @Autowired
     private MessageService messageService;
+	@Autowired
+	private ExaminationTaskService examinationTaskService;
     
     public BaseDao<User , Long> getBaseDao() {
         return userDao;
@@ -62,9 +67,14 @@ public class UserServiceImpl extends BaseServiceImpl<User , Long> implements Use
 		if (user.getUsername() != null && userDao.findByUsername(user.getUsername()) != null) {
 			throw new ServiceException("username.is.used");
 		}
-		if (user.getEmail() != null && userDao.findByEmail(user.getEmail()) != null) {
-			throw new ServiceException("email.is.used");
+		if (user.getEmail() != null && !"".equals(user.getEmail().trim())) {
+			if (userDao.findByEmail(user.getEmail()) != null) {
+				throw new ServiceException("email.is.used");
+			}
 		}
+		/*else {
+			user.setEmail(null);
+		}*/
 		return super.create(user);
 	}
 	
@@ -147,6 +157,14 @@ public class UserServiceImpl extends BaseServiceImpl<User , Long> implements Use
 		if (!hasPermission(user)) {
 			throw new ServiceException("exception.user.cannotDelete");
 		}
+		// 如果已经有检测记录,不允许删除
+		Query<ExaminationTask> query = new Query<ExaminationTask>();
+		query.eq(ExaminationTask.USER_ID, user.getId());
+		List<ExaminationTask> tasks = this.examinationTaskService.findAll(query);
+		if (tasks.size() > 0) {
+			throw new ServiceException("exception.user.with.tasks.cannotDelete");
+		}
+
 		super.delete(id);
 	}
 
@@ -160,15 +178,22 @@ public class UserServiceImpl extends BaseServiceImpl<User , Long> implements Use
 		if (!hasPermission(user)) {
 			throw new ServiceException("exception.user.cannotDelete");
 		}
+		// 如果已经有检测记录,不允许删除
+		Query<ExaminationTask> query = new Query<ExaminationTask>();
+		query.eq(ExaminationTask.USER_ID, user.getId());
+		List<ExaminationTask> tasks = this.examinationTaskService.findAll(query);
+		if (tasks.size() > 0) {
+			throw new ServiceException("exception.user.with.tasks.cannotDelete");
+		}
 		super.delete(user);
 	}
 
 	private String getEmailContent(String code) {
-		return "亲爱的用户，您好：\n\n您正在使用AINIA邮箱找回密码功能，验证码为: " + code + "\n\n该验证码24小时内有效，如输入错误次数达3次则立即失效，需再次申请。\n\n请勿向他人包括AINIA员工提供本次验证码。\n\n\n\nAINIA客户中心";
+		return "亲爱的用户，您好：\n\n您正在使用邮箱找回密码功能，验证码为: " + code + "\n\n该验证码24小时内有效，如输入错误次数达3次则立即失效，需再次申请。\n\n请勿向他人包括AINIA员工提供本次验证码。\n\n\n\nAINIA客户中心";
 	}
 
 	private String getSMSContent(String code) {
-		return "您正在使用AINIA手机找回密码功能，验证码为: " + code + " 。24小时内有效，如输入错误次数达3次则立即失效，需再次申请。";
+		return "您正在使用手机找回密码功能，验证码为: " + code + " 。24小时内有效，如输入错误次数达3次则立即失效，需再次申请。【AINIA】";
 	}
 
 	@Override

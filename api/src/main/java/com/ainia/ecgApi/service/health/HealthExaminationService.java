@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.ainia.ecgApi.core.crud.BaseService;
 import com.ainia.ecgApi.domain.health.HealthExamination;
 import com.ainia.ecgApi.domain.health.HealthReply;
@@ -36,7 +38,7 @@ public interface HealthExaminationService extends BaseService<HealthExamination 
 	 * @param uploadData
 	 * void
 	 */
-	public void upload(HealthExamination examination , byte[] uploadData , String md5);
+	public void upload(HealthExamination examination , byte[] uploadData , MultipartFile img1Data, MultipartFile img2Data, MultipartFile img3Data, String md5);
 	
 	/**
 	 * <p>统计指定用户指定时间段的测试平均值</p>

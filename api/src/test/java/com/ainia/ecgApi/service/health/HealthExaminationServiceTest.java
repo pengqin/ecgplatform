@@ -151,7 +151,7 @@ public class HealthExaminationServiceTest {
     	byte[] bytes = out.toByteArray();
     	((HealthExaminationServiceImpl)healthExaminationService).setAuthenticateService(authenticateService);
     	HealthExamination examination = new HealthExamination();
-    	healthExaminationService.upload(examination , bytes , null);
+    	healthExaminationService.upload(examination , bytes , null, null, null, null);
     	Thread.sleep(5000);
     	input.close();
     	out.close();
@@ -177,7 +177,7 @@ public class HealthExaminationServiceTest {
     	((HealthExaminationServiceImpl)healthExaminationService).setAuthenticateService(authenticateService);
     	HealthExamination examination = new HealthExamination();
     	examination.setIsGziped(true);
-    	healthExaminationService.upload(examination, bytes , null);
+    	healthExaminationService.upload(examination, bytes , null, null, null, null);
     	Thread.sleep(5000);
     	input.close();
     	out.close();
@@ -202,7 +202,7 @@ public class HealthExaminationServiceTest {
     	((HealthExaminationServiceImpl)healthExaminationService).setAuthenticateService(authenticateService);
     	HealthExamination examination = new HealthExamination();
     	examination.setIsGziped(false);
-    	healthExaminationService.upload(examination, bytes , null);
+    	healthExaminationService.upload(examination, bytes , null, null, null, null);
     	Thread.sleep(25000);
     	input.close();
     	out.close();
@@ -226,7 +226,7 @@ public class HealthExaminationServiceTest {
     	((HealthExaminationServiceImpl)healthExaminationService).setAuthenticateService(authenticateService);
     	HealthExamination examination = new HealthExamination();
     	examination.setIsGziped(true);
-    	healthExaminationService.upload(examination , bytes , null);
+    	healthExaminationService.upload(examination , bytes , null, null, null, null);
     	Thread.sleep(5000);
     	input.close();
     	out.close();
@@ -263,7 +263,7 @@ public class HealthExaminationServiceTest {
     	((HealthExaminationServiceImpl)healthExaminationService).setAuthenticateService(authenticateService);
     	HealthExamination examination = new HealthExamination();
     	examination.setIsGziped(false);
-    	healthExaminationService.upload(examination , bytes , null);
+    	healthExaminationService.upload(examination , bytes , null, null, null, null);
     	Thread.sleep(5000);
     	input.close();
     	out.close();
@@ -286,7 +286,7 @@ public class HealthExaminationServiceTest {
     	((HealthExaminationServiceImpl)healthExaminationService).setAuthenticateService(authenticateService);
     	HealthExamination examination = new HealthExamination();
     	examination.setIsTest(true);
-    	healthExaminationService.upload(examination , null , null);
+    	healthExaminationService.upload(examination , null, null, null, null, null);
     }
 
     @Test
@@ -302,14 +302,14 @@ public class HealthExaminationServiceTest {
     	HealthExamination examination = new HealthExamination();
     	examination.setIsTest(true);
     	examination.setHeartRhythm(70);
-    	healthExaminationService.upload(examination , null , null);
+    	healthExaminationService.upload(examination , null, null, null, null, null);
     	Assert.assertTrue(examination.getLevel().equals(Level.success));
     	
     	// 心率警告范围
     	examination = new HealthExamination();
     	examination.setIsTest(true);
     	examination.setHeartRhythm(95);
-    	healthExaminationService.upload(examination , null , null);
+    	healthExaminationService.upload(examination , null, null, null, null, null);
     	Assert.assertTrue(examination.getLevel().equals(Level.warning));
     	Query<HealthReply> query1 = new Query();
     	query1.eq(HealthReply.EXAMINATION_ID , examination.getId());
@@ -319,21 +319,21 @@ public class HealthExaminationServiceTest {
     	examination = new HealthExamination();
     	examination.setIsTest(true);
     	examination.setHeartRhythm(30);
-    	healthExaminationService.upload(examination , null , null);
+    	healthExaminationService.upload(examination , null, null, null, null, null);
     	Assert.assertTrue(examination.getLevel().equals(Level.danger));	
 
     	// 心率异常范围
     	examination = new HealthExamination();
     	examination.setIsTest(true);
     	examination.setHeartRhythm(-100);
-    	healthExaminationService.upload(examination , null , null);
+    	healthExaminationService.upload(examination , null, null, null, null, null);
     	Assert.assertTrue(examination.getLevel().equals(Level.outside));
 
     	// 心率异常范围
     	examination = new HealthExamination();
     	examination.setIsTest(true);
     	examination.setHeartRhythm(300);
-    	healthExaminationService.upload(examination , null , null);
+    	healthExaminationService.upload(examination , null, null, null, null, null);
     	Assert.assertTrue(examination.getLevel().equals(Level.outside));
  
     	// 心率正常 呼吸警告
@@ -341,7 +341,7 @@ public class HealthExaminationServiceTest {
     	examination.setIsTest(true);
     	examination.setHeartRhythm(70);
     	examination.setBreath(95);
-    	healthExaminationService.upload(examination , null , null);
+    	healthExaminationService.upload(examination , null, null, null, null, null);
     	Assert.assertTrue(examination.getLevel().equals(Level.warning));
     	Query<HealthReply> query2 = new Query();
     	query2.eq(HealthReply.EXAMINATION_ID , examination.getId());
@@ -352,7 +352,7 @@ public class HealthExaminationServiceTest {
     	examination.setIsTest(true);
     	examination.setHeartRhythm(30);
     	examination.setBreath(95);
-    	healthExaminationService.upload(examination , null , null);
+    	healthExaminationService.upload(examination , null, null, null, null, null);
     	Assert.assertTrue(examination.getLevel().equals(Level.danger));
    
     	config.setValue("false");
@@ -373,7 +373,7 @@ public class HealthExaminationServiceTest {
     	examination.setUserId(1l);
     	examination.setIsTest(true);
     	examination.setBreath(95);
-    	healthExaminationService.upload(examination , null , null);
+    	healthExaminationService.upload(examination , null, null, null, null, null);
     	Assert.assertTrue(examination.getLevel().equals(Level.success));
     	
     	config.setValue("false");
@@ -413,7 +413,7 @@ public class HealthExaminationServiceTest {
     	HealthExamination examination = new HealthExamination();
     	examination.setIsTest(true);
     	examination.setHeartRhythm(70);
-    	healthExaminationService.upload(examination , null , null);
+    	healthExaminationService.upload(examination , null, null, null, null, null);
     	
     	config.setValue("false");
     	systemConfigService.update(config);
@@ -447,7 +447,7 @@ public class HealthExaminationServiceTest {
     	examination.setIsTest(true);
     	examination.setHeartRhythm(70);
     	try {
-    		healthExaminationService.upload(examination , null , null);
+    		healthExaminationService.upload(examination , null, null, null, null, null);
     	} catch(Exception e) {
     		
     	}
@@ -483,6 +483,15 @@ public class HealthExaminationServiceTest {
     	
     	HealthExamination examination = new HealthExamination();
     	examination.setIsGziped(true);
-        healthExaminationService.upload(examination , bytes , null);
+        healthExaminationService.upload(examination , bytes , null, null, null, null);
 	}
+
+    @Test
+    public void testMockUploadAndAssignToExpert() throws IOException, DataException, InterruptedException {
+    	when(authenticateService.getCurrentUser()).thenReturn(new AuthUserImpl(8L , "test" , "13700230001" , User.class.getSimpleName()));
+    	((HealthExaminationServiceImpl)healthExaminationService).setAuthenticateService(authenticateService);
+    	HealthExamination examination = new HealthExamination();
+    	examination.setIsTest(true);
+    	healthExaminationService.upload(examination , null, null, null, null, null);
+    }
 }

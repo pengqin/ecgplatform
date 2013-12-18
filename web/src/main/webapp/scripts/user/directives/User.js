@@ -3,6 +3,7 @@ define(function(require, exports) {
 'use strict';
 
 var userEditTemp = require("../templates/user/edit.html");
+var userExpertTemp = require("../templates/user/expert.html");
 var usersDialogTemp = require("../templates/user/usersdialog.html");
 
 angular.module('ecgUserModules', [])
@@ -113,7 +114,7 @@ angular.module('ecgUserModules', [])
                     refreshGrid();
                 }, function() {
                     $scope.dialog.hideStandby();
-                    $scope.message.error("无法删除该用户，可能是权限不足,请联系管理员!");
+                    $scope.message.error("无法删除该用户，可能是权限不足或者是已经有检测记录,请联系管理员!");
                 });
             }
         });
@@ -293,6 +294,125 @@ angular.module('ecgUserModules', [])
         replace : false,
         template : userEditTemp,
         controller : "UserEditController",
+        link : function($scope, $element, $attrs) {
+        }
+    };
+}])
+.controller('UserExpertController', ['$scope', '$routeParams', '$timeout', '$location', 'EnumService', 'UserService',
+    function ($scope, $routeParams, $timeout, $location, EnumService, UserService) {
+    $scope.subheader.title = "绑定专家";
+
+    $scope.user.experts = [];
+
+    function refreshLinks() {
+        UserService.getExperts($routeParams.id).then(function(experts) {
+            $scope.user.experts = experts;
+        }, function() {
+            $scope.message.error("加载接线员数据失败!");
+        });
+    }
+    refreshLinks();
+
+    $scope.user.check = function(expert) {
+        if (expert.removed === true) {
+            expert.removed = false;
+            return;
+        } else {
+            expert.removed = true;
+        }
+    };
+
+    $scope.user.isCheckAll = false;
+    $scope.user.checkAll = function() {
+        $scope.user.isCheckAll = !$scope.user.isCheckAll;
+        $($scope.user.experts).each(function(i, expert) {
+            expert.removed = $scope.user.isCheckAll;
+        });
+    };
+
+    $scope.user.addExperts = function() {
+        $scope.expertdialog.show({
+            excludes: $scope.user.experts,
+            handler: function(experts) {
+                var len = experts.length, count = 0;
+                if (len > 1) {
+                    $scope.dialog.alert({
+                        text: '只能绑定一名专家!'
+                    });
+                    return;
+                }
+                $(experts).each(function(i, expert) {
+                    $scope.dialog.showStandby();
+                    UserService.linkExpert($routeParams.id, expert)
+                    .then(function(flag) {
+                        $scope.dialog.hideStandby();
+                        if (flag) {
+                            count++;
+                        } else {
+                            $scope.message.error("无法绑定专家：" + expert.name);
+                        }
+                        if (count === len) {
+                            $scope.message.success("成功绑定！");
+                            refreshLinks();
+                        }
+                    }, function() {
+                        $scope.dialog.hideStandby();
+                        $scope.message.error("无法绑定接线员：" + user.name);
+                    });
+                });
+            }
+        });
+    };
+    
+    $scope.user.removeExperts = function() {
+        
+        var removes = [], experts = $scope.user.experts, len = 0, count = 0;
+
+        $(experts).each(function(i, expert) {
+            if (expert.removed) {
+                removes.push(expert);
+            }
+        });
+        
+        if (removes.length == 0) {
+            $scope.dialog.alert({
+                text: '请选择需要解除的绑定!'
+            });
+            return;
+        };
+
+        len = removes.length;
+
+        $scope.dialog.confirm({
+            text: "请确认解除绑定, 该操作无法恢复!",
+            handler: function() {
+                $scope.dialog.showStandby();
+                $(removes).each(function(i, remove) {
+                    UserService.unlinkExpert($routeParams.id, remove)
+                    .then(function() {
+                        count++;
+                        if (count === len) {
+                            $scope.dialog.hideStandby();
+                            $scope.message.success("成功解除绑定！");
+                            refreshLinks();
+                        }
+                    }, function() {
+                        count++;
+                        $scope.dialog.hideStandby();
+                        $scope.message.error("无法解除绑定，员工名为：" + remove.name);
+                    });
+                });
+            }
+        });
+    };
+
+}])
+.directive("ecgUserExpert", [ '$location', function($location) {
+    return {
+        restrict : 'A',
+        replace : false,
+        template : userExpertTemp,
+        controller : "UserExpertController",
         link : function($scope, $element, $attrs) {
         }
     };
