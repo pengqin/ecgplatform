@@ -118,7 +118,7 @@ public class CardServiceTest {
 	public void testUpload() throws Exception {
 		CSVReader reader = new CSVReader(new InputStreamReader(Thread
 				.currentThread().getContextClassLoader()
-				.getResourceAsStream("card/upload.csv")));
+				.getResourceAsStream("card/test.csv")));
 		List<String[]> list = reader.readAll();
 		long count = cardService.count(new Query());
 		cardService.createByUpload(list);
