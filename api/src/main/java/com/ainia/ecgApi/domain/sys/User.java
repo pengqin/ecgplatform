@@ -15,6 +15,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
@@ -37,7 +38,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * @version 0.1
  */
 @Entity
-@Table(name = "user")
+@Table(name = "users")
+@SequenceGenerator(name="SEQ_USER",sequenceName="SEQ_USER", initialValue=1, allocationSize=100)
 public class User implements Domain {
 
 	private static final long serialVersionUID = 1L;
@@ -129,7 +131,7 @@ public class User implements Domain {
 	}
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="SEQ_USER")
 	public Long getId() {
 		return id;
 	}

@@ -15,6 +15,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.PrePersist;
 import javax.persistence.PreRemove;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
@@ -31,6 +32,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="type" , discriminatorType = DiscriminatorType.STRING)
 @DiscriminatorValue("task")
+@SequenceGenerator(name = "SEQ_TASK", sequenceName = "SEQ_TASK", allocationSize=1)
 public class Task implements Domain {
 	
 	public static final String USER_ID   = "userId";
@@ -69,7 +71,7 @@ public class Task implements Domain {
 	}
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="SEQ_TASK")
 	public Long getId() {
 		return id;
 	}
