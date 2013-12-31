@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.PrePersist;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
@@ -25,6 +26,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * @version
  */
 @Entity
+@SequenceGenerator(name = "SEQ_APK", sequenceName = "SEQ_APK", allocationSize=1)
 public class Apk implements Domain {
 	
 	public static final String APK_NAME = "healthApk";
@@ -56,7 +58,7 @@ public class Apk implements Domain {
 	
 	@Override
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)	
+	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="SEQ_APK")
 	public Long getId() {
 		return id;
 	}
