@@ -227,11 +227,11 @@ public class DataProcessor {
 		copyOxygenData(data, i+4, 24);
 
 		//hi.heartrate = data[i+28];
-		heartrateSum += data[i+28];
+		heartrateSum += data[i+28] & 0xff ;
 		heartrateCount++;
 		hi.heartrate  = (int)(heartrateSum / heartrateCount);
-		hi.sbp = data[i+29];
-		hi.dbp = data[i+30];
+		hi.sbp = data[i+29] & 0xff;
+		hi.dbp = data[i+30] & 0xff;
 		hi.ptt = data[i+31];
 		
 		return start + SECTION_LENGTH;
