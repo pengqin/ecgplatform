@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.PrePersist;
+import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 
@@ -28,6 +29,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * @version
  */
 @Entity
+@SequenceGenerator(name = "SEQ_CARD", sequenceName = "SEQ_CARD", allocationSize=1)
 public class Card implements Domain {
 	
 	public static String ENCODED_SERIAL = "encodedSerial";
@@ -73,7 +75,7 @@ public class Card implements Domain {
 	
 	@Override
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)	
+	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="SEQ_CARD")
 	public Long getId() {
 		return id;
 	}

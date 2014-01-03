@@ -16,6 +16,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
@@ -31,6 +32,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="type" , discriminatorType = DiscriminatorType.STRING)
 @DiscriminatorValue("employee")
+@SequenceGenerator(name="SEQ_EMPLOYEE",sequenceName="SEQ_EMPLOYEE", initialValue=1, allocationSize=100)
 public class Employee implements Domain {
 	
 	public static final String PASSWORD = "password";
@@ -99,7 +101,7 @@ public class Employee implements Domain {
 	}
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="SEQ_EMPLOYEE")
 	public Long getId() {
 		return id;
 	}
