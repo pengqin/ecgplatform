@@ -7,6 +7,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
@@ -22,6 +23,7 @@ import com.ainia.ecgApi.core.bean.Domain;
  * @version
  */
 @Entity
+@SequenceGenerator(name="SEQ_SYSTEM_CONFIG",sequenceName="SEQ_SYSTEM_CONFIG", initialValue=1, allocationSize=100)
 public class SystemConfig implements Domain {
 	
 	public static final String KEY = "key";
@@ -36,7 +38,7 @@ public class SystemConfig implements Domain {
 	private String value;
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="SEQ_SYSTEM_CONFIG")
 	public Long getId() {
 		return id;
 	}

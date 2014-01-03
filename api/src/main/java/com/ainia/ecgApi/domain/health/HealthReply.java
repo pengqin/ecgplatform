@@ -2,13 +2,14 @@ package com.ainia.ecgApi.domain.health;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
-import javax.validation.constraints.NotNull;
+import javax.persistence.SequenceGenerator;
 
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -26,6 +27,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
  * @version 0.1
  */
 @Entity
+@SequenceGenerator(name="SEQ_HEALTH_REPLY",sequenceName="SEQ_HEALTH_REPLY", initialValue=1, allocationSize=100)
 public class HealthReply implements Domain {
 	
 	public static final String EXAMINATION_ID = "examinationId";
@@ -58,7 +60,7 @@ public class HealthReply implements Domain {
 	}
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)	
+	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="SEQ_HEALTH_REPLY")
 	public Long getId() {
 		return id;
 	}	
@@ -136,6 +138,7 @@ public class HealthReply implements Domain {
 	public void setVersion(Integer version) {
 		this.version = version;
 	}
+	@Column(name = "health_level")
 	public Level getLevel() {
 		return level;
 	}

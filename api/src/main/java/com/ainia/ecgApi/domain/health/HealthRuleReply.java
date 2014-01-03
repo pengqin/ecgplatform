@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Version;
 
 import org.hibernate.validator.constraints.NotBlank;
@@ -25,6 +26,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
  * @version
  */
 @Entity
+@SequenceGenerator(name="SEQ_HEALTH_RULE_REPLY",sequenceName="SEQ_HEALTH_RULE_REPLY" , initialValue=1, allocationSize=100)
 public class HealthRuleReply implements Domain {
 	
 	public static final String RULE_ID = "ruleId";
@@ -49,7 +51,7 @@ public class HealthRuleReply implements Domain {
 	}
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="SEQ_HEALTH_RULE_REPLY")
 	public Long getId() {
 		return id;
 	}
