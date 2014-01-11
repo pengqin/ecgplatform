@@ -71,4 +71,26 @@ public interface UserService extends BaseService<User , Long> {
 	 * void
 	 */
 	public void retakePassword(User user , String code , String newPassword)throws InfoException;
+	
+	/**
+	 * <p>请求绑定亲属</p>
+	 * @param requestUserId relativeUserId
+	 * @return void
+	 */
+	public void requestBindRelative(Long requestUserId, Long relativeUserId);
+	
+	/**
+	 * <p>亲属绑定</p>
+	 * @param requestUserId relativeUserId code
+	 * @return void
+	 */
+	public void bindRelative(Long requestUserId , Long relativeUserId , String code)throws InfoException;
+	
+	/**
+	 * <p>解除亲属绑定</p>
+	 * @param requestUserId
+	 * @param relativeUserId
+	 * void
+	 */
+	public void unbindRelative(Long requestUserId , Long relativeUserId);
 }

@@ -238,3 +238,11 @@ create table apk (
     external_url varchar(300),
     primary key(id)
 );
+
+drop table if exists users_relative;
+
+create table users_relative(
+    user_id bigint,
+    user_relative_id bigint
+    
+);

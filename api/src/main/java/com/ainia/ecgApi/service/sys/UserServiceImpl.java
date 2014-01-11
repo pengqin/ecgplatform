@@ -26,6 +26,8 @@ import com.ainia.ecgApi.dto.common.Message;
 import com.ainia.ecgApi.dto.common.Message.Type;
 import com.ainia.ecgApi.service.common.MessageService;
 import com.ainia.ecgApi.service.task.ExaminationTaskService;
+import com.ainia.ecgApi.utils.Constants;
+import com.ainia.ecgApi.utils.RandCodeUtils;
 
 /**
  * <p>User Service Impl</p>
@@ -267,8 +269,66 @@ public class UserServiceImpl extends BaseServiceImpl<User , Long> implements Use
 	@Override
 	public User findByEmail(String email) {
 		return userDao.findByEmail(email);
+	}
+
+	@Override
+	public void requestBindRelative(Long requestUserId, Long relativeUserId) {
+		User requestUser = userDao.findOne(requestUserId);
+		User relativeUser = userDao.findOne(relativeUserId);
+		if (requestUser == null || relativeUserId == null) {
+			throw new ServiceException("exception.user.relativeUser.notFound");
+		}
+		if (StringUtils.isNotBlank(relativeUser.getBindCode())) {
+			throw new ServiceException("exception.user.relativeUser.isRelativing");
+		}
+		String code = RandCodeUtils.generateCode();
+		relativeUser.setBindCode(code);
+		relativeUser.setBindUserId(requestUserId);
+		relativeUser.setBindDate(new Date());
+		
+		userDao.save(relativeUser);
+		messageService.sendSms(new Message("" , code , null , relativeUser.getMobile() ,
+				String.format(Constants.SMS_REQUEST_BIND_RELATIVE, code)));
+	}
+
+
+	@Override
+	public void bindRelative(Long requestUserId, Long relativeUserId,
+			String code) throws InfoException {
+		User requestUser = userDao.findOne(requestUserId);
+		User relativeUser = userDao.findOne(relativeUserId);
+		if (requestUser == null || relativeUserId == null) {
+			throw new ServiceException("exception.user.relativeUser.notFound");
+		}
+		if (!StringUtils.equals(code , relativeUser.getBindCode())) {
+			throw new InfoException("exception.user.relativeUser.errorCode");
+		}
+		if (new DateTime(relativeUser.getBindDate()).plusHours(24).isBefore(new Date().getTime())) {
+			throw new InfoException("exception.user.relativeCode.expried");
+		}
+		requestUser.addRelative(relativeUser);
+		relativeUser.addRelative(requestUser);
+		relativeUser.setBindCode(null);
+		relativeUser.setBindUserId(null);
+		relativeUser.setBindDate(null);
+		
+		userDao.save(requestUser);
+		userDao.save(relativeUser);
+	}
+
+
+	@Override
+	public void unbindRelative(Long requestUserId, Long relativeUserId) {
+		User requestUser = userDao.findOne(requestUserId);
+		User relativeUser = userDao.findOne(relativeUserId);
+		if (requestUser == null || relativeUserId == null) {
+			throw new ServiceException("exception.user.relativeUser.notFound");
+		}
+		requestUser.removeRelative(relativeUser);
+		relativeUser.removeRelative(requestUser);
+		
+		userDao.save(requestUser);
+		userDao.save(relativeUser);
 	} 
-	
-	
 
 }
