@@ -29,6 +29,7 @@ import com.ainia.ecgApi.core.crud.Page;
 import com.ainia.ecgApi.core.crud.Query;
 import com.ainia.ecgApi.core.crud.Query.OrderType;
 import com.ainia.ecgApi.core.exception.InfoException;
+import com.ainia.ecgApi.core.exception.PermissionException;
 import com.ainia.ecgApi.core.exception.ServiceException;
 import com.ainia.ecgApi.core.security.AuthUser;
 import com.ainia.ecgApi.core.security.AuthenticateService;
@@ -541,6 +542,90 @@ public class UserController extends BaseController<User , Long> {
 		}
 		user.getExperts().remove(expert);
 		userService.update(user);
+		return new ResponseEntity(HttpStatus.OK);
+	}
+
+	/**
+	 * <p>find all relatives</p>
+	 * @param userId
+	 * @return
+	 * ResponseEntity<?>
+	 */
+	@RequestMapping(value = "{userId}/relative" , method = RequestMethod.GET , 
+						produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> findRelatives(@PathVariable("userId") Long userId) {
+		User user = userService.get(userId);
+		if (user == null) {
+			return new ResponseEntity(HttpStatus.OK);
+		}
+		AuthUser authUser = authenticateService.getCurrentUser();
+		if (authUser.isUser() && !authUser.getId().equals(userId)) {
+			throw new PermissionException("exception.cannotfindrelative");
+		}
+		return new ResponseEntity(user.getRelatives() , HttpStatus.OK);
+	}
+	 /**
+	  * <p>request to bind relative</p>
+	  * @param mobile
+	  * @return ResponseEntity<?>
+	  */
+	 @RequestMapping(value = "/{userId}/relative" ,  method = RequestMethod.POST ,
+			 	produces = MediaType.APPLICATION_JSON_VALUE)
+	 public ResponseEntity<?> requestRelative(@PathVariable("userId") Long userId , @RequestParam("mobile") String mobile) {
+		User relativeUser = userService.findByMobile(mobile);
+		if (relativeUser == null) {
+			 return new ResponseEntity(HttpStatus.NOT_FOUND);
+		 }
+		AuthUser authUser = authenticateService.getCurrentUser();
+		if (authUser.isUser() && !authUser.getId().equals(userId)) {
+			throw new PermissionException("exception.cannotrequestrelative");
+		}
+		 userService.requestBindRelative(userId , relativeUser.getId());
+		 return new ResponseEntity(HttpStatus.OK);
+	 }
+	 
+	 /**
+	  * <p>description</p>
+	  * @param $
+	  * @return ResponseEntity<?>
+	 * @throws InfoException 
+	  */
+	 @RequestMapping(value = "{userId}/relative" , method = RequestMethod.PUT ,
+			 	produces = MediaType.APPLICATION_JSON_VALUE)
+	 public ResponseEntity<?> bindRelative(@PathVariable("userId") Long userId ,@RequestParam("code") String code ,
+			 						@RequestParam("mobile") String mobile) throws InfoException {
+		User relativeUser = userService.findByMobile(mobile);
+		if (relativeUser == null) {
+			 return new ResponseEntity(HttpStatus.NOT_FOUND);
+		}
+		AuthUser authUser = authenticateService.getCurrentUser();
+		if (authUser.isUser() && !authUser.getId().equals(userId)) {
+			throw new PermissionException("exception.cannotbindrelative");
+		}
+		userService.bindRelative(userId , relativeUser.getId() , code);
+		return new ResponseEntity(HttpStatus.OK);
+	 }
+	 
+	 /**
+	  * <p>unbind relative</p>
+	  * @param userId
+	  * @param relativeUserId
+	  * @return
+	  * ResponseEntity<?>
+	  */
+	 @RequestMapping(value = "{userId}/relative/{relativeUserId}" , method = RequestMethod.DELETE ,
+			 			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> unbindRelative(@PathVariable("userId") Long userId , @
+			 			PathVariable("relativeUserId") Long relativeUserId) {
+		User relativeUser = userService.get(relativeUserId);
+		if (relativeUser == null) {
+			 return new ResponseEntity(HttpStatus.NOT_FOUND);
+		}
+		AuthUser authUser = authenticateService.getCurrentUser();
+		if (authUser.isUser() && !authUser.getId().equals(userId)) {
+			throw new PermissionException("exception.cannotunbindrelative");
+		}
+		 
 		return new ResponseEntity(HttpStatus.OK);
 	}
 }

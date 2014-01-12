@@ -14,6 +14,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 
+import com.ainia.ecgApi.core.exception.InfoException;
 import com.ainia.ecgApi.core.security.AuthUserImpl;
 import com.ainia.ecgApi.core.security.AuthenticateService;
 import com.ainia.ecgApi.domain.health.HealthExamination;
@@ -112,6 +113,31 @@ public class UserServiceTest {
 		Assert.assertNotNull(user);
 		Assert.assertNotNull(user.getExperts());
 		Assert.assertEquals(user.getExperts().size(), 1);
+	}
+	
+	@Test
+	public void testRequestUserRelative() {
+		User requestUser = userService.get(2L);
+		User relativeUser = userService.get(1L);
+		
+		userService.requestBindRelative(requestUser.getId() , relativeUser.getId());
+	}
+	
+	@Test
+	public void testBindRelative() throws InfoException {
+		User requestUser = userService.get(2L);
+		User relativeUser = userService.get(1L);
+		
+		userService.bindRelative(requestUser.getId(), relativeUser.getId(), "698518");
+	}
+	
+	@Test
+	public void testUnbindRelative() {
+		User requestUser = userService.get(2L);
+		User relativeUser = userService.get(1L);
+		
+		userService.unbindRelative(requestUser.getId(), relativeUser.getId());
+		
 	}
 
 

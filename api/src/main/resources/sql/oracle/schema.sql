@@ -232,3 +232,9 @@ create table expert_operator (
     expert_id number not null ,
     operator_id number not null
 );
+
+
+create table users_relative(
+    user_id number not null,
+    user_relative_id number not null
+);

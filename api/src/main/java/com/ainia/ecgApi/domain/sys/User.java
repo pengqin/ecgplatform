@@ -74,12 +74,17 @@ public class User implements Domain {
 	private Date lastLoginDate;
 	private Date tokenDate;
 	
+	private String bindCode;
+	private Long   bindUserId;
+	private Date   bindDate;
+	
 	private String salt;
 	private String retakeCode;
 	private Date   retakeDate;
 	private Integer retakeCount;
 
 	private Set<Expert> experts;
+	private Set<User> relatives;
 
 	@JsonIgnore
 	@ManyToMany(fetch=FetchType.EAGER)  
@@ -93,12 +98,39 @@ public class User implements Domain {
 	public void setExperts(Set<Expert> experts) {
 		this.experts = experts;
 	}
+	@JsonIgnore
+	@ManyToMany(fetch=FetchType.EAGER)  
+	@JoinTable(name="users_relative"  , joinColumns={@JoinColumn(name="user_id")}  
+        						, inverseJoinColumns={@JoinColumn(name="user_relative_id")}  
+    )  	
+	public Set<User> getRelatives() {
+		return relatives;
+	}
+
+	public void setRelatives(Set<User> relatives) {
+		this.relatives = relatives;
+	}
+
 	@Transient
 	public void addExpert(Expert expert) {
 		if (experts == null) {
 			experts = new HashSet();
 		}
 		experts.add(expert);
+	}
+	@Transient
+	public void addRelative(User user) {
+		if (relatives == null) {
+			relatives = new HashSet();
+		}
+		relatives.add(user);
+	}
+	@Transient
+	public void removeRelative(User user) {
+		if (relatives == null) {
+			return;
+		}
+		relatives.remove(user);
 	}
 
 	@PrePersist
@@ -398,6 +430,31 @@ public class User implements Domain {
 	public void setTokenDate(Date tokenDate) {
 		this.tokenDate = tokenDate;
 	}
+	@JsonIgnore
+	public String getBindCode() {
+		return bindCode;
+	}
+
+	public void setBindCode(String bindCode) {
+		this.bindCode = bindCode;
+	}
+	@JsonIgnore
+	public Long getBindUserId() {
+		return bindUserId;
+	}
+
+	public void setBindUserId(Long bindUserId) {
+		this.bindUserId = bindUserId;
+	}
+	@JsonIgnore
+	public Date getBindDate() {
+		return bindDate;
+	}
+
+	public void setBindDate(Date bindDate) {
+		this.bindDate = bindDate;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
