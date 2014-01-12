@@ -286,7 +286,6 @@ public class UserServiceImpl extends BaseServiceImpl<User , Long> implements Use
 		relativeUser.setBindCode(code);
 		relativeUser.setBindUserId(requestUserId);
 		relativeUser.setBindDate(new Date());
-		System.out.println("====  " + relativeUser.getMobile());
 		userDao.save(relativeUser);
 		messageService.sendSms(new Message("" , code , null , relativeUser.getMobile() ,
 				String.format(Constants.SMS_REQUEST_BIND_RELATIVE, requestUser.getMobile() , code)));

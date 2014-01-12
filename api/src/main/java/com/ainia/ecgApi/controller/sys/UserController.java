@@ -551,7 +551,7 @@ public class UserController extends BaseController<User , Long> {
 	 * @return
 	 * ResponseEntity<?>
 	 */
-	@RequestMapping(value = "/api/user/{userId}/relative" , method = RequestMethod.GET , 
+	@RequestMapping(value = "{userId}/relative" , method = RequestMethod.GET , 
 						produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> findRelatives(@PathVariable("userId") Long userId) {
 		User user = userService.get(userId);
@@ -569,7 +569,7 @@ public class UserController extends BaseController<User , Long> {
 	  * @param mobile
 	  * @return ResponseEntity<?>
 	  */
-	 @RequestMapping(value = "/api/user/{userId}/relative" ,  method = RequestMethod.POST ,
+	 @RequestMapping(value = "/{userId}/relative" ,  method = RequestMethod.POST ,
 			 	produces = MediaType.APPLICATION_JSON_VALUE)
 	 public ResponseEntity<?> requestRelative(@PathVariable("userId") Long userId , @RequestParam("mobile") String mobile) {
 		User relativeUser = userService.findByMobile(mobile);
@@ -590,7 +590,7 @@ public class UserController extends BaseController<User , Long> {
 	  * @return ResponseEntity<?>
 	 * @throws InfoException 
 	  */
-	 @RequestMapping(value = "/api/user/{userId}/relative" , method = RequestMethod.PUT ,
+	 @RequestMapping(value = "{userId}/relative" , method = RequestMethod.PUT ,
 			 	produces = MediaType.APPLICATION_JSON_VALUE)
 	 public ResponseEntity<?> bindRelative(@PathVariable("userId") Long userId ,@RequestParam("code") String code ,
 			 						@RequestParam("mobile") String mobile) throws InfoException {
@@ -613,7 +613,7 @@ public class UserController extends BaseController<User , Long> {
 	  * @return
 	  * ResponseEntity<?>
 	  */
-	 @RequestMapping(value = "/api/user/{userId}/relative/{relativeUserId}" , method = RequestMethod.DELETE ,
+	 @RequestMapping(value = "{userId}/relative/{relativeUserId}" , method = RequestMethod.DELETE ,
 			 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> unbindRelative(@PathVariable("userId") Long userId , @
 			 			PathVariable("relativeUserId") Long relativeUserId) {
