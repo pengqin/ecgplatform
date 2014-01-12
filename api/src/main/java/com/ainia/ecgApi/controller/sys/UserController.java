@@ -623,7 +623,7 @@ public class UserController extends BaseController<User , Long> {
 		}
 		AuthUser authUser = authenticateService.getCurrentUser();
 		if (authUser.isUser() && !authUser.getId().equals(userId)) {
-			throw new PermissionException("exception.cannotbindrelative");
+			throw new PermissionException("exception.cannotunbindrelative");
 		}
 		 
 		return new ResponseEntity(HttpStatus.OK);

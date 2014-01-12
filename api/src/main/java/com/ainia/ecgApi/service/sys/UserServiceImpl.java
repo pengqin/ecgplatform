@@ -289,6 +289,7 @@ public class UserServiceImpl extends BaseServiceImpl<User , Long> implements Use
 		userDao.save(relativeUser);
 		messageService.sendSms(new Message("" , code , null , relativeUser.getMobile() ,
 				String.format(Constants.SMS_REQUEST_BIND_RELATIVE, requestUser.getMobile() , code)));
+		messageService.sendEmail(new Message("" , code , null , relativeUser.getEmail() , String.format(Constants.EMAIL_REQUEST_BIND_RELATIVE, requestUser.getMobile() , code)));
 	}
 
 
@@ -300,10 +301,11 @@ public class UserServiceImpl extends BaseServiceImpl<User , Long> implements Use
 		if (requestUser == null || relativeUserId == null) {
 			throw new ServiceException("exception.user.relativeUser.notFound");
 		}
-		if (!StringUtils.equals(code , relativeUser.getBindCode())) {
+		if (!(StringUtils.equals(code , relativeUser.getBindCode()) && 
+					requestUser.getId() == relativeUser.getBindUserId())) {
 			throw new InfoException("exception.user.relativeUser.errorCode");
 		}
-		if (new DateTime(relativeUser.getBindDate()).plusHours(24).isBefore(new Date().getTime())) {
+		if (new DateTime(relativeUser.getBindDate()).plusHours(48).isBefore(new Date().getTime())) {
 			throw new InfoException("exception.user.relativeCode.expried");
 		}
 		requestUser.addRelative(relativeUser);
