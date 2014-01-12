@@ -101,7 +101,7 @@ public class User implements Domain {
 	@JsonIgnore
 	@ManyToMany(fetch=FetchType.EAGER)  
 	@JoinTable(name="users_relative"  , joinColumns={@JoinColumn(name="user_id")}  
-        						, inverseJoinColumns={@JoinColumn(name="relative_user_id")}  
+        						, inverseJoinColumns={@JoinColumn(name="user_relative_id")}  
     )  	
 	public Set<User> getRelatives() {
 		return relatives;

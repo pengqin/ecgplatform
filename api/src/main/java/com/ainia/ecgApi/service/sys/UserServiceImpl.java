@@ -278,17 +278,18 @@ public class UserServiceImpl extends BaseServiceImpl<User , Long> implements Use
 		if (requestUser == null || relativeUserId == null) {
 			throw new ServiceException("exception.user.relativeUser.notFound");
 		}
-		if (StringUtils.isNotBlank(relativeUser.getBindCode())) {
+		if (StringUtils.isNotBlank(relativeUser.getBindCode()) && 
+				new DateTime(relativeUser.getBindDate()).plusHours(24).isAfterNow()) {
 			throw new ServiceException("exception.user.relativeUser.isRelativing");
 		}
 		String code = RandCodeUtils.generateCode();
 		relativeUser.setBindCode(code);
 		relativeUser.setBindUserId(requestUserId);
 		relativeUser.setBindDate(new Date());
-		
+		System.out.println("====  " + relativeUser.getMobile());
 		userDao.save(relativeUser);
 		messageService.sendSms(new Message("" , code , null , relativeUser.getMobile() ,
-				String.format(Constants.SMS_REQUEST_BIND_RELATIVE, code)));
+				String.format(Constants.SMS_REQUEST_BIND_RELATIVE, requestUser.getMobile() , code)));
 	}
 
 

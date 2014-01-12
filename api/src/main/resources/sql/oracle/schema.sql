@@ -237,5 +237,4 @@ create table expert_operator (
 create table users_relative(
     user_id number not null,
     user_relative_id number not null
-    
 );
