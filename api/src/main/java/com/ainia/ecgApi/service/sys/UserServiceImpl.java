@@ -307,8 +307,8 @@ public class UserServiceImpl extends BaseServiceImpl<User , Long> implements Use
 		if (requestUser == null || relativeUserId == null) {
 			throw new ServiceException("exception.user.relativeUser.notFound");
 		}
-		if (!(StringUtils.equals(code , relativeUser.getBindCode()) && 
-					requestUser.getId() == relativeUser.getBindUserId())) {
+		if (!(StringUtils.equals(code , relativeUser.getBindCode()) ||
+			requestUser.getId() != relativeUser.getBindUserId())) {
 			throw new InfoException("exception.user.relativeUser.errorCode");
 		}
 		if (relativeUser.getBindDate() != null && 
