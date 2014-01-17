@@ -164,7 +164,7 @@ public class CardServiceImpl extends BaseServiceImpl<Card , Long> implements Car
 	        	Card card = new Card();
 	        	PropertyUtil.setProperty(card , Card.ENCODED_SERIAL , this.encodeString(values[0] , null));
 	        	PropertyUtil.setProperty(card , Card.ENCODED_PASSWORD , this.encodeString(values[1], null));
-	        	PropertyUtil.setProperty(card , Card.DAYS , values[2]);
+	        	PropertyUtil.setProperty(card , Card.DAYS , Integer.parseInt(values[2]));
 	        	PropertyUtil.setProperty(card , Card.EXPIRED_DATE , format.parse(values[3]));
 	        	this.create(card);
         	}catch(RuntimeException r) {

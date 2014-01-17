@@ -4,7 +4,8 @@ jdk:
 before_script:
   - cd doc
   - mv itextAsian-1.4.2_12-b03.jar /itextAsian-1.4.2_12-b03.jar
-  - mvn install:install-file -Dfile=/itextAsian-1.4.2_12-b03.jar -DgroupId=com.lowagie -DartifactId=itextAsian -Dversion=1.4.2_12-b03 -Dpackaging=jar -DgeneratePom=true 
+  - mvn install:install-file -Dfile=itextAsian-1.4.2_12-b03.jar -DgroupId=com.lowagie -DartifactId=itextAsian -Dversion=1.4.2_12-b03 -Dpackaging=jar -DgeneratePom=true 
+  - mvn install:install-file -Dfile=ojdbc14.jar -DgroupId=oracle -DartifactId=jdbc.driver -Dversion=14 -Dpackaging=jar -DgeneratePom=true 
 script:
   - cd api
   - mvn clean install

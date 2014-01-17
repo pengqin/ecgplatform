@@ -571,7 +571,7 @@ public class UserController extends BaseController<User , Long> {
 	  */
 	 @RequestMapping(value = "/{userId}/relative" ,  method = RequestMethod.POST ,
 			 	produces = MediaType.APPLICATION_JSON_VALUE)
-	 public ResponseEntity<?> requestRelative(@PathVariable("userId") Long userId , @RequestParam("mobile") String mobile) {
+	 public ResponseEntity<?> requestRelative(@PathVariable("userId") Long userId , @RequestParam(value = "mobile" , required = true) String mobile) {
 		User relativeUser = userService.findByMobile(mobile);
 		if (relativeUser == null) {
 			 return new ResponseEntity(HttpStatus.NOT_FOUND);
@@ -592,8 +592,8 @@ public class UserController extends BaseController<User , Long> {
 	  */
 	 @RequestMapping(value = "{userId}/relative" , method = RequestMethod.PUT ,
 			 	produces = MediaType.APPLICATION_JSON_VALUE)
-	 public ResponseEntity<?> bindRelative(@PathVariable("userId") Long userId ,@RequestParam("code") String code ,
-			 						@RequestParam("mobile") String mobile) throws InfoException {
+	 public ResponseEntity<?> bindRelative(@PathVariable("userId") Long userId ,@RequestParam(value = "code" , required = true) String code ,
+			 						@RequestParam(value = "mobile" , required = true) String mobile) throws InfoException {
 		User relativeUser = userService.findByMobile(mobile);
 		if (relativeUser == null) {
 			 return new ResponseEntity(HttpStatus.NOT_FOUND);
