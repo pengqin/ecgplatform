@@ -279,7 +279,8 @@ public class UserServiceImpl extends BaseServiceImpl<User , Long> implements Use
 			throw new ServiceException("exception.user.relativeUser.notFound");
 		}
 		if (StringUtils.isNotBlank(relativeUser.getBindCode()) && 
-				new DateTime(relativeUser.getBindDate()).plusHours(24).isAfterNow()) {
+			relativeUser.getBindDate() != null &&
+			new DateTime(relativeUser.getBindDate()).plusHours(24).isAfterNow()) {
 			throw new ServiceException("exception.user.relativeUser.isRelativing");
 		}
 		String code = RandCodeUtils.generateCode();
@@ -287,9 +288,14 @@ public class UserServiceImpl extends BaseServiceImpl<User , Long> implements Use
 		relativeUser.setBindUserId(requestUserId);
 		relativeUser.setBindDate(new Date());
 		userDao.save(relativeUser);
-		messageService.sendSms(new Message("" , code , null , relativeUser.getMobile() ,
-				String.format(Constants.SMS_REQUEST_BIND_RELATIVE, requestUser.getMobile() , code)));
-		messageService.sendEmail(new Message("" , code , null , relativeUser.getEmail() , String.format(Constants.EMAIL_REQUEST_BIND_RELATIVE, requestUser.getMobile() , code)));
+		messageService.sendSms(
+					new Message("" , code , null , relativeUser.getMobile() ,
+							String.format(Constants.SMS_REQUEST_BIND_RELATIVE, requestUser.getMobile() , code)));
+		if (StringUtils.isNotBlank(relativeUser.getEmail())) {
+			messageService.sendEmail(
+					new Message("" , code , null , relativeUser.getEmail() , 
+							String.format(Constants.EMAIL_REQUEST_BIND_RELATIVE, requestUser.getMobile() , code)));
+		}
 	}
 
 
@@ -305,7 +311,8 @@ public class UserServiceImpl extends BaseServiceImpl<User , Long> implements Use
 					requestUser.getId() == relativeUser.getBindUserId())) {
 			throw new InfoException("exception.user.relativeUser.errorCode");
 		}
-		if (new DateTime(relativeUser.getBindDate()).plusHours(48).isBefore(new Date().getTime())) {
+		if (relativeUser.getBindDate() != null && 
+			new DateTime(relativeUser.getBindDate()).plusHours(48).isBefore(new Date().getTime())) {
 			throw new InfoException("exception.user.relativeCode.expried");
 		}
 		requestUser.addRelative(relativeUser);
