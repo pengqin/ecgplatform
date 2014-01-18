@@ -4,7 +4,9 @@ define(function(require, exports) {
 
 var userEditTemp = require("../templates/user/edit.html");
 var userExpertTemp = require("../templates/user/expert.html");
+var userRelativeTemp = require("../templates/user/relative.html");
 var usersDialogTemp = require("../templates/user/usersdialog.html");
+var relativesDialogTemp = require("../templates/user/relativedialog.html");
 
 angular.module('ecgUserModules', [])
 .controller('UserController', ['$scope', '$filter', '$timeout', '$location', 'EnumService', 'UserService', function ($scope, $filter, $timeout, $location, EnumService, UserService) {
@@ -504,7 +506,202 @@ angular.module('ecgUserModules', [])
         link : function($scope, $element, $attrs) {
         }
     };
+}])
+.controller('RelativeDialogController', 
+    ['$scope', '$filter', '$timeout', '$location', 'EnumService', 'UserService', 
+    function ($scope, $filter, $timeout, $location, EnumService, UserService) {
+
+    // 命名空间
+    $scope.relativedialog = {};
+
+    // 表格展示
+    $scope.relativedialog.data = null;
+    $scope.relativedialog.paging = {
+        total: 0,
+        curPage: 1,
+        goToPage: function(page, max) {
+            refreshGrid({'page.curPage': page, 'page.max': max});
+        }
+    };
+
+    var globalParams = {};
+    function refreshGrid(params) {
+        globalParams = $.extend(globalParams, params);
+        UserService.queryAll(globalParams).then(function(paging) {
+            if (paging) {
+                $scope.relativedialog.paging.total = paging.total;
+                $scope.relativedialog.paging.curPage = paging.curPage;
+                $scope.relativedialog.data = paging.datas;
+            } else {
+                $scope.message.error("无法加载用户数据!");
+            }
+        });
+    };
+
+
+    // 过滤功能
+    $scope.relativedialog.queryChanged = function(mobile) {
+        globalParams['mobile:like'] = mobile;
+        globalParams['page.curPage'] = 1;
+        refreshGrid(globalParams);
+    };
+
+    $scope.relativedialog.execute = function() {
+        var selecteds = [];
+        $($scope.relativedialog.data).each(function(i, user) {
+            if (user.selected) {
+                selecteds.push(user);
+            }
+        });
+        $scope.relativedialog.hide();
+        if ($scope.relativedialog.handler instanceof Function) {
+            $scope.relativedialog.handler(selecteds);
+        }
+    };
+
+    $scope.relativedialog.hide = function(opts) {
+      $('#ecgRelativeDialog').modal('hide');
+    };
+
+    $scope.relativedialog.show = function(opts) {
+      var opts = opts || {}, ids = '', params;
+
+      if (opts.excludes) {
+        $(opts.excludes).each(function(i, user) {
+            var comma = '';
+            if (i != 0) {
+                comma = ',';
+            }
+            ids += comma + user.id;
+        });
+        if (opts.excludes.length > 0) {
+            params = {'id:notIn': ids};
+        }
+      }
+      $scope.relativedialog.handler = opts.handler;
+      $('#ecgRelativeDialog').modal('show');
+      refreshGrid(params);
+    };
+
+}])
+.directive("ecgRelativeDialog", [ '$location', function($location) {
+    return {
+        restrict : 'A',
+        replace : false,
+        template : relativesDialogTemp,
+        controller : "RelativeDialogController",
+        link : function($scope, $element, $attrs) {
+        }
+    };
+}])
+.directive("ecgUserRelative", [ '$location', function($location) {
+    return {
+        restrict : 'A',
+        replace : false,
+        template : userRelativeTemp,
+        controller : "UserRelativeController",
+        link : function($scope, $element, $attrs) {
+        }
+    };
+}])
+.controller('UserRelativeController', ['$scope', '$routeParams', '$timeout', '$location', 'EnumService', 'UserService',
+    function ($scope, $routeParams, $timeout, $location, EnumService, UserService) {
+    $scope.subheader.title = "绑定亲属";
+
+    $scope.user.relatives = [];
+
+    function refreshLinks() {
+        UserService.getRelatives($routeParams.id).then(function(relatives) {
+            $scope.user.relatives = relatives;
+        }, function() {
+            $scope.message.error("加载亲属数据失败!");
+        });
+    }
+
+    $scope.user.check = function(relative) {
+        if (relative.removed === true) {
+        	relative.removed = false;
+            return;
+        } else {
+        	relative.removed = true;
+        }
+    };
+
+    $scope.user.isCheckAll = false;
+    $scope.user.checkAll = function() {
+        $scope.user.isCheckAll = !$scope.user.isCheckAll;
+        $($scope.user.relatives).each(function(i, relative) {
+            relative.removed = $scope.user.isCheckAll;
+        });
+    };
+
+    $scope.user.addRelatives = function() {
+        $scope.relativedialog.show({
+            excludes: $scope.user.relatives,
+            handler: function(relatives) {
+                $(relatives).each(function(i, relative) {
+                    $scope.dialog.showStandby();
+                    UserService.linkRelative($routeParams.id, relative)
+                    .then(function(flag) {
+                        $scope.dialog.hideStandby();
+                        if (flag) {
+                            count++;
+                        } else {
+                            $scope.message.error("无法绑定亲属：" + relative.name);
+                        }
+                        if (count === len) {
+                            $scope.message.success("成功绑定！");
+                            refreshLinks();
+                        }
+                    }, function() {
+                        $scope.dialog.hideStandby();
+                        $scope.message.error("无法绑定亲属：" + user.name);
+                    });
+                });
+            }
+        });
+    };
+    
+    $scope.user.removeRelatives = function() {
+        
+        var removes = [], relatives = $scope.user.relatives, len = 0, count = 0;
+
+        $(relatives).each(function(i, relative) {
+            if (relative.removed) {
+                removes.push(relative);
+            }
+        });
+        
+        if (removes.length == 0) {
+            $scope.dialog.alert({
+                text: '请选择需要解除的绑定!'
+            });
+            return;
+        };
+
+        len = removes.length;
+
+        $scope.dialog.confirm({
+            text: "请确认解除绑定, 该操作无法恢复!",
+            handler: function() {
+                $scope.dialog.showStandby();
+                $(removes).each(function(i, remove) {
+                    UserService.unlinkRelative($routeParams.id, remove)
+                    .then(function() {
+                        count++;
+                        if (count === len) {
+                            $scope.dialog.hideStandby();
+                            $scope.message.success("成功解除绑定！");
+                            refreshLinks();
+                        }
+                    }, function() {
+                        count++;
+                        $scope.dialog.hideStandby();
+                        $scope.message.error("无法解除绑定，亲属名为：" + remove.name);
+                    });
+                });
+            }
+        });
+    };
 }]);
-
-
 });

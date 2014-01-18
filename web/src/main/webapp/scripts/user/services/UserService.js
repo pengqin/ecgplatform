@@ -207,6 +207,42 @@ angular.module('ecgUserService', [])
                 }, function() {
                     return null;
                 });
+            },
+            getRelatives: function(operator) {
+                var id = operator.id || operator;
+                return $http({
+                    method: 'GET',
+                    headers:{'Content-Type':'application/x-www-form-urlencoded'},
+                    url: uri + '/' + id + '/relative'
+                }).then(function(res) {
+                    return res.data;
+                }, function() {
+                    return null;
+                });
+            },
+            linkRelative: function(operator, relative) {
+                var id = operator.id || operator;
+                return $http({
+                    method: 'PUT',
+                    headers:{'Content-Type':'application/x-www-form-urlencoded'},
+                    url: uri + '/' + id + '/relative',
+                    data:$.param({mobile:relative.mobile})
+                }).then(function(res) {
+                    if (res.status === 200) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }, function() {
+                    return false;
+                });
+            },
+            unlinkRelative: function(operator, relative) {
+                var id = operator.id || operator;
+                return $http({
+                    method: 'DELETE',
+                    url: uri + '/' + id + '/relative/' + relative.id
+                });
             }
         };
     });

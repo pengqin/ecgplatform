@@ -572,13 +572,20 @@ public class UserController extends BaseController<User , Long> {
 	 @RequestMapping(value = "/{userId}/relative" ,  method = RequestMethod.POST ,
 			 	produces = MediaType.APPLICATION_JSON_VALUE)
 	 public ResponseEntity<?> requestRelative(@PathVariable("userId") Long userId , @RequestParam(value = "mobile" , required = true) String mobile) {
+		AuthUser authUser = authenticateService.getCurrentUser();
+		User requestUser = userService.get(authUser.getId());
 		User relativeUser = userService.findByMobile(mobile);
 		if (relativeUser == null) {
 			 return new ResponseEntity(HttpStatus.NOT_FOUND);
 		 }
-		AuthUser authUser = authenticateService.getCurrentUser();
 		if (authUser.isUser() && !authUser.getId().equals(userId)) {
-			throw new PermissionException("exception.cannotrequestrelative");
+			return new ResponseEntity(HttpStatus.BAD_REQUEST);
+		}
+		if (requestUser.equals(relativeUser)) {
+			return new ResponseEntity(HttpStatus.BAD_REQUEST);
+		}
+		if (requestUser.hasRelative(relativeUser)) {
+			return new ResponseEntity(HttpStatus.BAD_REQUEST);
 		}
 		 userService.requestBindRelative(userId , relativeUser.getId());
 		 return new ResponseEntity(HttpStatus.OK);
@@ -592,17 +599,30 @@ public class UserController extends BaseController<User , Long> {
 	  */
 	 @RequestMapping(value = "{userId}/relative" , method = RequestMethod.PUT ,
 			 	produces = MediaType.APPLICATION_JSON_VALUE)
-	 public ResponseEntity<?> bindRelative(@PathVariable("userId") Long userId ,@RequestParam(value = "code" , required = true) String code ,
+	 public ResponseEntity<?> bindRelative(@PathVariable("userId") Long userId ,@RequestParam(value = "code" , required = false) String code ,
 			 						@RequestParam(value = "mobile" , required = true) String mobile) throws InfoException {
 		User relativeUser = userService.findByMobile(mobile);
-		if (relativeUser == null) {
-			 return new ResponseEntity(HttpStatus.NOT_FOUND);
-		}
 		AuthUser authUser = authenticateService.getCurrentUser();
+		User requestUser = userService.get(authUser.getId());
+		if (relativeUser == null) {
+			return new ResponseEntity(HttpStatus.NOT_FOUND);
+		}
+		if (requestUser.equals(relativeUser)) {
+			return new ResponseEntity(HttpStatus.BAD_REQUEST);
+		}
+		if (authUser.isUser() && StringUtils.isBlank(code)) {
+			return new ResponseEntity(HttpStatus.BAD_REQUEST);
+		}
 		if (authUser.isUser() && !authUser.getId().equals(userId)) {
 			throw new PermissionException("exception.cannotbindrelative");
 		}
-		userService.bindRelative(userId , relativeUser.getId() , code);
+		
+		if (authUser.isEmployee()) {
+			userService.bindRelativeByEmployee(userId , relativeUser.getId());
+		}
+		else {
+			userService.bindRelative(userId , relativeUser.getId() , code);
+		}
 		return new ResponseEntity(HttpStatus.OK);
 	 }
 	 
@@ -625,7 +645,7 @@ public class UserController extends BaseController<User , Long> {
 		if (authUser.isUser() && !authUser.getId().equals(userId)) {
 			throw new PermissionException("exception.cannotunbindrelative");
 		}
-		 
+		userService.unbindRelative(userId, relativeUser.getId());
 		return new ResponseEntity(HttpStatus.OK);
 	}
 }

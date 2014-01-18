@@ -278,6 +278,9 @@ public class UserServiceImpl extends BaseServiceImpl<User , Long> implements Use
 		if (requestUser == null || relativeUserId == null) {
 			throw new ServiceException("exception.user.relativeUser.notFound");
 		}
+		if (requestUser.hasRelative(relativeUser)) {
+			throw new ServiceException("exception.user.relative.hasBinded");
+		}
 		if (StringUtils.isNotBlank(relativeUser.getBindCode()) && 
 			relativeUser.getBindDate() != null &&
 			new DateTime(relativeUser.getBindDate()).plusHours(24).isAfterNow()) {
@@ -315,6 +318,25 @@ public class UserServiceImpl extends BaseServiceImpl<User , Long> implements Use
 			new DateTime(relativeUser.getBindDate()).plusHours(48).isBefore(new Date().getTime())) {
 			throw new InfoException("exception.user.relativeCode.expried");
 		}
+	
+		requestUser.addRelative(relativeUser);
+		relativeUser.addRelative(requestUser);
+		relativeUser.setBindCode(null);
+		relativeUser.setBindUserId(null);
+		relativeUser.setBindDate(null);
+		
+		userDao.save(requestUser);
+		userDao.save(relativeUser);
+	}
+	
+	@Override
+	public void bindRelativeByEmployee(Long requestUserId, Long relativeUserId){
+		User requestUser = userDao.findOne(requestUserId);
+		User relativeUser = userDao.findOne(relativeUserId);
+		if (requestUser == null || relativeUserId == null) {
+			throw new ServiceException("exception.user.relativeUser.notFound");
+		}
+	
 		requestUser.addRelative(relativeUser);
 		relativeUser.addRelative(requestUser);
 		relativeUser.setBindCode(null);
