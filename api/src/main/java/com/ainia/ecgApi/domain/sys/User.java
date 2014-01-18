@@ -118,6 +118,12 @@ public class User implements Domain {
 		}
 		experts.add(expert);
 	}
+	
+	@Transient
+	public boolean hasRelative(User user) {
+		return relatives != null && relatives.contains(user);
+	}
+	
 	@Transient
 	public void addRelative(User user) {
 		if (relatives == null) {

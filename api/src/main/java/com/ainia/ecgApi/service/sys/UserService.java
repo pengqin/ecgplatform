@@ -93,4 +93,12 @@ public interface UserService extends BaseService<User , Long> {
 	 * void
 	 */
 	public void unbindRelative(Long requestUserId , Long relativeUserId);
+	
+	/**
+	 * <p>员工绑定用户亲属关系</p>
+	 * @param requestUserId
+	 * @param relativeUserId
+	 * void
+	 */
+	public void bindRelativeByEmployee(Long requestUserId, Long relativeUserId);
 }
