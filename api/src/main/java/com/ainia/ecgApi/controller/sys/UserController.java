@@ -602,26 +602,29 @@ public class UserController extends BaseController<User , Long> {
 	 public ResponseEntity<?> bindRelative(@PathVariable("userId") Long userId ,@RequestParam(value = "code" , required = false) String code ,
 			 						@RequestParam(value = "mobile" , required = true) String mobile) throws InfoException {
 		User relativeUser = userService.findByMobile(mobile);
-		AuthUser authUser = authenticateService.getCurrentUser();
-		User requestUser = userService.get(authUser.getId());
 		if (relativeUser == null) {
 			return new ResponseEntity(HttpStatus.NOT_FOUND);
 		}
-		if (requestUser.equals(relativeUser)) {
-			return new ResponseEntity(HttpStatus.BAD_REQUEST);
-		}
-		if (authUser.isUser() && StringUtils.isBlank(code)) {
-			return new ResponseEntity(HttpStatus.BAD_REQUEST);
-		}
-		if (authUser.isUser() && !authUser.getId().equals(userId)) {
-			throw new PermissionException("exception.cannotbindrelative");
-		}
 		
+		AuthUser authUser = authenticateService.getCurrentUser();
 		if (authUser.isEmployee()) {
 			userService.bindRelativeByEmployee(userId , relativeUser.getId());
-		}
-		else {
+		} else if (authUser.isUser()) {
+			if (!authUser.getId().equals(userId)) {
+				throw new PermissionException("exception.cannotbindrelative");
+			}
+			
+			User requestUser = userService.get(authUser.getId());
+			if (requestUser.equals(relativeUser)) {
+				return new ResponseEntity(HttpStatus.BAD_REQUEST);
+			}
+			if (StringUtils.isBlank(code)) {
+				return new ResponseEntity(HttpStatus.BAD_REQUEST);
+			}
+
 			userService.bindRelative(userId , relativeUser.getId() , code);
+		} else {
+			return new ResponseEntity(HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity(HttpStatus.OK);
 	 }
