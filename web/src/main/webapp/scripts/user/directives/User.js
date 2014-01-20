@@ -640,6 +640,7 @@ angular.module('ecgUserModules', [])
         $scope.relativedialog.show({
             excludes: $scope.user.relatives,
             handler: function(relatives) {
+            	var count = 0;
                 $(relatives).each(function(i, relative) {
                     $scope.dialog.showStandby();
                     UserService.linkRelative($routeParams.id, relative)
