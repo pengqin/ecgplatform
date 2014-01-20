@@ -617,6 +617,7 @@ angular.module('ecgUserModules', [])
             $scope.message.error("加载亲属数据失败!");
         });
     }
+    refreshLinks();
 
     $scope.user.check = function(relative) {
         if (relative.removed === true) {
