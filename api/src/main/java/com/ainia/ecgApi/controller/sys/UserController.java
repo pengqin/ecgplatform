@@ -132,8 +132,11 @@ public class UserController extends BaseController<User , Long> {
 	@ResponseBody
 	public ResponseEntity<Page<Task>> findTask(@PathVariable("id") Long id , Query<Task> query) {
 		AuthUser currentUser = authenticateService.getCurrentUser();
-		if (currentUser!= null && currentUser.isUser() && !currentUser.getId().equals(id)) {
-			return new ResponseEntity(HttpStatus.FORBIDDEN);
+		if (currentUser!= null && currentUser.isUser()) {
+			User user = userService.get(currentUser.getId());
+			if (!currentUser.getId().equals(id) && !user.hasRelative(userService.get(id))) {
+				return new ResponseEntity(HttpStatus.FORBIDDEN);
+			}
 		}
 		query.eq(Task.USER_ID  , id);
 		query.addOrder(Task.CREATED_DATE , OrderType.desc);
@@ -602,26 +605,29 @@ public class UserController extends BaseController<User , Long> {
 	 public ResponseEntity<?> bindRelative(@PathVariable("userId") Long userId ,@RequestParam(value = "code" , required = false) String code ,
 			 						@RequestParam(value = "mobile" , required = true) String mobile) throws InfoException {
 		User relativeUser = userService.findByMobile(mobile);
-		AuthUser authUser = authenticateService.getCurrentUser();
-		User requestUser = userService.get(authUser.getId());
 		if (relativeUser == null) {
 			return new ResponseEntity(HttpStatus.NOT_FOUND);
 		}
-		if (requestUser.equals(relativeUser)) {
-			return new ResponseEntity(HttpStatus.BAD_REQUEST);
-		}
-		if (authUser.isUser() && StringUtils.isBlank(code)) {
-			return new ResponseEntity(HttpStatus.BAD_REQUEST);
-		}
-		if (authUser.isUser() && !authUser.getId().equals(userId)) {
-			throw new PermissionException("exception.cannotbindrelative");
-		}
 		
+		AuthUser authUser = authenticateService.getCurrentUser();
 		if (authUser.isEmployee()) {
 			userService.bindRelativeByEmployee(userId , relativeUser.getId());
-		}
-		else {
+		} else if (authUser.isUser()) {
+			if (!authUser.getId().equals(userId)) {
+				throw new PermissionException("exception.cannotbindrelative");
+			}
+			
+			User requestUser = userService.get(authUser.getId());
+			if (requestUser.equals(relativeUser)) {
+				return new ResponseEntity(HttpStatus.BAD_REQUEST);
+			}
+			if (StringUtils.isBlank(code)) {
+				return new ResponseEntity(HttpStatus.BAD_REQUEST);
+			}
+
 			userService.bindRelative(userId , relativeUser.getId() , code);
+		} else {
+			return new ResponseEntity(HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity(HttpStatus.OK);
 	 }
