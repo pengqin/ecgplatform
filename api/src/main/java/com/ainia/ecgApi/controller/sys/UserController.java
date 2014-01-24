@@ -132,8 +132,11 @@ public class UserController extends BaseController<User , Long> {
 	@ResponseBody
 	public ResponseEntity<Page<Task>> findTask(@PathVariable("id") Long id , Query<Task> query) {
 		AuthUser currentUser = authenticateService.getCurrentUser();
-		if (currentUser!= null && currentUser.isUser() && !currentUser.getId().equals(id)) {
-			return new ResponseEntity(HttpStatus.FORBIDDEN);
+		if (currentUser!= null && currentUser.isUser()) {
+			User user = userService.get(currentUser.getId());
+			if (!currentUser.getId().equals(id) && !user.hasRelative(userService.get(id))) {
+				return new ResponseEntity(HttpStatus.FORBIDDEN);
+			}
 		}
 		query.eq(Task.USER_ID  , id);
 		query.addOrder(Task.CREATED_DATE , OrderType.desc);
