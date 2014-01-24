@@ -55,7 +55,7 @@ angular.module('ecgApp', ['ecgCommon', 'ecgTask', 'ecgMonitor', 'ecgEmployee', '
     function logout(msg) {
         if (msg) { alert(msg); }
         $.cookie("AiniaOpAuthToken", '', { path: '/' });
-        window.location.href = "login.html";
+        window.location.href = "elogin.html";
     };
     window.logout = logout;
 
