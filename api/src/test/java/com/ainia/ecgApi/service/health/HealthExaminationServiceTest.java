@@ -37,8 +37,10 @@ import com.ainia.ecgApi.domain.health.HealthReply;
 import com.ainia.ecgApi.domain.health.HealthRule.Level;
 import com.ainia.ecgApi.domain.sys.SystemConfig;
 import com.ainia.ecgApi.domain.sys.User;
+import com.ainia.ecgApi.dto.health.HealthInfo;
 import com.ainia.ecgApi.service.sys.SystemConfigService;
 import com.ainia.ecgApi.utils.DataException;
+import com.ainia.ecgApi.utils.DataProcessor;
 
 /**
  * <p>HealthExamination Service test</p>
@@ -464,7 +466,7 @@ public class HealthExaminationServiceTest {
     
 	@Test
 	public void testGizpUpload() throws NoSuchAlgorithmException, KeyManagementException, ClientProtocolException, IOException {
-    	Resource resource = new ClassPathResource("health/sample3");
+    	Resource resource = new ClassPathResource("health/sample7.dat");
     	ByteArrayOutputStream out = new ByteArrayOutputStream();
     	GZIPOutputStream gzip = new GZIPOutputStream(out);
     	InputStream input = resource.getInputStream();
@@ -493,5 +495,24 @@ public class HealthExaminationServiceTest {
     	HealthExamination examination = new HealthExamination();
     	examination.setIsTest(true);
     	healthExaminationService.upload(examination , null, null, null, null, null);
+    }
+    
+    @Test
+    public void testDataProcess() throws NoSuchAlgorithmException, KeyManagementException, ClientProtocolException, IOException, DataException{
+    	Resource resource = new ClassPathResource("health/sample7.dat");
+    	ByteArrayOutputStream out = new ByteArrayOutputStream();
+    	int b = -1;
+    	InputStream input = resource.getInputStream();
+    	while ((b = input.read()) != -1) {
+    		out.write(b);
+    	}
+    	byte[] bytes = out.toByteArray();
+	    
+    	DataProcessor processor = new DataProcessor();
+    	processor.process(bytes , bytes.length);
+    	HealthInfo hi = processor.getHealthInfo();
+    	System.out.println(hi.heartrate);
+    	System.out.println(hi.pulserate);
+    	System.out.println(hi.oxygen);
     }
 }
