@@ -52,7 +52,7 @@ angular.module('ecgApp', ['ecgCommon', 'ecgTask', 'ecgUser', 'ecgProfile', 'ecgC
     function logout(msg) {
         if (msg) { alert(msg); }
         $.cookie("AiniaSelfAuthToken", '', { path: '/' });
-        window.location.href = "ulogin.html";
+        window.location.href = "login.html";
     };
     window.logout = logout;
 
