@@ -93,7 +93,7 @@ $(function() {
             }
         }).then(function(res) {
             alert('重置成功');
-            window.location.href = "ulogin.html";
+            window.location.href = "login.html";
         }, function() {
             alert('重置失败!');
         });
