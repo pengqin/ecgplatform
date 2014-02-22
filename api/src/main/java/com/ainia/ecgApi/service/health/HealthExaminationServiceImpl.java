@@ -109,7 +109,7 @@ public class HealthExaminationServiceImpl extends BaseServiceImpl<HealthExaminat
     @Autowired
     private UserService userService;
     
-    private ExecutorService executorService = Executors.newFixedThreadPool(3);
+    private ExecutorService executorService = Executors.newFixedThreadPool(8);
     
     
     @Override

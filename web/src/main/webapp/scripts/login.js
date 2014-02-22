@@ -21,7 +21,7 @@ $(function() {
             dataType: 'json'
         }).then(function(res) {
             $.cookie('AiniaOpAuthToken', encodeURI(res.token), { expires: 1, path: '/' });
-            window.location.href = "eindex.html";
+            window.location.href = "index.html";
         }, function() {
             alert('用户名或密码不对,请重新尝试!');
             $('#loginBtn').show();
